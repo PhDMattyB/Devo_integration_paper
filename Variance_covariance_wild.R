@@ -51,8 +51,16 @@ proc_coord = two.d.array(phenotype_gpa$coords)
 phenotype_pca = prcomp(proc_coord, 
                        rank. = 5, 
                        tol = sqrt(.Machine$double.eps))
-pcs_scores = phenotype_pca$x
+pca_scores = phenotype_pca$x
+
+str(pca_scores)
+pca_scores = as.matrix(pca_scores)
+mat.sq.dist(pca_scores, 
+            dist. = 'Riemannian')
+
+pr.coord(pca_scores)
 
 
-
-
+eigen.phen <- mat.sq.dist(S.phen.pooled, dist. = "Riemannian")  # Riemannian distances
+prcoa <- pr.coord(eigen.phen)  # ordination
+prcoa$Variance  # variance explained
