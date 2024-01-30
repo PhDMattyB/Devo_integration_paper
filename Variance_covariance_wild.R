@@ -44,3 +44,15 @@ phenotype_array = arrayspecs(phenotypes, p = 22, k = 2)
 
 phenotype_gpa = gpagen(phenotype_array, 
                        print.progress = F)
+
+proc_coord = two.d.array(phenotype_gpa$coords)
+# colnames(proc_coord) <- colnames(phenotypes)
+
+phenotype_pca = prcomp(proc_coord, 
+                       rank. = 5, 
+                       tol = sqrt(.Machine$double.eps))
+pcs_scores = phenotype_pca$x
+
+
+
+
