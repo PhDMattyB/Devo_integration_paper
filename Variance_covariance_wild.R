@@ -84,6 +84,10 @@ barplot(prcoa$Variance$exVar, las = 1, col = "darkblue",
 ## we will plot the pooled phenotypic variances 
 ## Plot using $PCoords
 
+
+# Pooled principal coordinate analysis ------------------------------------
+
+
 pooled_pc_coords = prcoa$PCoords %>% 
   as.data.frame() %>% 
   rownames_to_column('POP') %>% 
@@ -586,3 +590,53 @@ title(main = "+", line = -1)
 title("First relative eigenvector - CSWY vs GTS", outer = TRUE, line = - 1)
 
 
+
+# General warm-cold comparison --------------------------------------------
+
+phenotypes_WC = cov.group(pca_scores, 
+                                  groups = LM_data$Morph)
+WC_eigen_vals = mat.sq.dist(phenotypes_WC, 
+                                   dist. = 'Riemannian')
+WC_prcoa = pr.coord(WC_eigen_vals)
+WC_prcoa$Variance
+
+## This won't work as there aren't enough dimensions
+
+
+# Warm cold compare per pop redo ------------------------------------------
+
+
+# ASHN redo ---------------------------------------------------------------
+
+pop_tests = mutate(.data = LM_data, 
+                          POP_redo = as.factor(case_when(
+                            POP == 'ASHNC' ~ 'ASHN_C',
+                            POP == 'ASHNW' ~ 'ASHN_W',
+                            POP == 'CSWY' ~ 'CSWY_C',
+                            POP == 'GTS' ~ 'GTS_W',
+                            POP == 'MYVC' ~ 'MYV_C',
+                            POP == 'MYVW' ~ 'MYV_W',
+                            POP == 'SKRC' ~ 'SKR_C',
+                            POP == 'SKRW' ~ 'SKR_W',
+                            POP == 'RKLTC' ~ 'RKLT_C', 
+                            POP == 'RKLTW' ~ 'RKLT_W', 
+                            POP == 'STNC' ~ 'STN_C', 
+                            POP == 'STNW' ~ 'STN_W')))
+
+pop_ashn = grep("ASHN", levels(pop_tests$POP_redo)) 
+relEigen_ashn = relative.eigen(phenotypes_pooled_var[,,pop_ashn[1]], 
+                               phenotypes_pooled_var[,,pop_ashn[2]])
+relEigen_ashn$relGV
+relEigen_ashn$relValues  # relative eigenvalues
+
+plot(relEigen_ashn$relValues[1:relEigen_ashn$q], 
+     log = "y",  
+     las = 1, 
+     col = "blue", 
+     type = "b", 
+     main = "ASHN - Cold vs Warm", 
+     cex.main = 1, 
+     cex.axis = 0.8, 
+     xlab = NA, 
+     ylab = "Relative eigenvalues")
+abline(h = 1)
