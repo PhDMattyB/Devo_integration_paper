@@ -204,6 +204,8 @@ plot(ashn_rel_eign$relValues[1:ashn_rel_eign$q],
      ylab = 'Relative eigenvalues')
 abline(h = 1)
 
+## deformation grids to show relative differences in covariation
+## between the cold vs warm morphs
 
 # MYV relative eigenvectors -----------------------------------------------
 
