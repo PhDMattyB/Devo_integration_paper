@@ -231,17 +231,23 @@ par(new = FALSE,
 
 plotRefToTarget(ref_ashn, 
                 (ref_ashn - 0.01 * ashn_shape[,,1]), 
-                mag = 5, 
+                mag = 4, 
                 method = 'TPS', 
                 gridPar = gp3)
 title(main = "-", line = -1)
 plotRefToTarget(ref_ashn, 
                 (ref_ashn + 0.01 * ashn_shape[,,1]), 
-                mag = 5, 
+                mag = 4, 
                 method = 'TPS', 
                 gridPar = gp3)
 title(main = "+", line = -1)
 title("First relative eigenvector - ASHN", outer = TRUE, line = - 1)
+
+## These are the features with max excess of variance in 
+## ASHNC relative to ASHNW
+## OR these are the shape features maximally canalized in 
+## the warm populations. Selection is acting on head shape
+## Canalization has occured in the warm morphs??
 
 # MYV relative eigenvectors -----------------------------------------------
 
