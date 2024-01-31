@@ -61,3 +61,6 @@ phenotype_eigen_vals = mat.sq.dist(phenotypes_pooled_var,
 prcoa = pr.coord(phenotype_eigen_vals)
 prcoa$Variance
 
+barplot(prcoa$Variance$exVar, las = 1, col = "darkblue",
+        names.arg = 1:nrow(prcoa$Variance), cex.axis = 0.8, cex  = 0.8,
+        xlab = "Dimensions", ylab = "Variance explained")
