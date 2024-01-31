@@ -164,7 +164,10 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
   geom_line(col = 'black')+
   geom_point(size = 3, 
              aes(shape = Morph))+
-  scale_color_manual(values = pop_only_pal)
+  scale_color_manual(values = pop_only_pal)+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12))
 
 # Per population relative variance analyses -------------------------------
 
