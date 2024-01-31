@@ -16,6 +16,7 @@ library(geomorph)
 library(vcvComp)
 library(tidyverse)
 
+theme_set(theme_bw())
 ## Example data from cichlids
 data("Tropheus")
 
@@ -66,3 +67,18 @@ prcoa$Variance
 barplot(prcoa$Variance$exVar, las = 1, col = "darkblue",
         names.arg = 1:nrow(prcoa$Variance), cex.axis = 0.8, cex  = 0.8,
         xlab = "Dimensions", ylab = "Variance explained")
+
+## Need to plot point estimates for each population
+## we will plot the pooled phenotypic variances 
+## Plot using $PCoords
+
+pooled_pc_coords = prcoa$PCoords %>% 
+  as.data.frame() %>% 
+  rownames_to_column('POP') %>% 
+  as.tibble()
+
+ggplot(data = pooled_pc_coords, 
+       aes(x = PCo1, 
+           y = PCo2, 
+           col = POP))+
+  geom_point(size = 2)
