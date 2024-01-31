@@ -99,6 +99,41 @@ pooled_pc_coords = prcoa$PCoords %>%
 ## RKL = Hot pink
 ## STN = Green - blue
 
+
+pooled_pc_coords = mutate(.data = pooled_pc_coords, 
+                      Morph = as.factor(case_when(
+                        POP == 'ASHNC' ~ 'Ambient',
+                        POP == 'ASHNW' ~ 'Geothermal',
+                        POP == 'CSWY' ~ 'Ambient',
+                        POP == 'GTS' ~ 'Geothermal',
+                        POP == 'MYVC' ~ 'Ambient',
+                        POP == 'MYVW' ~ 'Geothermal',
+                        POP == 'SKRC' ~ 'Ambient',
+                        POP == 'SKRW' ~ 'Geothermal',
+                        POP == 'RKLTC' ~ 'Ambient', 
+                        POP == 'RKLTW' ~ 'Geothermal', 
+                        POP == 'STNC' ~ 'Ambient', 
+                        POP == 'STNW' ~ 'Geothermal'
+                        
+                      )))
+
+pooled_pc_coords = mutate(.data = pooled_pc_coords, 
+                          POP_only = as.factor(case_when(
+                            POP == 'ASHNC' ~ 'ASHN',
+                            POP == 'ASHNW' ~ 'ASHN',
+                            POP == 'CSWY' ~ 'CSWY',
+                            POP == 'GTS' ~ 'GTS',
+                            POP == 'MYVC' ~ 'MYV',
+                            POP == 'MYVW' ~ 'MYV',
+                            POP == 'SKRC' ~ 'SKR',
+                            POP == 'SKRW' ~ 'SKR',
+                            POP == 'RKLTC' ~ 'RKLT', 
+                            POP == 'RKLTW' ~ 'RKLT', 
+                            POP == 'STNC' ~ 'STN', 
+                            POP == 'STNW' ~ 'STN'
+                            
+                          )))
+
 pops_col_pal = c('#277da1',
                  '#023e8a',
                  '#0d1b2a', 
@@ -112,22 +147,24 @@ pops_col_pal = c('#277da1',
                  '#4d908e', 
                  '#43aa8b')
 
+pop_only_pal = c('#277da1',
+                 '#415a77',
+                 '#0d1b2a',
+                 '#c1121f',
+                 '#fb6f92',
+                 '#43aa8b',
+                 '#90e0ef')
+
 ## Good enough for now
-ggplot(data = pooled_pc_coords, 
+principal_coord_analysis = ggplot(data = pooled_pc_coords, 
        aes(x = PCo1, 
            y = PCo2, 
-           col = POP))+
-  geom_point(size = 3)+
-  scale_color_manual(values = pops_col_pal)
-
-# ggplot(data = pooled_pc_coords, 
-#        aes(x = PCo1, 
-#            y = PCo3, 
-#            col = POP))+
-#   geom_point(size = 3)+
-#   scale_color_manual(values = pops_col_pal)
-
-
+           col = POP_only, 
+           group = POP_only))+
+  geom_line(col = 'black')+
+  geom_point(size = 3, 
+             aes(shape = Morph))+
+  scale_color_manual(values = pop_only_pal)
 
 # Per population relative variance analyses -------------------------------
 
