@@ -77,8 +77,39 @@ pooled_pc_coords = prcoa$PCoords %>%
   rownames_to_column('POP') %>% 
   as.tibble()
 
+## Need to colour code the populations a bit better
+## ASHN = Dark blue
+## MYV = Red
+## GTS = BLACK
+## CSWY = Dark grey
+## SKR = Light blue
+## RKL = Hot pink
+## STN = Green - blue
+
+pops_col_pal = c('#277da1',
+                 '#023e8a',
+                 '#0d1b2a', 
+                 '#415a77',
+                 '#780000', 
+                 '#c1121f', 
+                 '#fb6f92',
+                 '#edafb8', 
+                 '#00b4d8', 
+                 '#90e0ef', 
+                 '#4d908e', 
+                 '#43aa8b')
+
+## Good enough for now
 ggplot(data = pooled_pc_coords, 
        aes(x = PCo1, 
            y = PCo2, 
            col = POP))+
-  geom_point(size = 2)
+  geom_point(size = 3)+
+  scale_color_manual(values = pops_col_pal)
+
+ggplot(data = pooled_pc_coords, 
+       aes(x = PCo1, 
+           y = PCo3, 
+           col = POP))+
+  geom_point(size = 3)+
+  scale_color_manual(values = pops_col_pal)
