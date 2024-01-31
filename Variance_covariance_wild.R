@@ -180,6 +180,26 @@ prop.vcv.test(n = c(30,30),
               phenotypes_pooled_var[,,'ASHNC'], 
               phenotypes_pooled_var[,,'ASHNW'])
 ## 0.34 covariance matrices not different
+relGV.multi(phenotypes_pooled_var[,,c('ASHNC', 'ASHNW')], 
+            logGV = F)
+ashn_rel_eign = relative.eigen(phenotypes_pooled_var[,,'ASHNC'], 
+                               phenotypes_pooled_var[,,'ASHNW'])
+
+plot(ashn_rel_eign$relValues[1:ashn_rel_eign$q], 
+     log = 'y', 
+     las = 1, 
+     col = 'blue', 
+     type = 'b', 
+     main = 'ASHNC relative to ASHNW', 
+     cex = 0.8, 
+     cex.main = 1, 
+     cex.axis = 0.8, 
+     cex.sub = 0.7, 
+     sub = paste('Relative generalized variance =', ashn_rel_eign$relGV), 
+     xlab = NA, 
+     ylab = 'Relative eigenvalues')
+abline(h = 1)
+
 
 ## MYV cold vs warm
 prop.vcv.test(n = c(30,30), 
@@ -212,25 +232,6 @@ prop.vcv.test(n = c(30,29),
 
 ## 0.033 covariance matrices different
 
-relGV.multi(phenotypes_pooled_var[,,c('ASHNC', 'ASHNW')], 
-            logGV = F)
-ashn_rel_eign = relative.eigen(phenotypes_pooled_var[,,'ASHNC'], 
-               phenotypes_pooled_var[,,'ASHNW'])
-
-plot(ashn_rel_eign$relValues[1:ashn_rel_eign$q], 
-     log = 'y', 
-     las = 1, 
-     col = 'blue', 
-     type = 'b', 
-     main = 'ASHNC relative to ASHNW', 
-     cex = 0.8, 
-     cex.main = 1, 
-     cex.axis = 0.8, 
-     cex.sub = 0.7, 
-     sub = paste('Relative generalized variance =', ashn_rel_eign$relGV), 
-     xlab = NA, 
-     ylab = 'Relative eigenvalues')
-abline(h = 1)
 
 
 
