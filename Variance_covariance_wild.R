@@ -207,6 +207,41 @@ abline(h = 1)
 ## deformation grids to show relative differences in covariation
 ## between the cold vs warm morphs
 
+ashn = c(which(LM_data$POP %in% 'ASHNC'), 
+         which(LM_data$POP %in% 'ASHNW'))
+## calculate avg shape for the population
+ref_ashn = mshape(phenotype_gpa$coords[,,ashn])
+
+ashn_shape = arrayspecs(t(phenotype_pca$rotation %*% ashn_rel_eign$relVectors), 
+                        p = 22, k = 2)
+## Need to think about the linkages between the landmarks below
+WF <- cbind(c(1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 12, 14, 14), 
+            c(19, 18, 18, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 15))
+
+gp3 = gridPar(grid.col = "grey", 
+               tar.link.col = "blue", 
+               tar.pt.size = 0.7, 
+               tar.pt.bg = "blue")
+
+# Visualization of the first dimension
+par(new = FALSE, 
+    mfrow = c(1, 2), 
+    mar = c(0.5, 0.5, 0.5, 0.5))
+
+plotRefToTarget(ref_ashn, 
+                (ref_ashn - 0.01 * ashn_shape[,,1]), 
+                mag = 7, 
+                method = 'TPS', 
+                gridPar = gp3)
+title(main = "-", line = -1)
+plotRefToTarget(ref_ashn, 
+                (ref_ashn + 0.01 * ashn_shape[,,1]), 
+                mag = 7, 
+                method = 'TPS', 
+                gridPar = gp3)
+title(main = "+", line = -1)
+title("First relative eigenvector - ASHN", outer = TRUE, line = - 1)
+
 # MYV relative eigenvectors -----------------------------------------------
 
 ## MYV cold vs warm
