@@ -61,6 +61,6 @@ mat.sq.dist(pca_scores,
 pr.coord(pca_scores)
 
 
-eigen.phen <- mat.sq.dist(S.phen.pooled, dist. = "Riemannian")  # Riemannian distances
-prcoa <- pr.coord(eigen.phen)  # ordination
+eigen.phen = mat.sq.dist(S.phen.pooled, dist. = "Riemannian")  # Riemannian distances
+prcoa = pr.coord(eigen.phen)  # ordination
 prcoa$Variance  # variance explained
