@@ -54,7 +54,6 @@ pca_scores = phenotype_pca$x
 phenotypes_pooled_var = cov.group(pca_scores, 
                                   groups = LM_data$POP)
 
-str(pca_scores)
 pca_scores = as.matrix(pca_scores)
 mat.sq.dist(pca_scores, 
             dist. = 'Riemannian')
