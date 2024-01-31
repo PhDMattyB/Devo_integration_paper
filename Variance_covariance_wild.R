@@ -215,8 +215,9 @@ ref_ashn = mshape(phenotype_gpa$coords[,,ashn])
 ashn_shape = arrayspecs(t(phenotype_pca$rotation %*% ashn_rel_eign$relVectors), 
                         p = 22, k = 2)
 ## Need to think about the linkages between the landmarks below
-WF <- cbind(c(1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 12, 14, 14), 
-            c(19, 18, 18, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 15))
+## ask kevin about this and see if someone has used this
+# WF <- cbind(c(1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 12, 14, 14), 
+#             c(19, 18, 18, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 15))
 
 gp3 = gridPar(grid.col = "grey", 
                tar.link.col = "blue", 
