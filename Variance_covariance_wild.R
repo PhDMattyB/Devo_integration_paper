@@ -113,3 +113,9 @@ ggplot(data = pooled_pc_coords,
            col = POP))+
   geom_point(size = 3)+
   scale_color_manual(values = pops_col_pal)
+
+
+
+## Need to test for differences in variance-covariance relationships
+table(Tropheus.IK$POP.ID)  # sample sizes
+prop.vcv.test(n = c(69,75), S.phen.pooled[,,"IKA1"], S.phen.pooled[,,"IKS5"])  # ML test
