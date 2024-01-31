@@ -54,13 +54,10 @@ pca_scores = phenotype_pca$x
 phenotypes_pooled_var = cov.group(pca_scores, 
                                   groups = LM_data$POP)
 
-pca_scores = as.matrix(pca_scores)
-mat.sq.dist(pca_scores, 
+
+phenotype_eigen_vals = mat.sq.dist(phenotypes_pooled_var, 
             dist. = 'Riemannian')
 
-pr.coord(pca_scores)
+prcoa = pr.coord(phenotype_eigen_vals)
+prcoa$Variance
 
-
-eigen.phen <- mat.sq.dist(S.phen.pooled, dist. = "Riemannian")  # Riemannian distances
-prcoa <- pr.coord(eigen.phen)  # ordination
-prcoa$Variance  # variance explained
