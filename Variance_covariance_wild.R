@@ -175,6 +175,10 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
 ## Need to test for differences in variance-covariance relationships
 table(LM_data$POP)
 ## Maximum likelihood test
+
+
+# ASHN relative eigenvectors ----------------------------------------------
+
 ## ASHNC cold vs warm
 prop.vcv.test(n = c(30,30), 
               phenotypes_pooled_var[,,'ASHNC'], 
@@ -201,17 +205,64 @@ plot(ashn_rel_eign$relValues[1:ashn_rel_eign$q],
 abline(h = 1)
 
 
+# MYV relative eigenvectors -----------------------------------------------
+
 ## MYV cold vs warm
 prop.vcv.test(n = c(30,30), 
               phenotypes_pooled_var[,,'MYVC'], 
               phenotypes_pooled_var[,,'MYVW'])
 ## 0.020 covariance matrices different
 
+relGV.multi(phenotypes_pooled_var[,,c('MYVC', 'MYVW')], 
+            logGV = F)
+myv_rel_eign = relative.eigen(phenotypes_pooled_var[,,'MYVC'], 
+                               phenotypes_pooled_var[,,'MYVW'])
+
+plot(myv_rel_eign$relValues[1:myv_rel_eign$q], 
+     log = 'y', 
+     las = 1, 
+     col = 'blue', 
+     type = 'b', 
+     main = 'MYVC relative to MYVW', 
+     cex = 0.8, 
+     cex.main = 1, 
+     cex.axis = 0.8, 
+     cex.sub = 0.7, 
+     sub = paste('Relative generalized variance =', myv_rel_eign$relGV), 
+     xlab = NA, 
+     ylab = 'Relative eigenvalues')
+abline(h = 1)
+
+
+# SKR relative eigenvectors -----------------------------------------------
+
 ## SKR cold vs warm
 prop.vcv.test(n = c(31,29), 
               phenotypes_pooled_var[,,'SKRC'], 
               phenotypes_pooled_var[,,'SKRW'])
 ## 0.00029 covariance matrices different
+relGV.multi(phenotypes_pooled_var[,,c('SKRC', 'SKRW')], 
+            logGV = F)
+skr_rel_eign = relative.eigen(phenotypes_pooled_var[,,'SKRC'], 
+                              phenotypes_pooled_var[,,'SKRW'])
+
+plot(skr_rel_eign$relValues[1:skr_rel_eign$q], 
+     log = 'y', 
+     las = 1, 
+     col = 'blue', 
+     type = 'b', 
+     main = 'SKRC relative to SKRW', 
+     cex = 0.8, 
+     cex.main = 1, 
+     cex.axis = 0.8, 
+     cex.sub = 0.7, 
+     sub = paste('Relative generalized variance =', skr_rel_eign$relGV), 
+     xlab = NA, 
+     ylab = 'Relative eigenvalues')
+abline(h = 1)
+
+
+# RKLT relative eigenvectors ----------------------------------------------
 
 ## RKLT cold vs warm
 prop.vcv.test(n = c(18,14), 
@@ -219,11 +270,56 @@ prop.vcv.test(n = c(18,14),
               phenotypes_pooled_var[,,'RKLTW'])
 ## 0.0037 covariance matrices different
 
+relGV.multi(phenotypes_pooled_var[,,c('RKLTC', 'RKLTW')], 
+            logGV = F)
+rklt_rel_eign = relative.eigen(phenotypes_pooled_var[,,'RKLTC'], 
+                              phenotypes_pooled_var[,,'RKLTW'])
+
+plot(rklt_rel_eign$relValues[1:rklt_rel_eign$q], 
+     log = 'y', 
+     las = 1, 
+     col = 'blue', 
+     type = 'b', 
+     main = 'RKLTC relative to RKLTW', 
+     cex = 0.8, 
+     cex.main = 1, 
+     cex.axis = 0.8, 
+     cex.sub = 0.7, 
+     sub = paste('Relative generalized variance =', rklt_rel_eign$relGV), 
+     xlab = NA, 
+     ylab = 'Relative eigenvalues')
+abline(h = 1)
+
+
+# STN relative eigenvectors -----------------------------------------------
+
 ## STN cold vs warm
 prop.vcv.test(n = c(32,28), 
               phenotypes_pooled_var[,,'STNC'], 
               phenotypes_pooled_var[,,'STNW'])
 ## 0.117 covariance matrices not different 
+relGV.multi(phenotypes_pooled_var[,,c('STNC', 'STNW')], 
+            logGV = F)
+stn_rel_eign = relative.eigen(phenotypes_pooled_var[,,'STNC'], 
+                              phenotypes_pooled_var[,,'STNW'])
+
+plot(stn_rel_eign$relValues[1:stn_rel_eign$q], 
+     log = 'y', 
+     las = 1, 
+     col = 'blue', 
+     type = 'b', 
+     main = 'STNC relative to STNW', 
+     cex = 0.8, 
+     cex.main = 1, 
+     cex.axis = 0.8, 
+     cex.sub = 0.7, 
+     sub = paste('Relative generalized variance =', stn_rel_eign$relGV), 
+     xlab = NA, 
+     ylab = 'Relative eigenvalues')
+abline(h = 1)
+
+
+# GTS-CSWY relative eigenvectors ------------------------------------------
 
 ## GTS vs CSWY
 prop.vcv.test(n = c(30,29), 
@@ -231,6 +327,26 @@ prop.vcv.test(n = c(30,29),
               phenotypes_pooled_var[,,'GTS'])
 
 ## 0.033 covariance matrices different
+
+relGV.multi(phenotypes_pooled_var[,,c('CSWY', 'GTS')], 
+            logGV = F)
+gts_cswy_rel_eign = relative.eigen(phenotypes_pooled_var[,,'CSWY'], 
+                              phenotypes_pooled_var[,,'GTS'])
+
+plot(gts_cswy_rel_eign$relValues[1:gts_cswy_rel_eign$q], 
+     log = 'y', 
+     las = 1, 
+     col = 'blue', 
+     type = 'b', 
+     main = 'CSWY relative to GTS', 
+     cex = 0.8, 
+     cex.main = 1, 
+     cex.axis = 0.8, 
+     cex.sub = 0.7, 
+     sub = paste('Relative generalized variance =', gts_cswy_rel_eign$relGV), 
+     xlab = NA, 
+     ylab = 'Relative eigenvalues')
+abline(h = 1)
 
 
 
