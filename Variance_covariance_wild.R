@@ -123,15 +123,43 @@ ggplot(data = pooled_pc_coords,
 
 ## Need to test for differences in variance-covariance relationships
 table(LM_data$POP)
+## Maximum likelihood test
 ## ASHNC cold vs warm
 prop.vcv.test(n = c(30,30), 
               phenotypes_pooled_var[,,'ASHNC'], 
               phenotypes_pooled_var[,,'ASHNW'])
+## 0.34
 
-prop.vcv.test(n = c(69,75), S.phen.pooled[,,"IKA1"], S.phen.pooled[,,"IKS5"])  # ML test
+## MYV cold vs warm
+prop.vcv.test(n = c(30,30), 
+              phenotypes_pooled_var[,,'MYVC'], 
+              phenotypes_pooled_var[,,'MYVW'])
+## 0.020
 
+## SKR cold vs warm
+prop.vcv.test(n = c(31,29), 
+              phenotypes_pooled_var[,,'SKRC'], 
+              phenotypes_pooled_var[,,'SKRW'])
+## 0.00029
 
+## RKLT cold vs warm
+prop.vcv.test(n = c(18,14), 
+              phenotypes_pooled_var[,,'RKLTC'], 
+              phenotypes_pooled_var[,,'RKLTW'])
+## 0.0037
 
+## STN cold vs warm
+prop.vcv.test(n = c(32,28), 
+              phenotypes_pooled_var[,,'STNC'], 
+              phenotypes_pooled_var[,,'STNW'])
+## 0.117
+
+## GTS vs CSWY
+prop.vcv.test(n = c(30,29), 
+              phenotypes_pooled_var[,,'CSWY'], 
+              phenotypes_pooled_var[,,'GTS'])
+
+## 0.033
 
 
 
