@@ -277,6 +277,45 @@ plot(myv_rel_eign$relValues[1:myv_rel_eign$q],
      ylab = 'Relative eigenvalues')
 abline(h = 1)
 
+## deformation grids to show relative differences in covariation
+## between the cold vs warm morphs
+
+myv = c(which(LM_data$POP %in% 'MYVC'), 
+         which(LM_data$POP %in% 'MYVW'))
+## calculate avg shape for the population
+ref_myv = mshape(phenotype_gpa$coords[,,myv])
+
+myv_shape = arrayspecs(t(phenotype_pca$rotation %*% myv_rel_eign$relVectors), 
+                        p = 22, k = 2)
+## Need to think about the linkages between the landmarks below
+## ask kevin about this and see if someone has used this
+# WF <- cbind(c(1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 12, 14, 14), 
+#             c(19, 18, 18, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 15))
+
+gp3 = gridPar(grid.col = "grey", 
+              tar.link.col = "blue", 
+              tar.pt.size = 0.7, 
+              tar.pt.bg = "blue")
+
+# Visualization of the first dimension
+par(new = FALSE, 
+    mfrow = c(1, 2), 
+    mar = c(0.5, 0.5, 0.5, 0.5))
+
+plotRefToTarget(ref_myv, 
+                (ref_myv - 0.01 * myv_shape[,,1]), 
+                mag = 4, 
+                method = 'TPS', 
+                gridPar = gp3)
+title(main = "-", line = -1)
+plotRefToTarget(ref_myv, 
+                (ref_myv + 0.01 * myv_shape[,,1]), 
+                mag = 4, 
+                method = 'TPS', 
+                gridPar = gp3)
+title(main = "+", line = -1)
+title("First relative eigenvector - MYV", outer = TRUE, line = - 1)
+
 
 # SKR relative eigenvectors -----------------------------------------------
 
@@ -305,6 +344,44 @@ plot(skr_rel_eign$relValues[1:skr_rel_eign$q],
      ylab = 'Relative eigenvalues')
 abline(h = 1)
 
+## deformation grids to show relative differences in covariation
+## between the cold vs warm morphs
+
+skr = c(which(LM_data$POP %in% 'SKRC'), 
+         which(LM_data$POP %in% 'SKRW'))
+## calculate avg shape for the population
+ref_skr = mshape(phenotype_gpa$coords[,,skr])
+
+skr_shape = arrayspecs(t(phenotype_pca$rotation %*% skr_rel_eign$relVectors), 
+                        p = 22, k = 2)
+## Need to think about the linkages between the landmarks below
+## ask kevin about this and see if someone has used this
+# WF <- cbind(c(1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 12, 14, 14), 
+#             c(19, 18, 18, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 15))
+
+gp3 = gridPar(grid.col = "grey", 
+              tar.link.col = "blue", 
+              tar.pt.size = 0.7, 
+              tar.pt.bg = "blue")
+
+# Visualization of the first dimension
+par(new = FALSE, 
+    mfrow = c(1, 2), 
+    mar = c(0.5, 0.5, 0.5, 0.5))
+
+plotRefToTarget(ref_skr, 
+                (ref_skr - 0.01 * skr_shape[,,1]), 
+                mag = 4, 
+                method = 'TPS', 
+                gridPar = gp3)
+title(main = "-", line = -1)
+plotRefToTarget(ref_skr, 
+                (ref_skr + 0.01 * skr_shape[,,1]), 
+                mag = 4, 
+                method = 'TPS', 
+                gridPar = gp3)
+title(main = "+", line = -1)
+title("First relative eigenvector - SKR", outer = TRUE, line = - 1)
 
 # RKLT relative eigenvectors ----------------------------------------------
 
@@ -334,6 +411,44 @@ plot(rklt_rel_eign$relValues[1:rklt_rel_eign$q],
      ylab = 'Relative eigenvalues')
 abline(h = 1)
 
+## deformation grids to show relative differences in covariation
+## between the cold vs warm morphs
+
+RKLT = c(which(LM_data$POP %in% 'RKLTC'), 
+         which(LM_data$POP %in% 'RKLTW'))
+## calculate avg shape for the population
+ref_RKLT = mshape(phenotype_gpa$coords[,,RKLT])
+
+RKLT_shape = arrayspecs(t(phenotype_pca$rotation %*% rklt_rel_eign$relVectors), 
+                        p = 22, k = 2)
+## Need to think about the linkages between the landmarks below
+## ask kevin about this and see if someone has used this
+# WF <- cbind(c(1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 12, 14, 14), 
+#             c(19, 18, 18, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 15))
+
+gp3 = gridPar(grid.col = "grey", 
+              tar.link.col = "blue", 
+              tar.pt.size = 0.7, 
+              tar.pt.bg = "blue")
+
+# Visualization of the first dimension
+par(new = FALSE, 
+    mfrow = c(1, 2), 
+    mar = c(0.5, 0.5, 0.5, 0.5))
+
+plotRefToTarget(ref_RKLT, 
+                (ref_RKLT - 0.01 * RKLT_shape[,,1]), 
+                mag = 4, 
+                method = 'TPS', 
+                gridPar = gp3)
+title(main = "-", line = -1)
+plotRefToTarget(ref_RKLT, 
+                (ref_RKLT + 0.01 * RKLT_shape[,,1]), 
+                mag = 4, 
+                method = 'TPS', 
+                gridPar = gp3)
+title(main = "+", line = -1)
+title("First relative eigenvector - RKLT", outer = TRUE, line = - 1)
 
 # STN relative eigenvectors -----------------------------------------------
 
@@ -362,6 +477,44 @@ plot(stn_rel_eign$relValues[1:stn_rel_eign$q],
      ylab = 'Relative eigenvalues')
 abline(h = 1)
 
+## deformation grids to show relative differences in covariation
+## between the cold vs warm morphs
+
+STN = c(which(LM_data$POP %in% 'STNC'), 
+         which(LM_data$POP %in% 'STNW'))
+## calculate avg shape for the population
+ref_STN = mshape(phenotype_gpa$coords[,,STN])
+
+STN_shape = arrayspecs(t(phenotype_pca$rotation %*% stn_rel_eign$relVectors), 
+                        p = 22, k = 2)
+## Need to think about the linkages between the landmarks below
+## ask kevin about this and see if someone has used this
+# WF <- cbind(c(1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 12, 14, 14), 
+#             c(19, 18, 18, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 15))
+
+gp3 = gridPar(grid.col = "grey", 
+              tar.link.col = "blue", 
+              tar.pt.size = 0.7, 
+              tar.pt.bg = "blue")
+
+# Visualization of the first dimension
+par(new = FALSE, 
+    mfrow = c(1, 2), 
+    mar = c(0.5, 0.5, 0.5, 0.5))
+
+plotRefToTarget(ref_STN, 
+                (ref_STN - 0.01 * STN_shape[,,1]), 
+                mag = 4, 
+                method = 'TPS', 
+                gridPar = gp3)
+title(main = "-", line = -1)
+plotRefToTarget(ref_STN, 
+                (ref_STN + 0.01 * STN_shape[,,1]), 
+                mag = 4, 
+                method = 'TPS', 
+                gridPar = gp3)
+title(main = "+", line = -1)
+title("First relative eigenvector - STN", outer = TRUE, line = - 1)
 
 # GTS-CSWY relative eigenvectors ------------------------------------------
 
@@ -393,5 +546,43 @@ plot(gts_cswy_rel_eign$relValues[1:gts_cswy_rel_eign$q],
 abline(h = 1)
 
 
+## deformation grids to show relative differences in covariation
+## between the cold vs warm morphs
+
+gts_cswy = c(which(LM_data$POP %in% 'CSWY'), 
+         which(LM_data$POP %in% 'GTS'))
+## calculate avg shape for the population
+ref_gts_cswy = mshape(phenotype_gpa$coords[,,gts_cswy])
+
+gts_cswy_shape = arrayspecs(t(phenotype_pca$rotation %*% gts_cswy_rel_eign$relVectors), 
+                        p = 22, k = 2)
+## Need to think about the linkages between the landmarks below
+## ask kevin about this and see if someone has used this
+# WF <- cbind(c(1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 12, 14, 14), 
+#             c(19, 18, 18, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 15))
+
+gp3 = gridPar(grid.col = "grey", 
+              tar.link.col = "blue", 
+              tar.pt.size = 0.7, 
+              tar.pt.bg = "blue")
+
+# Visualization of the first dimension
+par(new = FALSE, 
+    mfrow = c(1, 2), 
+    mar = c(0.5, 0.5, 0.5, 0.5))
+
+plotRefToTarget(ref_gts_cswy, 
+                (ref_gts_cswy - 0.01 * gts_cswy_shape[,,1]), 
+                mag = 4, 
+                method = 'TPS', 
+                gridPar = gp3)
+title(main = "-", line = -1)
+plotRefToTarget(ref_gts_cswy, 
+                (ref_gts_cswy + 0.01 * gts_cswy_shape[,,1]), 
+                mag = 4, 
+                method = 'TPS', 
+                gridPar = gp3)
+title(main = "+", line = -1)
+title("First relative eigenvector - CSWY vs GTS", outer = TRUE, line = - 1)
 
 
