@@ -230,13 +230,13 @@ par(new = FALSE,
 
 plotRefToTarget(ref_ashn, 
                 (ref_ashn - 0.01 * ashn_shape[,,1]), 
-                mag = 7, 
+                mag = 5, 
                 method = 'TPS', 
                 gridPar = gp3)
 title(main = "-", line = -1)
 plotRefToTarget(ref_ashn, 
                 (ref_ashn + 0.01 * ashn_shape[,,1]), 
-                mag = 7, 
+                mag = 5, 
                 method = 'TPS', 
                 gridPar = gp3)
 title(main = "+", line = -1)
