@@ -51,7 +51,12 @@ phenotype_pca = prcomp(proc_coord,
                        tol = sqrt(.Machine$double.eps))
 pca_scores = phenotype_pca$x
 
-## Morph works but not pop, why? 
+
+## This is for within population analyses. 
+## Testing for differences between phenotype variance-covariance 
+## relationships between morphs within each population
+## Need to test for overall differences in cold vs warm morphs
+
 phenotypes_pooled_var = cov.group(pca_scores, 
                                   groups = LM_data$POP)
 
@@ -117,5 +122,18 @@ ggplot(data = pooled_pc_coords,
 
 
 ## Need to test for differences in variance-covariance relationships
-table(Tropheus.IK$POP.ID)  # sample sizes
+table(LM_data$POP)
+## ASHNC cold vs warm
+prop.vcv.test(n = c(30,30), 
+              phenotypes_pooled_var[,,'ASHNC'], 
+              phenotypes_pooled_var[,,'ASHNW'])
+
 prop.vcv.test(n = c(69,75), S.phen.pooled[,,"IKA1"], S.phen.pooled[,,"IKS5"])  # ML test
+
+
+
+
+
+
+
+
