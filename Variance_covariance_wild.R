@@ -121,6 +121,9 @@ ggplot(data = pooled_pc_coords,
 
 
 
+# Per population relative variance analyses -------------------------------
+
+
 ## Need to test for differences in variance-covariance relationships
 table(LM_data$POP)
 ## Maximum likelihood test
@@ -128,40 +131,58 @@ table(LM_data$POP)
 prop.vcv.test(n = c(30,30), 
               phenotypes_pooled_var[,,'ASHNC'], 
               phenotypes_pooled_var[,,'ASHNW'])
-## 0.34
+## 0.34 covariance matrices not different
 
 ## MYV cold vs warm
 prop.vcv.test(n = c(30,30), 
               phenotypes_pooled_var[,,'MYVC'], 
               phenotypes_pooled_var[,,'MYVW'])
-## 0.020
+## 0.020 covariance matrices different
 
 ## SKR cold vs warm
 prop.vcv.test(n = c(31,29), 
               phenotypes_pooled_var[,,'SKRC'], 
               phenotypes_pooled_var[,,'SKRW'])
-## 0.00029
+## 0.00029 covariance matrices different
 
 ## RKLT cold vs warm
 prop.vcv.test(n = c(18,14), 
               phenotypes_pooled_var[,,'RKLTC'], 
               phenotypes_pooled_var[,,'RKLTW'])
-## 0.0037
+## 0.0037 covariance matrices different
 
 ## STN cold vs warm
 prop.vcv.test(n = c(32,28), 
               phenotypes_pooled_var[,,'STNC'], 
               phenotypes_pooled_var[,,'STNW'])
-## 0.117
+## 0.117 covariance matrices not different 
 
 ## GTS vs CSWY
 prop.vcv.test(n = c(30,29), 
               phenotypes_pooled_var[,,'CSWY'], 
               phenotypes_pooled_var[,,'GTS'])
 
-## 0.033
+## 0.033 covariance matrices different
 
+relGV.multi(phenotypes_pooled_var[,,c('ASHNC', 'ASHNW')], 
+            logGV = F)
+ashn_rel_eign = relative.eigen(phenotypes_pooled_var[,,'ASHNC'], 
+               phenotypes_pooled_var[,,'ASHNW'])
 
+plot(ashn_rel_eign$relValues[1:ashn_rel_eign$q], 
+     log = 'y', 
+     las = 1, 
+     col = 'blue', 
+     type = 'b', 
+     main = 'ASHNC relative to ASHNW', 
+     cex = 0.8, 
+     cex.main = 1, 
+     cex.axis = 0.8, 
+     cex.sub = 0.7, 
+     sub = paste('Relative generalized variance =', ashn_rel_eign$relGV), 
+     xlab = NA, 
+     ylab = 'Relative eigenvalues')
+abline(h = 1)
 
 
 
