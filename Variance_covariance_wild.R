@@ -73,6 +73,13 @@ barplot(prcoa$Variance$exVar, las = 1, col = "darkblue",
         names.arg = 1:nrow(prcoa$Variance), cex.axis = 0.8, cex  = 0.8,
         xlab = "Dimensions", ylab = "Variance explained")
 
+# plot(prcoa$PCoords[, 1], prcoa$PCoords[, 2])
+# abline(h = 0) ; abline(v = 0)
+# text(prcoa$PCoords[, 1], 
+#      prcoa$PCoords[, 1], 
+#      labels = rownames(prcoa$PCoords))
+# 
+
 ## Need to plot point estimates for each population
 ## we will plot the pooled phenotypic variances 
 ## Plot using $PCoords
@@ -81,6 +88,7 @@ pooled_pc_coords = prcoa$PCoords %>%
   as.data.frame() %>% 
   rownames_to_column('POP') %>% 
   as.tibble()
+
 
 ## Need to colour code the populations a bit better
 ## ASHN = Dark blue
@@ -112,12 +120,12 @@ ggplot(data = pooled_pc_coords,
   geom_point(size = 3)+
   scale_color_manual(values = pops_col_pal)
 
-ggplot(data = pooled_pc_coords, 
-       aes(x = PCo1, 
-           y = PCo3, 
-           col = POP))+
-  geom_point(size = 3)+
-  scale_color_manual(values = pops_col_pal)
+# ggplot(data = pooled_pc_coords, 
+#        aes(x = PCo1, 
+#            y = PCo3, 
+#            col = POP))+
+#   geom_point(size = 3)+
+#   scale_color_manual(values = pops_col_pal)
 
 
 
