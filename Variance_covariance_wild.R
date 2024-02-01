@@ -630,3 +630,57 @@ within_cov = cov.W(pca_scores,
 prop.vcv.test(n = c(12, 331), 
               between_cov, 
               within_cov)
+
+
+# two block PLS -----------------------------------------------------------
+landmarks = read_csv('allometry minimised data (XY) with ID (6 population pairs).csv')
+
+
+identifiers = landmarks %>% 
+  select(ID, 
+         POP, 
+         Morph, 
+         CS)
+
+ashnc_lms = landmarks %>%
+  filter(POP == 'ASHNC')
+  select(-starts_with('LMS'))
+
+ashnw_lms = landmarks %>%
+    filter(POP == 'ASHNW')
+  select(-starts_with('LMS'))
+  
+
+ashnc_pheno = as.matrix(ashnc_lms[which(names(ashnc_lms) == 'LM1X'):
+                                  which(names(ashnc_lms) == 'LM22Y')])   
+
+ashnw_pheno = as.matrix(ashnw_lms[which(names(ashnw_lms) == 'LM1X'):
+                                  which(names(ashnw_lms) == 'LM22Y')])   
+
+
+rownames(ashnc_pheno) = ashnc_lms$ID
+rownames(ashnw_pheno) = ashnw_lms$ID
+
+
+# dim(phenotypes)
+ashnc_array = arrayspecs(ashnc_pheno, 
+                         p = 22, 
+                         k = 2)
+ashnw_array = arrayspecs(ashnw_pheno, 
+                         p = 22, 
+                         k = 2)
+
+ashnc_gpa = gpagen(ashnc_array)
+phenotype_gpa = gpagen(phenotype_array, 
+                       print.progress = F)
+
+proc_coord = two.d.array(phenotype_gpa$coords)
+colnames(proc_coord) = colnames(phenotypes)
+
+phenotype_pca = prcomp(proc_coord, 
+                       rank. = 5, 
+                       tol = sqrt(.Machine$double.eps))
+pca_scores = phenotype_pca$x
+
+
+
