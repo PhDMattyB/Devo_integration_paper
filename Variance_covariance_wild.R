@@ -875,6 +875,8 @@ morphol.disparity(coords ~ 1,
 ## Modularity.test might work to find patterns of modularity in warm vs cold
 
 
+# ASNW modularity ---------------------------------------------------------
+
 ashnw = landmarks %>%
   filter(POP == 'ASHNW')
 
@@ -897,6 +899,259 @@ summary(ashnw_mt) # Test summary
 plot(ashnw_mt) # Histogram of CR sampling distribution
 
 
+# ASHNC modularity --------------------------------------------------------
+
+ashnc = landmarks %>%
+  filter(POP == 'ASHNC')
+
+ashnc_pheno = as.matrix(ashnc[which(names(ashnc) == 'LM1X'):
+                                which(names(ashnc) == 'LM22Y')])   
+
+rownames(ashnc_pheno) = ashnc$ID
+
+# dim(phenotypes)
+ashnc_array = arrayspecs(ashnc_pheno, 
+                         p = 22, 
+                         k = 2)
+ashnc_gpa = gpagen(ashnc_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+ashnc_mt = modularity.test(ashnc_gpa$coords,
+                           land.gps,
+                           CI=T,
+                           iter=999)
+summary(ashnc_mt) # Test summary
+plot(ashnc_mt) 
+
+
+# MYVW modularity ---------------------------------------------------------
+
+myvw = landmarks %>%
+  filter(POP == 'MYVW')
+
+myvw_pheno = as.matrix(myvw[which(names(myvw) == 'LM1X'):
+                                which(names(myvw) == 'LM22Y')])   
+
+rownames(myvw_pheno) = myvw$ID
+
+# dim(phenotypes)
+myvw_array = arrayspecs(myvw_pheno, 
+                         p = 22, 
+                         k = 2)
+myvw_gpa = gpagen(myvw_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+myvw_mt = modularity.test(myvw_gpa$coords,
+                           land.gps,
+                           CI=T,
+                           iter=999)
+summary(myvw_mt) # Test summary
+plot(myvw_mt) # Histogram of CR sampling distribution
+
+# MYVC modularity ---------------------------------------------------------
+
+MYVC = landmarks %>%
+  filter(POP == 'MYVC')
+
+MYVC_pheno = as.matrix(MYVC[which(names(MYVC) == 'LM1X'):
+                              which(names(MYVC) == 'LM22Y')])   
+
+rownames(MYVC_pheno) = MYVC$ID
+
+# dim(phenotypes)
+MYVC_array = arrayspecs(MYVC_pheno, 
+                        p = 22, 
+                        k = 2)
+MYVC_gpa = gpagen(MYVC_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+MYVC_mt = modularity.test(MYVC_gpa$coords,
+                          land.gps,
+                          CI=T,
+                          iter=999)
+summary(MYVC_mt) # Test summary
+plot(MYVC_mt) # Histogram of CR sampling distribution
+
+# SRKW modularity ---------------------------------------------------------
+
+SKRW = landmarks %>%
+  filter(POP == 'SKRW')
+
+SKRW_pheno = as.matrix(SKRW[which(names(SKRW) == 'LM1X'):
+                              which(names(SKRW) == 'LM22Y')])   
+
+rownames(SKRW_pheno) = SKRW$ID
+
+# dim(phenotypes)
+SKRW_array = arrayspecs(SKRW_pheno, 
+                        p = 22, 
+                        k = 2)
+SKRW_gpa = gpagen(SKRW_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+SKRW_mt = modularity.test(SKRW_gpa$coords,
+                          land.gps,
+                          CI=T,
+                          iter=999)
+summary(SKRW_mt) # Test summary
+plot(SKRW_mt) # Histogram of CR sampling distribution
+
+# SRKC modularity ---------------------------------------------------------
+
+SKRC = landmarks %>%
+  filter(POP == 'SKRC')
+
+SKRC_pheno = as.matrix(SKRC[which(names(SKRC) == 'LM1X'):
+                              which(names(SKRC) == 'LM22Y')])   
+
+rownames(SKRC_pheno) = SKRC$ID
+
+# dim(phenotypes)
+SKRC_array = arrayspecs(SKRC_pheno, 
+                        p = 22, 
+                        k = 2)
+SKRC_gpa = gpagen(SKRC_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+SKRC_mt = modularity.test(SKRC_gpa$coords,
+                          land.gps,
+                          CI=T,
+                          iter=999)
+summary(SKRC_mt) # Test summary
+plot(SKRC_mt) #
+
+# RKLTW modularity ---------------------------------------------------------
+
+RKLTW = landmarks %>%
+  filter(POP == 'RKLTW')
+
+RKLTW_pheno = as.matrix(RKLTW[which(names(RKLTW) == 'LM1X'):
+                              which(names(RKLTW) == 'LM22Y')])   
+
+rownames(RKLTW_pheno) = RKLTW$ID
+
+# dim(phenotypes)
+RKLTW_array = arrayspecs(RKLTW_pheno, 
+                        p = 22, 
+                        k = 2)
+RKLTW_gpa = gpagen(RKLTW_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+RKLTW_mt = modularity.test(RKLTW_gpa$coords,
+                          land.gps,
+                          CI=T,
+                          iter=999)
+summary(RKLTW_mt) # Test summary
+plot(RKLTW_mt) #
+
+# RKLTC modularity ---------------------------------------------------------
+
+RKLTC = landmarks %>%
+  filter(POP == 'RKLTC')
+
+RKLTC_pheno = as.matrix(RKLTC[which(names(RKLTC) == 'LM1X'):
+                                which(names(RKLTC) == 'LM22Y')])   
+
+rownames(RKLTC_pheno) = RKLTC$ID
+
+# dim(phenotypes)
+RKLTC_array = arrayspecs(RKLTC_pheno, 
+                         p = 22, 
+                         k = 2)
+RKLTC_gpa = gpagen(RKLTC_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+RKLTC_mt = modularity.test(RKLTC_gpa$coords,
+                           land.gps,
+                           CI=T,
+                           iter=999)
+summary(RKLTC_mt) # Test summary
+plot(RKLTC_mt) #
+
+# STNW modularity ---------------------------------------------------------
+
+STNW = landmarks %>%
+  filter(POP == 'STNW')
+
+STNW_pheno = as.matrix(STNW[which(names(STNW) == 'LM1X'):
+                                which(names(STNW) == 'LM22Y')])   
+
+rownames(STNW_pheno) = STNW$ID
+
+# dim(phenotypes)
+STNW_array = arrayspecs(STNW_pheno, 
+                         p = 22, 
+                         k = 2)
+STNW_gpa = gpagen(STNW_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+STNW_mt = modularity.test(STNW_gpa$coords,
+                           land.gps,
+                           CI=T,
+                           iter=999)
+summary(STNW_mt) # Test summary
+plot(STNW_mt) #
+
+# STNC modularity ---------------------------------------------------------
+
+STNC = landmarks %>%
+  filter(POP == 'STNC')
+
+STNC_pheno = as.matrix(STNC[which(names(STNC) == 'LM1X'):
+                                which(names(STNC) == 'LM22Y')])   
+
+rownames(STNC_pheno) = STNC$ID
+
+# dim(phenotypes)
+STNC_array = arrayspecs(STNC_pheno, 
+                         p = 22, 
+                         k = 2)
+STNC_gpa = gpagen(STNC_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+STNC_mt = modularity.test(STNC_gpa$coords,
+                           land.gps,
+                           CI=T,
+                           iter=999)
+summary(STNC_mt) # Test summary
+plot(STNC_mt) #
+
+# GTS modularity ---------------------------------------------------------
+
+GTS = landmarks %>%
+  filter(POP == 'GTS')
+
+GTS_pheno = as.matrix(GTS[which(names(GTS) == 'LM1X'):
+                              which(names(GTS) == 'LM22Y')])   
+
+rownames(GTS_pheno) = GTS$ID
+
+# dim(phenotypes)
+GTS_array = arrayspecs(GTS_pheno, 
+                        p = 22, 
+                        k = 2)
+GTS_gpa = gpagen(GTS_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+GTS_mt = modularity.test(GTS_gpa$coords,
+                          land.gps,
+                          CI=T,
+                          iter=999)
+summary(GTS_mt) # Test summary
+plot(GTS_mt) #
+
+# CSWY modularity ---------------------------------------------------------
+
+CSWY = landmarks %>%
+  filter(POP == 'CSWY')
+
+CSWY_pheno = as.matrix(CSWY[which(names(CSWY) == 'LM1X'):
+                              which(names(CSWY) == 'LM22Y')])   
+
+rownames(CSWY_pheno) = CSWY$ID
+
+# dim(phenotypes)
+CSWY_array = arrayspecs(CSWY_pheno, 
+                        p = 22, 
+                        k = 2)
+CSWY_gpa = gpagen(CSWY_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+CSWY_mt = modularity.test(CSWY_gpa$coords,
+                          land.gps,
+                          CI=T,
+                          iter=999)
+summary(CSWY_mt) # Test summary
+plot(CSWY_mt) #
 
 # Phenotypic integration between modules ----------------------------------
 
