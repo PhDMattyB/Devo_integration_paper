@@ -904,8 +904,6 @@ ashnw_IT = integration.test(ashnw_gpa$coords,
 summary(ashnw_IT) # Test summary
 ashnw_int_plot = plot(ashnw_IT) # PLS plot
 
-picknplot.shape(ashnw_int_plot)
-
 # ASHNC modularity --------------------------------------------------------
 
 ashnc = landmarks %>%
@@ -929,6 +927,11 @@ ashnc_mt = modularity.test(ashnc_gpa$coords,
 summary(ashnc_mt) # Test summary
 plot(ashnc_mt) 
 
+ashnc_IT = integration.test(ashnc_gpa$coords, 
+                            partition.gp=land.gps, 
+                            iter=999)
+summary(ashnc_IT) # Test summary
+ashnc_int_plot = plot(ashnc_IT) # PLS plo
 
 # MYVW modularity ---------------------------------------------------------
 
@@ -953,6 +956,12 @@ myvw_mt = modularity.test(myvw_gpa$coords,
 summary(myvw_mt) # Test summary
 plot(myvw_mt) # Histogram of CR sampling distribution
 
+myvw_IT = integration.test(myvw_gpa$coords, 
+                            partition.gp=land.gps, 
+                            iter=999)
+summary(myvw_IT) # Test summary
+myvw_int_plot = plot(myvw_IT) # PLS plo
+
 # MYVC modularity ---------------------------------------------------------
 
 MYVC = landmarks %>%
@@ -975,6 +984,11 @@ MYVC_mt = modularity.test(MYVC_gpa$coords,
                           iter=999)
 summary(MYVC_mt) # Test summary
 plot(MYVC_mt) # Histogram of CR sampling distribution
+MYVC_IT = integration.test(MYVC_gpa$coords, 
+                            partition.gp=land.gps, 
+                            iter=999)
+summary(MYVC_IT) # Test summary
+MYVC_int_plot = plot(MYVC_IT) # PLS plo
 
 # SRKW modularity ---------------------------------------------------------
 
@@ -999,6 +1013,12 @@ SKRW_mt = modularity.test(SKRW_gpa$coords,
 summary(SKRW_mt) # Test summary
 plot(SKRW_mt) # Histogram of CR sampling distribution
 
+SKRW_IT = integration.test(SKRW_gpa$coords, 
+                            partition.gp=land.gps, 
+                            iter=999)
+summary(SKRW_IT) # Test summary
+SKRW_int_plot = plot(SKRW_IT) # PLS plo
+
 # SRKC modularity ---------------------------------------------------------
 
 SKRC = landmarks %>%
@@ -1021,6 +1041,12 @@ SKRC_mt = modularity.test(SKRC_gpa$coords,
                           iter=999)
 summary(SKRC_mt) # Test summary
 plot(SKRC_mt) #
+
+SKRC_IT = integration.test(SKRC_gpa$coords, 
+                            partition.gp=land.gps, 
+                            iter=999)
+summary(SKRC_IT) # Test summary
+SKRC_int_plot = plot(SKRC_IT) # PLS plo
 
 # RKLTW modularity ---------------------------------------------------------
 
@@ -1045,6 +1071,12 @@ RKLTW_mt = modularity.test(RKLTW_gpa$coords,
 summary(RKLTW_mt) # Test summary
 plot(RKLTW_mt) #
 
+RKLTW_IT = integration.test(RKLTW_gpa$coords, 
+                            partition.gp=land.gps, 
+                            iter=999)
+summary(RKLTW_IT) # Test summary
+RKLTW_int_plot = plot(RKLTW_IT) # PLS plo
+
 # RKLTC modularity ---------------------------------------------------------
 
 RKLTC = landmarks %>%
@@ -1067,6 +1099,12 @@ RKLTC_mt = modularity.test(RKLTC_gpa$coords,
                            iter=999)
 summary(RKLTC_mt) # Test summary
 plot(RKLTC_mt) #
+
+RKLTC_IT = integration.test(RKLTC_gpa$coords, 
+                            partition.gp=land.gps, 
+                            iter=999)
+summary(RKLTC_IT) # Test summary
+RKLTC_int_plot = plot(RKLTC_IT) # PLS plo
 
 # STNW modularity ---------------------------------------------------------
 
@@ -1091,6 +1129,12 @@ STNW_mt = modularity.test(STNW_gpa$coords,
 summary(STNW_mt) # Test summary
 plot(STNW_mt) #
 
+STNW_IT = integration.test(STNW_gpa$coords, 
+                            partition.gp=land.gps, 
+                            iter=999)
+summary(STNW_IT) # Test summary
+STNW_int_plot = plot(STNW_IT) # PLS plo
+
 # STNC modularity ---------------------------------------------------------
 
 STNC = landmarks %>%
@@ -1113,6 +1157,12 @@ STNC_mt = modularity.test(STNC_gpa$coords,
                            iter=999)
 summary(STNC_mt) # Test summary
 plot(STNC_mt) #
+
+STNC_IT = integration.test(STNC_gpa$coords, 
+                            partition.gp=land.gps, 
+                            iter=999)
+summary(STNC_IT) # Test summary
+STNC_int_plot = plot(STNC_IT) # PLS plo
 
 # GTS modularity ---------------------------------------------------------
 
@@ -1137,6 +1187,12 @@ GTS_mt = modularity.test(GTS_gpa$coords,
 summary(GTS_mt) # Test summary
 plot(GTS_mt) #
 
+GTS_IT = integration.test(GTS_gpa$coords, 
+                            partition.gp=land.gps, 
+                            iter=999)
+summary(GTS_IT) # Test summary
+GTS_int_plot = plot(GTS_IT) # PLS plo
+
 # CSWY modularity ---------------------------------------------------------
 
 CSWY = landmarks %>%
@@ -1160,6 +1216,11 @@ CSWY_mt = modularity.test(CSWY_gpa$coords,
 summary(CSWY_mt) # Test summary
 plot(CSWY_mt) #
 
+CSWY_IT = integration.test(CSWY_gpa$coords, 
+                            partition.gp=land.gps, 
+                            iter=999)
+summary(CSWY_IT) # Test summary
+CSWY_int_plot = plot(CSWY_IT) # PLS plo
 # ASHN modularity ---------------------------------------------------------
 
 ASHN = landmarks %>%
