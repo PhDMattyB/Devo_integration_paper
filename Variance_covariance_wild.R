@@ -884,6 +884,28 @@ summary(MT) # Test summary
 plot(MT) # Histogram of CR sampling distribution
 
 
+ashnw = landmarks %>%
+  filter(POP == 'ASHNW')
+
+ashnw_pheno = as.matrix(ashnw[which(names(ashnw) == 'LM1X'):
+                              which(names(ashnw) == 'LM22Y')])   
+
+rownames(ashnw_pheno) = ashnw$ID
+
+# dim(phenotypes)
+ashnw_array = arrayspecs(ashnw_pheno, 
+                        p = 22, 
+                        k = 2)
+ashnw_gpa = gpagen(ashnw_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+ashnw_mt = modularity.test(ashnw_gpa$coords,
+                           land.gps,
+                           CI=T,
+                           iter=999)
+summary(ashnw_mt) # Test summary
+plot(ashnw_mt) # Histogram of CR sampling distribution
+
+
 
 # Phenotypic integration between modules ----------------------------------
 
