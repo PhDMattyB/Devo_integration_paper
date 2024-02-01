@@ -618,5 +618,15 @@ WC_prcoa$Variance
 ## This won't work as there aren't enough dimensions
 
 
-# Warm cold compare per pop redo ------------------------------------------
 
+# between vs within population covariance matrices ------------------------
+
+between_cov = cov.B(pca_scores, 
+      groups = LM_data$POP)
+dim(LM_data)
+within_cov = cov.W(pca_scores, 
+                   groups = LM_data$POP)
+
+prop.vcv.test(n = c(12, 331), 
+              between_cov, 
+              within_cov)
