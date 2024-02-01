@@ -733,5 +733,139 @@ morphol.disparity(coords ~ 1,
                   iter = 999)
 
 
+# myv ---------------------------------------------------------------------
+myv = landmarks %>%
+  filter(POP_only == 'MYV')
+
+
+myv_pheno = as.matrix(myv[which(names(myv) == 'LM1X'):
+                              which(names(myv) == 'LM22Y')])   
+
+rownames(myv_pheno) = myv$ID
+
+# dim(phenotypes)
+myv_array = arrayspecs(myv_pheno, 
+                        p = 22, 
+                        k = 2)
+
+myv_gpa = gpagen(myv_array)
+
+myv_df = geomorph.data.frame(myv_gpa, 
+                              # species = plethodon$species, 
+                              species = myv$POP)
+
+morphol.disparity(coords ~ 1,
+                  groups = ~species,
+                  data = myv_df,
+                  iter = 999)
+
+# skr ---------------------------------------------------------------------
+skr = landmarks %>%
+  filter(POP_only == 'SKR')
+
+
+skr_pheno = as.matrix(skr[which(names(skr) == 'LM1X'):
+                            which(names(skr) == 'LM22Y')])   
+
+rownames(skr_pheno) = skr$ID
+
+# dim(phenotypes)
+skr_array = arrayspecs(skr_pheno, 
+                       p = 22, 
+                       k = 2)
+
+skr_gpa = gpagen(skr_array)
+
+skr_df = geomorph.data.frame(skr_gpa, 
+                             # species = plethodon$species, 
+                             species = skr$POP)
+
+morphol.disparity(coords ~ 1,
+                  groups = ~species,
+                  data = skr_df,
+                  iter = 999)
+
+# rklt --------------------------------------------------------------------
+rklt = landmarks %>%
+  filter(POP_only == 'RKLT')
+
+
+rklt_pheno = as.matrix(rklt[which(names(rklt) == 'LM1X'):
+                            which(names(rklt) == 'LM22Y')])   
+
+rownames(rklt_pheno) = rklt$ID
+
+# dim(phenotypes)
+rklt_array = arrayspecs(rklt_pheno, 
+                       p = 22, 
+                       k = 2)
+
+rklt_gpa = gpagen(rklt_array)
+
+rklt_df = geomorph.data.frame(rklt_gpa, 
+                             # species = plethodon$species, 
+                             species = rklt$POP)
+
+morphol.disparity(coords ~ 1,
+                  groups = ~species,
+                  data = rklt_df,
+                  iter = 999)
+
+# stn ---------------------------------------------------------------------
+
+stn = landmarks %>%
+  filter(POP_only == 'STN')
+
+
+stn_pheno = as.matrix(stn[which(names(stn) == 'LM1X'):
+                            which(names(stn) == 'LM22Y')])   
+
+rownames(stn_pheno) = stn$ID
+
+# dim(phenotypes)
+stn_array = arrayspecs(stn_pheno, 
+                       p = 22, 
+                       k = 2)
+
+stn_gpa = gpagen(stn_array)
+
+stn_df = geomorph.data.frame(stn_gpa, 
+                             # species = plethodon$species, 
+                             species = stn$POP)
+
+morphol.disparity(coords ~ 1,
+                  groups = ~species,
+                  data = stn_df,
+                  iter = 999)
+
+
+# gts vs cswy -------------------------------------------------------------
+
+gts_cswy = landmarks %>%
+  filter(POP_only %in% c('GTS', 
+                         'CSWY'))
+
+
+gts_cswy_pheno = as.matrix(gts_cswy[which(names(gts_cswy) == 'LM1X'):
+                            which(names(gts_cswy) == 'LM22Y')])   
+
+rownames(gts_cswy_pheno) = gts_cswy$ID
+
+# dim(phenotypes)
+gts_cswy_array = arrayspecs(gts_cswy_pheno, 
+                       p = 22, 
+                       k = 2)
+
+gts_cswy_gpa = gpagen(gts_cswy_array)
+
+gts_cswy_df = geomorph.data.frame(gts_cswy_gpa, 
+                             # species = plethodon$species, 
+                             species = gts_cswy$POP)
+
+morphol.disparity(coords ~ 1,
+                  groups = ~species,
+                  data = gts_cswy_df,
+                  iter = 999)
+
 ## Modularity.test might work to find patterns of modularity in warm vs cold
 
