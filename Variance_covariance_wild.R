@@ -904,6 +904,8 @@ ashnw_IT = integration.test(ashnw_gpa$coords,
 summary(ashnw_IT) # Test summary
 ashnw_int_plot = plot(ashnw_IT) # PLS plot
 
+picknplot.shape(ashnw_int_plot)
+
 # ASHNC modularity --------------------------------------------------------
 
 ashnc = landmarks %>%
