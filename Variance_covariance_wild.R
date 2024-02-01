@@ -641,17 +641,32 @@ identifiers = landmarks %>%
          POP, 
          Morph, 
          CS)
+landmarks = mutate(.data = landmarks, 
+                          POP_only = as.factor(case_when(
+                            POP == 'ASHNC' ~ 'ASHN',
+                            POP == 'ASHNW' ~ 'ASHN',
+                            POP == 'CSWY' ~ 'CSWY',
+                            POP == 'GTS' ~ 'GTS',
+                            POP == 'MYVC' ~ 'MYV',
+                            POP == 'MYVW' ~ 'MYV',
+                            POP == 'SKRC' ~ 'SKR',
+                            POP == 'SKRW' ~ 'SKR',
+                            POP == 'RKLTC' ~ 'RKLT', 
+                            POP == 'RKLTW' ~ 'RKLT', 
+                            POP == 'STNC' ~ 'STN', 
+                            POP == 'STNW' ~ 'STN'
+                            
+                          )))
 
 ashnc_lms = landmarks %>%
-  filter(POP == 'ASHNC')
+  filter(POP == 'ASHNC') %>% 
   select(-starts_with('LMS'))
 
 ashnw_lms = landmarks %>%
-    filter(POP == 'ASHNW')
+  filter(POP == 'ASHNW') %>% 
   select(-starts_with('LMS'))
-  
 
-ashnc_pheno = as.matrix(ashnc_lms[which(names(ashnc_lms) == 'LM1X'):
+ashn_pheno = as.matrix(ashnc_lms[which(names(ashnc_lms) == 'LM1X'):
                                   which(names(ashnc_lms) == 'LM22Y')])   
 
 ashnw_pheno = as.matrix(ashnw_lms[which(names(ashnw_lms) == 'LM1X'):
@@ -687,4 +702,27 @@ plot(PLS)
 
 ## Modularity.test might work to find patterns of modularity in warm vs cold
 ## Need to use morphol.disparity to look for patterns of variation
+ashn = landmarks %>%
+  filter(POP_only == 'ASHN')
 
+
+ashn_pheno = as.matrix(ashn[which(names(ashn) == 'LM1X'):
+                                    which(names(ashn) == 'LM22Y')])   
+
+rownames(ashn_pheno) = ashn$ID
+
+# dim(phenotypes)
+ashn_array = arrayspecs(ashn_pheno, 
+                         p = 22, 
+                         k = 2)
+
+ashn_gpa = gpagen(ashn_array)
+
+ashn_df = geomorph.data.frame(ashn_gpa, 
+                           # species = plethodon$species, 
+                           species = ashn$POP)
+
+morphol.disparity(coords ~ 1,
+                  groups = ~species,
+                  data = ashn_df, 
+                  iter = 999)
