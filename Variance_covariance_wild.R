@@ -874,7 +874,6 @@ morphol.disparity(coords ~ 1,
 
 ## Modularity.test might work to find patterns of modularity in warm vs cold
 
-
 # ASNW modularity ---------------------------------------------------------
 
 ashnw = landmarks %>%
@@ -1153,6 +1152,120 @@ CSWY_mt = modularity.test(CSWY_gpa$coords,
 summary(CSWY_mt) # Test summary
 plot(CSWY_mt) #
 
+# ASHN modularity ---------------------------------------------------------
+
+ASHN = landmarks %>%
+  filter(POP_only == 'ASHN')
+
+ASHN_pheno = as.matrix(ASHN[which(names(ASHN) == 'LM1X'):
+                                which(names(ASHN) == 'LM22Y')])   
+
+rownames(ASHN_pheno) = ASHN$ID
+
+# dim(phenotypes)
+ASHN_array = arrayspecs(ASHN_pheno, 
+                         p = 22, 
+                         k = 2)
+ASHN_gpa = gpagen(ASHN_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+ASHN_mt = modularity.test(ASHN_gpa$coords,
+                           land.gps,
+                           CI=T,
+                           iter=999)
+summary(ASHN_mt) # Test summary
+plot(ASHN_mt) 
+
+# MYV modularity ---------------------------------------------------------
+
+MYV = landmarks %>%
+  filter(POP_only == 'MYV')
+
+MYV_pheno = as.matrix(MYV[which(names(MYV) == 'LM1X'):
+                              which(names(MYV) == 'LM22Y')])   
+
+rownames(MYV_pheno) = MYV$ID
+
+# dim(phenotypes)
+MYV_array = arrayspecs(MYV_pheno, 
+                        p = 22, 
+                        k = 2)
+MYV_gpa = gpagen(MYV_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+MYV_mt = modularity.test(MYV_gpa$coords,
+                          land.gps,
+                          CI=T,
+                          iter=999)
+summary(MYV_mt) # Test summary
+plot(MYV_mt) 
+
+# SKR modularity ---------------------------------------------------------
+
+SKR = landmarks %>%
+  filter(POP_only == 'SKR')
+
+SKR_pheno = as.matrix(SKR[which(names(SKR) == 'LM1X'):
+                              which(names(SKR) == 'LM22Y')])   
+
+rownames(SKR_pheno) = SKR$ID
+
+# dim(phenotypes)
+SKR_array = arrayspecs(SKR_pheno, 
+                        p = 22, 
+                        k = 2)
+SKR_gpa = gpagen(SKR_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+SKR_mt = modularity.test(SKR_gpa$coords,
+                          land.gps,
+                          CI=T,
+                          iter=999)
+summary(SKR_mt) # Test summary
+plot(SKR_mt) 
+
+# RKLT modularity ---------------------------------------------------------
+
+RKLT = landmarks %>%
+  filter(POP_only == 'RKLT')
+
+RKLT_pheno = as.matrix(RKLT[which(names(RKLT) == 'LM1X'):
+                              which(names(RKLT) == 'LM22Y')])   
+
+rownames(RKLT_pheno) = RKLT$ID
+
+# dim(phenotypes)
+RKLT_array = arrayspecs(RKLT_pheno, 
+                        p = 22, 
+                        k = 2)
+RKLT_gpa = gpagen(RKLT_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+RKLT_mt = modularity.test(RKLT_gpa$coords,
+                          land.gps,
+                          CI=T,
+                          iter=999)
+summary(RKLT_mt) # Test summary
+plot(RKLT_mt) 
+
+# STN modularity ---------------------------------------------------------
+
+STN = landmarks %>%
+  filter(POP_only == 'STN')
+
+STN_pheno = as.matrix(STN[which(names(STN) == 'LM1X'):
+                              which(names(STN) == 'LM22Y')])   
+
+rownames(STN_pheno) = STN$ID
+
+# dim(phenotypes)
+STN_array = arrayspecs(STN_pheno, 
+                        p = 22, 
+                        k = 2)
+STN_gpa = gpagen(STN_array)
+land.gps = rep('a',22); land.gps[1:6]<-'b'
+STN_mt = modularity.test(STN_gpa$coords,
+                          land.gps,
+                          CI=T,
+                          iter=999)
+summary(STN_mt) # Test summary
+plot(STN_mt) 
 # Phenotypic integration between modules ----------------------------------
 
 
