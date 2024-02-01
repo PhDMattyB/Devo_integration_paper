@@ -676,8 +676,15 @@ ashnw_gpa = gpagen(ashnw_array)
 
 ## Hmm this doesn't seem to work
 ## Need to find another function to compare two sets of shape data
+## We can compare integration among landmarks from the same
+## Individual though!
 PLS = two.b.pls(ashnc_gpa$coords,
                 ashnw_gpa$coords,
                 iter=999)
 summary(PLS)
 plot(PLS)
+
+
+## Modularity.test might work to find patterns of modularity in warm vs cold
+## Need to use morphol.disparity to look for patterns of variation
+
