@@ -700,7 +700,12 @@ summary(PLS)
 plot(PLS)
 
 
-## Modularity.test might work to find patterns of modularity in warm vs cold
+# morphological disparity -------------------------------------------------
+
+
+# ashn --------------------------------------------------------------------
+
+
 ## Need to use morphol.disparity to look for patterns of variation
 ashn = landmarks %>%
   filter(POP_only == 'ASHN')
@@ -726,3 +731,7 @@ morphol.disparity(coords ~ 1,
                   groups = ~species,
                   data = ashn_df, 
                   iter = 999)
+
+
+## Modularity.test might work to find patterns of modularity in warm vs cold
+
