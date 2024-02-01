@@ -898,6 +898,12 @@ summary(ashnw_mt) # Test summary
 plot(ashnw_mt) # Histogram of CR sampling distribution
 
 
+ashnw_IT = integration.test(ashnw_gpa$coords, 
+                            partition.gp=land.gps, 
+                            iter=999)
+summary(ashnw_IT) # Test summary
+ashnw_int_plot = plot(ashnw_IT) # PLS plot
+
 # ASHNC modularity --------------------------------------------------------
 
 ashnc = landmarks %>%
