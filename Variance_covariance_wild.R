@@ -874,15 +874,6 @@ morphol.disparity(coords ~ 1,
 
 ## Modularity.test might work to find patterns of modularity in warm vs cold
 
-## Example data to run the modularity test
-data(pupfish) 
-Y.gpa<-gpagen(pupfish$coords, print.progress = FALSE)    #GPA-alignment
-land.gps<-rep('a',56); land.gps[39:48]<-'b'
-
-MT <- modularity.test(Y.gpa$coords,land.gps,CI=FALSE,iter=99)
-summary(MT) # Test summary
-plot(MT) # Histogram of CR sampling distribution
-
 
 ashnw = landmarks %>%
   filter(POP == 'ASHNW')
