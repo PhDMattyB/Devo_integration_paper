@@ -869,7 +869,7 @@ morphol.disparity(coords ~ 1,
 
 
 
-# Phenotypic modularity ---------------------------------------------------
+# Phenotypic modularity and integration ---------------------------------------------------
 
 
 ## Modularity.test might work to find patterns of modularity in warm vs cold
