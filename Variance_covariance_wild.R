@@ -671,16 +671,13 @@ ashnw_array = arrayspecs(ashnw_pheno,
                          k = 2)
 
 ashnc_gpa = gpagen(ashnc_array)
-phenotype_gpa = gpagen(phenotype_array, 
-                       print.progress = F)
-
-proc_coord = two.d.array(phenotype_gpa$coords)
-colnames(proc_coord) = colnames(phenotypes)
-
-phenotype_pca = prcomp(proc_coord, 
-                       rank. = 5, 
-                       tol = sqrt(.Machine$double.eps))
-pca_scores = phenotype_pca$x
+ashnw_gpa = gpagen(ashnw_array)
 
 
-
+## Hmm this doesn't seem to work
+## Need to find another function to compare two sets of shape data
+PLS = two.b.pls(ashnc_gpa$coords,
+                ashnw_gpa$coords,
+                iter=999)
+summary(PLS)
+plot(PLS)
