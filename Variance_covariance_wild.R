@@ -18,7 +18,7 @@ library(tidyverse)
 
 theme_set(theme_bw())
 ## Example data from cichlids
-data("Tropheus")
+# data("Tropheus")
 
 landmarks = read_csv('allometry minimised data (XY) with ID (6 population pairs).csv')
 
@@ -69,10 +69,45 @@ prcoa$Variance
 
 ## change to ggplot format for better graphs
 ## don't do this now and my brain isn't working for graphs
-barplot(prcoa$Variance$exVar, las = 1, col = "darkblue",
-        names.arg = 1:nrow(prcoa$Variance), cex.axis = 0.8, cex  = 0.8,
-        xlab = "Dimensions", ylab = "Variance explained")
+# barplot(prcoa$Variance$exVar, las = 1, col = "darkblue",
+#         names.arg = 1:nrow(prcoa$Variance), cex.axis = 0.8, cex  = 0.8,
+#         xlab = "Dimensions", ylab = "Variance explained")
 
+var_exp = prcoa$Variance$exVar %>% 
+  as.tibble() %>% 
+  rename(var_explained = value)
+var_dim = 1:nrow(prcoa$Variance) %>% 
+  as.tibble() %>% 
+
+var_plot_data = bind_cols(var_dim,
+                     var_exp) %>%
+  mutate_if(is.integer, as.character)
+var_plot_data$dimensions = factor(var_plot_data$dimensions, 
+                   levels=c('1', 
+                            '2', 
+                            '3', 
+                            '4', 
+                            '5', 
+                            '6', 
+                            '7', 
+                            '8', 
+                            '9', 
+                            '10', 
+                            '11'))
+  # as.character(dimensions) %>% 
+  ggplot(data = var_plot_data, 
+         aes(x = dimensions, 
+             y = var_explained))+
+  geom_col(aes(fill = (as.numeric(dimensions) %% 2 == 0)))+
+  scale_fill_manual(values = c('#2a9d8f',
+                               '#e76f51'))+
+  labs(x = 'Dimensions', 
+       y = 'Variance explained')+
+  theme(legend.position = 'none', 
+        panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12))
+  
 # plot(prcoa$PCoords[, 1], prcoa$PCoords[, 2])
 # abline(h = 0) ; abline(v = 0)
 # text(prcoa$PCoords[, 1], 
