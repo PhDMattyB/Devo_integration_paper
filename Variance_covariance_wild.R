@@ -107,18 +107,6 @@ var_plot_data$dimensions = factor(var_plot_data$dimensions,
         panel.grid = element_blank(), 
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12))
-  
-# plot(prcoa$PCoords[, 1], prcoa$PCoords[, 2])
-# abline(h = 0) ; abline(v = 0)
-# text(prcoa$PCoords[, 1], 
-#      prcoa$PCoords[, 1], 
-#      labels = rownames(prcoa$PCoords))
-# 
-
-## Need to plot point estimates for each population
-## we will plot the pooled phenotypic variances 
-## Plot using $PCoords
-
 
 # Pooled principal coordinate analysis ------------------------------------
 
