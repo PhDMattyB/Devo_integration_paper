@@ -161,18 +161,18 @@ pooled_pc_coords = mutate(.data = pooled_pc_coords,
                             
                           )))
 
-pops_col_pal = c('#277da1',
-                 '#023e8a',
-                 '#0d1b2a', 
-                 '#415a77',
-                 '#780000', 
-                 '#c1121f', 
-                 '#fb6f92',
-                 '#edafb8', 
-                 '#00b4d8', 
-                 '#90e0ef', 
-                 '#4d908e', 
-                 '#43aa8b')
+# pops_col_pal = c('#277da1',
+#                  '#023e8a',
+#                  '#0d1b2a', 
+#                  '#415a77',
+#                  '#780000', 
+#                  '#c1121f', 
+#                  '#fb6f92',
+#                  '#edafb8', 
+#                  '#00b4d8', 
+#                  '#90e0ef', 
+#                  '#4d908e', 
+#                  '#43aa8b')
 
 pop_only_pal = c('#277da1',
                  '#415a77',
@@ -192,6 +192,7 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
   geom_point(size = 3, 
              aes(shape = Morph))+
   scale_color_manual(values = pop_only_pal)+
+  guides(col=guide_legend(title = 'Population'))+
   theme(panel.grid = element_blank(), 
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12))
