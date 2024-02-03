@@ -78,6 +78,7 @@ var_exp = prcoa$Variance$exVar %>%
   rename(var_explained = value)
 var_dim = 1:nrow(prcoa$Variance) %>% 
   as.tibble() %>% 
+  rename(dimensions = value)
 
 var_plot_data = bind_cols(var_dim,
                      var_exp) %>%
@@ -211,6 +212,7 @@ table(LM_data$POP)
 prop.vcv.test(n = c(30,30), 
               phenotypes_pooled_var[,,'ASHNC'], 
               phenotypes_pooled_var[,,'ASHNW'])
+
 ## 0.34 covariance matrices not different
 relGV.multi(phenotypes_pooled_var[,,c('ASHNC', 'ASHNW')], 
             logGV = F)
