@@ -309,6 +309,8 @@ relGV.multi(phenotypes_pooled_var[,,c('MYVC', 'MYVW')],
 myv_rel_eign = relative.eigen(phenotypes_pooled_var[,,'MYVC'], 
                                phenotypes_pooled_var[,,'MYVW'])
 
+myv_rel_eign$relValues
+
 plot(myv_rel_eign$relValues[1:myv_rel_eign$q], 
      log = 'y', 
      las = 1, 
