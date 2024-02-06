@@ -18,7 +18,7 @@ library(tidyverse)
 
 theme_set(theme_bw())
 ## Example data from cichlids
-# data("Tropheus")
+data("Tropheus")
 
 landmarks = read_csv('allometry minimised data (XY) with ID (6 population pairs).csv')
 
@@ -219,6 +219,8 @@ relGV.multi(phenotypes_pooled_var[,,c('ASHNC', 'ASHNW')],
 ashn_rel_eign = relative.eigen(phenotypes_pooled_var[,,'ASHNC'], 
                                phenotypes_pooled_var[,,'ASHNW'])
 
+ashn_rel_eign$relValues
+
 plot(ashn_rel_eign$relValues[1:ashn_rel_eign$q], 
      log = 'y', 
      las = 1, 
@@ -272,19 +274,19 @@ plotRefToTarget(ref_ashn,
                 gridPar = gp3)
 title(main = "+", line = -1)
 title("First relative eigenvector - ASHN", outer = TRUE, line = - 1)
-plotRefToTarget(ref_ashn, 
-                (ref_ashn - 0.01 * ashn_shape[,,5]), 
-                mag = 4, 
-                method = 'TPS', 
-                gridPar = gp3)
-title(main = "-", line = -1)
-plotRefToTarget(ref_ashn, 
-                (ref_ashn + 0.01 * ashn_shape[,,5]), 
-                mag = 4, 
-                method = 'TPS', 
-                gridPar = gp3)
-title(main = "+", line = -1)
-title("Last relative eigenvector - ASHN", outer = TRUE, line = - 1)
+# plotRefToTarget(ref_ashn, 
+#                 (ref_ashn - 0.01 * ashn_shape[,,5]), 
+#                 mag = 4, 
+#                 method = 'TPS', 
+#                 gridPar = gp3)
+# title(main = "-", line = -1)
+# plotRefToTarget(ref_ashn, 
+#                 (ref_ashn + 0.01 * ashn_shape[,,5]), 
+#                 mag = 4, 
+#                 method = 'TPS', 
+#                 gridPar = gp3)
+# title(main = "+", line = -1)
+# title("Last relative eigenvector - ASHN", outer = TRUE, line = - 1)
 
 # Visualization of the last dimension (fig. 8: bottom)
 
