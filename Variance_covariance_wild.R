@@ -1365,8 +1365,5 @@ STN_mt = modularity.test(STN_gpa$coords,
                           iter=999)
 summary(STN_mt) # Test summary
 plot(STN_mt) 
-# Phenotypic integration between modules ----------------------------------
-
-
 
 
