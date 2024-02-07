@@ -1076,7 +1076,37 @@ ashnw_IT = integration.test(ashnw_gpa$coords,
                             partition.gp=land.gps, 
                             iter=999)
 summary(ashnw_IT) # Test summary
-ashnw_int_plot = plot(ashnw_IT) # PLS plot
+# ashnw_int_plot = plot(ashnw_IT) # PLS plot
+
+ashnw_IT2 = integration.test(ashnw_gpa$coords, 
+                             partition.gp=land.gps2, 
+                             iter=999)
+summary(ashnw_IT2) # Test summary
+# ashnw_int_plot = plot(ashnw_IT2) # PLS plo
+
+ashnw_IT3 = integration.test(ashnw_gpa$coords, 
+                             partition.gp=land.gps3, 
+                             iter=999)
+summary(ashnw_IT3) # Test summary
+# ashnw_int_plot = plot(ashnw_IT) # PLS plo
+
+ashnw_IT4 = integration.test(ashnw_gpa$coords, 
+                             partition.gp=land.gps4, 
+                             iter=999)
+summary(ashnw_IT4) # Test summary
+# ashnw_int_plot = plot(ashnw_IT) # PLS plo
+
+ashnw_IT5 = integration.test(ashnw_gpa$coords, 
+                             partition.gp=land.gps5, 
+                             iter=999)
+summary(ashnw_IT5) # Test summary
+# ashnw_int_plot = plot(ashnw_IT) # PLS plo
+
+ashnw_IT6 = integration.test(ashnw_gpa$coords, 
+                             partition.gp=land.gps6, 
+                             iter=999)
+summary(ashnw_IT6) # Test summary
+# ashnw_int_plot = plot(ashnw_IT) # PLS plo
 
 # ASHNC modularity --------------------------------------------------------
 
@@ -1265,6 +1295,36 @@ myvw_IT = integration.test(myvw_gpa$coords,
 summary(myvw_IT) # Test summary
 myvw_int_plot = plot(myvw_IT) # PLS plo
 
+myvw_IT2 = integration.test(myvw_gpa$coords, 
+                             partition.gp=land.gps2, 
+                             iter=999)
+summary(myvw_IT2) # Test summary
+# myvw_int_plot = plot(myvw_IT2) # PLS plo
+
+myvw_IT3 = integration.test(myvw_gpa$coords, 
+                             partition.gp=land.gps3, 
+                             iter=999)
+summary(myvw_IT3) # Test summary
+# myvw_int_plot = plot(myvw_IT) # PLS plo
+
+myvw_IT4 = integration.test(myvw_gpa$coords, 
+                             partition.gp=land.gps4, 
+                             iter=999)
+summary(myvw_IT4) # Test summary
+# myvw_int_plot = plot(myvw_IT) # PLS plo
+
+myvw_IT5 = integration.test(myvw_gpa$coords, 
+                             partition.gp=land.gps5, 
+                             iter=999)
+summary(myvw_IT5) # Test summary
+# myvw_int_plot = plot(myvw_IT) # PLS plo
+
+myvw_IT6 = integration.test(myvw_gpa$coords, 
+                             partition.gp=land.gps6, 
+                             iter=999)
+summary(myvw_IT6) # Test summary
+# myvw_int_plot = plot(myvw_IT) # PLS plo
+
 # MYVC modularity ---------------------------------------------------------
 
 MYVC = landmarks %>%
@@ -1342,7 +1402,37 @@ MYVC_IT = integration.test(MYVC_gpa$coords,
                             partition.gp=land.gps, 
                             iter=999)
 summary(MYVC_IT) # Test summary
-MYVC_int_plot = plot(MYVC_IT) # PLS plo
+# MYVC_int_plot = plot(MYVC_IT) # PLS plo
+
+MYVC_IT2 = integration.test(MYVC_gpa$coords, 
+                             partition.gp=land.gps2, 
+                             iter=999)
+summary(MYVC_IT2) # Test summary
+# MYVC_int_plot = plot(MYVC_IT2) # PLS plo
+
+MYVC_IT3 = integration.test(MYVC_gpa$coords, 
+                             partition.gp=land.gps3, 
+                             iter=999)
+summary(MYVC_IT3) # Test summary
+# MYVC_int_plot = plot(MYVC_IT) # PLS plo
+
+MYVC_IT4 = integration.test(MYVC_gpa$coords, 
+                             partition.gp=land.gps4, 
+                             iter=999)
+summary(MYVC_IT4) # Test summary
+# MYVC_int_plot = plot(MYVC_IT) # PLS plo
+
+MYVC_IT5 = integration.test(MYVC_gpa$coords, 
+                             partition.gp=land.gps5, 
+                             iter=999)
+summary(MYVC_IT5) # Test summary
+# MYVC_int_plot = plot(MYVC_IT) # PLS plo
+
+MYVC_IT6 = integration.test(MYVC_gpa$coords, 
+                             partition.gp=land.gps6, 
+                             iter=999)
+summary(MYVC_IT6) # Test summary
+# MYVC_int_plot = plot(MYVC_IT) # PLS plo
 
 # SRKW modularity ---------------------------------------------------------
 
@@ -1420,7 +1510,37 @@ SKRW_IT = integration.test(SKRW_gpa$coords,
                             partition.gp=land.gps, 
                             iter=999)
 summary(SKRW_IT) # Test summary
-SKRW_int_plot = plot(SKRW_IT) # PLS plo
+# SKRW_int_plot = plot(SKRW_IT) # PLS plo
+
+SKRW_IT2 = integration.test(SKRW_gpa$coords, 
+                             partition.gp=land.gps2, 
+                             iter=999)
+summary(SKRW_IT2) # Test summary
+# SKRW_int_plot = plot(SKRW_IT2) # PLS plo
+
+SKRW_IT3 = integration.test(SKRW_gpa$coords, 
+                             partition.gp=land.gps3, 
+                             iter=999)
+summary(SKRW_IT3) # Test summary
+# SKRW_int_plot = plot(SKRW_IT) # PLS plo
+
+SKRW_IT4 = integration.test(SKRW_gpa$coords, 
+                             partition.gp=land.gps4, 
+                             iter=999)
+summary(SKRW_IT4) # Test summary
+# SKRW_int_plot = plot(SKRW_IT) # PLS plo
+
+SKRW_IT5 = integration.test(SKRW_gpa$coords, 
+                             partition.gp=land.gps5, 
+                             iter=999)
+summary(SKRW_IT5) # Test summary
+# SKRW_int_plot = plot(SKRW_IT) # PLS plo
+
+SKRW_IT6 = integration.test(SKRW_gpa$coords, 
+                             partition.gp=land.gps6, 
+                             iter=999)
+summary(SKRW_IT6) # Test summary
+# ashnc_int_plot = plot(ashnc_IT) # PLS plo
 
 # SRKC modularity ---------------------------------------------------------
 
@@ -1498,7 +1618,37 @@ SKRC_IT = integration.test(SKRC_gpa$coords,
                             partition.gp=land.gps, 
                             iter=999)
 summary(SKRC_IT) # Test summary
-SKRC_int_plot = plot(SKRC_IT) # PLS plo
+# SKRC_int_plot = plot(SKRC_IT) # PLS plo
+
+SKRC_IT2 = integration.test(SKRC_gpa$coords, 
+                             partition.gp=land.gps2, 
+                             iter=999)
+summary(SKRC_IT2) # Test summary
+# SKRC_int_plot = plot(SKRC_IT2) # PLS plo
+
+SKRC_IT3 = integration.test(SKRC_gpa$coords, 
+                             partition.gp=land.gps3, 
+                             iter=999)
+summary(SKRC_IT3) # Test summary
+# SKRC_int_plot = plot(SKRC_IT) # PLS plo
+
+SKRC_IT4 = integration.test(SKRC_gpa$coords, 
+                             partition.gp=land.gps4, 
+                             iter=999)
+summary(SKRC_IT4) # Test summary
+# SKRC_int_plot = plot(SKRC_IT) # PLS plo
+
+SKRC_IT5 = integration.test(SKRC_gpa$coords, 
+                             partition.gp=land.gps5, 
+                             iter=999)
+summary(SKRC_IT5) # Test summary
+# SKRC_int_plot = plot(SKRC_IT) # PLS plo
+
+SKRC_IT6 = integration.test(SKRC_gpa$coords, 
+                             partition.gp=land.gps6, 
+                             iter=999)
+summary(SKRC_IT6) # Test summary
+# SKRC_int_plot = plot(SKRC_IT) # PLS plo
 
 # RKLTW modularity ---------------------------------------------------------
 
@@ -1576,7 +1726,37 @@ RKLTW_IT = integration.test(RKLTW_gpa$coords,
                             partition.gp=land.gps, 
                             iter=999)
 summary(RKLTW_IT) # Test summary
-RKLTW_int_plot = plot(RKLTW_IT) # PLS plo
+# RKLTW_int_plot = plot(RKLTW_IT) # PLS plo
+
+RKLTW_IT2 = integration.test(RKLTW_gpa$coords, 
+                             partition.gp=land.gps2, 
+                             iter=999)
+summary(RKLTW_IT2) # Test summary
+# RKLTW_int_plot = plot(RKLTW_IT2) # PLS plo
+
+RKLTW_IT3 = integration.test(RKLTW_gpa$coords, 
+                             partition.gp=land.gps3, 
+                             iter=999)
+summary(RKLTW_IT3) # Test summary
+# RKLTW_int_plot = plot(RKLTW_IT) # PLS plo
+
+RKLTW_IT4 = integration.test(RKLTW_gpa$coords, 
+                             partition.gp=land.gps4, 
+                             iter=999)
+summary(RKLTW_IT4) # Test summary
+# RKLTW_int_plot = plot(RKLTW_IT) # PLS plo
+
+RKLTW_IT5 = integration.test(RKLTW_gpa$coords, 
+                             partition.gp=land.gps5, 
+                             iter=999)
+summary(RKLTW_IT5) # Test summary
+# RKLTW_int_plot = plot(RKLTW_IT) # PLS plo
+
+RKLTW_IT6 = integration.test(RKLTW_gpa$coords, 
+                             partition.gp=land.gps6, 
+                             iter=999)
+summary(RKLTW_IT6) # Test summary
+# ashnc_int_plot = plot(ashnc_IT) # PLS plo
 
 # RKLTC modularity ---------------------------------------------------------
 
@@ -1654,8 +1834,37 @@ RKLTC_IT = integration.test(RKLTC_gpa$coords,
                             partition.gp=land.gps, 
                             iter=999)
 summary(RKLTC_IT) # Test summary
-RKLTC_int_plot = plot(RKLTC_IT) # PLS plo
+# RKLTC_int_plot = plot(RKLTC_IT) # PLS plo
 
+RKLTC_IT2 = integration.test(RKLTC_gpa$coords, 
+                             partition.gp=land.gps2, 
+                             iter=999)
+summary(RKLTC_IT2) # Test summary
+# RKLTC_int_plot = plot(RKLTC_IT2) # PLS plo
+
+RKLTC_IT3 = integration.test(RKLTC_gpa$coords, 
+                             partition.gp=land.gps3, 
+                             iter=999)
+summary(RKLTC_IT3) # Test summary
+# RKLTC_int_plot = plot(RKLTC_IT) # PLS plo
+
+RKLTC_IT4 = integration.test(RKLTC_gpa$coords, 
+                             partition.gp=land.gps4, 
+                             iter=999)
+summary(RKLTC_IT4) # Test summary
+# RKLTC_int_plot = plot(RKLTC_IT) # PLS plo
+
+RKLTC_IT5 = integration.test(RKLTC_gpa$coords, 
+                             partition.gp=land.gps5, 
+                             iter=999)
+summary(RKLTC_IT5) # Test summary
+# RKLTC_int_plot = plot(RKLTC_IT) # PLS plo
+
+RKLTC_IT6 = integration.test(RKLTC_gpa$coords, 
+                             partition.gp=land.gps6, 
+                             iter=999)
+summary(RKLTC_IT6) # Test summary
+# ashnc_int_plot = plot(ashnc_IT) # PLS plo
 # STNW modularity ---------------------------------------------------------
 
 STNW = landmarks %>%
@@ -1732,7 +1941,37 @@ STNW_IT = integration.test(STNW_gpa$coords,
                             partition.gp=land.gps, 
                             iter=999)
 summary(STNW_IT) # Test summary
-STNW_int_plot = plot(STNW_IT) # PLS plo
+# STNW_int_plot = plot(STNW_IT) # PLS plo
+
+STNW_IT2 = integration.test(STNW_gpa$coords, 
+                             partition.gp=land.gps2, 
+                             iter=999)
+summary(STNW_IT2) # Test summary
+# STNW_int_plot = plot(STNW_IT2) # PLS plo
+
+STNW_IT3 = integration.test(STNW_gpa$coords, 
+                             partition.gp=land.gps3, 
+                             iter=999)
+summary(STNW_IT3) # Test summary
+# STNW_int_plot = plot(STNW_IT) # PLS plo
+
+STNW_IT4 = integration.test(STNW_gpa$coords, 
+                             partition.gp=land.gps4, 
+                             iter=999)
+summary(STNW_IT4) # Test summary
+# STNW_int_plot = plot(STNW_IT) # PLS plo
+
+STNW_IT5 = integration.test(STNW_gpa$coords, 
+                             partition.gp=land.gps5, 
+                             iter=999)
+summary(STNW_IT5) # Test summary
+# STNW_int_plot = plot(STNW_IT) # PLS plo
+
+STNW_IT6 = integration.test(STNW_gpa$coords, 
+                             partition.gp=land.gps6, 
+                             iter=999)
+summary(STNW_IT6) # Test summary
+# ashnc_int_plot = plot(ashnc_IT) # PLS plo
 
 # STNC modularity ---------------------------------------------------------
 
@@ -1810,7 +2049,37 @@ STNC_IT = integration.test(STNC_gpa$coords,
                             partition.gp=land.gps, 
                             iter=999)
 summary(STNC_IT) # Test summary
-STNC_int_plot = plot(STNC_IT) # PLS plo
+# STNC_int_plot = plot(STNC_IT) # PLS plo
+
+STNC_IT2 = integration.test(STNC_gpa$coords, 
+                             partition.gp=land.gps2, 
+                             iter=999)
+summary(STNC_IT2) # Test summary
+# STNC_int_plot = plot(STNC_IT2) # PLS plo
+
+STNC_IT3 = integration.test(STNC_gpa$coords, 
+                             partition.gp=land.gps3, 
+                             iter=999)
+summary(STNC_IT3) # Test summary
+# STNC_int_plot = plot(STNC_IT) # PLS plo
+
+STNC_IT4 = integration.test(STNC_gpa$coords, 
+                             partition.gp=land.gps4, 
+                             iter=999)
+summary(STNC_IT4) # Test summary
+# STNC_int_plot = plot(STNC_IT) # PLS plo
+
+STNC_IT5 = integration.test(STNC_gpa$coords, 
+                             partition.gp=land.gps5, 
+                             iter=999)
+summary(STNC_IT5) # Test summary
+# STNC_int_plot = plot(STNC_IT) # PLS plo
+
+STNC_IT6 = integration.test(STNC_gpa$coords, 
+                             partition.gp=land.gps6, 
+                             iter=999)
+summary(STNC_IT6) # Test summary
+# STNC_int_plot = plot(STNC_IT) # PLS plo
 
 # GTS modularity ---------------------------------------------------------
 
