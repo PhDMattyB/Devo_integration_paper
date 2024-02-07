@@ -48,6 +48,11 @@ phenotype_gpa = gpagen(phenotype_array,
 proc_coord = two.d.array(phenotype_gpa$coords)
 colnames(proc_coord) = colnames(phenotypes)
 
+
+
+# procrustes anova --------------------------------------------------------
+
+
 geo_df = geomorph.data.frame(phenotype_gpa, 
                     site = LM_data$POP_only, 
                     species = LM_data$Morph)
