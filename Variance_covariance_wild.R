@@ -1010,13 +1010,66 @@ ashnw_array = arrayspecs(ashnw_pheno,
                         p = 22, 
                         k = 2)
 ashnw_gpa = gpagen(ashnw_array)
-land.gps = rep('a',22); land.gps[1:6]<-'b'
+land.gps = rep('a',22); land.gps[1:2]<-'b'
 ashnw_mt = modularity.test(ashnw_gpa$coords,
                            land.gps,
                            CI=T,
                            iter=999)
 summary(ashnw_mt) # Test summary
 plot(ashnw_mt) # Histogram of CR sampling distribution
+
+
+land.gps2 = rep('a', 22); land.gps2[1:2] = 'b'; land.gps2[3:5] = 'c'
+ashnw_mt2 = modularity.test(ashnw_gpa$coords,
+                           land.gps2,
+                           CI=T,
+                           iter=999)
+summary(ashnw_mt2) # Test summary
+plot(ashnw_mt2) # Histogram of CR sampling distribution
+
+land.gps3 = rep('a', 22); land.gps3[1:2] = 'b'; land.gps3[3:5] = 'c'; land.gps3[6:9] = 'd'
+ashnw_mt3 = modularity.test(ashnw_gpa$coords,
+                            land.gps3,
+                            CI=T,
+                            iter=999)
+summary(ashnw_mt3) # Test summary
+plot(ashnw_mt3) # Histogram of CR sampling distribution
+
+land.gps4 = rep('a', 22); land.gps4[1:2] = 'b'; land.gps4[3:5] = 'c'; land.gps4[6:9] = 'd'; land.gps4[10:12] = 'e'
+ashnw_mt4 = modularity.test(ashnw_gpa$coords,
+                            land.gps4,
+                            CI=T,
+                            iter=999)
+summary(ashnw_mt4) # Test summary
+plot(ashnw_mt4) # Histogram of CR sampling distribution
+
+land.gps5 = rep('a', 22); land.gps5[1:2] = 'b'; land.gps5[3:5] = 'c'; land.gps5[6:9] = 'd'; land.gps5[10:12] = 'e'; land.gps5[14:18] = 'f'
+ashnw_mt5 = modularity.test(ashnw_gpa$coords,
+                            land.gps5,
+                            CI=T,
+                            iter=999)
+summary(ashnw_mt5) # Test summary
+plot(ashnw_mt5) # Histogram of CR sampling distribution
+
+land.gps6 = rep('a', 22); land.gps6[1:2] = 'b'; land.gps6[3:5] = 'c'; land.gps6[6:9] = 'd'; land.gps6[10:12] = 'e'; land.gps6[14:18] = 'f'; land.gps6[20:21] = 'g'
+ashnw_mt6 = modularity.test(ashnw_gpa$coords,
+                            land.gps6,
+                            CI=T,
+                            iter=999)
+summary(ashnw_mt6) # Test summary
+plot(ashnw_mt6) # Histogram of CR sampling distribution
+
+model.Z = compare.CR(ashnw_mt, 
+                     ashnw_mt2,
+                     ashnw_mt3, 
+                     ashnw_mt4, 
+                     ashnw_mt5, 
+                     ashnw_mt6, 
+                     CR.null = TRUE)
+model.Z
+
+# land.gps4 <- rep('a',56); land.gps4[39:48]<-'b'; land.gps4[c(6:9,28:38)] <- 'c'; 
+# land.gps4[c(10,49:56)] <- 'd'  #4 module hypothesis (eye now a module)
 
 
 ashnw_IT = integration.test(ashnw_gpa$coords, 
