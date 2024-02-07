@@ -1259,53 +1259,53 @@ summary(MYVC_mt) # Test summary
 # plot(MYVC_mt) # Histogram of CR sampling distribution
 
 land.gps2 = rep('a', 22); land.gps2[1:2] = 'b'; land.gps2[3:5] = 'c'
-myvc_mt2 = modularity.test(myvc_gpa$coords,
+MYVC_mt2 = modularity.test(MYVC_gpa$coords,
                             land.gps2,
                             CI=T,
                             iter=999)
-summary(myvc_mt2) # Test summary
-# plot(myvc_mt2) # Histogram of CR sampling distribution
+summary(MYVC_mt2) # Test summary
+# plot(MYVC_mt2) # Histogram of CR sampling distribution
 
 land.gps3 = rep('a', 22); land.gps3[1:2] = 'b'; land.gps3[3:5] = 'c'; land.gps3[6:9] = 'd'
-myvc_mt3 = modularity.test(myvc_gpa$coords,
+MYVC_mt3 = modularity.test(MYVC_gpa$coords,
                             land.gps3,
                             CI=T,
                             iter=999)
-summary(myvc_mt3) # Test summary
-# plot(myvc_mt3) # Histogram of CR sampling distribution
+summary(MYVC_mt3) # Test summary
+# plot(MYVC_mt3) # Histogram of CR sampling distribution
 
 land.gps4 = rep('a', 22); land.gps4[1:2] = 'b'; land.gps4[3:5] = 'c'; land.gps4[6:9] = 'd'; land.gps4[10:12] = 'e'
-myvc_mt4 = modularity.test(myvc_gpa$coords,
+MYVC_mt4 = modularity.test(MYVC_gpa$coords,
                             land.gps4,
                             CI=T,
                             iter=999)
-summary(myvc_mt4) # Test summary
-# plot(myvc_mt4) # Histogram of CR sampling distribution
+summary(MYVC_mt4) # Test summary
+# plot(MYVC_mt4) # Histogram of CR sampling distribution
 
 land.gps5 = rep('a', 22); land.gps5[1:2] = 'b'; land.gps5[3:5] = 'c'; land.gps5[6:9] = 'd'; land.gps5[10:12] = 'e'; land.gps5[14:18] = 'f'
-myvc_mt5 = modularity.test(myvc_gpa$coords,
+MYVC_mt5 = modularity.test(MYVC_gpa$coords,
                             land.gps5,
                             CI=T,
                             iter=999)
-summary(myvc_mt5) # Test summary
-# plot(myvc_mt5) # Histogram of CR sampling distribution
+summary(MYVC_mt5) # Test summary
+# plot(MYVC_mt5) # Histogram of CR sampling distribution
 
 land.gps6 = rep('a', 22); land.gps6[1:2] = 'b'; land.gps6[3:5] = 'c'; land.gps6[6:9] = 'd'; land.gps6[10:12] = 'e'; land.gps6[14:18] = 'f'; land.gps6[20:21] = 'g'
-myvc_mt6 = modularity.test(myvc_gpa$coords,
+MYVC_mt6 = modularity.test(MYVC_gpa$coords,
                             land.gps6,
                             CI=T,
                             iter=999)
-summary(myvc_mt6) # Test summary
-# plot(myvc_mt6) # Histogram of CR sampling distribution
+summary(MYVC_mt6) # Test summary
+# plot(MYVC_mt6) # Histogram of CR sampling distribution
 
-myvc_model.Z = compare.CR(myvc_mt, 
-                           myvc_mt2,
-                           myvc_mt3, 
-                           myvc_mt4, 
-                           myvc_mt5, 
-                           myvc_mt6, 
+MYVC_model.Z = compare.CR(MYVC_mt, 
+                           MYVC_mt2,
+                           MYVC_mt3, 
+                           MYVC_mt4, 
+                           MYVC_mt5, 
+                           MYVC_mt6, 
                            CR.null = TRUE)
-myvc_model.Z
+MYVC_model.Z
 
 
 MYVC_IT = integration.test(MYVC_gpa$coords, 
