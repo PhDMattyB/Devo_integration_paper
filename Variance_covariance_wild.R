@@ -1649,6 +1649,55 @@ STNW_mt = modularity.test(STNW_gpa$coords,
 summary(STNW_mt) # Test summary
 plot(STNW_mt) #
 
+land.gps2 = rep('a', 22); land.gps2[1:2] = 'b'; land.gps2[3:5] = 'c'
+STNW_mt2 = modularity.test(STNW_gpa$coords,
+                            land.gps2,
+                            CI=T,
+                            iter=999)
+summary(STNW_mt2) # Test summary
+# plot(STNW_mt2) # Histogram of CR sampling distribution
+
+land.gps3 = rep('a', 22); land.gps3[1:2] = 'b'; land.gps3[3:5] = 'c'; land.gps3[6:9] = 'd'
+STNW_mt3 = modularity.test(STNW_gpa$coords,
+                            land.gps3,
+                            CI=T,
+                            iter=999)
+summary(STNW_mt3) # Test summary
+# plot(STNW_mt3) # Histogram of CR sampling distribution
+
+land.gps4 = rep('a', 22); land.gps4[1:2] = 'b'; land.gps4[3:5] = 'c'; land.gps4[6:9] = 'd'; land.gps4[10:12] = 'e'
+STNW_mt4 = modularity.test(STNW_gpa$coords,
+                            land.gps4,
+                            CI=T,
+                            iter=999)
+summary(STNW_mt4) # Test summary
+# plot(STNW_mt4) # Histogram of CR sampling distribution
+
+land.gps5 = rep('a', 22); land.gps5[1:2] = 'b'; land.gps5[3:5] = 'c'; land.gps5[6:9] = 'd'; land.gps5[10:12] = 'e'; land.gps5[14:18] = 'f'
+STNW_mt5 = modularity.test(STNW_gpa$coords,
+                            land.gps5,
+                            CI=T,
+                            iter=999)
+summary(STNW_mt5) # Test summary
+# plot(STNW_mt5) # Histogram of CR sampling distribution
+
+land.gps6 = rep('a', 22); land.gps6[1:2] = 'b'; land.gps6[3:5] = 'c'; land.gps6[6:9] = 'd'; land.gps6[10:12] = 'e'; land.gps6[14:18] = 'f'; land.gps6[20:21] = 'g'
+STNW_mt6 = modularity.test(STNW_gpa$coords,
+                            land.gps6,
+                            CI=T,
+                            iter=999)
+summary(STNW_mt6) # Test summary
+# plot(STNW_mt6) # Histogram of CR sampling distribution
+
+STNW_model.Z = compare.CR(STNW_mt, 
+                           STNW_mt2,
+                           STNW_mt3, 
+                           STNW_mt4, 
+                           STNW_mt5, 
+                           STNW_mt6, 
+                           CR.null = TRUE)
+STNW_model.Z
+
 STNW_IT = integration.test(STNW_gpa$coords, 
                             partition.gp=land.gps, 
                             iter=999)
