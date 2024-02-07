@@ -23,11 +23,11 @@ data("Tropheus")
 landmarks = read_csv('allometry minimised data (XY) with ID (6 population pairs).csv')
 
 
-identifiers = landmarks %>% 
-  select(ID, 
-         POP, 
-         Morph, 
-         CS)
+# identifiers = landmarks %>% 
+#   select(ID, 
+#          POP, 
+#          Morph, 
+#          CS)
 
 LM_data = landmarks %>% 
   select(-starts_with('LMS'))
@@ -60,6 +60,14 @@ pca_scores = phenotype_pca$x
 
 # General cold vs warm pooled covar ---------------------------------------
 
+WC_pooled_var = cov.group(pca_scores, 
+                                  groups = LM_data$Morph)
+
+WC_eigen_vals = mat.sq.dist(WC_pooled_var, 
+                                   dist. = 'Riemannian')
+
+WC_prcoa = pr.coord(WC_eigen_vals)
+prcoa$Variance
 
 
 
@@ -70,7 +78,6 @@ pca_scores = phenotype_pca$x
 
 phenotypes_pooled_var = cov.group(pca_scores, 
                                   groups = LM_data$POP)
-LM_data$Morph
 
 phenotype_eigen_vals = mat.sq.dist(phenotypes_pooled_var, 
             dist. = 'Riemannian')
