@@ -57,9 +57,20 @@ pca_scores = phenotype_pca$x
 ## relationships between morphs within each population
 ## Need to test for overall differences in cold vs warm morphs
 
+
+# General cold vs warm pooled covar ---------------------------------------
+
+
+
+
+
+
+
+# Per population pooled covariance ----------------------------------------
+
 phenotypes_pooled_var = cov.group(pca_scores, 
                                   groups = LM_data$POP)
-
+LM_data$Morph
 
 phenotype_eigen_vals = mat.sq.dist(phenotypes_pooled_var, 
             dist. = 'Riemannian')
@@ -109,7 +120,9 @@ var_plot_data$dimensions = factor(var_plot_data$dimensions,
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12))
 
-# Pooled principal coordinate analysis ------------------------------------
+  
+  
+# per population - Pooled principal coordinate analysis ------------------------------------
 
 
 pooled_pc_coords = prcoa$PCoords %>% 
@@ -377,6 +390,7 @@ relGV.multi(phenotypes_pooled_var[,,c('SKRC', 'SKRW')],
             logGV = F)
 skr_rel_eign = relative.eigen(phenotypes_pooled_var[,,'SKRC'], 
                               phenotypes_pooled_var[,,'SKRW'])
+skr_rel_eign$relValues
 
 plot(skr_rel_eign$relValues[1:skr_rel_eign$q], 
      log = 'y', 
@@ -444,6 +458,7 @@ relGV.multi(phenotypes_pooled_var[,,c('RKLTC', 'RKLTW')],
             logGV = F)
 rklt_rel_eign = relative.eigen(phenotypes_pooled_var[,,'RKLTC'], 
                               phenotypes_pooled_var[,,'RKLTW'])
+rklt_rel_eign$relValues
 
 plot(rklt_rel_eign$relValues[1:rklt_rel_eign$q], 
      log = 'y', 
@@ -511,6 +526,7 @@ relGV.multi(phenotypes_pooled_var[,,c('STNC', 'STNW')],
 stn_rel_eign = relative.eigen(phenotypes_pooled_var[,,'STNC'], 
                               phenotypes_pooled_var[,,'STNW'])
 
+stn_rel_eign$relValues
 plot(stn_rel_eign$relValues[1:stn_rel_eign$q], 
      log = 'y', 
      las = 1, 
