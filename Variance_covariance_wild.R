@@ -1154,7 +1154,37 @@ ashnc_IT = integration.test(ashnc_gpa$coords,
                             partition.gp=land.gps, 
                             iter=999)
 summary(ashnc_IT) # Test summary
-ashnc_int_plot = plot(ashnc_IT) # PLS plo
+# ashnc_int_plot = plot(ashnc_IT) # PLS plo
+
+ashnc_IT2 = integration.test(ashnc_gpa$coords, 
+                            partition.gp=land.gps2, 
+                            iter=999)
+summary(ashnc_IT2) # Test summary
+# ashnc_int_plot = plot(ashnc_IT2) # PLS plo
+
+ashnc_IT3 = integration.test(ashnc_gpa$coords, 
+                            partition.gp=land.gps3, 
+                            iter=999)
+summary(ashnc_IT3) # Test summary
+# ashnc_int_plot = plot(ashnc_IT) # PLS plo
+
+ashnc_IT4 = integration.test(ashnc_gpa$coords, 
+                            partition.gp=land.gps4, 
+                            iter=999)
+summary(ashnc_IT4) # Test summary
+# ashnc_int_plot = plot(ashnc_IT) # PLS plo
+
+ashnc_IT5 = integration.test(ashnc_gpa$coords, 
+                            partition.gp=land.gps5, 
+                            iter=999)
+summary(ashnc_IT5) # Test summary
+# ashnc_int_plot = plot(ashnc_IT) # PLS plo
+
+ashnc_IT6 = integration.test(ashnc_gpa$coords, 
+                            partition.gp=land.gps6, 
+                            iter=999)
+summary(ashnc_IT6) # Test summary
+# ashnc_int_plot = plot(ashnc_IT) # PLS plo
 
 # MYVW modularity ---------------------------------------------------------
 
@@ -1726,6 +1756,55 @@ STNC_mt = modularity.test(STNC_gpa$coords,
                            iter=999)
 summary(STNC_mt) # Test summary
 plot(STNC_mt) #
+
+land.gps2 = rep('a', 22); land.gps2[1:2] = 'b'; land.gps2[3:5] = 'c'
+STNC_mt2 = modularity.test(STNC_gpa$coords,
+                           land.gps2,
+                           CI=T,
+                           iter=999)
+summary(STNC_mt2) # Test summary
+# plot(STNC_mt2) # Histogram of CR sampling distribution
+
+land.gps3 = rep('a', 22); land.gps3[1:2] = 'b'; land.gps3[3:5] = 'c'; land.gps3[6:9] = 'd'
+STNC_mt3 = modularity.test(STNC_gpa$coords,
+                           land.gps3,
+                           CI=T,
+                           iter=999)
+summary(STNC_mt3) # Test summary
+# plot(STNC_mt3) # Histogram of CR sampling distribution
+
+land.gps4 = rep('a', 22); land.gps4[1:2] = 'b'; land.gps4[3:5] = 'c'; land.gps4[6:9] = 'd'; land.gps4[10:12] = 'e'
+STNC_mt4 = modularity.test(STNC_gpa$coords,
+                           land.gps4,
+                           CI=T,
+                           iter=999)
+summary(STNC_mt4) # Test summary
+# plot(STNC_mt4) # Histogram of CR sampling distribution
+
+land.gps5 = rep('a', 22); land.gps5[1:2] = 'b'; land.gps5[3:5] = 'c'; land.gps5[6:9] = 'd'; land.gps5[10:12] = 'e'; land.gps5[14:18] = 'f'
+STNC_mt5 = modularity.test(STNC_gpa$coords,
+                           land.gps5,
+                           CI=T,
+                           iter=999)
+summary(STNC_mt5) # Test summary
+# plot(STNC_mt5) # Histogram of CR sampling distribution
+
+land.gps6 = rep('a', 22); land.gps6[1:2] = 'b'; land.gps6[3:5] = 'c'; land.gps6[6:9] = 'd'; land.gps6[10:12] = 'e'; land.gps6[14:18] = 'f'; land.gps6[20:21] = 'g'
+STNC_mt6 = modularity.test(STNC_gpa$coords,
+                           land.gps6,
+                           CI=T,
+                           iter=999)
+summary(STNC_mt6) # Test summary
+# plot(STNC_mt6) # Histogram of CR sampling distribution
+
+STNC_model.Z = compare.CR(STNC_mt, 
+                          STNC_mt2,
+                          STNC_mt3, 
+                          STNC_mt4, 
+                          STNC_mt5, 
+                          STNC_mt6, 
+                          CR.null = TRUE)
+STNC_model.Z
 
 STNC_IT = integration.test(STNC_gpa$coords, 
                             partition.gp=land.gps, 
