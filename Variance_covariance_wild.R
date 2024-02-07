@@ -48,6 +48,36 @@ phenotype_gpa = gpagen(phenotype_array,
 proc_coord = two.d.array(phenotype_gpa$coords)
 colnames(proc_coord) = colnames(phenotypes)
 
+geo_df = geomorph.data.frame(phenotype_gpa, 
+                    site = LM_data$POP_only, 
+                    species = LM_data$Morph)
+
+proc_anova = procD.lm(coords ~ site*species,
+         data = geo_df, 
+         iter = 999, 
+         RRPP = T,
+         SS.type = 'III',
+         effect.type = 'Rsq')
+
+summary(proc_anova)
+
+geo_df2 = geomorph.data.frame(phenotype_gpa, 
+                             site = LM_data$POP)
+
+proc_anova2 = procD.lm(coords ~ site,
+                      data = geo_df2, 
+                      iter = 999, 
+                      RRPP = T,
+                      SS.type = 'III',
+                      effect.type = 'Rsq')
+
+summary(proc_anova2)
+
+
+
+# Start of var-covvar analyses --------------------------------------------
+
+
 phenotype_pca = prcomp(proc_coord, 
                        rank. = 5, 
                        tol = sqrt(.Machine$double.eps))
@@ -59,7 +89,7 @@ pca_scores = phenotype_pca$x
 ## relationships between morphs within each population
 ## Need to test for overall differences in cold vs warm morphs
 
-
+##
 # General cold vs warm pooled covar ---------------------------------------
 
 ## This doesn't work as the squared distance matrix doesn't have
@@ -244,6 +274,12 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
   theme(panel.grid = element_blank(), 
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12))
+ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/Principal_coord_analysis_pooled_covariance.tiff', 
+       plot = principal_coord_analysis, 
+       dpi = 'retina',
+       units = 'cm',
+       height = 10, 
+       width = 15)
 
 # Per population relative variance analyses -------------------------------
 
