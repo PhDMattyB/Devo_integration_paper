@@ -32,6 +32,8 @@ landmarks = read_csv('allometry minimised data (XY) with ID (6 population pairs)
 LM_data = landmarks %>% 
   select(-starts_with('LMS'))
 
+sum(is.na(LM_data))
+
 phenotypes = as.matrix(LM_data[which(names(LM_data) == 'LM1X'):
                     which(names(LM_data) == 'LM22Y')])
 
@@ -60,14 +62,39 @@ pca_scores = phenotype_pca$x
 
 # General cold vs warm pooled covar ---------------------------------------
 
+## This doesn't work as the squared distance matrix doesn't have
+## enough variation. You can't do a principal coordinates
+## analysis for two groups. It just doesn't make sense
+
+LM_data = mutate(.data = LM_data, 
+                          POP_only = as.factor(case_when(
+                            POP == 'ASHNC' ~ 'ASHN',
+                            POP == 'ASHNW' ~ 'ASHN',
+                            POP == 'CSWY' ~ 'CSWY',
+                            POP == 'GTS' ~ 'GTS',
+                            POP == 'MYVC' ~ 'MYV',
+                            POP == 'MYVW' ~ 'MYV',
+                            POP == 'SKRC' ~ 'SKR',
+                            POP == 'SKRW' ~ 'SKR',
+                            POP == 'RKLTC' ~ 'RKLT', 
+                            POP == 'RKLTW' ~ 'RKLT', 
+                            POP == 'STNC' ~ 'STN', 
+                            POP == 'STNW' ~ 'STN'
+                            
+                          )))
+
+
 WC_pooled_var = cov.group(pca_scores, 
-                                  groups = LM_data$Morph)
+                                  groups = LM_data$POP_only, 
+                          sex = LM_data$Morph)
 
 WC_eigen_vals = mat.sq.dist(WC_pooled_var, 
                                    dist. = 'Riemannian')
+dim(WC_eigen_vals)
 
+## An error keeps popping up here, I don't know why
 WC_prcoa = pr.coord(WC_eigen_vals)
-prcoa$Variance
+WC_prcoa$Variance
 
 
 
