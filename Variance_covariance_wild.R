@@ -1571,6 +1571,55 @@ RKLTC_mt = modularity.test(RKLTC_gpa$coords,
 summary(RKLTC_mt) # Test summary
 plot(RKLTC_mt) #
 
+land.gps2 = rep('a', 22); land.gps2[1:2] = 'b'; land.gps2[3:5] = 'c'
+RKLTC_mt2 = modularity.test(RKLTC_gpa$coords,
+                           land.gps2,
+                           CI=T,
+                           iter=999)
+summary(RKLTC_mt2) # Test summary
+# plot(RKLTC_mt2) # Histogram of CR sampling distribution
+
+land.gps3 = rep('a', 22); land.gps3[1:2] = 'b'; land.gps3[3:5] = 'c'; land.gps3[6:9] = 'd'
+RKLTC_mt3 = modularity.test(RKLTC_gpa$coords,
+                           land.gps3,
+                           CI=T,
+                           iter=999)
+summary(RKLTC_mt3) # Test summary
+# plot(RKLTC_mt3) # Histogram of CR sampling distribution
+
+land.gps4 = rep('a', 22); land.gps4[1:2] = 'b'; land.gps4[3:5] = 'c'; land.gps4[6:9] = 'd'; land.gps4[10:12] = 'e'
+RKLTC_mt4 = modularity.test(RKLTC_gpa$coords,
+                           land.gps4,
+                           CI=T,
+                           iter=999)
+summary(RKLTC_mt4) # Test summary
+# plot(RKLTC_mt4) # Histogram of CR sampling distribution
+
+land.gps5 = rep('a', 22); land.gps5[1:2] = 'b'; land.gps5[3:5] = 'c'; land.gps5[6:9] = 'd'; land.gps5[10:12] = 'e'; land.gps5[14:18] = 'f'
+RKLTC_mt5 = modularity.test(RKLTC_gpa$coords,
+                           land.gps5,
+                           CI=T,
+                           iter=999)
+summary(RKLTC_mt5) # Test summary
+# plot(RKLTC_mt5) # Histogram of CR sampling distribution
+
+land.gps6 = rep('a', 22); land.gps6[1:2] = 'b'; land.gps6[3:5] = 'c'; land.gps6[6:9] = 'd'; land.gps6[10:12] = 'e'; land.gps6[14:18] = 'f'; land.gps6[20:21] = 'g'
+RKLTC_mt6 = modularity.test(RKLTC_gpa$coords,
+                           land.gps6,
+                           CI=T,
+                           iter=999)
+summary(RKLTC_mt6) # Test summary
+# plot(RKLTC_mt6) # Histogram of CR sampling distribution
+
+RKLTC_model.Z = compare.CR(RKLTC_mt, 
+                          RKLTC_mt2,
+                          RKLTC_mt3, 
+                          RKLTC_mt4, 
+                          RKLTC_mt5, 
+                          RKLTC_mt6, 
+                          CR.null = TRUE)
+RKLTC_model.Z
+
 RKLTC_IT = integration.test(RKLTC_gpa$coords, 
                             partition.gp=land.gps, 
                             iter=999)
