@@ -1493,6 +1493,55 @@ RKLTW_mt = modularity.test(RKLTW_gpa$coords,
 summary(RKLTW_mt) # Test summary
 plot(RKLTW_mt) #
 
+land.gps2 = rep('a', 22); land.gps2[1:2] = 'b'; land.gps2[3:5] = 'c'
+RKLTW_mt2 = modularity.test(RKLTW_gpa$coords,
+                           land.gps2,
+                           CI=T,
+                           iter=999)
+summary(RKLTW_mt2) # Test summary
+# plot(RKLTW_mt2) # Histogram of CR sampling distribution
+
+land.gps3 = rep('a', 22); land.gps3[1:2] = 'b'; land.gps3[3:5] = 'c'; land.gps3[6:9] = 'd'
+RKLTW_mt3 = modularity.test(RKLTW_gpa$coords,
+                           land.gps3,
+                           CI=T,
+                           iter=999)
+summary(RKLTW_mt3) # Test summary
+# plot(RKLTW_mt3) # Histogram of CR sampling distribution
+
+land.gps4 = rep('a', 22); land.gps4[1:2] = 'b'; land.gps4[3:5] = 'c'; land.gps4[6:9] = 'd'; land.gps4[10:12] = 'e'
+RKLTW_mt4 = modularity.test(RKLTW_gpa$coords,
+                           land.gps4,
+                           CI=T,
+                           iter=999)
+summary(RKLTW_mt4) # Test summary
+# plot(RKLTW_mt4) # Histogram of CR sampling distribution
+
+land.gps5 = rep('a', 22); land.gps5[1:2] = 'b'; land.gps5[3:5] = 'c'; land.gps5[6:9] = 'd'; land.gps5[10:12] = 'e'; land.gps5[14:18] = 'f'
+RKLTW_mt5 = modularity.test(RKLTW_gpa$coords,
+                           land.gps5,
+                           CI=T,
+                           iter=999)
+summary(RKLTW_mt5) # Test summary
+# plot(RKLTW_mt5) # Histogram of CR sampling distribution
+
+land.gps6 = rep('a', 22); land.gps6[1:2] = 'b'; land.gps6[3:5] = 'c'; land.gps6[6:9] = 'd'; land.gps6[10:12] = 'e'; land.gps6[14:18] = 'f'; land.gps6[20:21] = 'g'
+RKLTW_mt6 = modularity.test(RKLTW_gpa$coords,
+                           land.gps6,
+                           CI=T,
+                           iter=999)
+summary(RKLTW_mt6) # Test summary
+# plot(RKLTW_mt6) # Histogram of CR sampling distribution
+
+RKLTW_model.Z = compare.CR(RKLTW_mt, 
+                          RKLTW_mt2,
+                          RKLTW_mt3, 
+                          RKLTW_mt4, 
+                          RKLTW_mt5, 
+                          RKLTW_mt6, 
+                          CR.null = TRUE)
+RKLTW_model.Z
+
 RKLTW_IT = integration.test(RKLTW_gpa$coords, 
                             partition.gp=land.gps, 
                             iter=999)
