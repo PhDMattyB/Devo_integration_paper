@@ -23,7 +23,7 @@ theme_set(theme_bw())
 
 landmarks = read_csv('allometry minimised data (XY) with ID (6 population pairs).csv')
 
-
+landmarks$ID
 # identifiers = landmarks %>% 
 #   select(ID, 
 #          POP, 
@@ -833,11 +833,25 @@ plot(PLS)
 
 # ashn --------------------------------------------------------------------
 
-
+landmarks = mutate(.data = landmarks, 
+                          POP_only = as.factor(case_when(
+                            POP == 'ASHNC' ~ 'ASHN',
+                            POP == 'ASHNW' ~ 'ASHN',
+                            POP == 'CSWY' ~ 'CSWY',
+                            POP == 'GTS' ~ 'GTS',
+                            POP == 'MYVC' ~ 'MYV',
+                            POP == 'MYVW' ~ 'MYV',
+                            POP == 'SKRC' ~ 'SKR',
+                            POP == 'SKRW' ~ 'SKR',
+                            POP == 'RKLTC' ~ 'RKLT', 
+                            POP == 'RKLTW' ~ 'RKLT', 
+                            POP == 'STNC' ~ 'STN', 
+                            POP == 'STNW' ~ 'STN'
+                            
+                          )))
 ## Need to use morphol.disparity to look for patterns of variation
 ashn = landmarks %>%
   filter(POP_only == 'ASHN')
-
 
 ashn_pheno = as.matrix(ashn[which(names(ashn) == 'LM1X'):
                                     which(names(ashn) == 'LM22Y')])   
