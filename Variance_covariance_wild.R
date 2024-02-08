@@ -14,10 +14,10 @@ setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/')
 
 library(geomorph)
 library(vcvComp)
-library(tidyverse)
 library(factoextra)
+library(tidyverse)
 
-theme_set(theme_bw())
+# theme_set(theme_bw())
 ## Example data from cichlids
 # data("Tropheus")
 
