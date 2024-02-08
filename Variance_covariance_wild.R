@@ -15,10 +15,11 @@ setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/')
 library(geomorph)
 library(vcvComp)
 library(tidyverse)
+library(factoextra)
 
 theme_set(theme_bw())
 ## Example data from cichlids
-data("Tropheus")
+# data("Tropheus")
 
 landmarks = read_csv('allometry minimised data (XY) with ID (6 population pairs).csv')
 
@@ -88,6 +89,12 @@ phenotype_pca = prcomp(proc_coord,
                        tol = sqrt(.Machine$double.eps))
 pca_scores = phenotype_pca$x
 
+test = prcomp(proc_coord,
+       # rank. = 5,
+       tol = sqrt(.Machine$double.eps))
+
+## scree plot to determiine number of pc axes to use in model
+fviz_eig(test)
 
 ## This is for within population analyses. 
 ## Testing for differences between phenotype variance-covariance 
