@@ -16,14 +16,17 @@ library(geomorph)
 library(vcvComp)
 library(factoextra)
 library(tidyverse)
-
+library(rlang)
+library(dplyr)
+library(tidyr)
+library(readr)
 # theme_set(theme_bw())
 ## Example data from cichlids
 # data("Tropheus")
 
 landmarks = read_csv('allometry minimised data (XY) with ID (6 population pairs).csv')
 
-landmarks$ID
+# landmarks$ID
 # identifiers = landmarks %>% 
 #   select(ID, 
 #          POP, 
@@ -52,6 +55,22 @@ colnames(proc_coord) = colnames(phenotypes)
 
 
 # procrustes anova --------------------------------------------------------
+LM_data = mutate(.data = LM_data, 
+                   POP_only = as.factor(case_when(
+                     POP == 'ASHNC' ~ 'ASHN',
+                     POP == 'ASHNW' ~ 'ASHN',
+                     POP == 'CSWY' ~ 'CSWY',
+                     POP == 'GTS' ~ 'GTS',
+                     POP == 'MYVC' ~ 'MYV',
+                     POP == 'MYVW' ~ 'MYV',
+                     POP == 'SKRC' ~ 'SKR',
+                     POP == 'SKRW' ~ 'SKR',
+                     POP == 'RKLTC' ~ 'RKLT', 
+                     POP == 'RKLTW' ~ 'RKLT', 
+                     POP == 'STNC' ~ 'STN', 
+                     POP == 'STNW' ~ 'STN'
+                     
+                   )))
 
 
 geo_df = geomorph.data.frame(phenotype_gpa, 
@@ -94,7 +113,7 @@ test = prcomp(proc_coord,
        tol = sqrt(.Machine$double.eps))
 
 ## scree plot to determiine number of pc axes to use in model
-fviz_eig(test)
+factoextra::fviz_eig(test)
 
 ## This is for within population analyses. 
 ## Testing for differences between phenotype variance-covariance 
