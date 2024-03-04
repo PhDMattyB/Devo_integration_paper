@@ -9,17 +9,11 @@
 
 setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/')
 
-# install.packages('geomorph')
-# install.packages('vcvComp')
-
 library(geomorph)
 library(vcvComp)
 library(factoextra)
 library(tidyverse)
-library(rlang)
-library(dplyr)
-library(tidyr)
-library(readr)
+
 # theme_set(theme_bw())
 ## Example data from cichlids
 # data("Tropheus")
