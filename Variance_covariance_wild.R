@@ -27,9 +27,9 @@ identifiers = landmarks %>%
          Morph,
          CS)
 
-identifiers %>% 
-  arrange(ID, POP, Morph) %>% 
-  write_csv('Wild_Fish_IDs.txt')
+# identifiers %>% 
+#   arrange(ID, POP, Morph) %>% 
+#   write_csv('Wild_Fish_IDs.txt')
 
 LM_data = landmarks %>% 
   select(-starts_with('LMS'))
