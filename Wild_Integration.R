@@ -15,4 +15,6 @@ library(vcvComp)
 library(factoextra)
 library(tidyverse)
 
+wild_tps = readland.tps('Wild_Final.TPS', 
+                        specID = 'imageID')
 
