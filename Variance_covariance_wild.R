@@ -27,11 +27,15 @@ library(readr)
 landmarks = read_csv('allometry minimised data (XY) with ID (6 population pairs).csv')
 
 # landmarks$ID
-# identifiers = landmarks %>% 
-#   select(ID, 
-#          POP, 
-#          Morph, 
-#          CS)
+identifiers = landmarks %>%
+  select(ID,
+         POP,
+         Morph,
+         CS)
+
+identifiers %>% 
+  arrange(ID, POP, Morph) %>% 
+  write_csv('Wild_Fish_IDs.txt')
 
 LM_data = landmarks %>% 
   select(-starts_with('LMS'))
