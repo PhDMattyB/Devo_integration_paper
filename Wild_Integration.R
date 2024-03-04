@@ -18,17 +18,15 @@ library(tidyverse)
 wild_tps = readland.tps('Wild_Final.TPS', 
                         specID = 'imageID')
 
-identifiers = read_csv('TPS_Wild.CSV', 
-                       col_names = F) %>% 
-  rename(order = X1, 
-         ImageID = X2) %>% 
-  separate(col = ImageID, 
-           into = c('Lake_morph', 'ImageID'), 
-           sep = '-')
+identifiers = read_csv('TPS_Wild_metadata.csv') 
 
 ## superimposition on the entire dataset
 wild_gpa = gpagen(wild_tps, 
                        print.progress = F)
+
+wild_gpa$coords
+## plot the landmarks to see the updated ones on the fish
+plotAllSpecimens(wild_gpa$coords)
 
 ## integration test without removing allometric scaling
 
