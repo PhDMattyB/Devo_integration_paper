@@ -19,5 +19,12 @@ wild_tps = readland.tps('Wild_Final.TPS',
                         specID = 'imageID')
 
 
+## superimposition on the entire dataset
 wild_gpa = gpagen(wild_tps, 
                        print.progress = F)
+
+## integration test without removing allometric scaling
+
+
+## Need to standardize for allometric variation
+procD.lm()
