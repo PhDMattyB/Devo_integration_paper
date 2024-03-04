@@ -18,3 +18,6 @@ library(tidyverse)
 wild_tps = readland.tps('Wild_Final.TPS', 
                         specID = 'imageID')
 
+
+wild_gpa = gpagen(wild_tps, 
+                       print.progress = F)
