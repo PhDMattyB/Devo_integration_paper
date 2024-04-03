@@ -90,115 +90,103 @@ GTS_CSWY_noallo_compare = compare.ZVrel(vrel_F2_coords_allo_adj$CSWY,
 
 ## integration of craniofacial patterns with allometric variation included
 
-wild_craniofacial = readland.tps('Wild_Craniofacial_LM.TPS',
+F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
                                  specID = 'imageID')
 
-identifiers = read_csv('TPS_Wild_metadata.csv')
+identifiers = read_csv('F2_Metadata.CSV')
 
 ## superimposition on the entire dataset
-wild_craniofacial_gpa = gpagen(wild_craniofacial,
+F2_craniofacial_gpa = gpagen(F2_craniofacial,
                                print.progress = F)
 
 
-subset_wild_craniofacial_coords = coords.subset(wild_craniofacial_gpa$coords,
+subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,
                                                 identifiers$Lake_morph)
 
-vrel_wild_craniofacial = Map(function(x) integration.Vrel(x),
-                             subset_wild_craniofacial_coords)
+vrel_F2_craniofacial = Map(function(x) integration.Vrel(x),
+                             subset_F2_craniofacial_coords)
 
-ASHN_craniofacial = compare.ZVrel(vrel_wild_craniofacial$ASHNC,
-                                  vrel_wild_craniofacial$ASHNW)
+ASHN_craniofacial = compare.ZVrel(vrel_F2_craniofacial$ASHNC,
+                                  vrel_F2_craniofacial$ASHNW)
 
-MYV_craniofacial = compare.ZVrel(vrel_wild_craniofacial$MYVC,
-                                 vrel_wild_craniofacial$MYVW)
+MYV_craniofacial = compare.ZVrel(vrel_F2_craniofacial$MYVC,
+                                 vrel_F2_craniofacial$MYVW)
 
-SKR_craniofacial = compare.ZVrel(vrel_wild_craniofacial$SKRC,
-                                 vrel_wild_craniofacial$SKRW)
+SKR_craniofacial = compare.ZVrel(vrel_F2_craniofacial$SKRC,
+                                 vrel_F2_craniofacial$SKRW)
 
-STN_craniofacial = compare.ZVrel(vrel_wild_craniofacial$STNC,
-                                 vrel_wild_craniofacial$STNW)
-
-RKLT_craniofacial = compare.ZVrel(vrel_wild_craniofacial$RKLTC,
-                                  vrel_wild_craniofacial$RKLTW)
-
-GTS_CSWY_craniofacial = compare.ZVrel(vrel_wild_craniofacial$CSWY,
-                                      vrel_wild_craniofacial$GTS)
+GTS_CSWY_craniofacial = compare.ZVrel(vrel_F2_craniofacial$CSWY,
+                                      vrel_F2_craniofacial$GTS)
 
 
-# wild craniofacial integration no allometry -------------------------------------------
+# F2 craniofacial integration no allometry -------------------------------------------
 
 
-wild_craniofacial = readland.tps('Wild_Craniofacial_LM.TPS', 
+F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS', 
                                  specID = 'imageID')
 
-identifiers = read_csv('TPS_Wild_metadata.csv') 
+identifiers = read_csv('F2_metadata.csv') 
 
 ## superimposition on the entire dataset
-wild_craniofacial_gpa = gpagen(wild_craniofacial, 
+F2_craniofacial_gpa = gpagen(F2_craniofacial, 
                                print.progress = F)
 
 
-craniofacial_allometry = procD.lm(wild_craniofacial_gpa$coords ~ log(wild_craniofacial_gpa$Csize), 
+craniofacial_allometry = procD.lm(F2_craniofacial_gpa$coords ~ log(F2_craniofacial_gpa$Csize), 
                                   iter = 999, 
                                   RRPP = T)
 summary(craniofacial_allometry)
 
 
 craniofacial_resid = arrayspecs(craniofacial_allometry$residuals, 
-                                p = dim(wild_craniofacial_gpa$coords)[1], 
-                                k = dim(wild_craniofacial_gpa$coords)[2])
-craniofacial_allo_adj = craniofacial_resid + array(wild_craniofacial_gpa$consensus, 
+                                p = dim(F2_craniofacial_gpa$coords)[1], 
+                                k = dim(F2_craniofacial_gpa$coords)[2])
+craniofacial_allo_adj = craniofacial_resid + array(F2_craniofacial_gpa$consensus, 
                                                    dim(craniofacial_resid))
 
 
 
-wild_craniofacial_coords_noallo = coords.subset(craniofacial_allo_adj, 
+F2_craniofacial_coords_noallo = coords.subset(craniofacial_allo_adj, 
                                                 identifiers$Lake_morph)
 
-vrel_wild_craniofacial_noallo = Map(function(x) integration.Vrel(x), 
-                                    wild_craniofacial_coords_noallo)
+vrel_F2_craniofacial_noallo = Map(function(x) integration.Vrel(x), 
+                                    F2_craniofacial_coords_noallo)
 
-ASHN_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$ASHNC, 
-                                         vrel_wild_craniofacial_noallo$ASHNW)
+ASHN_noallo_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noallo$ASHNC, 
+                                         vrel_F2_craniofacial_noallo$ASHNW)
 
-MYV_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$MYVC, 
-                                        vrel_wild_craniofacial_noallo$MYVW)
+MYV_noallo_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noallo$MYVC, 
+                                        vrel_F2_craniofacial_noallo$MYVW)
 
-SKR_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$SKRC, 
-                                        vrel_wild_craniofacial_noallo$SKRW)
+SKR_noallo_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noallo$SKRC, 
+                                        vrel_F2_craniofacial_noallo$SKRW)
 
-STN_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$STNC, 
-                                        vrel_wild_craniofacial_noallo$STNW)
-
-RKLT_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$RKLTC, 
-                                         vrel_wild_craniofacial_noallo$RKLTW)
-
-GTS_CSWY_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$CSWY, 
-                                             vrel_wild_craniofacial_noallo$GTS)
+GTS_CSWY_noallo_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noallo$CSWY, 
+                                             vrel_F2_craniofacial_noallo$GTS)
 
 
 
 
 # Integration between ecotypes ---------------------------------------------
 
-wild_craniofacial = readland.tps('Wild_Craniofacial_LM.TPS',
+F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
                                  specID = 'imageID')
 
-identifiers = read_csv('TPS_Wild_metadata.csv')
+identifiers = read_csv('F2_metadata.csv')
 
 ## superimposition on the entire dataset
-wild_craniofacial_gpa = gpagen(wild_craniofacial,
+F2_craniofacial_gpa = gpagen(F2_craniofacial,
                                print.progress = F)
 
 
-subset_wild_craniofacial_coords = coords.subset(wild_craniofacial_gpa$coords,
+subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,
                                                 identifiers$Morph)
 
-vrel_wild_craniofacial = Map(function(x) integration.Vrel(x),
-                             subset_wild_craniofacial_coords)
+vrel_F2_craniofacial = Map(function(x) integration.Vrel(x),
+                             subset_F2_craniofacial_coords)
 
-Ecotype_craniofacial = compare.ZVrel(vrel_wild_craniofacial$Cold,
-                                     vrel_wild_craniofacial$Warm)
+Ecotype_craniofacial = compare.ZVrel(vrel_F2_craniofacial$Cold,
+                                     vrel_F2_craniofacial$Warm)
 
 
 
