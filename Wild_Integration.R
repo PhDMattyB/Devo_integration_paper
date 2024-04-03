@@ -77,3 +77,60 @@ plot(PCA_allometry,
 
 PCA_allometry_adj = gm.prcomp(allometry_adj_shape)
 plot(PCA_allometry_adj)
+
+
+# wild integration analysis -----------------------------------------------
+
+## integration with allometric variation
+
+subset_wild_coords = coords.subset(wild_gpa$coords, 
+                                   identifiers$Lake_morph)
+
+vrel_wild_coords = Map(function(x) integration.Vrel(x), 
+                       subset_wild_coords)
+
+ASHN_compare = compare.ZVrel(vrel_wild_coords$ASHNC, 
+                             vrel_wild_coords$ASHNW)
+
+MYV_compare = compare.ZVrel(vrel_wild_coords$MYVC, 
+                            vrel_wild_coords$MYVW)
+
+SKR_compare = compare.ZVrel(vrel_wild_coords$SKRC, 
+                            vrel_wild_coords$SKRW)
+
+STN_compare = compare.ZVrel(vrel_wild_coords$STNC, 
+                            vrel_wild_coords$STNW)
+
+RKLT_compare = compare.ZVrel(vrel_wild_coords$RKLTC, 
+                            vrel_wild_coords$RKLTW)
+
+GTS_CSWY_compare = compare.ZVrel(vrel_wild_coords$CSWY, 
+                                 vrel_wild_coords$GTS)
+
+
+
+## integration with allometric variation
+
+subset_wild_coords_allo_adj = coords.subset(adj_shape, 
+                                   identifiers$Lake_morph)
+
+vrel_wild_coords_allo_adj = Map(function(x) integration.Vrel(x), 
+                       subset_wild_coords_allo_adj)
+
+ASHN_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$ASHNC, 
+                             vrel_wild_coords_allo_adj$ASHNW)
+
+MYV_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$MYVC, 
+                            vrel_wild_coords_allo_adj$MYVW)
+
+SKR_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$SKRC, 
+                            vrel_wild_coords_allo_adj$SKRW)
+
+STN_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$STNC, 
+                            vrel_wild_coords_allo_adj$STNW)
+
+RKLT_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$RKLTC, 
+                             vrel_wild_coords_allo_adj$RKLTW)
+
+GTS_CSWY_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$CSWY, 
+                                 vrel_wild_coords_allo_adj$GTS)
