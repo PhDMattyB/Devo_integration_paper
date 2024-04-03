@@ -25,11 +25,29 @@ wild_gpa = gpagen(wild_tps,
                        print.progress = F)
 
 wild_gpa$coords
-## plot the landmarks to see the updated ones on the fish
-plotAllSpecimens(wild_gpa$coords)
 
-## integration test without removing allometric scaling
+dim(wild_gpa$coords)
 
 
-## Need to standardize for allometric variation
-procD.lm()
+allometry_model1 = procD.lm(wild_gpa$coords ~ wild_gpa$Csize, 
+         iter = 999, 
+         RRPP = T)
+summary(allometry_model1)
+
+
+allometry_model2 = procD.lm(wild_gpa$coords ~ wild_gpa$Csize * identifiers$Lake, 
+                            iter = 999, 
+                            RRPP = T)
+summary(allometry_model2)
+
+
+allometry_model3 = procD.lm(wild_gpa$coords ~ wild_gpa$Csize * identifiers$Morph, 
+                            iter = 999, 
+                            RRPP = T)
+summary(allometry_model3)
+
+
+allometry_model4 = procD.lm(wild_gpa$coords ~ wild_gpa$Csize * identifiers$Lake_morph, 
+                            iter = 999, 
+                            RRPP = T)
+summary(allometry_model4)
