@@ -26,64 +26,63 @@ identifiers = read_csv('F2_Metadata.CSV',
 F2_gpa = gpagen(F2_tps, 
                   print.progress = F)
 
+allometry_model1 = procD.lm(F2_gpa$coords ~ log(F2_gpa$Csize), 
+                            iter = 999, 
+                            RRPP = T)
+summary(allometry_model1)
+
+
+F2_shape_resid = arrayspecs(allometry_model1$residuals, 
+                         p = dim(F2_gpa$coords)[1], 
+                         k = dim(F2_gpa$coords)[2])
+F2_allometry_adj_shape = F2_shape_resid + array(F2_gpa$consensus, 
+                                          dim(F2_shape_resid))
 
 
 # wild integration analysis -----------------------------------------------
 
 ## integration with allometric variation
 
-subset_wild_coords = coords.subset(wild_gpa$coords, 
+subset_F2_coords = coords.subset(F2_gpa$coords, 
                                    identifiers$Lake_morph)
 
-vrel_wild_coords = Map(function(x) integration.Vrel(x), 
-                       subset_wild_coords)
+vrel_F2_coords = Map(function(x) integration.Vrel(x), 
+                       subset_F2_coords)
 
-ASHN_compare = compare.ZVrel(vrel_wild_coords$ASHNC, 
-                             vrel_wild_coords$ASHNW)
+ASHN_compare = compare.ZVrel(vrel_F2_coords$ASHNC, 
+                             vrel_F2_coords$ASHNW)
 
-MYV_compare = compare.ZVrel(vrel_wild_coords$MYVC, 
-                            vrel_wild_coords$MYVW)
+MYV_compare = compare.ZVrel(vrel_F2_coords$MYVC, 
+                            vrel_F2_coords$MYVW)
 
-SKR_compare = compare.ZVrel(vrel_wild_coords$SKRC, 
-                            vrel_wild_coords$SKRW)
+SKR_compare = compare.ZVrel(vrel_F2_coords$SKRC, 
+                            vrel_F2_coords$SKRW)
 
-STN_compare = compare.ZVrel(vrel_wild_coords$STNC, 
-                            vrel_wild_coords$STNW)
-
-RKLT_compare = compare.ZVrel(vrel_wild_coords$RKLTC, 
-                             vrel_wild_coords$RKLTW)
-
-GTS_CSWY_compare = compare.ZVrel(vrel_wild_coords$CSWY, 
-                                 vrel_wild_coords$GTS)
+GTS_CSWY_compare = compare.ZVrel(vrel_F2_coords$CSWY, 
+                                 vrel_F2_coords$GTS)
 
 
 
 ## integration with allometric variation removed
 ## standardized for allometry
 
-subset_wild_coords_allo_adj = coords.subset(adj_shape, 
+subset_F2_coords_allo_adj = coords.subset(F2_allometry_adj_shape, 
                                             identifiers$Lake_morph)
 
-vrel_wild_coords_allo_adj = Map(function(x) integration.Vrel(x), 
-                                subset_wild_coords_allo_adj)
+vrel_F2_coords_allo_adj = Map(function(x) integration.Vrel(x), 
+                                subset_F2_coords_allo_adj)
 
-ASHN_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$ASHNC, 
-                                    vrel_wild_coords_allo_adj$ASHNW)
+ASHN_noallo_compare = compare.ZVrel(vrel_F2_coords_allo_adj$ASHNC, 
+                                    vrel_F2_coords_allo_adj$ASHNW)
 
-MYV_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$MYVC, 
-                                   vrel_wild_coords_allo_adj$MYVW)
+MYV_noallo_compare = compare.ZVrel(vrel_F2_coords_allo_adj$MYVC, 
+                                   vrel_F2_coords_allo_adj$MYVW)
 
-SKR_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$SKRC, 
-                                   vrel_wild_coords_allo_adj$SKRW)
+SKR_noallo_compare = compare.ZVrel(vrel_F2_coords_allo_adj$SKRC, 
+                                   vrel_F2_coords_allo_adj$SKRW)
 
-STN_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$STNC, 
-                                   vrel_wild_coords_allo_adj$STNW)
-
-RKLT_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$RKLTC, 
-                                    vrel_wild_coords_allo_adj$RKLTW)
-
-GTS_CSWY_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$CSWY, 
-                                        vrel_wild_coords_allo_adj$GTS)
+GTS_CSWY_noallo_compare = compare.ZVrel(vrel_F2_coords_allo_adj$CSWY, 
+                                        vrel_F2_coords_allo_adj$GTS)
 
 
 
