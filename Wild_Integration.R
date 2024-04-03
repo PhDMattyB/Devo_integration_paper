@@ -67,7 +67,7 @@ summary(allometry_model4)
 # PCA ---------------------------------------------------------------------
 
 
-## Need to figure out a way to make this ggplot able
+## Need to figure out a way to make this ggplotable
 PCA_allometry = gm.prcomp(wild_gpa$coords)
 plot(PCA_allometry,
      pch=21,
@@ -109,7 +109,8 @@ GTS_CSWY_compare = compare.ZVrel(vrel_wild_coords$CSWY,
 
 
 
-## integration with allometric variation
+## integration with allometric variation removed
+## standardized for allometry
 
 subset_wild_coords_allo_adj = coords.subset(adj_shape, 
                                    identifiers$Lake_morph)
