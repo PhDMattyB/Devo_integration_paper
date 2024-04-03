@@ -16,19 +16,16 @@ library(vcvComp)
 library(factoextra)
 library(tidyverse)
 
-wild_tps = readland.tps('F2_No_GT.TPS', 
+F2_tps = readland.tps('F2_No_GT.TPS', 
                         specID = 'imageID')
 
-identifiers = read_csv('F2_No_GT_Names.CSV', 
-                       col_names = F) 
+identifiers = read_csv('F2_Metadata.CSV', 
+                       col_names = T) 
 
 ## superimposition on the entire dataset
-wild_gpa = gpagen(wild_tps, 
+F2_gpa = gpagen(F2_tps, 
                   print.progress = F)
 
-wild_gpa$coords
-
-dim(wild_gpa$coords)
 
 
 # wild integration analysis -----------------------------------------------
