@@ -200,36 +200,45 @@ Warm_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@18`,
 
 ## Analysis with no allometric variation
 
-wild_craniofacial = readland.tps('Wild_Craniofacial_LM.TPS', 
+F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS', 
                                  specID = 'imageID')
 
-identifiers = read_csv('TPS_Wild_metadata.csv') 
+identifiers = read_csv('F2_metadata.csv') 
 
 ## superimposition on the entire dataset
-wild_craniofacial_gpa = gpagen(wild_craniofacial, 
+F2_craniofacial_gpa = gpagen(F2_craniofacial, 
                                print.progress = F)
 
 
-craniofacial_allometry = procD.lm(wild_craniofacial_gpa$coords ~ log(wild_craniofacial_gpa$Csize), 
+craniofacial_allometry = procD.lm(F2_craniofacial_gpa$coords ~ log(F2_craniofacial_gpa$Csize), 
                                   iter = 999, 
                                   RRPP = T)
 summary(craniofacial_allometry)
 
 
 craniofacial_resid = arrayspecs(craniofacial_allometry$residuals, 
-                                p = dim(wild_craniofacial_gpa$coords)[1], 
-                                k = dim(wild_craniofacial_gpa$coords)[2])
-craniofacial_allo_adj = craniofacial_resid + array(wild_craniofacial_gpa$consensus, 
+                                p = dim(F2_craniofacial_gpa$coords)[1], 
+                                k = dim(F2_craniofacial_gpa$coords)[2])
+craniofacial_allo_adj = craniofacial_resid + array(F2_craniofacial_gpa$consensus, 
                                                    dim(craniofacial_resid))
 
 
 
-wild_craniofacial_coords_noallo = coords.subset(craniofacial_allo_adj, 
-                                                identifiers$Morph)
+F2_craniofacial_coords_noallo = coords.subset(craniofacial_allo_adj, 
+                                                identifiers$Full_temp)
 
-vrel_wild_craniofacial_noallo = Map(function(x) integration.Vrel(x), 
-                                    wild_craniofacial_coords_noallo)
+vrel_F2_craniofacial_noallo = Map(function(x) integration.Vrel(x), 
+                                    F2_craniofacial_coords_noallo)
 
-Ecotype_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$Cold, 
-                                            vrel_wild_craniofacial_noallo$Warm)
+NoAllo_Cold_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noallo$`12@12`,
+                                             vrel_F2_craniofacial_noallo$`12@18`)
+
+NoAllo_Warm_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noallo$`18@12`,
+                                             vrel_F2_craniofacial_noallo$`18@18`)
+
+NoAllo_Cold_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noallo$`12@12`,
+                                                 vrel_F2_craniofacial_noallo$`18@12`)
+
+NoAllo_Warm_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noallo$`12@18`,
+                                                 vrel_F2_craniofacial_noallo$`18@18`)
 
