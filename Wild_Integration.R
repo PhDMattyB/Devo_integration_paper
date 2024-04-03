@@ -32,25 +32,27 @@ dim(wild_gpa$coords)
 
 # Allometry ---------------------------------------------------------------
 
-allometry_model1 = procD.lm(wild_gpa$coords ~ wild_gpa$Csize, 
+allometry_model1 = procD.lm(wild_gpa$coords ~ log(wild_gpa$Csize), 
          iter = 999, 
          RRPP = T)
 summary(allometry_model1)
 
 
-allometry_model2 = procD.lm(wild_gpa$coords ~ wild_gpa$Csize * identifiers$Lake, 
-                            iter = 999, 
-                            RRPP = T)
-summary(allometry_model2)
+# allometry_model2 = procD.lm(wild_gpa$coords ~ wild_gpa$Csize * identifiers$Lake, 
+#                             iter = 999, 
+#                             RRPP = T)
+# summary(allometry_model2)
+# 
+# 
+# allometry_model3 = procD.lm(wild_gpa$coords ~ wild_gpa$Csize * identifiers$Morph, 
+#                             iter = 999, 
+#                             RRPP = T)
+# summary(allometry_model3)
+# 
 
-
-allometry_model3 = procD.lm(wild_gpa$coords ~ wild_gpa$Csize * identifiers$Morph, 
-                            iter = 999, 
-                            RRPP = T)
-summary(allometry_model3)
-
-
-allometry_model4 = procD.lm(wild_gpa$coords ~ wild_gpa$Csize * identifiers$Lake_morph, 
+allometry_model4 = procD.lm(wild_gpa$coords ~ log(wild_gpa$Csize) * identifiers$Lake_morph, 
                             iter = 999, 
                             RRPP = T)
 summary(allometry_model4)
+
+
