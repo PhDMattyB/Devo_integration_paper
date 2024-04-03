@@ -242,3 +242,33 @@ NoAllo_Cold_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noa
 NoAllo_Warm_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noallo$`12@18`,
                                                  vrel_F2_craniofacial_noallo$`18@18`)
 
+
+
+# Going deeper into lake differences in plasticity -----------------------------------------------------
+
+F2_craniofacial_gpa = gpagen(F2_craniofacial,
+                             print.progress = F)
+
+## This doesn't work for some reason, can't subset on multiple categories?
+subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,
+                                              identifiers$Full_temp)
+
+subset_F2_craniofacial_coords = coords.subset(subset_F2_craniofacial_coords$coords,
+                                              identifiers$Lake_morph)
+
+vrel_F2_craniofacial = Map(function(x) integration.Vrel(x),
+                           subset_F2_craniofacial_coords)
+
+Cold_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@12`,
+                                             vrel_F2_craniofacial$`12@18`)
+
+Warm_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`18@12`,
+                                             vrel_F2_craniofacial$`18@18`)
+
+Cold_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@12`,
+                                                 vrel_F2_craniofacial$`18@12`)
+
+Warm_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@18`,
+                                                 vrel_F2_craniofacial$`18@18`)
+
+
