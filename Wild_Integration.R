@@ -178,3 +178,52 @@ GTS_CSWY_craniofacial = compare.ZVrel(vrel_wild_craniofacial$CSWY,
 
 
 # wild craniofacial integration no allometry -------------------------------------------
+
+
+wild_craniofacial = readland.tps('Wild_Craniofacial_LM.TPS', 
+                                 specID = 'imageID')
+
+identifiers = read_csv('TPS_Wild_metadata.csv') 
+
+## superimposition on the entire dataset
+wild_craniofacial_gpa = gpagen(wild_craniofacial, 
+                               print.progress = F)
+
+
+craniofacial_allometry = procD.lm(wild_craniofacial_gpa$coords ~ log(wild_craniofacial_gpa$Csize), 
+                            iter = 999, 
+                            RRPP = T)
+summary(craniofacial_allometry)
+
+
+craniofacial_resid = arrayspecs(craniofacial_allometry$residuals, 
+                         p = dim(wild_craniofacial_gpa$coords)[1], 
+                         k = dim(wild_craniofacial_gpa$coords)[2])
+craniofacial_allo_adj = craniofacial_resid + array(wild_craniofacial_gpa$consensus, 
+                                          dim(craniofacial_resid))
+
+
+
+wild_craniofacial_coords_noallo = coords.subset(craniofacial_allo_adj, 
+                                                identifiers$Lake_morph)
+
+vrel_wild_craniofacial_noallo = Map(function(x) integration.Vrel(x), 
+                             wild_craniofacial_coords_noallo)
+
+ASHN_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$ASHNC, 
+                                  vrel_wild_craniofacial_noallo$ASHNW)
+
+MYV_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$MYVC, 
+                                 vrel_wild_craniofacial_noallo$MYVW)
+
+SKR_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$SKRC, 
+                                 vrel_wild_craniofacial_noallo$SKRW)
+
+STN_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$STNC, 
+                                 vrel_wild_craniofacial_noallo$STNW)
+
+RKLT_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$RKLTC, 
+                                  vrel_wild_craniofacial_noallo$RKLTW)
+
+GTS_CSWY_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$CSWY, 
+                                      vrel_wild_craniofacial_noallo$GTS)
