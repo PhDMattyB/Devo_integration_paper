@@ -39,7 +39,7 @@ F2_allometry_adj_shape = F2_shape_resid + array(F2_gpa$consensus,
                                           dim(F2_shape_resid))
 
 
-# wild integration analysis -----------------------------------------------
+# F2 integration analysis -----------------------------------------------
 
 ## integration with allometric variation
 
@@ -86,7 +86,7 @@ GTS_CSWY_noallo_compare = compare.ZVrel(vrel_F2_coords_allo_adj$CSWY,
 
 
 
-# wild craniofacial integration -------------------------------------------
+# F2 craniofacial integration -------------------------------------------
 
 ## integration of craniofacial patterns with allometric variation included
 
