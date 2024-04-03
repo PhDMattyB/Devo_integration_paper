@@ -16,10 +16,11 @@ library(vcvComp)
 library(factoextra)
 library(tidyverse)
 
-wild_tps = readland.tps('Wild_Final.TPS', 
+wild_tps = readland.tps('F2_No_GT.TPS', 
                         specID = 'imageID')
 
-identifiers = read_csv('TPS_Wild_metadata.csv') 
+identifiers = read_csv('F2_No_GT_Names.CSV', 
+                       col_names = F) 
 
 ## superimposition on the entire dataset
 wild_gpa = gpagen(wild_tps, 
