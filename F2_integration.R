@@ -167,7 +167,7 @@ GTS_CSWY_noallo_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noallo$CSWY,
 
 
 
-# Integration between ecotypes ---------------------------------------------
+# Integration plasticity  ---------------------------------------------
 
 F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
                                  specID = 'imageID')
@@ -180,14 +180,22 @@ F2_craniofacial_gpa = gpagen(F2_craniofacial,
 
 
 subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,
-                                                identifiers$Morph)
+                                                identifiers$Full_temp)
 
 vrel_F2_craniofacial = Map(function(x) integration.Vrel(x),
                              subset_F2_craniofacial_coords)
 
-Ecotype_craniofacial = compare.ZVrel(vrel_F2_craniofacial$Cold,
-                                     vrel_F2_craniofacial$Warm)
+Cold_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@12`,
+                                     vrel_F2_craniofacial$`12@18`)
 
+Warm_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`18@12`,
+                                        vrel_F2_craniofacial$`18@18`)
+
+Cold_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@12`,
+                                             vrel_F2_craniofacial$`18@12`)
+
+Warm_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@18`,
+                                             vrel_F2_craniofacial$`18@18`)
 
 
 ## Analysis with no allometric variation
