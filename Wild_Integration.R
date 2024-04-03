@@ -29,6 +29,9 @@ wild_gpa$coords
 dim(wild_gpa$coords)
 
 
+
+# Allometry ---------------------------------------------------------------
+
 allometry_model1 = procD.lm(wild_gpa$coords ~ wild_gpa$Csize, 
          iter = 999, 
          RRPP = T)
