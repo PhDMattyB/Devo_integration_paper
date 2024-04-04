@@ -243,10 +243,6 @@ NoAllo_Warm_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noa
                                                  vrel_F2_craniofacial_noallo$`18@18`)
 
 
-
-# Under construction ------------------------------------------------------
-
-
 # Going deeper into lake differences in plasticity -----------------------------------------------------
 
 F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
@@ -306,3 +302,67 @@ SKRC_12_Trans = compare.ZVrel(vrel_F2_craniofacial$`SKRC_12@12`,
 
 SKRC_18_trans = compare.ZVrel(vrel_F2_craniofacial$`SKRC_12@18`,
                                vrel_F2_craniofacial$`SKRC_18@18`)
+
+
+SKRW_12_plasticity = compare.ZVrel(vrel_F2_craniofacial$`SKRW_12@12`,
+                                   vrel_F2_craniofacial$`SKRW_12@18`)
+
+SKRW_18_plasticity = compare.ZVrel(vrel_F2_craniofacial$`SKRW_18@12`,
+                                   vrel_F2_craniofacial$`SKRW_18@18`)
+
+SKRW_12_Trans = compare.ZVrel(vrel_F2_craniofacial$`SKRW_12@12`,
+                              vrel_F2_craniofacial$`SKRW_18@12`)
+
+SKRW_18_trans = compare.ZVrel(vrel_F2_craniofacial$`SKRW_12@18`,
+                              vrel_F2_craniofacial$`SKRW_18@18`)
+
+
+MYVC_12_plasticity = compare.ZVrel(vrel_F2_craniofacial$`MYVC_12@12`,
+                                   vrel_F2_craniofacial$`MYVC_12@18`)
+
+MYVC_18_plasticity = compare.ZVrel(vrel_F2_craniofacial$`MYVC_18@12`,
+                                   vrel_F2_craniofacial$`MYVC_18@18`)
+
+MYVC_12_Trans = compare.ZVrel(vrel_F2_craniofacial$`MYVC_12@12`,
+                              vrel_F2_craniofacial$`MYVC_18@12`)
+
+MYVC_18_trans = compare.ZVrel(vrel_F2_craniofacial$`MYVC_12@18`,
+                              vrel_F2_craniofacial$`MYVC_18@18`)
+
+MYVW_12_plasticity = compare.ZVrel(vrel_F2_craniofacial$`MYVW_12@12`,
+                                   vrel_F2_craniofacial$`MYVW_12@18`)
+
+MYVW_18_plasticity = compare.ZVrel(vrel_F2_craniofacial$`MYVW_18@12`,
+                                   vrel_F2_craniofacial$`MYVW_18@18`)
+
+MYVW_12_Trans = compare.ZVrel(vrel_F2_craniofacial$`MYVW_12@12`,
+                              vrel_F2_craniofacial$`MYVW_18@12`)
+
+MYVW_18_trans = compare.ZVrel(vrel_F2_craniofacial$`MYVW_12@18`,
+                              vrel_F2_craniofacial$`MYVW_18@18`)
+
+
+GTS_12_plasticity = compare.ZVrel(vrel_F2_craniofacial$`GTSW_12@12`,
+                                   vrel_F2_craniofacial$`GTSW_12@18`)
+
+GTS_18_plasticity = compare.ZVrel(vrel_F2_craniofacial$`GTSW_18@12`,
+                                   vrel_F2_craniofacial$`GTSW_18@18`)
+
+GTS_12_Trans = compare.ZVrel(vrel_F2_craniofacial$`GTSW_12@12`,
+                              vrel_F2_craniofacial$`GTSW_18@12`)
+
+GTS_18_trans = compare.ZVrel(vrel_F2_craniofacial$`GTSW_12@18`,
+                              vrel_F2_craniofacial$`GTSW_18@18`)
+
+CSWYC_12_plasticity = compare.ZVrel(vrel_F2_craniofacial$`CSWYC_12@12`,
+                                   vrel_F2_craniofacial$`CSWYC_12@18`)
+
+CSWYC_18_plasticity = compare.ZVrel(vrel_F2_craniofacial$`CSWYC_18@12`,
+                                   vrel_F2_craniofacial$`CSWYC_18@18`)
+
+CSWYC_12_Trans = compare.ZVrel(vrel_F2_craniofacial$`CSWYC_12@12`,
+                              vrel_F2_craniofacial$`CSWYC_18@12`)
+
+CSWYC_18_trans = compare.ZVrel(vrel_F2_craniofacial$`CSWYC_12@18`,
+                              vrel_F2_craniofacial$`CSWYC_18@18`)
+
