@@ -281,3 +281,28 @@ ASHNC_12_Trans = compare.ZVrel(vrel_F2_craniofacial$`ASHNC_12@12`,
 ASHNC_18_trans = compare.ZVrel(vrel_F2_craniofacial$`ASHNC_12@18`,
                                     vrel_F2_craniofacial$`ASHNC_18@18`)
 
+
+ASHNW_12_plasticity = compare.ZVrel(vrel_F2_craniofacial$`ASHNW_12@12`,
+                                    vrel_F2_craniofacial$`ASHNW_12@18`)
+
+ASHNW_18_plasticity = compare.ZVrel(vrel_F2_craniofacial$`ASHNW_18@12`,
+                                    vrel_F2_craniofacial$`ASHNW_18@18`)
+
+ASHNW_12_Trans = compare.ZVrel(vrel_F2_craniofacial$`ASHNW_12@12`,
+                               vrel_F2_craniofacial$`ASHNW_18@12`)
+
+ASHNW_18_trans = compare.ZVrel(vrel_F2_craniofacial$`ASHNW_12@18`,
+                               vrel_F2_craniofacial$`ASHNW_18@18`)
+
+
+SKRC_12_plasticity = compare.ZVrel(vrel_F2_craniofacial$`SKRC_12@12`,
+                                    vrel_F2_craniofacial$`SKRC_12@18`)
+
+SKRC_18_plasticity = compare.ZVrel(vrel_F2_craniofacial$`SKRC_18@12`,
+                                    vrel_F2_craniofacial$`SKRC_18@18`)
+
+SKRC_12_Trans = compare.ZVrel(vrel_F2_craniofacial$`SKRC_12@12`,
+                               vrel_F2_craniofacial$`SKRC_18@12`)
+
+SKRC_18_trans = compare.ZVrel(vrel_F2_craniofacial$`SKRC_12@18`,
+                               vrel_F2_craniofacial$`SKRC_18@18`)
