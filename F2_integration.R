@@ -263,7 +263,6 @@ identifiers = read_csv('F2_metadata.csv') %>%
 F2_craniofacial_gpa = gpagen(F2_craniofacial,
                              print.progress = F)
 
-## This doesn't work for some reason, can't subset on multiple categories?
 subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,
                                               identifiers$Lake_Morph_Full_Temp)
 
