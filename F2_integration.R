@@ -249,29 +249,36 @@ NoAllo_Warm_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noa
 
 # Going deeper into lake differences in plasticity -----------------------------------------------------
 
+F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
+                               specID = 'imageID')
+
+identifiers = read_csv('F2_metadata.csv') %>% 
+  unite('Lake_Morph_Full_Temp', 
+        Lake_morph, 
+        Full_temp, 
+        sep = '_', 
+        remove = F)
+
+
 F2_craniofacial_gpa = gpagen(F2_craniofacial,
                              print.progress = F)
 
 ## This doesn't work for some reason, can't subset on multiple categories?
 subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,
-                                              identifiers$Full_temp)
-
-subset_F2_craniofacial_coords = coords.subset(subset_F2_craniofacial_coords$coords,
-                                              identifiers$Lake_morph)
+                                              identifiers$Lake_Morph_Full_Temp)
 
 vrel_F2_craniofacial = Map(function(x) integration.Vrel(x),
                            subset_F2_craniofacial_coords)
 
-Cold_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@12`,
-                                             vrel_F2_craniofacial$`12@18`)
+ASHNC_12_plasticity = compare.ZVrel(vrel_F2_craniofacial$`ASHNC_12@12`,
+                                             vrel_F2_craniofacial$`ASHNC_12@18`)
 
-Warm_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`18@12`,
-                                             vrel_F2_craniofacial$`18@18`)
+ASHNC_18_plasticity = compare.ZVrel(vrel_F2_craniofacial$`ASHNC_18@12`,
+                                    vrel_F2_craniofacial$`ASHNC_18@18`)
 
-Cold_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@12`,
-                                                 vrel_F2_craniofacial$`18@12`)
+ASHNC_12_Trans = compare.ZVrel(vrel_F2_craniofacial$`ASHNC_12@12`,
+                                    vrel_F2_craniofacial$`ASHNC_18@12`)
 
-Warm_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@18`,
-                                                 vrel_F2_craniofacial$`18@18`)
-
+ASHNC_18_trans = compare.ZVrel(vrel_F2_craniofacial$`ASHNC_12@18`,
+                                    vrel_F2_craniofacial$`ASHNC_18@18`)
 
