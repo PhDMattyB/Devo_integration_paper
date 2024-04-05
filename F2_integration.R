@@ -390,6 +390,8 @@ subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,
 vrel_F2_craniofacial = Map(function(x) integration.Vrel(x),
                            subset_F2_craniofacial_coords)
 
+## ASHN shows a high degree of plasticity in the F2 generation
+## and no effect of the partental F1 generation on integration
 ASHN_12_plasticity = compare.ZVrel(vrel_F2_craniofacial$`ASHN_12@12`,
                                     vrel_F2_craniofacial$`ASHN_12@18`)
 
