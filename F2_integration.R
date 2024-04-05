@@ -165,9 +165,129 @@ GTS_CSWY_noallo_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noallo$CSWY,
                                              vrel_F2_craniofacial_noallo$GTS)
 
 
+# 4bar linkage integration with ALLOMETRY ---------------------------------
+F2_4bar = readland.tps('F2_4bar_linkage.TPS', 
+                       specID = 'imageID')
+
+identifiers = read_csv('F2_metadata.csv') 
+
+## superimposition on the entire dataset
+F2_4bar_gpa = gpagen(F2_4bar, 
+                     print.progress = F)
 
 
-# Integration plasticity  ---------------------------------------------
+F2_4bar_coords = coords.subset(F2_4bar_gpa$coords, 
+                                      identifiers$Lake_morph)
+
+vrel_F2_4bar = Map(function(x) integration.Vrel(x), 
+                          F2_4bar_coords)
+
+ASHN_4bar = compare.ZVrel(vrel_F2_4bar$ASHNC, 
+                                 vrel_F2_4bar$ASHNW)
+
+MYV_4bar = compare.ZVrel(vrel_F2_4bar$MYVC, 
+                                vrel_F2_4bar$MYVW)
+
+SKR_4bar = compare.ZVrel(vrel_F2_4bar$SKRC, 
+                                vrel_F2_4bar$SKRW)
+
+GTS_CSWY_4bar = compare.ZVrel(vrel_F2_4bar$CSWY, 
+                                     vrel_F2_4bar$GTS)
+
+
+
+# 4-bar linkage integration NO ALLOMETRY -----------------------------------------------
+F2_4bar = readland.tps('F2_4bar_linkage.TPS', 
+                               specID = 'imageID')
+
+identifiers = read_csv('F2_metadata.csv') 
+
+## superimposition on the entire dataset
+F2_4bar_gpa = gpagen(F2_4bar, 
+                             print.progress = F)
+
+
+F2_4bar_allometry = procD.lm(F2_4bar_gpa$coords ~ log(F2_4bar_gpa$Csize), 
+                                  iter = 999, 
+                                  RRPP = T)
+summary(F2_4bar_allometry)
+
+
+F2_4bar_resid = arrayspecs(F2_4bar_allometry$residuals, 
+                                p = dim(F2_4bar_gpa$coords)[1], 
+                                k = dim(F2_4bar_gpa$coords)[2])
+F2_4bar_allo_adj = F2_4bar_resid + array(F2_4bar_gpa$consensus, 
+                                                   dim(F2_4bar_resid))
+
+
+
+F2_4bar_coords_noallo = coords.subset(F2_4bar_allo_adj, 
+                                              identifiers$Lake_morph)
+
+vrel_F2_4bar_noallo = Map(function(x) integration.Vrel(x), 
+                                  F2_4bar_coords_noallo)
+
+ASHN_noallo_4bar = compare.ZVrel(vrel_F2_4bar_noallo$ASHNC, 
+                                         vrel_F2_4bar_noallo$ASHNW)
+
+MYV_noallo_4bar = compare.ZVrel(vrel_F2_4bar_noallo$MYVC, 
+                                        vrel_F2_4bar_noallo$MYVW)
+
+SKR_noallo_4bar = compare.ZVrel(vrel_F2_4bar_noallo$SKRC, 
+                                        vrel_F2_4bar_noallo$SKRW)
+
+GTS_CSWY_noallo_4bar = compare.ZVrel(vrel_F2_4bar_noallo$CSWY, 
+                                             vrel_F2_4bar_noallo$GTS)
+
+
+
+
+# 4bar integration plasticity ---------------------------------------------
+
+F2_4bar = readland.tps('F2_4bar_linkage.TPS', 
+                       specID = 'imageID')
+
+identifiers = read_csv('F2_metadata.csv') 
+
+## superimposition on the entire dataset
+F2_4bar_gpa = gpagen(F2_4bar, 
+                     print.progress = F)
+
+F2_4bar_allometry = procD.lm(F2_4bar_gpa$coords ~ log(F2_4bar_gpa$Csize), 
+                             iter = 999, 
+                             RRPP = T)
+summary(F2_4bar_allometry)
+
+
+F2_4bar_resid = arrayspecs(F2_4bar_allometry$residuals, 
+                           p = dim(F2_4bar_gpa$coords)[1], 
+                           k = dim(F2_4bar_gpa$coords)[2])
+F2_4bar_allo_adj = F2_4bar_resid + array(F2_4bar_gpa$consensus, 
+                                         dim(F2_4bar_resid))
+
+F2_4bar_coords = coords.subset(F2_4bar_allo_adj, 
+                               identifiers$Full_temp)
+
+# F2_4bar_coords = coords.subset(F2_4bar_gpa$coords, 
+#                                identifiers$Full_temp)
+
+
+vrel_F2_4bar = Map(function(x) integration.Vrel(x),
+                           F2_4bar_coords)
+
+Cold_Plasticity_4bar = compare.ZVrel(vrel_F2_4bar$`12@12`,
+                                             vrel_F2_4bar$`12@18`)
+
+Warm_Plasticity_4bar = compare.ZVrel(vrel_F2_4bar$`18@12`,
+                                             vrel_F2_4bar$`18@18`)
+
+Cold_off_Plasticity_4bar = compare.ZVrel(vrel_F2_4bar$`12@12`,
+                                                 vrel_F2_4bar$`18@12`)
+
+Warm_off_Plasticity_4bar = compare.ZVrel(vrel_F2_4bar$`12@18`,
+                                                 vrel_F2_4bar$`18@18`)
+
+# Craniofacial Integration plasticity  ---------------------------------------------
 
 F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
                                  specID = 'imageID')
