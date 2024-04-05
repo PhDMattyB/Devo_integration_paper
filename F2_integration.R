@@ -291,16 +291,44 @@ Warm_off_Plasticity_4bar = compare.ZVrel(vrel_F2_4bar$`12@18`,
 
 # 4bar integration interlandmark dist -------------------------------------
 
-F2_4bar = readland.tps('F2_4bar_linkage.TPS', 
-                       specID = 'imageID')
+# F2_4bar = readland.tps('F2_4bar_linkage.TPS', 
+#                        specID = 'imageID')
+
+F2_4bar = readland.tps('F2_No_GT.TPS', 
+                      specID = 'imageID')
 
 identifiers = read_csv('F2_metadata.csv') 
 
 ## superimposition on the entire dataset
-F2_4bar_gpa = gpagen(F2_4bar, 
+F2_4bar_gpa = gpagen(F2_4bar,
                      print.progress = F)
 
+# lmks = matrix(c(8,24,8,27,23,27,23,24), 
+#               ncol = 2, 
+#               byrow = T, 
+#               dimnames = list(c('824_dist', '827_dist', '2327_dist', '2324_dist'), c('start', 'end')))
 
+lmks = data.frame(dist1_824 = c(8, 24), 
+                  dist2_827 = c(8, 27), 
+                  dist3_2327 = c(23, 27), 
+                  dist4_2324 = c(23, 24), 
+                  row.names = c('start', 
+                                'end'))
+
+A = F2_4bar_gpa$coords
+F2_4bar_lineardist = interlmkdist(A, 
+                                  lmks)
+
+arrayspecs(F2_4bar_lineardist, 
+           4, 
+           3)
+
+## linear distances not in 3d array
+F2_4bar_dist = coords.subset(F2_4bar_lineardist,
+                             identifiers$Full_temp)
+
+vrel_F2_craniofacial = Map(function(x) integration.Vrel(x),
+                           subset_F2_craniofacial_coords)
 
 # Craniofacial Integration plasticity  ---------------------------------------------
 
