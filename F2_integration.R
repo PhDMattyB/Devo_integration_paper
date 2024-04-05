@@ -288,6 +288,20 @@ Warm_off_Plasticity_4bar = compare.ZVrel(vrel_F2_4bar$`12@18`,
                                                  vrel_F2_4bar$`18@18`)
 
 
+
+# 4bar integration interlandmark dist -------------------------------------
+
+F2_4bar = readland.tps('F2_4bar_linkage.TPS', 
+                       specID = 'imageID')
+
+identifiers = read_csv('F2_metadata.csv') 
+
+## superimposition on the entire dataset
+F2_4bar_gpa = gpagen(F2_4bar, 
+                     print.progress = F)
+
+
+
 # Craniofacial Integration plasticity  ---------------------------------------------
 
 F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
