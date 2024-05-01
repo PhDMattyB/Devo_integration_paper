@@ -78,8 +78,6 @@ plot(PCA_allometry,
 PCA_allometry_adj = gm.prcomp(allometry_adj_shape)
 plot(PCA_allometry_adj)
 
-
-
 # Integration analyses ----------------------------------------------------
 
 # wild integration analysis -----------------------------------------------
