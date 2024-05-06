@@ -14,11 +14,28 @@ library(vcvComp)
 library(factoextra)
 library(tidyverse)
 
+
+
+# Transgenerational plasticity all lakes combo ----------------------------
+
+
 F2_tps = readland.tps('F2_No_GT.TPS', 
                       specID = 'imageID')
 
 identifiers = read_csv('F2_Metadata.CSV', 
                        col_names = T) 
+
+F2_craniofacial_gpa = gpagen(F2_craniofacial,
+                             print.progress = F)
+
+
+subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,
+                                              identifiers$Full_temp)
+
+
+
+
+# Transgenerational plasticity per lake -----------------------------------
 
 
 F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
@@ -37,3 +54,5 @@ F2_craniofacial_gpa = gpagen(F2_craniofacial,
 
 subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,
                                               identifiers$Ecotype_Pair_Full_Temp)
+
+
