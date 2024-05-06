@@ -84,7 +84,8 @@ SKR_noallo_compare = compare.ZVrel(vrel_F2_coords_allo_adj$SKRC,
 GTS_CSWY_noallo_compare = compare.ZVrel(vrel_F2_coords_allo_adj$CSWY, 
                                         vrel_F2_coords_allo_adj$GTS)
 
-
+## Integration between whole body shape between the ecotypes 
+## in the F2 generation does not appear to be different
 
 # F2 craniofacial integration -------------------------------------------
 
@@ -106,6 +107,7 @@ subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,
 vrel_F2_craniofacial = Map(function(x) integration.Vrel(x),
                              subset_F2_craniofacial_coords)
 
+## Difference in craniofacial integration between ASHN morphs
 ASHN_craniofacial = compare.ZVrel(vrel_F2_craniofacial$ASHNC,
                                   vrel_F2_craniofacial$ASHNW)
 

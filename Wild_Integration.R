@@ -113,7 +113,7 @@ GTS_CSWY_compare = compare.ZVrel(vrel_wild_coords$CSWY,
 ## integration with allometric variation removed
 ## standardized for allometry
 
-subset_wild_coords_allo_adj = coords.subset(adj_shape, 
+subset_wild_coords_allo_adj = coords.subset(allometry_adj_shape, 
                                    identifiers$Lake_morph)
 
 vrel_wild_coords_allo_adj = Map(function(x) integration.Vrel(x), 
@@ -217,6 +217,8 @@ ASHN_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$ASHNC,
 MYV_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$MYVC, 
                                  vrel_wild_craniofacial_noallo$MYVW)
 
+## This is the only model that shows that there is significantly different
+## integration in craniofacial shape between the two ecotypes
 SKR_noallo_craniofacial = compare.ZVrel(vrel_wild_craniofacial_noallo$SKRC, 
                                  vrel_wild_craniofacial_noallo$SKRW)
 
