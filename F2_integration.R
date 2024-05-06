@@ -366,9 +366,14 @@ Warm_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`18@12`,
 ## Effect size of plastic response is greater when parents are from
 ## 12 degrees and not 18 degrees
 
+
+## When parents are from different temps and F2 at 12, 
+## there is no difference in integration
 Cold_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@12`,
                                              vrel_F2_craniofacial$`18@12`)
 
+## When parents are from different temps and F2 at 12, 
+## there is no difference in integration
 Warm_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@18`,
                                              vrel_F2_craniofacial$`18@18`)
 
@@ -416,7 +421,13 @@ NoAllo_Cold_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noa
 
 NoAllo_Warm_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noallo$`12@18`,
                                                  vrel_F2_craniofacial_noallo$`18@18`)
+## When allometry is removed, the pattern of integration plasticity stays
+## When parental temps are from 12 or 18 and the offspring are raised
+## under different temps then the patterns of integration are different
 
+## If parents are from different temperatures and offspring are raised 
+## under the same temperature, then there is no difference in integration
+## Essentially the parental temperature doesn't seem to be doing to much
 
 # Ecotype plasticity and transgenerational integration -----------------------------------------------------
 
@@ -541,7 +552,9 @@ CSWYC_12_Trans = compare.ZVrel(vrel_F2_craniofacial$`CSWYC_12@12`,
 CSWYC_18_trans = compare.ZVrel(vrel_F2_craniofacial$`CSWYC_12@18`,
                               vrel_F2_craniofacial$`CSWYC_18@18`)
 
-
+## There appears to be no differences in integration between 
+## offspring raised at different temps or if their parents were
+## raised at different temps. 
 
 # Lake plasticity and transgenerational integration -----------------------
 
