@@ -55,4 +55,26 @@ F2_craniofacial_gpa = gpagen(F2_craniofacial,
 subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,
                                               identifiers$Ecotype_Pair_Full_Temp)
 
+subset_F2_craniofacial_coords 
 
+
+F2_data_frame = data.frame(Y = two.d.array(F2_craniofacial_gpa$coords), 
+           Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+           parent_temp = identifiers$Parent_temp, 
+           offspring_temp = identifiers$Offspring_temp, 
+           morph = identifiers$Morph, 
+           population = identifiers$Lake)
+
+ASHN_df = F2_data_frame[F2_data_frame$population == 'ASHN',]
+
+ASHN_df = ASHN_df %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  rename(individual = rowname)
+
+# lm.rrpp(F2_craniofacial_gpa$coords ~ ASHN_df$)
+
+fit <- lm.rrpp(coords ~ logSize + Sex*Pop, SS.type = "I", 
+               data = Pupfish, print.progress = FALSE,
+               turbo = FALSE, verbose = TRUE) 
+summary(fit, formula = FALSE)
