@@ -154,6 +154,7 @@ F2_craniofacial_coords_noallo = coords.subset(craniofacial_allo_adj,
 vrel_F2_craniofacial_noallo = Map(function(x) integration.Vrel(x), 
                                     F2_craniofacial_coords_noallo)
 
+## Difference in craniofacial integration between ASHN ecotypes
 ASHN_noallo_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noallo$ASHNC, 
                                          vrel_F2_craniofacial_noallo$ASHNW)
 
@@ -165,6 +166,9 @@ SKR_noallo_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noallo$SKRC,
 
 GTS_CSWY_noallo_craniofacial = compare.ZVrel(vrel_F2_craniofacial_noallo$CSWY, 
                                              vrel_F2_craniofacial_noallo$GTS)
+
+## patterns of integration between F2 ecotypes hold up regardless of 
+## allometry. Craniofacial integration only differs in ASHN ecotypes
 
 
 # 4bar linkage integration with ALLOMETRY ---------------------------------
@@ -196,7 +200,7 @@ SKR_4bar = compare.ZVrel(vrel_F2_4bar$SKRC,
 GTS_CSWY_4bar = compare.ZVrel(vrel_F2_4bar$CSWY, 
                                      vrel_F2_4bar$GTS)
 
-
+## 4bar linkage integration on different between GTS and CSWY
 
 # 4-bar linkage integration NO ALLOMETRY -----------------------------------------------
 F2_4bar = readland.tps('F2_4bar_linkage.TPS', 
@@ -241,7 +245,8 @@ SKR_noallo_4bar = compare.ZVrel(vrel_F2_4bar_noallo$SKRC,
 GTS_CSWY_noallo_4bar = compare.ZVrel(vrel_F2_4bar_noallo$CSWY, 
                                              vrel_F2_4bar_noallo$GTS)
 
-
+## Getting rid of allometry got rid of the differences in integration
+## between GTS and CSWY
 
 
 # 4bar integration plasticity ---------------------------------------------
@@ -350,11 +355,16 @@ subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,
 vrel_F2_craniofacial = Map(function(x) integration.Vrel(x),
                              subset_F2_craniofacial_coords)
 
+## integration differs between F2 12 and 18 while parents from 12 degrees
 Cold_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@12`,
                                      vrel_F2_craniofacial$`12@18`)
 
+## Integration differs between F2 12 and 18 while parents from 18
 Warm_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`18@12`,
                                         vrel_F2_craniofacial$`18@18`)
+
+## Effect size of plastic response is greater when parents are from
+## 12 degrees and not 18 degrees
 
 Cold_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@12`,
                                              vrel_F2_craniofacial$`18@12`)
