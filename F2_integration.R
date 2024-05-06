@@ -592,6 +592,10 @@ ASHN_12_Trans = compare.ZVrel(vrel_F2_craniofacial$`ASHN_12@12`,
 ASHN_18_trans = compare.ZVrel(vrel_F2_craniofacial$`ASHN_12@18`,
                                vrel_F2_craniofacial$`ASHN_18@18`)
 
+## ASHN shows the pattern of integration that we've seen in the F2
+## with all populations combined. Patterns of craniofacial integration
+## changes when the ecotypes are raised under different temperatures 
+## but when the parental temps differ there is no difference in integration
 
 
 SKR_12_plasticity = compare.ZVrel(vrel_F2_craniofacial$`SKR_12@12`,
@@ -632,3 +636,19 @@ GTS_CSWY_12_Trans = compare.ZVrel(vrel_F2_craniofacial$`GTS_CSWY_12@12`,
 
 GTS_CSWY_18_trans = compare.ZVrel(vrel_F2_craniofacial$`GTS_CSWY_12@18`,
                              vrel_F2_craniofacial$`GTS_CSWY_18@18`)
+
+
+## ASHN appears to be driving the differences in craniofacial integration
+## plasticity that we've been seeing in the F2 generation
+## There is differences in craniofacial integration when the current 
+## generation is raised at different temperatures 
+## But there doesn't appear to be an influence of parental generation
+## on patterns of craniofacial integration
+## Or even Grandparent effect of integration when you go into the specific
+## ecotype differences. 
+
+## Integration appears to be a plastic trait in ASHN only and 
+## only really due to the current temperatures they're exposed to
+## transgenerational effects appear to have minor involvement
+## However this needs to be tested in more detail
+## This is what the meeting is about, how do we actually test this? 
