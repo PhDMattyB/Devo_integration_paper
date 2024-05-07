@@ -127,6 +127,12 @@ F2_full_fitted = F2_Full_mod$LM$fitted
 # Integration test using fitted values ------------------------------------
 
 
+# Offspring fitted integration --------------------------------------------
+
+## So this is a test of integration only due to offspring temperature
+## So if offspring were raised at either 12 or 18 and does
+## not account for any transgenerational differences
+
 
 
 
