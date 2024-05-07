@@ -39,7 +39,8 @@ F2_craniofacial_gpa = gpagen(F2_craniofacial,
 F2_geo_df = geomorph.data.frame(coords = two.d.array(F2_craniofacial_gpa$coords), 
                     Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
                     parent_temp = identifiers$Parent_temp, 
-                    offspring_temp = identifiers$Offspring_temp, 
+                    offspring_temp = identifiers$Offspring_temp,
+                    grand_temp = identifiers$Grand_temp,
                     morph = identifiers$Morph, 
                     population = identifiers$Lake)
 
@@ -54,6 +55,20 @@ anova(F2_lm_test)
 
 coef(F2_lm_test, 
      test = T)
+
+F2_Full_mod = lm.rrpp(coords ~ grand_temp * parent_temp * offspring_temp, 
+                      data = F2_geo_df, 
+                      turbo = F, 
+                      verbose = T)
+
+summary(F2_Full_mod)
+
+anova(F2_Full_mod)
+
+coef(F2_Full_mod, 
+     test = T)
+
+
 
 
 # Transgenerational plasticity per lake -----------------------------------
