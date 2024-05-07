@@ -54,7 +54,6 @@ anova(F2_off_mod)
 coef(F2_off_mod, 
      test = T)
 
-F2_off_fitted = F2_off_mod$LM$fitted
 
 F2_par_mod = lm.rrpp(coords ~ parent_temp, 
                      data = F2_geo_df, 
@@ -133,8 +132,42 @@ F2_full_fitted = F2_Full_mod$LM$fitted
 ## So if offspring were raised at either 12 or 18 and does
 ## not account for any transgenerational differences
 
+F2_off_fitted = F2_off_mod$LM$fitted
+## need to convert this to a 3d array
 
 
+identifiers = read_csv('F2_Metadata.CSV', 
+                       col_names = T) %>% 
+  unite('Ecotype_Pair_Full_Temp', 
+        Ecotype_pair, 
+        Full_temp, 
+        sep = '_', 
+        remove = F)
+
+F2_off_fit_sub = coords.subset(F2_off_fitted,
+                               identifiers$Ecotype_Pair_Full_Temp)
+
+
+## integration analysis code
+subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,
+                                              identifiers$Ecotype_Pair_Full_Temp)
+
+vrel_F2_craniofacial = Map(function(x) integration.Vrel(x),
+                           subset_F2_craniofacial_coords)
+
+## ASHN shows a high degree of plasticity in the F2 generation
+## and no effect of the partental F1 generation on integration
+ASHN_12_plasticity = compare.ZVrel(vrel_F2_craniofacial$`ASHN_12@12`,
+                                   vrel_F2_craniofacial$`ASHN_12@18`)
+
+ASHN_18_plasticity = compare.ZVrel(vrel_F2_craniofacial$`ASHN_18@12`,
+                                   vrel_F2_craniofacial$`ASHN_18@18`)
+
+ASHN_12_Trans = compare.ZVrel(vrel_F2_craniofacial$`ASHN_12@12`,
+                              vrel_F2_craniofacial$`ASHN_18@12`)
+
+ASHN_18_trans = compare.ZVrel(vrel_F2_craniofacial$`ASHN_12@18`,
+                              vrel_F2_craniofacial$`ASHN_18@18`)
 
 # Transgenerational plasticity per lake -----------------------------------
 
