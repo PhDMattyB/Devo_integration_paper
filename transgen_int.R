@@ -152,10 +152,16 @@ identifiers = read_csv('F2_Metadata.CSV',
 
 F2_off_fit_sub = coords.subset(F2_off_fitted,
                                identifiers$Ecotype_Pair_Full_Temp)
+
+sum(is.na(F2_off_fit_sub))
+
 vrel_F2_off_fit = Map(function(x) integration.Vrel(x),
-                           F2_off_fit_sub)
+                      F2_off_fit_sub)
+
+
 
 ## integration analysis code
+## used previously for just F2 data
 F2_off_fit_sub = coords.subset(F2_craniofacial_gpa$coords,
                                               identifiers$Ecotype_Pair_Full_Temp)
 
