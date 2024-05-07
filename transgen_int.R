@@ -68,7 +68,35 @@ anova(F2_Full_mod)
 coef(F2_Full_mod, 
      test = T)
 
+F2_off_mod = lm.rrpp(coords ~ offspring_temp, 
+                     data = F2_geo_df, 
+                     turbo = F, 
+                     verbose = T)
 
+summary(F2_off_mod)
+anova(F2_off_mod)
+coef(F2_off_mod, 
+     test = T)
+
+F2_par_mod = lm.rrpp(coords ~ parent_temp, 
+                     data = F2_geo_df, 
+                     turbo = F, 
+                     verbose = T)
+
+summary(F2_par_mod)
+anova(F2_par_mod)
+coef(F2_par_mod, 
+     test = T)
+
+F2_grandpar_mod = lm.rrpp(coords ~ grand_temp, 
+                     data = F2_geo_df, 
+                     turbo = F, 
+                     verbose = T)
+
+summary(F2_grandpar_mod)
+anova(F2_grandpar_mod)
+coef(F2_grandpar_mod, 
+     test = T)
 
 
 # Transgenerational plasticity per lake -----------------------------------
