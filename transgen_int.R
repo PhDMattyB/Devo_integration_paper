@@ -33,19 +33,18 @@ identifiers = read_csv('F2_Metadata.CSV',
 F2_craniofacial_gpa = gpagen(F2_craniofacial,
                              print.progress = F)
 
-test_df = as.matrix(F2_craniofacial_gpa$coords)
 # subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,
 #                                               identifiers$Full_temp)
 
-F2_data_frame = data.frame(Y = two.d.array(F2_craniofacial_gpa$coords), 
-                           Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
-                           parent_temp = identifiers$Parent_temp, 
-                           offspring_temp = identifiers$Offspring_temp, 
-                           morph = identifiers$Morph, 
-                           population = identifiers$Lake)
+F2_geo_df = geomorph.data.frame(F2_craniofacial_gpa, 
+                    Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+                    parent_temp = identifiers$Parent_temp, 
+                    offspring_temp = identifiers$Offspring_temp, 
+                    morph = identifiers$Morph, 
+                    population = identifiers$Lake)
 
-lm.rrpp(test_df ~ population * morph, 
-        data = F2_data_frame)
+lm.rrpp(coords ~ population * morph, 
+        data = F2_geo_df)
 
 
 
