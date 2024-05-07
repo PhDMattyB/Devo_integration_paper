@@ -136,6 +136,12 @@ F2_off_fitted = F2_off_mod$LM$fitted
 ## need to convert this to a 3d array
 
 
+F2_off_fitted = arrayspecs(A = F2_off_fitted, 
+           p = 15, 
+           k = 2)
+
+# sum(is.na(F2_off_fitted))
+
 identifiers = read_csv('F2_Metadata.CSV', 
                        col_names = T) %>% 
   unite('Ecotype_Pair_Full_Temp', 
@@ -146,10 +152,11 @@ identifiers = read_csv('F2_Metadata.CSV',
 
 F2_off_fit_sub = coords.subset(F2_off_fitted,
                                identifiers$Ecotype_Pair_Full_Temp)
-
+vrel_F2_off_fit = Map(function(x) integration.Vrel(x),
+                           F2_off_fit_sub)
 
 ## integration analysis code
-subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,
+F2_off_fit_sub = coords.subset(F2_craniofacial_gpa$coords,
                                               identifiers$Ecotype_Pair_Full_Temp)
 
 vrel_F2_craniofacial = Map(function(x) integration.Vrel(x),
