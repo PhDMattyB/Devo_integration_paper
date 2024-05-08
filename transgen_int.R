@@ -142,6 +142,8 @@ F2_off_fitted = arrayspecs(A = F2_off_fitted,
 
 # sum(is.na(F2_off_fitted))
 
+F2_off_fitted = readland.tps('F2_offspring_fitted_values.tps')
+
 identifiers = read_csv('F2_Metadata.CSV', 
                        col_names = T) %>% 
   unite('Ecotype_Pair_Full_Temp', 
@@ -153,7 +155,10 @@ identifiers = read_csv('F2_Metadata.CSV',
 F2_off_fit_sub = coords.subset(F2_off_fitted,
                                identifiers$Ecotype_Pair_Full_Temp)
 
-sum(is.na(F2_off_fit_sub))
+# writeland.tps(F2_off_fitted, 
+#               'F2_offspring_fitted_values.tps')
+
+# sum(is.na(F2_off_fit_sub))
 
 vrel_F2_off_fit = Map(function(x) integration.Vrel(x),
                       F2_off_fit_sub)
