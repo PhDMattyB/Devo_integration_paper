@@ -142,8 +142,7 @@ F2_off_fitted = arrayspecs(A = F2_off_fitted,
 
 # sum(is.na(F2_off_fitted))
 
-F2_off_fitted = readland.tps('F2_offspring_fitted_values.tps', 
-                             negNA = T)
+F2_off_fitted = readland.tps('F2_offspring_fitted_values.tps')
 
 identifiers = read_csv('F2_Metadata.CSV', 
                        col_names = T) %>% 
@@ -156,7 +155,7 @@ identifiers = read_csv('F2_Metadata.CSV',
 F2_off_fit_sub = coords.subset(F2_off_fitted,
                                identifiers$Ecotype_Pair_Full_Temp)
 
-# writeland.tps(F2_off_fitted, 
+# writeland.tps(F2_off_fitted,
 #               'F2_offspring_fitted_values.tps')
 
 # sum(is.na(F2_off_fit_sub))
