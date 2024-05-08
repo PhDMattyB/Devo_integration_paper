@@ -18,9 +18,13 @@ library(tidyverse)
 
 # Transgenerational plasticity all lakes combo ----------------------------
 
+# 
+# F2_tps = readland.tps('F2_No_GT.TPS', 
+#                       specID = 'imageID')
 
-F2_tps = readland.tps('F2_No_GT.TPS', 
-                      specID = 'imageID')
+F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
+                               specID = 'imageID')
+
 
 identifiers = read_csv('F2_Metadata.CSV', 
                        col_names = T) %>% 
@@ -145,7 +149,11 @@ F2_off_fitted = arrayspecs(A = F2_off_fitted,
 
 # sum(is.na(F2_off_fitted))
 
-# F2_off_fitted = readland.tps('F2_offspring_fitted_values.tps')
+F2_off_fitted = readland.tps('F2_offspring_fitted_values.tps')
+
+F2_off_fitted_gpa = gpagen(F2_off_fitted,
+                             print.progress = F)
+
 
 identifiers = read_csv('F2_Metadata.CSV', 
                        col_names = T) %>% 
