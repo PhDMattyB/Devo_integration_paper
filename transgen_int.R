@@ -135,6 +135,9 @@ F2_full_fitted = F2_Full_mod$LM$fitted
 F2_off_fitted = F2_off_mod$LM$fitted
 ## need to convert this to a 3d array
 
+# F2_off_fitted %>% 
+#   as_tibble() %>% View()
+
 
 F2_off_fitted = arrayspecs(A = F2_off_fitted, 
            p = 15, 
@@ -142,7 +145,7 @@ F2_off_fitted = arrayspecs(A = F2_off_fitted,
 
 # sum(is.na(F2_off_fitted))
 
-F2_off_fitted = readland.tps('F2_offspring_fitted_values.tps')
+# F2_off_fitted = readland.tps('F2_offspring_fitted_values.tps')
 
 identifiers = read_csv('F2_Metadata.CSV', 
                        col_names = T) %>% 
@@ -158,7 +161,7 @@ F2_off_fit_sub = coords.subset(F2_off_fitted,
 # writeland.tps(F2_off_fitted,
 #               'F2_offspring_fitted_values.tps')
 
-# sum(is.na(F2_off_fit_sub))
+sum(is.na(F2_off_fit_sub))
 
 vrel_F2_off_fit = Map(function(x) integration.Vrel(x),
                       F2_off_fit_sub)
