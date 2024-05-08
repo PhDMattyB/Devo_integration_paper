@@ -142,7 +142,8 @@ F2_off_fitted = arrayspecs(A = F2_off_fitted,
 
 # sum(is.na(F2_off_fitted))
 
-F2_off_fitted = readland.tps('F2_offspring_fitted_values.tps')
+F2_off_fitted = readland.tps('F2_offspring_fitted_values.tps', 
+                             negNA = T)
 
 identifiers = read_csv('F2_Metadata.CSV', 
                        col_names = T) %>% 
