@@ -166,7 +166,7 @@ identifiers = read_csv('F2_Metadata.CSV',
         remove = F)
 
 F2_off_fit_sub = coords.subset(F2_off_fitted,
-                               identifiers$Ecotype_Pair_Full_Temp)
+                               identifiers$Lake_morph)
 
 # writeland.tps(F2_off_fitted,
 #               'F2_offspring_fitted_values.tps')
