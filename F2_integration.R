@@ -377,6 +377,11 @@ Cold_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@12`,
 Warm_off_Plasticity_craniofacial = compare.ZVrel(vrel_F2_craniofacial$`12@18`,
                                              vrel_F2_craniofacial$`18@18`)
 
+compare.ZVrel(vrel_F2_craniofacial$`12@18`,
+              vrel_F2_craniofacial$`18@12`)
+
+compare.ZVrel(vrel_F2_craniofacial$`12@12`,
+              vrel_F2_craniofacial$`18@18`)
 
 ## Analysis with no allometric variation
 
