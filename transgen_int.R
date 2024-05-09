@@ -58,6 +58,8 @@ anova(F2_off_mod)
 coef(F2_off_mod, 
      test = T)
 
+F2_off_mod$LM$fitted
+
 
 F2_par_mod = lm.rrpp(coords ~ parent_temp, 
                      data = F2_geo_df, 
@@ -149,10 +151,10 @@ F2_off_fitted = arrayspecs(A = F2_off_fitted,
 
 # sum(is.na(F2_off_fitted))
 
-F2_off_fitted = readland.tps('F2_offspring_fitted_values.tps')
-
-F2_off_fitted_gpa = gpagen(F2_off_fitted,
-                             print.progress = F)
+# F2_off_fitted = readland.tps('F2_offspring_fitted_values.tps')
+# 
+# F2_off_fitted_gpa = gpagen(F2_off_fitted,
+#                              print.progress = F)
 
 
 identifiers = read_csv('F2_Metadata.CSV', 
