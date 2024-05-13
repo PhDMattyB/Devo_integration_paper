@@ -36,7 +36,13 @@ identifiers = read_csv('F2_metadata.csv') %>%
         Ecotype_pair, 
         Full_temp, 
         sep = '_', 
-        remove = F)
+        remove = F) %>% 
+  mutate(across(c('Lake_morph',
+                  'Offspring_temp',
+                  'Parent_temp',
+                  'Grand_temp'),
+                factor))
+
 
 ## perform gpa on craniofacial data
 F2_craniofacial_gpa = gpagen(F2_craniofacial,
@@ -50,10 +56,24 @@ F2_geo_df = geomorph.data.frame(coords = two.d.array(F2_craniofacial_gpa$coords)
                                 offspring_temp = identifiers$Offspring_temp,
                                 grand_temp = identifiers$Grand_temp,
                                 morph = identifiers$Morph, 
-                                population = identifiers$Lake, 
-                                lake_morph = identifiers$lake_morph_Pair_Full_Temp)
+                                population = identifiers$Lake,
+                                lake_morph = identifiers$Lake_morph,
+                                lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
 
-F2_off_temp = lm.rrpp(coords ~ offspring_temp, 
-                     data = F2_geo_df, 
-                     turbo = F, 
-                     verbose = T)
+# F2_off_temp = lm.rrpp(coords ~ offspring_temp * lake_morph,
+#                      data = F2_geo_df)
+# 
+F2_off_temp = procD.lm(coords ~ offspring_temp * lake_morph, 
+                data = F2_geo_df)
+
+
+prep.lda(F2_off_temp, 
+         inherent.groups = TRUE) # see groups available
+
+lda.args = prep.lda(F2_off_temp) 
+
+CVA = do.call(lda, lda.args)
+CVA # 3 CVs produced
+CVA$scaling # will return all CVs
+
+CVA$means
