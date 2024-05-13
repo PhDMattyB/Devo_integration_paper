@@ -1489,13 +1489,13 @@ F2_transgen_pcor$p.value
 
 
 # compare integration between lm sets -------------------------------------
-F2_off_temp_cranio_ld1 = F2_off_temp_body_cva_scores$LD1
-F2_off_temp_4bar_ld1 = F2_off_temp_4bar_cva_scores$LD1
-F2_off_temp_body_ld1 = F2_off_temp_body_cva_scores$LD1
+F2_off_temp_cranio_ld1 = read_csv('F2_off_temp_craniofacial_cva.csv')
+F2_off_temp_4bar_ld1 = read_csv('F2_off_temp_4bar_cva.csv')
+F2_off_temp_body_ld1 = read_csv('F2_off_temp_body_cva.csv')
 
-lm_integration = bind_cols(F2_off_temp_cranio_ld1, 
-                           F2_off_temp_4bar_ld1, 
-                           F2_off_temp_body_ld1) %>% 
+lm_integration = bind_cols(F2_off_temp_cranio_ld1$LD1, 
+                           F2_off_temp_4bar_ld1$LD1, 
+                           F2_off_temp_body_ld1$LD1) %>% 
   rename(F2_off_temp_cranio = 1, 
          F2_off_temp_4bar = 2, 
          F2_off_temp_body = 3)
