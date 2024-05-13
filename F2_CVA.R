@@ -15,6 +15,7 @@ library(geomorph)
 library(RRPP)
 library(MASS)
 library(ppcor)
+library(igraph)
 library(tidyverse)
 
 F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
@@ -710,3 +711,24 @@ F2_transgen_pcor = pcor(x = pcor_df,
 
 F2_transgen_pcor$estimate
 F2_transgen_pcor$p.value
+
+igrpah = make_empty_graph()
+igraph = make_graph(edges = c(1,
+                              2,
+                              1,
+                              3, 
+                              2, 
+                              3), 
+                    n = 3, 
+                    directed = F) %>% 
+                    set_edge_attr('correlation', 
+                                  value = c(0.09571819, 
+                                            0.04106774, 
+                                            0.32083559))
+
+V(igraph)$name[1:3] <- c("Offspring temp", 
+                         "Parent temp", 
+                         "Grandparent temp")
+
+# plot(igraph, 
+#      edge.width = correlation))
