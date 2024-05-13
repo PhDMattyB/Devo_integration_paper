@@ -27,6 +27,7 @@ F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
 #         remove = F)
 
 identifiers = read_csv('F2_metadata.csv') %>% 
+  rename(individualID = Names) %>% 
   unite('lake_morph_Pair_Full_Temp', 
         Lake_morph, 
         Full_temp, 
@@ -41,7 +42,8 @@ identifiers = read_csv('F2_metadata.csv') %>%
                   'Offspring_temp',
                   'Parent_temp',
                   'Grand_temp'),
-                factor))
+                factor)) %>% 
+  arrange()
 
 
 ## perform gpa on craniofacial data
@@ -91,3 +93,15 @@ F2_off_temp_cva_scores = F2_off_temp_cva_scores$x %>%
   as_tibble() %>% 
   rename(individualID = rowname) %>% 
   arrange(individualID)
+
+F2_off_temp_cva = left_join(F2_off_temp_cva_scores, 
+                            identifiers)
+
+test = bind_cols(F2_off_temp_cva_scores, 
+          identifiers)
+
+ggplot(data = F2_off_temp_cva, 
+       aes(x = LD1, 
+           y = LD2)) + 
+  geom_point(aes(col = lake, 
+                 shape = morph))
