@@ -734,3 +734,381 @@ V(igraph)$name[1:3] <- c("Offspring temp",
 
 # plot(igraph, 
 #      edge.width = correlation))
+
+
+
+# F2 4-bar linkage analyses -----------------------------------------------
+
+F2_4bar = readland.tps('F2_4bar_linkage.TPS',
+                               specID = 'imageID')
+
+identifiers = read_csv('F2_metadata.csv') %>% 
+  rename(individualID = Names) %>% 
+  unite('lake_morph_Pair_Full_Temp', 
+        Lake_morph, 
+        Full_temp, 
+        sep = '_', 
+        remove = F) %>% 
+  unite('Ecotype_Pair_Full_Temp', 
+        Ecotype_pair, 
+        Full_temp, 
+        sep = '_', 
+        remove = F) %>% 
+  mutate(across(c('Lake_morph',
+                  'Offspring_temp',
+                  'Parent_temp',
+                  'Grand_temp'),
+                factor)) %>% 
+  arrange(individualID)
+
+
+## perform gpa on craniofacial data
+F2_4bar_gpa = gpagen(F2_4bar,
+                             print.progress = F)
+
+
+
+F2_4bar_geo_df = geomorph.data.frame(coords = two.d.array(F2_4bar_gpa$coords), 
+                                Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+                                parent_temp = identifiers$Parent_temp, 
+                                offspring_temp = identifiers$Offspring_temp,
+                                grand_temp = identifiers$Grand_temp,
+                                morph = identifiers$Morph, 
+                                population = identifiers$Lake,
+                                lake_morph = identifiers$Lake_morph,
+                                lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+
+
+# F2 off temp CVA temp treatment -----------------------------------------------
+
+
+F2_off_temp_4bar = procD.lm(coords ~ offspring_temp, 
+                            data = F2_4bar_geo_df)
+summary(F2_off_temp_4bar)
+
+prep.lda(F2_off_temp_4bar, 
+         inherent.groups = TRUE) # see groups available
+
+lda.args = prep.lda(F2_off_temp_4bar) 
+
+CVA = do.call(lda, lda.args)
+CVA # 3 CVs produced
+
+# ## Axis scaling
+# CVA$scaling # will return all CVs
+# 
+# CVA$means
+# ## divide axis 1 and sum of all axes to get var explained
+# CVA$svd
+
+## CVS scores for each individual
+F2_off_temp_4bar_cva_scores = predict(CVA)
+
+F2_off_temp_4bar_cva_scores = F2_off_temp_4bar_cva_scores$x %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  rename(individualID = rowname) %>% 
+  arrange(individualID)
+
+F2_off_temp_4bar_cva = bind_cols(F2_off_temp_4bar_cva_scores, 
+                                 identifiers) %>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F)
+
+
+# F2 off temp only cva - data viz -----------------------------------------
+ASHN_off_temp_4bar = F2_off_temp_4bar_cva %>% 
+  filter(Ecotype_off_temp %in% c('ASHNC_12', 
+                                 'ASHNC_18', 
+                                 'ASHNW_12', 
+                                 'ASHNW_18'))
+
+ggplot(data = ASHN_off_temp_4bar, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_off_temp, 
+                   fill = Ecotype_off_temp))
+
+
+
+MYV_off_temp_4bar = F2_off_temp_4bar_cva %>% 
+  filter(Ecotype_off_temp %in% c('MYVC_12', 
+                                 'MYVC_18', 
+                                 'MYVW_12', 
+                                 'MYVW_18'))
+
+ggplot(data = MYV_off_temp_4bar, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_off_temp, 
+                   fill = Ecotype_off_temp))
+
+
+SKR_off_temp_4bar = F2_off_temp_4bar_cva %>% 
+  filter(Ecotype_off_temp %in% c('SKRC_12', 
+                                 'SKRC_18', 
+                                 'SKRW_12', 
+                                 'SKRW_18'))
+
+ggplot(data = SKR_off_temp_4bar, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_off_temp, 
+                   fill = Ecotype_off_temp), 
+               alpha = 0.5)
+
+
+
+GTS_CSWY_off_temp_4bar = F2_off_temp_4bar_cva %>% 
+  filter(Ecotype_off_temp %in% c('CSWYC_12', 
+                                 'CSWYC_18', 
+                                 'GTSW_12', 
+                                 'GTSW_18'))
+
+ggplot(data = GTS_CSWY_off_temp_4bar, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_off_temp, 
+                   fill = Ecotype_off_temp), 
+               alpha = 0.5)
+
+##
+
+
+# F2 parent temp only cvs - analysis --------------------------------------
+
+
+F2_parent_temp_4bar = procD.lm(coords ~ parent_temp, 
+                               data = F2_4bar_geo_df)
+
+summary(F2_parent_temp_4bar)
+
+prep.lda(F2_parent_temp_4bar, 
+         inherent.groups = TRUE) # see groups available
+
+lda.args = prep.lda(F2_parent_temp_4bar) 
+
+CVA = do.call(lda, lda.args)
+CVA # 3 CVs produced
+
+# ## Axis scaling
+# CVA$scaling # will return all CVs
+# 
+# CVA$means
+# ## divide axis 1 and sum of all axes to get var explained
+# CVA$svd
+
+## CVS scores for each individual
+F2_parent_temp_4bar_cva_scores = predict(CVA)
+
+F2_parent_temp_4bar_cva_scores = F2_parent_temp_4bar_cva_scores$x %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  rename(individualID = rowname) %>% 
+  arrange(individualID)
+
+F2_parent_temp_4bar_cva = bind_cols(F2_parent_temp_4bar_cva_scores, 
+                                    identifiers) %>% 
+  unite('Ecotype_parent_temp', 
+        Lake_morph, 
+        Parent_temp, 
+        sep = '_', 
+        remove = F)
+
+# F2 parent temp only cva - data viz -----------------------------------------
+
+
+ASHN_parent_temp_4bar = F2_parent_temp_4bar_cva %>% 
+  filter(Ecotype_parent_temp %in% c('ASHNC_12', 
+                                    'ASHNC_18', 
+                                    'ASHNW_12', 
+                                    'ASHNW_18'))
+
+ggplot(data = ASHN_parent_temp_4bar, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_parent_temp, 
+                   fill = Ecotype_parent_temp), 
+               alpha = 0.5)
+
+
+
+MYV_parent_temp_4bar = F2_parent_temp_4bar_cva %>% 
+  filter(Ecotype_parent_temp %in% c('MYVC_12', 
+                                    'MYVC_18', 
+                                    'MYVW_12', 
+                                    'MYVW_18'))
+
+ggplot(data = MYV_parent_temp_4bar, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_parent_temp, 
+                   fill = Ecotype_parent_temp), 
+               alpha = 0.5)
+
+
+SKR_parent_temp_4bar = F2_parent_temp_4bar_cva %>% 
+  filter(Ecotype_parent_temp %in% c('SKRC_12', 
+                                    'SKRC_18', 
+                                    'SKRW_12', 
+                                    'SKRW_18'))
+
+ggplot(data = SKR_parent_temp_4bar, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_parent_temp, 
+                   fill = Ecotype_parent_temp), 
+               alpha = 0.5)
+
+
+
+GTS_CSWY_parent_temp_4bar = F2_parent_temp_4bar_cva %>% 
+  filter(Ecotype_parent_temp %in% c('CSWYC_12', 
+                                    'CSWYC_18', 
+                                    'GTSW_12', 
+                                    'GTSW_18'))
+
+ggplot(data = GTS_CSWY_parent_temp_4bar, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_parent_temp, 
+                   fill = Ecotype_parent_temp), 
+               alpha = 0.5)
+
+# F2 grandparent temp only cvs - analysis --------------------------------------
+
+
+F2_grandparent_temp_4bar = procD.lm(coords ~ grand_temp, 
+                                    data = F2_4bar_geo_df)
+
+summary(F2_grandparent_temp_4bar)
+
+prep.lda(F2_grandparent_temp_4bar, 
+         inherent.groups = TRUE) # see groups available
+
+lda.args = prep.lda(F2_grandparent_temp_4bar) 
+
+CVA = do.call(lda, lda.args)
+CVA # 3 CVs produced
+
+# ## Axis scaling
+# CVA$scaling # will return all CVs
+# 
+# CVA$means
+# ## divide axis 1 and sum of all axes to get var explained
+# CVA$svd
+
+## CVS scores for each individual
+F2_grandparent_temp_4bar_cva_scores = predict(CVA)
+
+F2_grandparent_temp_4bar_cva_scores = F2_grandparent_temp_4bar_cva_scores$x %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  rename(individualID = rowname) %>% 
+  arrange(individualID)
+
+F2_grandparent_temp_4bar_cva = bind_cols(F2_grandparent_temp_4bar_cva_scores, 
+                                         identifiers) %>% 
+  unite('Ecotype_grandparent_temp', 
+        Lake_morph, 
+        Grand_temp, 
+        sep = '_', 
+        remove = F)
+
+# F2 parent temp only cva - data viz -----------------------------------------
+
+
+ASHN_grandparent_temp_4bar = F2_grandparent_temp_4bar_cva %>% 
+  filter(Ecotype_grandparent_temp %in% c('ASHNC_12', 
+                                         'ASHNC_18', 
+                                         'ASHNW_12', 
+                                         'ASHNW_18'))
+
+ggplot(data = ASHN_grandparent_temp_4bar, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_grandparent_temp, 
+                   fill = Ecotype_grandparent_temp), 
+               alpha = 0.5)
+
+
+MYV_grandparent_temp_4bar = F2_grandparent_temp_4bar_cva %>% 
+  filter(Ecotype_grandparent_temp %in% c('MYVC_12', 
+                                         'MYVC_18', 
+                                         'MYVW_12', 
+                                         'MYVW_18'))
+
+ggplot(data = MYV_grandparent_temp_4bar, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_grandparent_temp, 
+                   fill = Ecotype_grandparent_temp), 
+               alpha = 0.5)
+
+
+
+SKR_grandparent_temp_4bar = F2_grandparent_temp_4bar_cva %>% 
+  filter(Ecotype_grandparent_temp %in% c('SKRC_12', 
+                                         'SKRC_18', 
+                                         'SKRW_12', 
+                                         'SKRW_18'))
+
+ggplot(data = SKR_grandparent_temp_4bar, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_grandparent_temp, 
+                   fill = Ecotype_grandparent_temp), 
+               alpha = 0.5)
+
+
+
+GTS_CSWY_grandparent_temp_4bar = F2_grandparent_temp_4bar_cva %>% 
+  filter(Ecotype_grandparent_temp %in% c('CSWYC_12', 
+                                         'CSWYC_18', 
+                                         'GTSW_12', 
+                                         'GTSW_18'))
+
+ggplot(data = GTS_CSWY_grandparent_temp_4bar, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_grandparent_temp, 
+                   fill = Ecotype_grandparent_temp), 
+               alpha = 0.5)
+
+
+
+
+# F2 4bar generation correlation ----------------------------------
+
+F2_off_temp_4bar_ld1 = F2_off_temp_4bar_cva_scores$LD1
+F2_parent_temp_4bar_ld1 = F2_parent_temp_4bar_cva_scores$LD1
+F2_grandparent_temp_4bar_ld1 = F2_grandparent_temp_4bar_cva_scores$LD1
+
+pcor_df = bind_cols(F2_off_temp_4bar_ld1, 
+                    F2_parent_temp_4bar_ld1, 
+                    F2_grandparent_temp_4bar_ld1) %>% 
+  rename(F2_off_temp_4bar_ld1 = 1, 
+         F2_parent_temp_4bar_ld1 = 2, 
+         F2_grandparent_temp_4bar_ld1 = 3)
+
+F2_transgen_pcor = pcor(x = pcor_df, 
+                        method = 'pearson')
+
+F2_transgen_pcor$estimate
+F2_transgen_pcor$p.value
+# 
+# igrpah = make_empty_graph()
+# igraph = make_graph(edges = c(1,
+#                               2,
+#                               1,
+#                               3, 
+#                               2, 
+#                               3), 
+#                     n = 3, 
+#                     directed = F) %>% 
+#   set_edge_attr('correlation', 
+#                 value = c(0.09571819, 
+#                           0.04106774, 
+#                           0.32083559))
+# 
+# V(igraph)$name[1:3] <- c("Offspring temp", 
+#                          "Parent temp", 
+#                          "Grandparent temp")
+
+# plot(igraph, 
+#      edge.width = correlation))
+
