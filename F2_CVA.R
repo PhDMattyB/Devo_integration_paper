@@ -1508,38 +1508,23 @@ F2_transgen_pcor$p.value
 
 
 # compare integration between lm sets -------------------------------------
-F2_off_temp_cranio_ASHNW = read_csv('F2_off_temp_craniofacial_csv_per_pop.csv') %>% 
-  filter(Lake_morph == 'ASHN')
-F2_off_temp_4bar_ASHNW = read_csv('F2_off_temp_4bar_cva_per_pop.csv')%>% 
-  filter(Lake_morph == 'ASHN')
-F2_off_temp_body_ASHNW = read_csv('F2_off_temp_body_cva_per_pop.csv')%>% 
-  filter(Lake_morph == 'ASHN')
+F2_off_temp_cranio_ASHN = read_csv('F2_off_temp_craniofacial_csv_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
+F2_off_temp_4bar_ASHN = read_csv('F2_off_temp_4bar_cva_per_pop.csv')%>% 
+  filter(Lake == 'ASHN')
+F2_off_temp_body_ASHN = read_csv('F2_off_temp_body_cva_per_pop.csv')%>% 
+  filter(Lake == 'ASHN')
 
 
-F2_off_temp_cranio_ASHNW = read_csv('F2_off_temp_craniofacial_csv_per_pop.csv') %>% 
-  filter(Lake_morph == 'ASHNW')
-F2_off_temp_4bar_ASHNW = read_csv('F2_off_temp_4bar_cva_per_pop.csv')%>% 
-  filter(Lake_morph == 'ASHNW')
-F2_off_temp_body_ASHNW = read_csv('F2_off_temp_body_cva_per_pop.csv')%>% 
-  filter(Lake_morph == 'ASHNW')
-
-F2_off_temp_cranio_ASHNC = read_csv('F2_off_temp_craniofacial_csv_per_pop.csv') %>% 
-  filter(Lake_morph == 'ASHNC')
-F2_off_temp_4bar_ASHNC = read_csv('F2_off_temp_4bar_cva_per_pop.csv')%>% 
-  filter(Lake_morph == 'ASHNC')
-F2_off_temp_body_ASHNC = read_csv('F2_off_temp_body_cva_per_pop.csv')%>% 
-  filter(Lake_morph == 'ASHNC')
-
-
-lm_integration = bind_cols(F2_off_temp_cranio_ld1$LD1, 
-                           F2_off_temp_4bar_ld1$LD1, 
-                           F2_off_temp_body_ld1$LD1) %>% 
+ASHN_lm_integration = bind_cols(F2_off_temp_cranio_ASHN$LD1, 
+                           F2_off_temp_4bar_ASHN$LD1, 
+                           F2_off_temp_body_ASHN$LD1) %>% 
   rename(F2_off_temp_cranio = 1, 
          F2_off_temp_4bar = 2, 
          F2_off_temp_body = 3)
 
 
-F2_integration_pcor = pcor(x = lm_integration, 
+ASHN_F2_integration_pcor = pcor(x = ASHN_lm_integration, 
                         method = 'pearson')
 
 F2_integration_pcor$estimate
