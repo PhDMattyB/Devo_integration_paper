@@ -74,6 +74,13 @@ lda.args = prep.lda(F2_off_temp)
 
 CVA = do.call(lda, lda.args)
 CVA # 3 CVs produced
+
+## Axis scaling
 CVA$scaling # will return all CVs
 
 CVA$means
+## divide axis 1 and sum of all axes to get var explained
+CVA$svd
+
+## CVS scores for each individual
+predict(CVA)
