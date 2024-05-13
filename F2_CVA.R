@@ -14,6 +14,7 @@ setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/Updated Landmarks/')
 library(geomorph)
 library(RRPP)
 library(MASS)
+library(ppcor)
 library(tidyverse)
 
 F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
@@ -689,3 +690,23 @@ summary(F2_parent_morph_manova)
 F2_grandparent_morph_manova = procD.lm(coords ~ grand_temp*lake_morph, 
                                   data = F2_geo_df)
 summary(F2_grandparent_morph_manova)
+
+
+# F2 craniofacial generation correlation ----------------------------------
+
+F2_off_temp_ld1 = F2_off_temp_only_cva_scores$LD1
+F2_parent_temp_ld1 = F2_parent_temp_only_cva_scores$LD1
+F2_grandparent_temp_ld1 = F2_grandparent_temp_only_cva_scores$LD1
+
+pcor_df = bind_cols(F2_off_temp_ld1, 
+          F2_parent_temp_ld1, 
+          F2_grandparent_temp_ld1) %>% 
+  rename(F2_off_temp_ld1 = 1, 
+         F2_parent_temp_ld1 = 2, 
+         F2_grandparent_temp_ld1 = 3)
+
+F2_transgen_pcor = pcor(x = pcor_df, 
+     method = 'pearson')
+
+F2_transgen_pcor$estimate
+F2_transgen_pcor$p.value
