@@ -1531,10 +1531,3 @@ F2_integration_pcor$estimate
 F2_integration_pcor$p.value
 
 
-
-
-
-# ASHN analyses -----------------------------------------------------------
-ASHN_cranio = F2_cranio_geo_df[F2_cranio_geo_df$population == 'ASHN',]
-
-df2 <- df[df$sex == 'male', ]
