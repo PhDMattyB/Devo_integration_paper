@@ -49,7 +49,6 @@ F2_craniofacial_gpa = gpagen(F2_craniofacial,
                              print.progress = F)
 
 
-
 F2_cranio_geo_df = geomorph.data.frame(coords = two.d.array(F2_craniofacial_gpa$coords), 
                                 Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
                                 parent_temp = identifiers$Parent_temp, 
@@ -60,9 +59,27 @@ F2_cranio_geo_df = geomorph.data.frame(coords = two.d.array(F2_craniofacial_gpa$
                                 lake_morph = identifiers$Lake_morph,
                                 lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
 
-
+# F2_cranio_geo_df = data.frame(coords = two.d.array(F2_craniofacial_gpa$coords), 
+#                                        Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+#                                        parent_temp = identifiers$Parent_temp, 
+#                                        offspring_temp = identifiers$Offspring_temp,
+#                                        grand_temp = identifiers$Grand_temp,
+#                                        morph = identifiers$Morph, 
+#                                        population = identifiers$Lake,
+#                                        lake_morph = identifiers$Lake_morph,
+#                                        lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+# 
+# ASHN_cranio_df = F2_cranio_geo_df[F2_cranio_geo_df$population == 'ASHN',]
 
 # F2 off temp per lake morph CVA per morph -----------------------------------------------
+
+geomorph.data.frame(ASHN_cranio_df)
+
+ASHN_F2_off_temp = procD.lm(coords ~ offspring_temp * lake_morph, 
+                       data = ASHN_cranio_df)
+
+summary(F2_off_temp)
+
 
 
 F2_off_temp = procD.lm(coords ~ offspring_temp * lake_morph, 
@@ -1533,5 +1550,6 @@ F2_integration_pcor$p.value
 
 
 # ASHN analyses -----------------------------------------------------------
-F2_cranio_geo_df
+ASHN_cranio = F2_cranio_geo_df[F2_cranio_geo_df$population == 'ASHN',]
 
+df2 <- df[df$sex == 'male', ]
