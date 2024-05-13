@@ -43,7 +43,7 @@ identifiers = read_csv('F2_metadata.csv') %>%
                   'Parent_temp',
                   'Grand_temp'),
                 factor)) %>% 
-  arrange()
+  arrange(individualID)
 
 
 ## perform gpa on craniofacial data
@@ -94,14 +94,18 @@ F2_off_temp_cva_scores = F2_off_temp_cva_scores$x %>%
   rename(individualID = rowname) %>% 
   arrange(individualID)
 
-F2_off_temp_cva = left_join(F2_off_temp_cva_scores, 
-                            identifiers)
+F2_off_temp_cva = bind_cols(F2_off_temp_cva_scores, 
+          identifiers) %>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F)
 
-test = bind_cols(F2_off_temp_cva_scores, 
-          identifiers)
+
 
 ggplot(data = F2_off_temp_cva, 
        aes(x = LD1, 
            y = LD2)) + 
-  geom_point(aes(col = lake, 
-                 shape = morph))
+  geom_point(aes(col = Ecotype_off_temp, 
+                 shape = Morph))
