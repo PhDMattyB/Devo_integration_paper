@@ -528,3 +528,164 @@ ggplot(data = GTS_CSWY_parent_temp_only,
 ##
 
 
+
+
+# F2 grandparent temp only cvs - analysis --------------------------------------
+
+
+F2_grandparent_temp_only = procD.lm(coords ~ grand_temp, 
+                               data = F2_geo_df)
+
+summary(F2_grandparent_temp_only)
+
+prep.lda(F2_grandparent_temp_only, 
+         inherent.groups = TRUE) # see groups available
+
+lda.args = prep.lda(F2_grandparent_temp_only) 
+
+CVA = do.call(lda, lda.args)
+CVA # 3 CVs produced
+
+# ## Axis scaling
+# CVA$scaling # will return all CVs
+# 
+# CVA$means
+# ## divide axis 1 and sum of all axes to get var explained
+# CVA$svd
+
+## CVS scores for each individual
+F2_grandparent_temp_only_cva_scores = predict(CVA)
+
+F2_grandparent_temp_only_cva_scores = F2_grandparent_temp_only_cva_scores$x %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  rename(individualID = rowname) %>% 
+  arrange(individualID)
+
+F2_grandparent_temp_only_cva = bind_cols(F2_grandparent_temp_only_cva_scores, 
+                                    identifiers) %>% 
+  unite('Ecotype_grandparent_temp', 
+        Lake_morph, 
+        Grand_temp, 
+        sep = '_', 
+        remove = F)
+
+# F2 parent temp only cva - data viz -----------------------------------------
+
+
+F2_grandparent_temp_only_means = F2_grandparent_temp_only_cva %>% 
+  group_by(Ecotype_grandparent_temp) %>% 
+  summarize(mean_LD1 = mean(LD1))
+
+ggplot(data = F2_grandparent_temp_only_cva, 
+       aes(x = LD1)) + 
+  geom_density(aes(col = Ecotype_grandparent_temp, 
+                   fill = Ecotype_grandparent_temp))
+
+
+
+
+# ASHN_grandparent_temp_means = F2_grandparent_temp_only_cva %>% 
+#   group_by(Ecotype_grandparent_temp) %>% 
+#   summarize(mean_LD1 = mean(LD1)) %>% 
+#   filter(Ecotype_grandparent_temp %in% c('ASHNC_12', 
+#                                  'ASHNC_18', 
+#                                  'ASHNW_12', 
+#                                  'ASHNW_18'))
+
+ASHN_grandparent_temp_only = F2_grandparent_temp_only_cva %>% 
+  filter(Ecotype_grandparent_temp %in% c('ASHNC_12', 
+                                    'ASHNC_18', 
+                                    'ASHNW_12', 
+                                    'ASHNW_18'))
+
+ggplot(data = ASHN_grandparent_temp_only, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_grandparent_temp, 
+                   fill = Ecotype_grandparent_temp))
+
+
+# F2_grandparent_temp_means = F2_grandparent_temp_cva %>% 
+#   group_by(Ecotype_grandparent_temp) %>% 
+#   summarize(mean_LD1 = mean(LD1), 
+#             mean_LD2 = mean(LD2)) %>% 
+#   filter(Ecotype_grandparent_temp %in% c('MYVC_12', 
+#                                  'MYVC_18', 
+#                                  'MYVW_12', 
+#                                  'MYVW_18'))
+
+MYV_grandparent_temp_only = F2_grandparent_temp_only_cva %>% 
+  filter(Ecotype_grandparent_temp %in% c('MYVC_12', 
+                                    'MYVC_18', 
+                                    'MYVW_12', 
+                                    'MYVW_18'))
+
+ggplot(data = MYV_grandparent_temp_only, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_grandparent_temp, 
+                   fill = Ecotype_grandparent_temp))
+
+
+# F2_grandparent_temp_means = F2_grandparent_temp_cva %>% 
+#   group_by(Ecotype_grandparent_temp) %>% 
+#   summarize(mean_LD1 = mean(LD1), 
+#             mean_LD2 = mean(LD2)) %>% 
+#   filter(Ecotype_grandparent_temp %in% c('SKRC_12', 
+#                                  'SKRC_18', 
+#                                  'SKRW_12', 
+#                                  'SKRW_18'))
+
+SKR_grandparent_temp_only = F2_grandparent_temp_only_cva %>% 
+  filter(Ecotype_grandparent_temp %in% c('SKRC_12', 
+                                    'SKRC_18', 
+                                    'SKRW_12', 
+                                    'SKRW_18'))
+
+ggplot(data = SKR_grandparent_temp_only, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_grandparent_temp, 
+                   fill = Ecotype_grandparent_temp))
+
+
+
+# F2_grandparent_temp_means = F2_grandparent_temp_cva %>% 
+#   group_by(Ecotype_grandparent_temp) %>% 
+#   summarize(mean_LD1 = mean(LD1), 
+#             mean_LD2 = mean(LD2)) %>% 
+#   filter(Ecotype_grandparent_temp %in% c('CSWYC_12', 
+#                                  'CSWYC_18', 
+#                                  'GTSW_12', 
+#                                  'GTSW_18'))
+
+GTS_CSWY_grandparent_temp_only = F2_grandparent_temp_only_cva %>% 
+  filter(Ecotype_grandparent_temp %in% c('CSWYC_12', 
+                                    'CSWYC_18', 
+                                    'GTSW_12', 
+                                    'GTSW_18'))
+
+ggplot(data = GTS_CSWY_grandparent_temp_only, 
+       aes(x = LD1)) +
+  geom_density(aes(col = Ecotype_grandparent_temp, 
+                   fill = Ecotype_grandparent_temp))
+
+##
+
+
+
+
+
+
+# F2 manova  --------------------------------------------------------------
+
+F2_off_morph_manova = procD.lm(coords ~ offspring_temp*lake_morph, 
+                                    data = F2_geo_df)
+summary(F2_off_morph_manova)
+
+F2_parent_morph_manova = procD.lm(coords ~ parent_temp*lake_morph, 
+                               data = F2_geo_df)
+summary(F2_parent_morph_manova)
+
+F2_grandparent_morph_manova = procD.lm(coords ~ grand_temp*lake_morph, 
+                                  data = F2_geo_df)
+summary(F2_grandparent_morph_manova)
