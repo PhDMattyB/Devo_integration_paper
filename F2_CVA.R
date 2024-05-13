@@ -18,6 +18,10 @@ library(ppcor)
 library(igraph)
 library(tidyverse)
 
+
+
+# F2 Craniofacial analyses ------------------------------------------------
+
 F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
                                specID = 'imageID')
 
@@ -387,7 +391,6 @@ ggplot(data = GTS_CSWY_off_temp_only,
 ##
 
 
-
 # F2 parent temp only cvs - analysis --------------------------------------
 
 
@@ -677,7 +680,6 @@ ggplot(data = GTS_CSWY_grandparent_temp_only,
 
 
 
-
 # F2 manova  --------------------------------------------------------------
 
 F2_off_morph_manova = procD.lm(coords ~ offspring_temp*lake_morph, 
@@ -692,7 +694,7 @@ F2_grandparent_morph_manova = procD.lm(coords ~ grand_temp*lake_morph,
                                   data = F2_geo_df)
 summary(F2_grandparent_morph_manova)
 
-
+##
 # F2 craniofacial generation correlation ----------------------------------
 
 F2_off_temp_ld1 = F2_off_temp_only_cva_scores$LD1
