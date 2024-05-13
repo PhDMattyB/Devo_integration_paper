@@ -83,4 +83,11 @@ CVA$means
 CVA$svd
 
 ## CVS scores for each individual
-predict(CVA)
+F2_off_temp_cva_scores = predict(CVA)
+
+F2_off_temp_cva_scores = F2_off_temp_cva_scores$x %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  rename(individualID = rowname) %>% 
+  arrange(individualID)
