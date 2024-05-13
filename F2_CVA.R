@@ -50,7 +50,7 @@ F2_craniofacial_gpa = gpagen(F2_craniofacial,
 
 
 
-F2_geo_df = geomorph.data.frame(coords = two.d.array(F2_craniofacial_gpa$coords), 
+F2_cranio_geo_df = geomorph.data.frame(coords = two.d.array(F2_craniofacial_gpa$coords), 
                                 Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
                                 parent_temp = identifiers$Parent_temp, 
                                 offspring_temp = identifiers$Offspring_temp,
@@ -79,11 +79,11 @@ CVA = do.call(lda, lda.args)
 CVA # 3 CVs produced
 
 ## Axis scaling
-CVA$scaling # will return all CVs
-
-CVA$means
-## divide axis 1 and sum of all axes to get var explained
-CVA$svd
+# CVA$scaling # will return all CVs
+# 
+# CVA$means
+# ## divide axis 1 and sum of all axes to get var explained
+# CVA$svd
 
 ## CVS scores for each individual
 F2_off_temp_cva_scores = predict(CVA)
@@ -103,6 +103,8 @@ F2_off_temp_cva = bind_cols(F2_off_temp_cva_scores,
         sep = '_', 
         remove = F)
 
+F2_off_temp_cva %>% 
+  write_csv('F2_off_temp_craniofacial_csv_per_pop.csv')
 
 # F2 off temp per lake morph data viz ----------------------------------------------------
 
@@ -774,7 +776,7 @@ F2_4bar_geo_df = geomorph.data.frame(coords = two.d.array(F2_4bar_gpa$coords),
 # F2 off temp CVA temp treatment -----------------------------------------------
 
 
-F2_off_temp_4bar = procD.lm(coords ~ offspring_temp, 
+F2_off_temp_4bar = procD.lm(coords ~ offspring_temp * lake_morph, 
                             data = F2_4bar_geo_df)
 summary(F2_off_temp_4bar)
 
@@ -812,7 +814,7 @@ F2_off_temp_4bar_cva = bind_cols(F2_off_temp_4bar_cva_scores,
         remove = F)
 
 F2_off_temp_4bar_cva %>% 
-  write_csv('F2_off_temp_4bar_cva.csv')
+  write_csv('F2_off_temp_4bar_cva_per_pop.csv')
 ##
 # F2 off temp only cva - data viz -----------------------------------------
 ASHN_off_temp_4bar = F2_off_temp_4bar_cva %>% 
@@ -1153,7 +1155,7 @@ F2_body_geo_df = geomorph.data.frame(coords = two.d.array(F2_body_gpa$coords),
 # F2 off temp CVA body landmarks -----------------------------------------------
 
 
-F2_off_temp_body = procD.lm(coords ~ offspring_temp, 
+F2_off_temp_body = procD.lm(coords ~ offspring_temp * lake_morph, 
                             data = F2_body_geo_df)
 summary(F2_off_temp_body)
 
@@ -1191,7 +1193,7 @@ F2_off_temp_body_cva = bind_cols(F2_off_temp_body_cva_scores,
         remove = F)
 
 F2_off_temp_body_cva %>% 
-  write_csv('F2_off_temp_body_cva.csv')
+  write_csv('F2_off_temp_body_cva_per_pop.csv')
 
 ##
 # F2 off temp only cva body lms - data viz -----------------------------------------
@@ -1489,9 +1491,28 @@ F2_transgen_pcor$p.value
 
 
 # compare integration between lm sets -------------------------------------
-F2_off_temp_cranio_ld1 = read_csv('F2_off_temp_craniofacial_cva.csv')
-F2_off_temp_4bar_ld1 = read_csv('F2_off_temp_4bar_cva.csv')
-F2_off_temp_body_ld1 = read_csv('F2_off_temp_body_cva.csv')
+F2_off_temp_cranio_ASHNW = read_csv('F2_off_temp_craniofacial_csv_per_pop.csv') %>% 
+  filter(Lake_morph == 'ASHN')
+F2_off_temp_4bar_ASHNW = read_csv('F2_off_temp_4bar_cva_per_pop.csv')%>% 
+  filter(Lake_morph == 'ASHN')
+F2_off_temp_body_ASHNW = read_csv('F2_off_temp_body_cva_per_pop.csv')%>% 
+  filter(Lake_morph == 'ASHN')
+
+
+F2_off_temp_cranio_ASHNW = read_csv('F2_off_temp_craniofacial_csv_per_pop.csv') %>% 
+  filter(Lake_morph == 'ASHNW')
+F2_off_temp_4bar_ASHNW = read_csv('F2_off_temp_4bar_cva_per_pop.csv')%>% 
+  filter(Lake_morph == 'ASHNW')
+F2_off_temp_body_ASHNW = read_csv('F2_off_temp_body_cva_per_pop.csv')%>% 
+  filter(Lake_morph == 'ASHNW')
+
+F2_off_temp_cranio_ASHNC = read_csv('F2_off_temp_craniofacial_csv_per_pop.csv') %>% 
+  filter(Lake_morph == 'ASHNC')
+F2_off_temp_4bar_ASHNC = read_csv('F2_off_temp_4bar_cva_per_pop.csv')%>% 
+  filter(Lake_morph == 'ASHNC')
+F2_off_temp_body_ASHNC = read_csv('F2_off_temp_body_cva_per_pop.csv')%>% 
+  filter(Lake_morph == 'ASHNC')
+
 
 lm_integration = bind_cols(F2_off_temp_cranio_ld1$LD1, 
                            F2_off_temp_4bar_ld1$LD1, 
@@ -1506,4 +1527,11 @@ F2_integration_pcor = pcor(x = lm_integration,
 
 F2_integration_pcor$estimate
 F2_integration_pcor$p.value
+
+
+
+
+
+# ASHN analyses -----------------------------------------------------------
+F2_cranio_geo_df
 
