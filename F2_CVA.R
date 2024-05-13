@@ -24,14 +24,6 @@ library(tidyverse)
 
 F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
                                specID = 'imageID')
-
-# identifiers = read_csv('F2_metadata.csv') %>% 
-#   unite('Ecotype_Pair_Full_Temp', 
-#         Ecotype_pair, 
-#         Full_temp, 
-#         sep = '_', 
-#         remove = F)
-
 identifiers = read_csv('F2_metadata.csv') %>% 
   rename(individualID = Names) %>% 
   unite('lake_morph_Pair_Full_Temp', 
@@ -68,9 +60,6 @@ F2_geo_df = geomorph.data.frame(coords = two.d.array(F2_craniofacial_gpa$coords)
                                 lake_morph = identifiers$Lake_morph,
                                 lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
 
-# F2_off_temp = lm.rrpp(coords ~ offspring_temp * lake_morph,
-#                      data = F2_geo_df)
-# 
 
 
 # F2 off temp per lake morph CVA per morph -----------------------------------------------
@@ -289,7 +278,10 @@ F2_off_temp_only_cva = bind_cols(F2_off_temp_only_cva_scores,
         sep = '_', 
         remove = F)
 
+F2_off_temp_only_cva %>% 
+  write_csv('F2_off_temp_craniofacial_cva.csv')
 
+##
 # F2 off temp only cva - data viz -----------------------------------------
 
 
@@ -819,7 +811,9 @@ F2_off_temp_4bar_cva = bind_cols(F2_off_temp_4bar_cva_scores,
         sep = '_', 
         remove = F)
 
-
+F2_off_temp_4bar_cva %>% 
+  write_csv('F2_off_temp_4bar_cva.csv')
+##
 # F2 off temp only cva - data viz -----------------------------------------
 ASHN_off_temp_4bar = F2_off_temp_4bar_cva %>% 
   filter(Ecotype_off_temp %in% c('ASHNC_12', 
@@ -1196,7 +1190,10 @@ F2_off_temp_body_cva = bind_cols(F2_off_temp_body_cva_scores,
         sep = '_', 
         remove = F)
 
+F2_off_temp_body_cva %>% 
+  write_csv('F2_off_temp_body_cva.csv')
 
+##
 # F2 off temp only cva body lms - data viz -----------------------------------------
 ASHN_off_temp_body = F2_off_temp_body_cva %>% 
   filter(Ecotype_off_temp %in% c('ASHNC_12', 
@@ -1507,11 +1504,6 @@ lm_integration = bind_cols(F2_off_temp_cranio_ld1,
 F2_integration_pcor = pcor(x = lm_integration, 
                         method = 'pearson')
 
-F2_transgen_pcor$estimate
-F2_transgen_pcor$p.value
-# 
-
-# F2_parent_temp_body_ld1 = F2_parent_temp_body_cva_scores$LD1
-# F2_grandparent_temp_body_ld1 = F2_grandparent_temp_body_cva_scores$LD1
-
+F2_integration_pcor$estimate
+F2_integration_pcor$p.value
 
