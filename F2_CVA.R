@@ -102,10 +102,133 @@ F2_off_temp_cva = bind_cols(F2_off_temp_cva_scores,
         sep = '_', 
         remove = F)
 
-
+## graphing them all together is hard to see
+F2_off_temp_means = F2_off_temp_cva %>% 
+  group_by(Ecotype_off_temp) %>% 
+  summarize(mean_LD1 = mean(LD1), 
+            mean_LD2 = mean(LD2))
 
 ggplot(data = F2_off_temp_cva, 
        aes(x = LD1, 
            y = LD2)) + 
   geom_point(aes(col = Ecotype_off_temp, 
-                 shape = Morph))
+                 shape = Offspring_temp))+
+  geom_point(data = F2_off_temp_means, 
+             # col = 'Black', 
+             size = 4,
+             aes(col = Ecotype_off_temp, 
+                 x = mean_LD1, 
+                 y = mean_LD2))
+
+## Graph for each Lake
+
+F2_off_temp_means = F2_off_temp_cva %>% 
+  group_by(Ecotype_off_temp) %>% 
+  summarize(mean_LD1 = mean(LD1), 
+            mean_LD2 = mean(LD2)) %>% 
+  filter(Ecotype_off_temp %in% c('ASHNC_12', 
+                                 'ASHNC_18', 
+                                 'ASHNW_12', 
+                                 'ASHNW_18'))
+
+ASHN_off_temp = F2_off_temp_cva %>% 
+  filter(Ecotype_off_temp %in% c('ASHNC_12', 
+                                 'ASHNC_18', 
+                                 'ASHNW_12', 
+                                 'ASHNW_18'))
+
+ggplot(data = ASHN_off_temp, 
+       aes(x = LD1, 
+           y = LD2)) + 
+  geom_point(aes(col = Ecotype_off_temp, 
+                 shape = Offspring_temp))+
+  geom_point(data = F2_off_temp_means, 
+             # col = 'Black', 
+             size = 4,
+             aes(col = Ecotype_off_temp, 
+                 x = mean_LD1, 
+                 y = mean_LD2))
+
+
+F2_off_temp_means = F2_off_temp_cva %>% 
+  group_by(Ecotype_off_temp) %>% 
+  summarize(mean_LD1 = mean(LD1), 
+            mean_LD2 = mean(LD2)) %>% 
+  filter(Ecotype_off_temp %in% c('MYVC_12', 
+                                 'MYVC_18', 
+                                 'MYVW_12', 
+                                 'MYVW_18'))
+
+MYV_off_temp = F2_off_temp_cva %>% 
+  filter(Ecotype_off_temp %in% c('MYVC_12', 
+                                 'MYVC_18', 
+                                 'MYVW_12', 
+                                 'MYVW_18'))
+
+ggplot(data = MYV_off_temp, 
+       aes(x = LD1, 
+           y = LD2)) + 
+  geom_point(aes(col = Ecotype_off_temp, 
+                 shape = Offspring_temp))+
+  geom_point(data = F2_off_temp_means, 
+             # col = 'Black', 
+             size = 4,
+             aes(col = Ecotype_off_temp, 
+                 x = mean_LD1, 
+                 y = mean_LD2))
+
+
+F2_off_temp_means = F2_off_temp_cva %>% 
+  group_by(Ecotype_off_temp) %>% 
+  summarize(mean_LD1 = mean(LD1), 
+            mean_LD2 = mean(LD2)) %>% 
+  filter(Ecotype_off_temp %in% c('SKRC_12', 
+                                 'SKRC_18', 
+                                 'SKRW_12', 
+                                 'SKRW_18'))
+
+SKR_off_temp = F2_off_temp_cva %>% 
+  filter(Ecotype_off_temp %in% c('SKRC_12', 
+                                 'SKRC_18', 
+                                 'SKRW_12', 
+                                 'SKRW_18'))
+
+ggplot(data = SKR_off_temp, 
+       aes(x = LD1, 
+           y = LD2)) + 
+  geom_point(aes(col = Ecotype_off_temp, 
+                 shape = Offspring_temp))+
+  geom_point(data = F2_off_temp_means, 
+             # col = 'Black', 
+             size = 4,
+             aes(col = Ecotype_off_temp, 
+                 x = mean_LD1, 
+                 y = mean_LD2))
+
+
+F2_off_temp_means = F2_off_temp_cva %>% 
+  group_by(Ecotype_off_temp) %>% 
+  summarize(mean_LD1 = mean(LD1), 
+            mean_LD2 = mean(LD2)) %>% 
+  filter(Ecotype_off_temp %in% c('CSWYC_12', 
+                                 'CSWYC_18', 
+                                 'GTSW_12', 
+                                 'GTSW_18'))
+
+GTS_CSWY_off_temp = F2_off_temp_cva %>% 
+  filter(Ecotype_off_temp %in% c('CSWYC_12', 
+                                 'CSWYC_18', 
+                                 'GTSW_12', 
+                                 'GTSW_18'))
+
+ggplot(data = GTS_CSWY_off_temp, 
+       aes(x = LD1, 
+           y = LD2)) + 
+  geom_point(aes(col = Ecotype_off_temp, 
+                 shape = Offspring_temp))+
+  geom_point(data = F2_off_temp_means, 
+             # col = 'Black', 
+             size = 4,
+             aes(col = Ecotype_off_temp, 
+                 x = mean_LD1, 
+                 y = mean_LD2))
