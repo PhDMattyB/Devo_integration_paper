@@ -834,12 +834,31 @@ F2_off_temp_4bar_cva %>%
   write_csv('F2_off_temp_4bar_cva_per_pop.csv')
 ##
 # F2 off temp only cva - data viz -----------------------------------------
+ASHN_F2_off_temp_means = F2_off_temp_4bar_cva %>% 
+  group_by(Ecotype_off_temp) %>% 
+  summarize(mean_LD1 = mean(LD1), 
+            mean_LD2 = mean(LD2)) %>% 
+  filter(Ecotype_off_temp %in% c('ASHNC_12', 
+                                 'ASHNC_18', 
+                                 'ASHNW_12', 
+                                 'ASHNW_18'))
 ASHN_off_temp_4bar = F2_off_temp_4bar_cva %>% 
   filter(Ecotype_off_temp %in% c('ASHNC_12', 
                                  'ASHNC_18', 
                                  'ASHNW_12', 
                                  'ASHNW_18'))
 
+ggplot(data = ASHN_off_temp_4bar, 
+       aes(x = LD1, 
+           y = LD2)) + 
+  geom_point(aes(col = Ecotype_off_temp, 
+                 shape = Offspring_temp))+
+  geom_point(data = ASHN_F2_off_temp_means, 
+             # col = 'Black', 
+             size = 4,
+             aes(col = Ecotype_off_temp, 
+                 x = mean_LD1, 
+                 y = mean_LD2))
 ggplot(data = ASHN_off_temp_4bar, 
        aes(x = LD1)) +
   geom_density(aes(col = Ecotype_off_temp, 
@@ -1214,6 +1233,15 @@ F2_off_temp_body_cva %>%
 
 ##
 # F2 off temp only cva body lms - data viz -----------------------------------------
+
+ASHN_F2_off_temp_means = F2_off_temp_body_cva %>% 
+  group_by(Ecotype_off_temp) %>% 
+  summarize(mean_LD1 = mean(LD1), 
+            mean_LD2 = mean(LD2)) %>% 
+  filter(Ecotype_off_temp %in% c('ASHNC_12', 
+                                 'ASHNC_18', 
+                                 'ASHNW_12', 
+                                 'ASHNW_18'))
 ASHN_off_temp_body = F2_off_temp_body_cva %>% 
   filter(Ecotype_off_temp %in% c('ASHNC_12', 
                                  'ASHNC_18', 
@@ -1221,9 +1249,20 @@ ASHN_off_temp_body = F2_off_temp_body_cva %>%
                                  'ASHNW_18'))
 
 ggplot(data = ASHN_off_temp_body, 
-       aes(x = LD1)) +
-  geom_density(aes(col = Ecotype_off_temp, 
-                   fill = Ecotype_off_temp))
+       aes(x = LD1, 
+           y = LD2)) + 
+  geom_point(aes(col = Ecotype_off_temp, 
+                 shape = Offspring_temp))+
+  geom_point(data = ASHN_F2_off_temp_means, 
+             # col = 'Black', 
+             size = 4,
+             aes(col = Ecotype_off_temp, 
+                 x = mean_LD1, 
+                 y = mean_LD2))
+# ggplot(data = ASHN_off_temp_body, 
+#        aes(x = LD1)) +
+#   geom_density(aes(col = Ecotype_off_temp, 
+#                    fill = Ecotype_off_temp))
 
 
 
@@ -1516,18 +1555,33 @@ F2_off_temp_body_ASHN = read_csv('F2_off_temp_body_cva_per_pop.csv')%>%
   filter(Lake == 'ASHN')
 
 
-ASHN_lm_integration = bind_cols(F2_off_temp_cranio_ASHN$LD1, 
-                           F2_off_temp_4bar_ASHN$LD1, 
+ASHN_lm_integration_ld1 = bind_cols(F2_off_temp_cranio_ASHN$LD1, 
+                           F2_off_temp_4bar_ASHN$LD2, 
                            F2_off_temp_body_ASHN$LD1) %>% 
   rename(F2_off_temp_cranio = 1, 
          F2_off_temp_4bar = 2, 
          F2_off_temp_body = 3)
 
 
-ASHN_F2_integration_pcor = pcor(x = ASHN_lm_integration, 
+ASHN_F2_integration_ld1_pcor = pcor(x = ASHN_lm_integration_ld1, 
                         method = 'pearson')
 
-F2_integration_pcor$estimate
-F2_integration_pcor$p.value
+ASHN_F2_integration_ld1_pcor$p.value
+ASHN_F2_integration_ld1_pcor$estimate
+
+
+ASHN_lm_integration_ld2 = bind_cols(F2_off_temp_cranio_ASHN$LD2, 
+                                    F2_off_temp_4bar_ASHN$LD1, 
+                                    F2_off_temp_body_ASHN$LD2) %>% 
+  rename(F2_off_temp_cranio = 1, 
+         F2_off_temp_4bar = 2, 
+         F2_off_temp_body = 3)
+
+
+ASHN_F2_integration_ld2_pcor = pcor(x = ASHN_lm_integration_ld2, 
+                                    method = 'pearson')
+
+ASHN_F2_integration_ld2_pcor$p.value
+ASHN_F2_integration_ld2_pcor$estimate
 
 
