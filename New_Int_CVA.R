@@ -540,7 +540,26 @@ operculum_shape_ashn = read_csv('F2_operculum_shape_cva_per_pop.csv') %>%
   filter(Lake == 'ASHN')
 
 ##Univariate traits
-
+jaw_length_ASHN = read_csv('F2_jaw_length_fitted_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
+fbar2324_ASHN = read_csv('F2_fbar2324_fitted_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
+fbar824_ASHN = read_csv('F2_fbar824_fitted_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
+fbar827_ASHN = read_csv('F2_fbar827_fitted_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
+fbar2327_ASHN = read_csv('F2_fbar2327_fitted_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
+fbar2526_ASHN = read_csv('F2_fbar2526_fitted_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
+body_depth_ASHN = read_csv('F2_body_depth_fitted_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
+caudal_depth1_ASHN = read_csv('F2_caudal_depth1_fitted_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
+caudal_depth2_ASHN = read_csv('F2_caudal_depth2_fitted_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
+body_length_ASHN = read_csv('F2_body_length_fitted_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
 
 # ASHN ld axes data viz ---------------------------------------------------
 
