@@ -628,6 +628,8 @@ ASHN_lm_integration_ecotype = bind_cols(cranio_ashn$LD1,
          caudal_depth2 = 14, 
          body_length = 15)
 
+
+## integration of multivariate traits
 ASHN_multivariate = ASHN_lm_integration_ecotype %>% 
   dplyr::select(cranio_shape, 
          body_shape, 
@@ -641,24 +643,20 @@ ASHN_multi_int_ecotype_pcor = pcor(x = ASHN_multivariate,
 ASHN_multi_int_ecotype_pcor$p.value
 ASHN_multi_int_ecotype_pcor$estimate
 
-ASHN_integration_ecotype_pcor = pcor(x = ASHN_lm_integration_ecotype, 
+ASHN_multi_int_temp = bind_cols(cranio_ashn$LD2, 
+          body_shape_ashn$LD2, 
+          fbar_ashn$LD1, 
+          eye_shape_ashn$LD2, 
+          operculum_shape_ashn$LD1) %>% 
+  rename(cranio_shape = 1, 
+         body_shape = 2, 
+         fbar_shape = 3, 
+         eye_shape = 4, 
+         operculum_shape = 5)
+
+ASHN_multi_int_temp = pcor(x = ASHN_multi_int_temp, 
                                     method = 'pearson')
 
-ASHN_F2_integration_ld1_pcor$p.value
-ASHN_F2_integration_ld1_pcor$estimate
-
-
-ASHN_lm_integration_temp = bind_cols(F2_off_temp_cranio_ASHN$LD2, 
-                                     F2_off_temp_4bar_ASHN$LD1, 
-                                     F2_off_temp_body_ASHN$LD2) %>% 
-  rename(F2_off_temp_cranio = 1, 
-         F2_off_temp_4bar = 2, 
-         F2_off_temp_body = 3)
-
-
-ASHN_F2_integration_ld2_pcor = pcor(x = ASHN_lm_integration_temp, 
-                                    method = 'pearson')
-
-ASHN_F2_integration_ld2_pcor$p.value
-ASHN_F2_integration_ld2_pcor$estimate
+ASHN_multi_int_temp$p.value
+ASHN_multi_int_temp$estimate
 
