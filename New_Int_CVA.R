@@ -138,6 +138,11 @@ F2_multi_12 = geomorph.data.frame(coords = two.d.array(multi_shape_12$coords),
                                    lake_morph = identifiers$Lake_morph,
                                    lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
 
+
+# CVA multivariate traits -------------------------------------------------
+
+
+
 # Inter-LM distances - get univariate traits ------------------------------------------------------
 
 
