@@ -525,3 +525,47 @@ body_length_fitted %>%
   rename(body_length = V1) %>% 
   write_csv('F2_body_length_fitted_per_pop.csv')
 
+# ASHN compare integration between lm sets -------------------------------------
+
+## multivariate traits
+cranio_ashn = read_csv('F2_cranio_shape_cva_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
+body_shape_ashn = read_csv('F2_body_shape_cva_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
+fbar_ashn = read_csv('F2_4bar_shape_cva_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
+eye_shape_ashn = read_csv('F2_eye_shape_cva_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
+operculum_shape_ashn = read_csv('F2_operculum_shape_cva_per_pop.csv') %>% 
+  filter(Lake == 'ASHN')
+
+
+ASHN_lm_integration_ecotype = bind_cols(F2_off_temp_cranio_ASHN$LD1, 
+                                        F2_off_temp_4bar_ASHN$LD2, 
+                                        F2_off_temp_body_ASHN$LD1) %>% 
+  rename(F2_off_temp_cranio = 1, 
+         F2_off_temp_4bar = 2, 
+         F2_off_temp_body = 3)
+
+
+ASHN_F2_integration_ld1_pcor = pcor(x = ASHN_lm_integration_ecotype, 
+                                    method = 'pearson')
+
+ASHN_F2_integration_ld1_pcor$p.value
+ASHN_F2_integration_ld1_pcor$estimate
+
+
+ASHN_lm_integration_temp = bind_cols(F2_off_temp_cranio_ASHN$LD2, 
+                                     F2_off_temp_4bar_ASHN$LD1, 
+                                     F2_off_temp_body_ASHN$LD2) %>% 
+  rename(F2_off_temp_cranio = 1, 
+         F2_off_temp_4bar = 2, 
+         F2_off_temp_body = 3)
+
+
+ASHN_F2_integration_ld2_pcor = pcor(x = ASHN_lm_integration_temp, 
+                                    method = 'pearson')
+
+ASHN_F2_integration_ld2_pcor$p.value
+ASHN_F2_integration_ld2_pcor$estimate
+
