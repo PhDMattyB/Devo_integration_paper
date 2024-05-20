@@ -444,3 +444,84 @@ fbar2526_fitted %>%
   rename(fbar_2526 = V1) %>% 
   write_csv('F2_fbar2526_fitted_per_pop.csv')
 
+
+# univariate body depth ---------------------------------------------------
+
+body_depth_mod = procD.lm(body_width ~ Offspring_temp * Lake_morph, 
+                        data = F2_univariate_traits)
+
+summary(body_depth_mod)
+
+body_depth_fitted = body_depth_mod$fitted
+
+body_depth_fitted %>% 
+  as.data.frame() %>% 
+  bind_cols(identifiers)%>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F) %>% 
+  rename(body_depth = V1) %>% 
+  write_csv('F2_body_depth_fitted_per_pop.csv')
+
+# univariate caudal depth 1 ---------------------------------------------------
+
+caudal_depth1_mod = procD.lm(caudal1_14_18 ~ Offspring_temp * Lake_morph, 
+                          data = F2_univariate_traits)
+
+summary(caudal_depth1_mod)
+
+caudal_depth1_fitted = caudal_depth1_mod$fitted
+
+caudal_depth1_fitted %>% 
+  as.data.frame() %>% 
+  bind_cols(identifiers)%>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F) %>% 
+  rename(caudal_depth1 = V1) %>% 
+  write_csv('F2_caudal_depth1_fitted_per_pop.csv')
+# univariate caudal depth 2 ---------------------------------------------------
+
+caudal_depth2_mod = procD.lm(caudal2_15_17 ~ Offspring_temp * Lake_morph, 
+                             data = F2_univariate_traits)
+
+summary(caudal_depth2_mod)
+
+caudal_depth2_fitted = caudal_depth2_mod$fitted
+
+caudal_depth2_fitted %>% 
+  as.data.frame() %>% 
+  bind_cols(identifiers)%>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F) %>% 
+  rename(caudal_depth2 = V1) %>% 
+  write_csv('F2_caudal_depth2_fitted_per_pop.csv')
+
+
+# univariate body length ---------------------------------------------------
+
+body_length_mod = procD.lm(body_length ~ Offspring_temp * Lake_morph, 
+                             data = F2_univariate_traits)
+
+summary(body_length_mod)
+
+body_length_fitted = body_length_mod$fitted
+
+body_length_fitted %>% 
+  as.data.frame() %>% 
+  bind_cols(identifiers)%>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F) %>% 
+  rename(body_length = V1) %>% 
+  write_csv('F2_body_length_fitted_per_pop.csv')
+
