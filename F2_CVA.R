@@ -73,14 +73,6 @@ F2_cranio_geo_df = geomorph.data.frame(coords = two.d.array(F2_craniofacial_gpa$
 
 # F2 off temp per lake morph CVA per morph -----------------------------------------------
 
-geomorph.data.frame(ASHN_cranio_df)
-
-ASHN_F2_off_temp = procD.lm(coords ~ offspring_temp * lake_morph, 
-                       data = ASHN_cranio_df)
-
-summary(F2_off_temp)
-
-
 
 F2_off_temp = procD.lm(coords ~ offspring_temp * lake_morph, 
                 data = F2_geo_df)
