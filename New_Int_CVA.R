@@ -142,6 +142,38 @@ F2_multi_12 = geomorph.data.frame(coords = two.d.array(multi_shape_12$coords),
 # CVA multivariate traits -------------------------------------------------
 
 
+# eye landmarks 345 -------------------------------------------------------
+
+multi_shape345_mod = procD.lm(coords ~ offspring_temp * lake_morph, 
+                       data = F2_multi_345)
+summary(multi_shape345_mod)
+prep.lda(multi_shape345_mod, 
+         inherent.groups = TRUE) # see groups available
+
+lda.args = prep.lda(multi_shape345_mod) 
+multi_shape345_CVA = do.call(lda, lda.args)
+
+## CVS scores for each individual
+multi_shape345_cva_scores = predict(multi_shape345_CVA)
+
+multi_shape345_cva_scores = multi_shape345_cva_scores$x %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  rename(individualID = rowname) %>% 
+  arrange(individualID)
+
+multi_shape345_cva = bind_cols(multi_shape345_cva_scores, 
+                            identifiers) %>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F)
+
+multi_shape345_cva %>% 
+  write_csv('F2_eye_shape_cva_per_pop.csv')
+
 
 # Inter-LM distances - get univariate traits ------------------------------------------------------
 
