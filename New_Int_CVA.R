@@ -85,4 +85,29 @@ F2_4bar_geo_df = geomorph.data.frame(coords = two.d.array(F2_4bar_gpa$coords),
                                        lake_morph = identifiers$Lake_morph,
                                        lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
 
+# Inter-LM distances - get univariate traits ------------------------------------------------------
+
+
+lmks = data.frame(jaw_length = c(1, 2), 
+                  fbar_23_24 = c(23, 24), 
+                  fbar_8_24 = c(8, 24), 
+                  fbar_8_27 = c(8, 27), 
+                  fbar_23_27 = c(23, 27), 
+                  fbar_25_26 = c(25, 26), 
+                  body_width = c(12, 21), 
+                  caudal1_14_18 = c(14, 18), 
+                  caudal2_15_17 = c(15, 17), 
+                  body_length = c(1, 16),
+                  row.names = c('start', 
+                                'end'))
+
+A = F2_whole_body_gpa$coords
+F2_univariate_traits = interlmkdist(A, 
+                                  lmks)
+
+# arrayspecs(F2_univariate_traits, 
+#            4, 
+#            3)
+
+
 
