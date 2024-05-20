@@ -560,7 +560,7 @@ caudal_depth2_ASHN = read_csv('F2_caudal_depth2_fitted_per_pop.csv') %>%
   filter(Lake == 'ASHN')
 body_length_ASHN = read_csv('F2_body_length_fitted_per_pop.csv') %>% 
   filter(Lake == 'ASHN')
-
+##
 # ASHN ld axes data viz ---------------------------------------------------
 
 ASHN_means = operculum_shape_ashn %>% 
@@ -597,16 +597,51 @@ ggplot(data = ASHN_data,
 
 # ASHN_ integration -------------------------------------------------------
 
+ASHN_lm_integration_ecotype = bind_cols(cranio_ashn$LD1, 
+                                        body_shape_ashn$LD1, 
+                                        fbar_ashn$LD2, 
+                                        eye_shape_ashn$LD1, 
+                                        operculum_shape_ashn$LD2, 
+                                        jaw_length_ASHN$jaw_length, 
+                                        fbar2324_ASHN$fbar_2324, 
+                                        fbar824_ASHN$fbar_824, 
+                                        fbar827_ASHN$fbar_827, 
+                                        fbar2327_ASHN$fbar_2327, 
+                                        fbar2526_ASHN$fbar_2526, 
+                                        body_depth_ASHN$body_depth, 
+                                        caudal_depth1_ASHN$caudal_depth1, 
+                                        caudal_depth2_ASHN$caudal_depth2, 
+                                        body_length_ASHN$body_length) %>% 
+  rename(cranio_shape = 1, 
+         body_shape = 2, 
+         fbar_shape = 3, 
+         eye_shape = 4, 
+         operculum_shape = 5, 
+         jaw_length = 6, 
+         fbar2324 = 7, 
+         fbar824 = 8, 
+         fbar827 = 9, 
+         fbar2327 = 10, 
+         fbar2526 = 11, 
+         body_depth = 12, 
+         caudal_depth1 = 13, 
+         caudal_depth2 = 14, 
+         body_length = 15)
 
-ASHN_lm_integration_ecotype = bind_cols(F2_off_temp_cranio_ASHN$LD1, 
-                                        F2_off_temp_4bar_ASHN$LD2, 
-                                        F2_off_temp_body_ASHN$LD1) %>% 
-  rename(F2_off_temp_cranio = 1, 
-         F2_off_temp_4bar = 2, 
-         F2_off_temp_body = 3)
+ASHN_multivariate = ASHN_lm_integration_ecotype %>% 
+  dplyr::select(cranio_shape, 
+         body_shape, 
+         fbar_shape, 
+         eye_shape, 
+         operculum_shape)
 
+ASHN_multi_int_ecotype_pcor = pcor(x = ASHN_multivariate, 
+                                     method = 'pearson')
 
-ASHN_F2_integration_ld1_pcor = pcor(x = ASHN_lm_integration_ecotype, 
+ASHN_multi_int_ecotype_pcor$p.value
+ASHN_multi_int_ecotype_pcor$estimate
+
+ASHN_integration_ecotype_pcor = pcor(x = ASHN_lm_integration_ecotype, 
                                     method = 'pearson')
 
 ASHN_F2_integration_ld1_pcor$p.value
