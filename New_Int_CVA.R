@@ -363,3 +363,84 @@ fbar2324_fitted %>%
   rename(fbar_2324 = V1) %>% 
   write_csv('F2_fbar2324_fitted_per_pop.csv')
 
+# univariate fbar 8-24 ---------------------------------------------------
+
+fbar824_mod = procD.lm(fbar_8_24 ~ Offspring_temp * Lake_morph, 
+                        data = F2_univariate_traits)
+
+summary(fbar824_mod)
+
+fbar824_fitted = fbar824_mod$fitted
+
+fbar824_fitted %>% 
+  as.data.frame() %>% 
+  bind_cols(identifiers)%>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F) %>% 
+  rename(fbar_824 = V1) %>% 
+  write_csv('F2_fbar824_fitted_per_pop.csv')
+
+# univariate fbar 8-27 ---------------------------------------------------
+
+fbar827_mod = procD.lm(fbar_8_27 ~ Offspring_temp * Lake_morph, 
+                        data = F2_univariate_traits)
+
+summary(fbar827_mod)
+
+fbar827_fitted = fbar827_mod$fitted
+
+fbar827_fitted %>% 
+  as.data.frame() %>% 
+  bind_cols(identifiers)%>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F) %>% 
+  rename(fbar_827 = V1) %>% 
+  write_csv('F2_fbar827_fitted_per_pop.csv')
+
+
+# univariate fbar 23-27 ---------------------------------------------------
+
+fbar2327_mod = procD.lm(fbar_23_27 ~ Offspring_temp * Lake_morph, 
+                       data = F2_univariate_traits)
+
+summary(fbar2327_mod)
+
+fbar2327_fitted = fbar2327_mod$fitted
+
+fbar2327_fitted %>% 
+  as.data.frame() %>% 
+  bind_cols(identifiers)%>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F) %>% 
+  rename(fbar_2327 = V1) %>% 
+  write_csv('F2_fbar2327_fitted_per_pop.csv')
+
+# univariate fbar 25-26 ---------------------------------------------------
+
+fbar2526_mod = procD.lm(fbar_25_26 ~ Offspring_temp * Lake_morph, 
+                        data = F2_univariate_traits)
+
+summary(fbar2526_mod)
+
+fbar2526_fitted = fbar2526_mod$fitted
+
+fbar2526_fitted %>% 
+  as.data.frame() %>% 
+  bind_cols(identifiers)%>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F) %>% 
+  rename(fbar_2526 = V1) %>% 
+  write_csv('F2_fbar2526_fitted_per_pop.csv')
+
