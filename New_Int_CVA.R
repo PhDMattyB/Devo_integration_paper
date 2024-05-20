@@ -56,11 +56,11 @@ F2_cranio_geo_df = geomorph.data.frame(coords = two.d.array(F2_craniofacial_gpa$
                                        lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
 
 
-F2_whole_body = readland.tps('F2_No_GT.TPS', 
+F2_body = readland.tps('F2_Body_LM.TPS', 
                       specID = 'imageID')
-F2_whole_body_gpa = gpagen(F2_whole_body,
+F2_body_gpa = gpagen(F2_body,
                              print.progress = F)
-F2_WB_geo_df = geomorph.data.frame(coords = two.d.array(F2_whole_body_gpa$coords), 
+F2_body_geo_df = geomorph.data.frame(coords = two.d.array(F2_body_gpa$coords), 
                                        Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
                                        parent_temp = identifiers$Parent_temp, 
                                        offspring_temp = identifiers$Offspring_temp,
@@ -181,28 +181,28 @@ multi_shape789_cva %>%
   write_csv('F2_operculum_shape_cva_per_pop.csv')
 
 
-# pectoral fin shape ------------------------------------------------------
+# body shape ------------------------------------------------------
 
-multi_shape12_mod = procD.lm(coords ~ offspring_temp * lake_morph, 
-                              data = F2_multi_12)
-summary(multi_shape12_mod)
-prep.lda(multi_shape12_mod, 
+multi_body_mod = procD.lm(coords ~ offspring_temp * lake_morph, 
+                              data = F2_body_geo_df)
+summary(multi_body_mod)
+prep.lda(multi_body_mod, 
          inherent.groups = TRUE) # see groups available
 
-lda.args = prep.lda(multi_shape12_mod) 
-multi_shape12_CVA = do.call(lda, lda.args)
+lda.args = prep.lda(multi_body_mod) 
+multi_body_CVA = do.call(lda, lda.args)
 
 ## CVS scores for each individual
-multi_shape12_cva_scores = predict(multi_shape12_CVA)
+multi_body_cva_scores = predict(multi_body_CVA)
 
-multi_shape12_cva_scores = multi_shape12_cva_scores$x %>% 
+multi_body_cva_scores = multi_body_cva_scores$x %>% 
   as.data.frame() %>% 
   rownames_to_column() %>% 
   as_tibble() %>% 
   rename(individualID = rowname) %>% 
   arrange(individualID)
 
-multi_shape12_cva = bind_cols(multi_shape12_cva_scores, 
+multi_body_cva = bind_cols(multi_body_cva_scores, 
                                identifiers) %>% 
   unite('Ecotype_off_temp', 
         Lake_morph, 
@@ -210,8 +210,76 @@ multi_shape12_cva = bind_cols(multi_shape12_cva_scores,
         sep = '_', 
         remove = F)
 
-multi_shape12_cva %>% 
-  write_csv('F2_eye_shape_cva_per_pop.csv')
+multi_body_cva %>% 
+  write_csv('F2_body_shape_cva_per_pop.csv')
+
+
+# craniofacial shape ------------------------------------------------------
+
+
+multi_cranio_mod = procD.lm(coords ~ offspring_temp * lake_morph, 
+                          data = F2_cranio_geo_df)
+summary(multi_cranio_mod)
+prep.lda(multi_cranio_mod, 
+         inherent.groups = TRUE) # see groups available
+
+lda.args = prep.lda(multi_cranio_mod) 
+multi_cranio_CVA = do.call(lda, lda.args)
+
+## CVS scores for each individual
+multi_cranio_cva_scores = predict(multi_cranio_CVA)
+
+multi_cranio_cva_scores = multi_cranio_cva_scores$x %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  rename(individualID = rowname) %>% 
+  arrange(individualID)
+
+multi_cranio_cva = bind_cols(multi_cranio_cva_scores, 
+                           identifiers) %>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F)
+
+multi_cranio_cva %>% 
+  write_csv('F2_cranio_shape_cva_per_pop.csv')
+
+
+# 4bar shape lda ----------------------------------------------------------
+
+
+multi_4bar_mod = procD.lm(coords ~ offspring_temp * lake_morph, 
+                            data = F2_4bar_geo_df)
+summary(multi_4bar_mod)
+prep.lda(multi_4bar_mod, 
+         inherent.groups = TRUE) # see groups available
+
+lda.args = prep.lda(multi_4bar_mod) 
+multi_4bar_CVA = do.call(lda, lda.args)
+
+## CVS scores for each individual
+multi_4bar_cva_scores = predict(multi_4bar_CVA)
+
+multi_4bar_cva_scores = multi_4bar_cva_scores$x %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  rename(individualID = rowname) %>% 
+  arrange(individualID)
+
+multi_4bar_cva = bind_cols(multi_4bar_cva_scores, 
+                             identifiers) %>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F)
+
+multi_4bar_cva %>% 
+  write_csv('F2_4bar_shape_cva_per_pop.csv')
 
 
 
