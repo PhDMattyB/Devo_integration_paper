@@ -628,6 +628,17 @@ ASHN_lm_integration_ecotype = bind_cols(cranio_ashn$LD1,
          caudal_depth2 = 14, 
          body_length = 15)
 
+## integration of univariate traits
+ASHN_univariate = ASHN_lm_integration_ecotype %>% 
+  dplyr::select(jaw_length, 
+                body_length, 
+                body_depth)
+
+ASHN_uni_pcor = pcor(x = ASHN_univariate, 
+                                   method = 'pearson')
+
+ASHN_uni_pcor$p.value
+ASHN_uni_pcor$estimate
 
 ## integration of multivariate traits
 ASHN_multivariate = ASHN_lm_integration_ecotype %>% 
