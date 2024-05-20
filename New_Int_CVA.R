@@ -112,6 +112,32 @@ F2_multi_789 = geomorph.data.frame(coords = two.d.array(multi_shape_789$coords),
                                    lake_morph = identifiers$Lake_morph,
                                    lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
 
+# multi_shape_1011 = readland.tps('multi_shape_1011.TPS', 
+#                                specID = 'imageID')
+# multi_shape_1011 = gpagen(multi_shape_1011)
+# F2_multi_1011 = geomorph.data.frame(coords = two.d.array(multi_shape_1011$coords), 
+#                                    Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+#                                    parent_temp = identifiers$Parent_temp, 
+#                                    offspring_temp = identifiers$Offspring_temp,
+#                                    grand_temp = identifiers$Grand_temp,
+#                                    morph = identifiers$Morph, 
+#                                    population = identifiers$Lake,
+#                                    lake_morph = identifiers$Lake_morph,
+#                                    lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+# 
+# multi_shape_12 = readland.tps('multi_shape_12.TPS', 
+#                                specID = 'imageID')
+# multi_shape_12 = gpagen(multi_shape_12)
+# F2_multi_12 = geomorph.data.frame(coords = two.d.array(multi_shape_12$coords), 
+#                                    Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+#                                    parent_temp = identifiers$Parent_temp, 
+#                                    offspring_temp = identifiers$Offspring_temp,
+#                                    grand_temp = identifiers$Grand_temp,
+#                                    morph = identifiers$Morph, 
+#                                    population = identifiers$Lake,
+#                                    lake_morph = identifiers$Lake_morph,
+#                                    lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+# 
 
 # CVA multivariate traits -------------------------------------------------
 
@@ -283,6 +309,7 @@ multi_4bar_cva %>%
 
 
 
+
 # Inter-LM distances - get univariate traits ------------------------------------------------------
 
 
@@ -327,9 +354,14 @@ F2_univariate_traits = bind_cols(F2_univariate_traits,
 jaw_length_mod = procD.lm(jaw_length ~ Offspring_temp * Lake_morph, 
                           data = F2_univariate_traits)
 
+plot(jaw_length_mod, type = "diagnostics") 
+
 summary(jaw_length_mod)
 
 jaw_length_fitted = jaw_length_mod$fitted
+
+# jaw_length_mod$residuals
+jaw_length_mod$LM$fitted
 
 jaw_length_fitted %>% 
   as.data.frame() %>% 
@@ -343,7 +375,7 @@ jaw_length_fitted %>%
   write_csv('F2_jaw_length_fitted_per_pop.csv')
 
 
-# univariate fbar 23-24 ---------------------------------------------------
+# univariate fbANOVA# univariate fbar 23-24 ---------------------------------------------------
 
 fbar2324_mod = procD.lm(fbar_23_24 ~ Offspring_temp * Lake_morph, 
                           data = F2_univariate_traits)
