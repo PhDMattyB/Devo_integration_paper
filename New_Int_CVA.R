@@ -85,6 +85,59 @@ F2_4bar_geo_df = geomorph.data.frame(coords = two.d.array(F2_4bar_gpa$coords),
                                        lake_morph = identifiers$Lake_morph,
                                        lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
 
+multi_shape_345 = readland.tps('multi_shape_345.TPS', 
+                               specID = 'imageID')
+multi_shape_345 = gpagen(multi_shape_345)
+F2_multi_345 = geomorph.data.frame(coords = two.d.array(multi_shape_345$coords), 
+                                     Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+                                     parent_temp = identifiers$Parent_temp, 
+                                     offspring_temp = identifiers$Offspring_temp,
+                                     grand_temp = identifiers$Grand_temp,
+                                     morph = identifiers$Morph, 
+                                     population = identifiers$Lake,
+                                     lake_morph = identifiers$Lake_morph,
+                                     lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+
+
+multi_shape_789 = readland.tps('multi_shape_789.TPS', 
+                               specID = 'imageID')
+multi_shape_789 = gpagen(multi_shape_789)
+F2_multi_789 = geomorph.data.frame(coords = two.d.array(multi_shape_789$coords), 
+                                   Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+                                   parent_temp = identifiers$Parent_temp, 
+                                   offspring_temp = identifiers$Offspring_temp,
+                                   grand_temp = identifiers$Grand_temp,
+                                   morph = identifiers$Morph, 
+                                   population = identifiers$Lake,
+                                   lake_morph = identifiers$Lake_morph,
+                                   lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+
+multi_shape_1011 = readland.tps('multi_shape_1011.TPS', 
+                               specID = 'imageID')
+multi_shape_1011 = gpagen(multi_shape_1011)
+F2_multi_1011 = geomorph.data.frame(coords = two.d.array(multi_shape_1011$coords), 
+                                   Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+                                   parent_temp = identifiers$Parent_temp, 
+                                   offspring_temp = identifiers$Offspring_temp,
+                                   grand_temp = identifiers$Grand_temp,
+                                   morph = identifiers$Morph, 
+                                   population = identifiers$Lake,
+                                   lake_morph = identifiers$Lake_morph,
+                                   lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+
+multi_shape_12 = readland.tps('multi_shape_12.TPS', 
+                               specID = 'imageID')
+multi_shape_12 = gpagen(multi_shape_12)
+F2_multi_12 = geomorph.data.frame(coords = two.d.array(multi_shape_12$coords), 
+                                   Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+                                   parent_temp = identifiers$Parent_temp, 
+                                   offspring_temp = identifiers$Offspring_temp,
+                                   grand_temp = identifiers$Grand_temp,
+                                   morph = identifiers$Morph, 
+                                   population = identifiers$Lake,
+                                   lake_morph = identifiers$Lake_morph,
+                                   lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+
 # Inter-LM distances - get univariate traits ------------------------------------------------------
 
 
