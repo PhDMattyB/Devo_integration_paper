@@ -307,5 +307,59 @@ F2_univariate_traits = interlmkdist(A,
 #            4, 
 #            3)
 
+F2_univariate_traits = F2_univariate_traits %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  arrange(rowname)
 
+
+F2_univariate_traits = bind_cols(F2_univariate_traits, 
+          identifiers) %>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F)
+
+
+# univariate jaw length ---------------------------------------------------
+
+jaw_length_mod = procD.lm(jaw_length ~ Offspring_temp * Lake_morph, 
+                          data = F2_univariate_traits)
+
+summary(jaw_length_mod)
+
+jaw_length_fitted = jaw_length_mod$fitted
+
+jaw_length_fitted %>% 
+  as.data.frame() %>% 
+  bind_cols(identifiers)%>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F) %>% 
+  rename(jaw_length = V1) %>% 
+  write_csv('F2_jaw_length_fitted_per_pop.csv')
+
+
+# univariate fbar 23-24 ---------------------------------------------------
+
+fbar2324_mod = procD.lm(fbar_23_24 ~ Offspring_temp * Lake_morph, 
+                          data = F2_univariate_traits)
+
+summary(fbar2324_mod)
+
+fbar2324_fitted = fbar2324_mod$fitted
+
+fbar2324_fitted %>% 
+  as.data.frame() %>% 
+  bind_cols(identifiers)%>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F) %>% 
+  rename(fbar_2324 = V1) %>% 
+  write_csv('F2_fbar2324_fitted_per_pop.csv')
 
