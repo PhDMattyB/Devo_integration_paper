@@ -112,32 +112,6 @@ F2_multi_789 = geomorph.data.frame(coords = two.d.array(multi_shape_789$coords),
                                    lake_morph = identifiers$Lake_morph,
                                    lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
 
-multi_shape_1011 = readland.tps('multi_shape_1011.TPS', 
-                               specID = 'imageID')
-multi_shape_1011 = gpagen(multi_shape_1011)
-F2_multi_1011 = geomorph.data.frame(coords = two.d.array(multi_shape_1011$coords), 
-                                   Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
-                                   parent_temp = identifiers$Parent_temp, 
-                                   offspring_temp = identifiers$Offspring_temp,
-                                   grand_temp = identifiers$Grand_temp,
-                                   morph = identifiers$Morph, 
-                                   population = identifiers$Lake,
-                                   lake_morph = identifiers$Lake_morph,
-                                   lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
-
-multi_shape_12 = readland.tps('multi_shape_12.TPS', 
-                               specID = 'imageID')
-multi_shape_12 = gpagen(multi_shape_12)
-F2_multi_12 = geomorph.data.frame(coords = two.d.array(multi_shape_12$coords), 
-                                   Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
-                                   parent_temp = identifiers$Parent_temp, 
-                                   offspring_temp = identifiers$Offspring_temp,
-                                   grand_temp = identifiers$Grand_temp,
-                                   morph = identifiers$Morph, 
-                                   population = identifiers$Lake,
-                                   lake_morph = identifiers$Lake_morph,
-                                   lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
-
 
 # CVA multivariate traits -------------------------------------------------
 
@@ -173,6 +147,72 @@ multi_shape345_cva = bind_cols(multi_shape345_cva_scores,
 
 multi_shape345_cva %>% 
   write_csv('F2_eye_shape_cva_per_pop.csv')
+
+# operculum shape 789 -----------------------------------------------------
+
+multi_shape789_mod = procD.lm(coords ~ offspring_temp * lake_morph, 
+                              data = F2_multi_789)
+summary(multi_shape789_mod)
+prep.lda(multi_shape789_mod, 
+         inherent.groups = TRUE) # see groups available
+
+lda.args = prep.lda(multi_shape789_mod) 
+multi_shape789_CVA = do.call(lda, lda.args)
+
+## CVS scores for each individual
+multi_shape789_cva_scores = predict(multi_shape789_CVA)
+
+multi_shape789_cva_scores = multi_shape789_cva_scores$x %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  rename(individualID = rowname) %>% 
+  arrange(individualID)
+
+multi_shape789_cva = bind_cols(multi_shape789_cva_scores, 
+                               identifiers) %>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F)
+
+multi_shape789_cva %>% 
+  write_csv('F2_operculum_shape_cva_per_pop.csv')
+
+
+# pectoral fin shape ------------------------------------------------------
+
+multi_shape12_mod = procD.lm(coords ~ offspring_temp * lake_morph, 
+                              data = F2_multi_12)
+summary(multi_shape12_mod)
+prep.lda(multi_shape12_mod, 
+         inherent.groups = TRUE) # see groups available
+
+lda.args = prep.lda(multi_shape12_mod) 
+multi_shape12_CVA = do.call(lda, lda.args)
+
+## CVS scores for each individual
+multi_shape12_cva_scores = predict(multi_shape12_CVA)
+
+multi_shape12_cva_scores = multi_shape12_cva_scores$x %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  rename(individualID = rowname) %>% 
+  arrange(individualID)
+
+multi_shape12_cva = bind_cols(multi_shape12_cva_scores, 
+                               identifiers) %>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F)
+
+multi_shape12_cva %>% 
+  write_csv('F2_eye_shape_cva_per_pop.csv')
+
 
 
 # Inter-LM distances - get univariate traits ------------------------------------------------------
