@@ -539,6 +539,45 @@ eye_shape_ashn = read_csv('F2_eye_shape_cva_per_pop.csv') %>%
 operculum_shape_ashn = read_csv('F2_operculum_shape_cva_per_pop.csv') %>% 
   filter(Lake == 'ASHN')
 
+##Univariate traits
+
+
+# ASHN ld axes data viz ---------------------------------------------------
+
+ASHN_means = operculum_shape_ashn %>% 
+  group_by(Ecotype_off_temp) %>% 
+  summarize(mean_LD1 = mean(LD1), 
+            mean_LD2 = mean(LD2)) %>% 
+  filter(Ecotype_off_temp %in% c('ASHNC_12', 
+                                 'ASHNC_18', 
+                                 'ASHNW_12', 
+                                 'ASHNW_18'))
+ASHN_data = operculum_shape_ashn %>% 
+  filter(Ecotype_off_temp %in% c('ASHNC_12', 
+                                 'ASHNC_18', 
+                                 'ASHNW_12', 
+                                 'ASHNW_18'))
+ASHN_data$Offspring_temp = as.factor(ASHN_data$Offspring_temp)
+
+ggplot(data = ASHN_data, 
+       aes(x = LD1, 
+           y = LD2)) + 
+  geom_point(aes(col = Ecotype_off_temp, 
+                 shape = Offspring_temp))+
+  geom_point(data = ASHN_means, 
+             # col = 'Black', 
+             size = 4,
+             aes(col = Ecotype_off_temp, 
+                 x = mean_LD1, 
+                 y = mean_LD2))
+
+
+
+
+
+
+# ASHN_ integration -------------------------------------------------------
+
 
 ASHN_lm_integration_ecotype = bind_cols(F2_off_temp_cranio_ASHN$LD1, 
                                         F2_off_temp_4bar_ASHN$LD2, 
