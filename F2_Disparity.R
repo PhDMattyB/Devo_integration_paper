@@ -66,26 +66,26 @@ multi_shape_789 = readland.tps('multi_shape_789.TPS',
 multi_shape_789 = gpagen(multi_shape_789)
 
 
-ashn = landmarks %>%
-  filter(POP_only == 'ASHN')
-
-ashn_pheno = as.matrix(ashn[which(names(ashn) == 'LM1X'):
-                              which(names(ashn) == 'LM22Y')])   
-
-rownames(ashn_pheno) = ashn$ID
-
-# dim(phenotypes)
-ashn_array = arrayspecs(ashn_pheno, 
-                        p = 22, 
-                        k = 2)
-
-ashn_gpa = gpagen(ashn_array)
-
-ashn_df = geomorph.data.frame(ashn_gpa, 
-                              # species = plethodon$species, 
-                              species = ashn$POP)
-
-morphol.disparity(coords ~ 1,
-                  groups = ~species,
-                  data = ashn_df, 
-                  iter = 999)
+# ashn = landmarks %>%
+#   filter(POP_only == 'ASHN')
+# 
+# ashn_pheno = as.matrix(ashn[which(names(ashn) == 'LM1X'):
+#                               which(names(ashn) == 'LM22Y')])   
+# 
+# rownames(ashn_pheno) = ashn$ID
+# 
+# # dim(phenotypes)
+# ashn_array = arrayspecs(ashn_pheno, 
+#                         p = 22, 
+#                         k = 2)
+# 
+# ashn_gpa = gpagen(ashn_array)
+# 
+# ashn_df = geomorph.data.frame(ashn_gpa, 
+#                               # species = plethodon$species, 
+#                               species = ashn$POP)
+# 
+# morphol.disparity(coords ~ 1,
+#                   groups = ~species,
+#                   data = ashn_df, 
+#                   iter = 999)
