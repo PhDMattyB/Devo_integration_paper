@@ -38,9 +38,6 @@ identifiers = read_csv('F2_metadata.csv') %>%
                 factor)) %>% 
   arrange(individualID)
 
-
-
-
 # Shape trait data --------------------------------------------------------
 
 
@@ -119,26 +116,24 @@ F2_multi_789 = geomorph.data.frame(coords = two.d.array(multi_shape_789$coords),
                                    lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
 
 
-# ashn = landmarks %>%
-#   filter(POP_only == 'ASHN')
-# 
-# ashn_pheno = as.matrix(ashn[which(names(ashn) == 'LM1X'):
-#                               which(names(ashn) == 'LM22Y')])   
-# 
-# rownames(ashn_pheno) = ashn$ID
-# 
-# # dim(phenotypes)
-# ashn_array = arrayspecs(ashn_pheno, 
-#                         p = 22, 
-#                         k = 2)
-# 
-# ashn_gpa = gpagen(ashn_array)
-# 
-# ashn_df = geomorph.data.frame(ashn_gpa, 
-#                               # species = plethodon$species, 
-#                               species = ashn$POP)
-# 
-# morphol.disparity(coords ~ 1,
-#                   groups = ~species,
-#                   data = ashn_df, 
-#                   iter = 999)
+# per lake Disparity analysis ------------------------------------------------------
+
+F2_cranio_geo_df
+
+lake_ecotype_disparity = morphol.disparity(coords ~ 1,
+                  groups = ~lake_morph,
+                  data = F2_cranio_geo_df,
+                  iter = 999)
+
+full_mod_disp = morphol.disparity(coords ~ 1,
+                                           groups = ~lake_morph_full,
+                                           data = F2_cranio_geo_df,
+                                           iter = 999)
+
+disp_pval = full_mod_disp$PV.dist.Pval
+disp_vals = full_mod_disp$PV.dist
+disp_proc_var = full_mod_disp$Procrustes.var
+
+
+
+
