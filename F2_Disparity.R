@@ -18,6 +18,7 @@ library(RRPP)
 # library(igraph)
 library(tidyverse)
 
+# Metadata ----------------------------------------------------------------
 identifiers = read_csv('F2_metadata.csv') %>% 
   rename(individualID = Names) %>% 
   unite('lake_morph_Pair_Full_Temp', 
@@ -36,6 +37,12 @@ identifiers = read_csv('F2_metadata.csv') %>%
                   'Grand_temp'),
                 factor)) %>% 
   arrange(individualID)
+
+
+
+
+# Shape trait data --------------------------------------------------------
+
 
 ## Craniofacial traits
 F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
