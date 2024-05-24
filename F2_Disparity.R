@@ -135,7 +135,17 @@ disp_vals = full_mod_disp$PV.dist
 disp_proc_var = full_mod_disp$Procrustes.var
 
 
+disp_pval %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('Craniofacial_disparity_pvals.csv')
 
+disp_vals %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('Craniofacial_disparity_estimates.csv')
 
 # body shape disparity ----------------------------------------------------
 # lake_ecotype_disparity = morphol.disparity(coords ~ 1,
@@ -152,6 +162,17 @@ body_disp_pval = full_mod_disp_body$PV.dist.Pval
 body_disp_vals = full_mod_disp_body$PV.dist
 body_disp_proc_var = full_mod_disp_body$Procrustes.var
 
+body_disp_pval %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('Body_disparity_pvals.csv')
+
+body_disp_vals %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('Body_disparity_estimates.csv')
 
 # 4bar shape disparity ----------------------------------------------------
 # lake_ecotype_disparity = morphol.disparity(coords ~ 1,
@@ -169,6 +190,17 @@ fbar_disp_vals = full_mod_disp_4bar$PV.dist
 fbar_disp_proc_var = full_mod_disp_4bar$Procrustes.var
 
 
+fbar_disp_pval %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('fbar_disparity_pvals.csv')
+
+fbar_disp_vals %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('fbar_disparity_estimates.csv')
 
 # multishape 345 shape disparity ----------------------------------------------------
 # lake_ecotype_disparity = morphol.disparity(coords ~ 1,
@@ -185,6 +217,18 @@ eye_disp_pval = full_mod_disp_eye$PV.dist.Pval
 eye_disp_vals = full_mod_disp_eye$PV.dist
 eye_disp_proc_var = full_mod_disp_eye$Procrustes.var
 
+eye_disp_pval %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('Eye_disparity_pvals.csv')
+
+eye_disp_vals %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('Eye_disparity_estimates.csv')
+
 
 # multishape 789 shape disparity ----------------------------------------------------
 # lake_ecotype_disparity = morphol.disparity(coords ~ 1,
@@ -200,3 +244,15 @@ full_mod_disp_operculum = morphol.disparity(coords ~ 1,
 operculum_disp_pval = full_mod_disp_operculum$PV.dist.Pval
 operculum_disp_vals = full_mod_disp_operculum$PV.dist
 operculum_disp_proc_var = full_mod_disp_operculum$Procrustes.var
+
+operculum_disp_pval %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('Operculum_disparity_pvals.csv')
+
+operculum_disp_vals %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('Operculum_disparity_estimates.csv')
