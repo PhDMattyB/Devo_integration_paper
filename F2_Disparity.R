@@ -116,7 +116,7 @@ F2_multi_789 = geomorph.data.frame(coords = two.d.array(multi_shape_789$coords),
                                    lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
 
 
-# per lake Disparity analysis ------------------------------------------------------
+# craniofacial ecotype Disparity analysis ------------------------------------------------------
 
 F2_cranio_geo_df
 
@@ -137,3 +137,66 @@ disp_proc_var = full_mod_disp$Procrustes.var
 
 
 
+# body shape disparity ----------------------------------------------------
+# lake_ecotype_disparity = morphol.disparity(coords ~ 1,
+#                                            groups = ~lake_morph,
+#                                            data = F2_cranio_geo_df,
+#                                            iter = 999)
+
+full_mod_disp_body = morphol.disparity(coords ~ 1,
+                                  groups = ~lake_morph_full,
+                                  data = F2_body_geo_df,
+                                  iter = 999)
+
+body_disp_pval = full_mod_disp_body$PV.dist.Pval
+body_disp_vals = full_mod_disp_body$PV.dist
+body_disp_proc_var = full_mod_disp_body$Procrustes.var
+
+
+# 4bar shape disparity ----------------------------------------------------
+# lake_ecotype_disparity = morphol.disparity(coords ~ 1,
+#                                            groups = ~lake_morph,
+#                                            data = F2_cranio_geo_df,
+#                                            iter = 999)
+
+full_mod_disp_4bar = morphol.disparity(coords ~ 1,
+                                       groups = ~lake_morph_full,
+                                       data = F2_4bar_geo_df,
+                                       iter = 999)
+
+fbar_disp_pval = full_mod_disp_4bar$PV.dist.Pval
+fbar_disp_vals = full_mod_disp_4bar$PV.dist
+fbar_disp_proc_var = full_mod_disp_4bar$Procrustes.var
+
+
+
+# multishape 345 shape disparity ----------------------------------------------------
+# lake_ecotype_disparity = morphol.disparity(coords ~ 1,
+#                                            groups = ~lake_morph,
+#                                            data = F2_cranio_geo_df,
+#                                            iter = 999)
+
+full_mod_disp_eye = morphol.disparity(coords ~ 1,
+                                       groups = ~lake_morph_full,
+                                       data = F2_multi_345,
+                                       iter = 999)
+
+eye_disp_pval = full_mod_disp_eye$PV.dist.Pval
+eye_disp_vals = full_mod_disp_eye$PV.dist
+eye_disp_proc_var = full_mod_disp_eye$Procrustes.var
+
+
+# multishape 789 shape disparity ----------------------------------------------------
+# lake_ecotype_disparity = morphol.disparity(coords ~ 1,
+#                                            groups = ~lake_morph,
+#                                            data = F2_cranio_geo_df,
+#                                            iter = 999)
+
+full_mod_disp_operculum = morphol.disparity(coords ~ 1,
+                                      groups = ~lake_morph_full,
+                                      data = F2_multi_789,
+                                      iter = 999)
+
+operculum_disp_pval = full_mod_disp_operculum$PV.dist.Pval
+operculum_disp_vals = full_mod_disp_operculum$PV.dist
+operculum_disp_proc_var = full_mod_disp_operculum$Procrustes.var
