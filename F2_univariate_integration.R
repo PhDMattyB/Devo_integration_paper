@@ -143,7 +143,8 @@ trait_cor_graph = ggplot(graph,
            y = Var2, 
            fill = value))+
   geom_tile()+
-  facet_wrap(~lake_morph_full)+
+  facet_wrap(~lake_morph_full, 
+             ncol = 4)+
   theme_bw()+
   theme(strip.background = element_rect(fill = 'white'),
         strip.text = element_text(face = 'bold'),
@@ -156,5 +157,5 @@ ggsave('Univariate_trait_integration.tiff',
        plot = trait_cor_graph, 
        dpi = 'retina', 
        units = 'cm', 
-       width = 50, 
-       height = 30)
+       width = 30, 
+       height = 40)
