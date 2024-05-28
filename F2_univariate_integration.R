@@ -17,6 +17,7 @@ library(ppcor)
 library(igraph)
 library(tidyverse)
 library(reshape2)
+library(candisc)
 # Metadata ----------------------------------------------------------------
 identifiers = read_csv('F2_metadata.csv') %>% 
   rename(individualID = Names) %>% 
@@ -220,3 +221,88 @@ ggsave('Univariate_NOallo_trait_integration.tiff',
        units = 'cm', 
        width = 30, 
        height = 40)
+
+
+
+# Account for offspring temp effects ----------------------------------------------
+
+F2_tps = readland.tps('F2_No_GT.TPS', 
+                      specID = 'imageID')
+
+## superimposition on the entire dataset
+F2_gpa = gpagen(F2_tps, 
+                print.progress = F)
+
+F2_data = geomorph.data.frame(coords = two.d.array(F2_gpa$coords), 
+                                       Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+                                       parent_temp = identifiers$Parent_temp, 
+                                       offspring_temp = identifiers$Offspring_temp,
+                                       grand_temp = identifiers$Grand_temp,
+                                       morph = identifiers$Morph, 
+                                       population = identifiers$Lake,
+                                       lake_morph = identifiers$Lake_morph,
+                                       lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+
+
+# F2_landmark_data = two.d.array(F2_gpa$coords) %>%
+#   as.data.frame() %>% 
+#   rownames_to_column() %>% 
+#   as_tibble() %>% 
+#   arrange(rowname)
+# 
+# mod_data = bind_cols(F2_landmark_data, 
+#                      identifiers)
+
+### candisc won't work for landmark coordinates. 
+### Here's the work around
+WC_ecotype_mod = procD.lm(coords ~ morph,
+                          data = F2_data)
+# mod = lm(fixed_coords ~ Offspring_temp + Parent_temp, 
+#                data = identifiers)
+summary(WC_ecotype_mod)
+
+WC_ecotype_fitted = WC_ecotype_mod$fitted
+
+
+
+lmks = data.frame(jaw_length = c(1, 2), 
+                  fbar_23_24 = c(23, 24), 
+                  fbar_8_24 = c(8, 24), 
+                  fbar_8_27 = c(8, 27), 
+                  fbar_23_27 = c(23, 27), 
+                  fbar_25_26 = c(25, 26), 
+                  body_width = c(12, 21), 
+                  caudal1_14_18 = c(14, 18), 
+                  caudal2_15_17 = c(15, 17), 
+                  body_length = c(1, 16),
+                  row.names = c('start', 
+                                'end'))
+
+WC_ecotype_fitted = arrayspecs(WC_ecotype_fitted, 
+           27, 
+           2)
+
+C = WC_ecotype_fitted
+# A = F2_whole_body_gpa$coords
+F2_WC_ecotype_traits = interlmkdist(C, 
+                                lmks)
+
+# arrayspecs(F2_univariate_traits, 
+#            4, 
+#            3)
+
+F2_WC_ecotype_traits = F2_WC_ecotype_traits %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  arrange(rowname)
+
+
+F2_WC_ecotype_traits = bind_cols(F2_WC_ecotype_traits, 
+                             identifiers) %>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F)
+
+
