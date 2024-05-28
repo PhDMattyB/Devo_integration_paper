@@ -224,7 +224,7 @@ ggsave('Univariate_NOallo_trait_integration.tiff',
 
 
 
-# Account for ecotype effects ----------------------------------------------
+# Ecotype effects ----------------------------------------------
 
 F2_tps = readland.tps('F2_No_GT.TPS', 
                       specID = 'imageID')
@@ -314,11 +314,11 @@ WC_ecotype_trait_cor = WC_ecotype_traits %>%
   map(select, vars_keep) %>% 
   map(cor)
 
-noallo_graph = noallo_trait_cor %>% 
+WC_ecotype_graph = WC_ecotype_trait_cor %>% 
   reshape2::melt() %>% 
   rename(lake_morph_full = L1)
 
-noallo_trait_cor_graph = ggplot(noallo_graph, 
+WC_ecotype_trait_cor_graph = ggplot(WC_ecotype_graph, 
                                 aes(x = Var1, 
                                     y = Var2, 
                                     fill = value))+
@@ -333,9 +333,248 @@ noallo_trait_cor_graph = ggplot(noallo_graph,
                                    vjust = 0.5, 
                                    hjust=1))
 
-ggsave('Univariate_NOallo_trait_integration.tiff', 
+ggsave('Univariate_WC_Ecotype_trait_integration.tiff', 
        plot = noallo_trait_cor_graph, 
        dpi = 'retina', 
        units = 'cm', 
        width = 30, 
        height = 40)
+
+# Offspring temp effects ----------------------------------------------
+
+F2_tps = readland.tps('F2_No_GT.TPS', 
+                      specID = 'imageID')
+
+## superimposition on the entire dataset
+F2_gpa = gpagen(F2_tps, 
+                print.progress = F)
+
+F2_data = geomorph.data.frame(coords = two.d.array(F2_gpa$coords), 
+                              Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+                              parent_temp = identifiers$Parent_temp, 
+                              offspring_temp = identifiers$Offspring_temp,
+                              grand_temp = identifiers$Grand_temp,
+                              morph = identifiers$Morph, 
+                              population = identifiers$Lake,
+                              lake_morph = identifiers$Lake_morph,
+                              lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+
+
+# F2_landmark_data = two.d.array(F2_gpa$coords) %>%
+#   as.data.frame() %>% 
+#   rownames_to_column() %>% 
+#   as_tibble() %>% 
+#   arrange(rowname)
+# 
+# mod_data = bind_cols(F2_landmark_data, 
+#                      identifiers)
+
+### candisc won't work for landmark coordinates. 
+### Here's the work around
+offspring_temp_mod = procD.lm(coords ~ morph*parent_temp,
+                          data = F2_data)
+# mod = lm(fixed_coords ~ Offspring_temp + Parent_temp, 
+#                data = identifiers)
+summary(offspring_temp_mod)
+
+offspring_temp_residuals = offspring_temp_mod$residuals
+
+lmks = data.frame(jaw_length = c(1, 2), 
+                  fbar_23_24 = c(23, 24), 
+                  fbar_8_24 = c(8, 24), 
+                  fbar_8_27 = c(8, 27), 
+                  fbar_23_27 = c(23, 27), 
+                  fbar_25_26 = c(25, 26), 
+                  body_width = c(12, 21), 
+                  caudal1_14_18 = c(14, 18), 
+                  caudal2_15_17 = c(15, 17), 
+                  body_length = c(1, 16),
+                  row.names = c('start', 
+                                'end'))
+
+offspring_temp_residuals = arrayspecs(offspring_temp_residuals, 
+                                  27, 
+                                  2)
+
+D = offspring_temp_residuals
+# A = F2_whole_body_gpa$coords
+F2_offspring_temp_traits = interlmkdist(D, 
+                                    lmks)
+
+
+F2_offspring_temp_traits = F2_offspring_temp_traits %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  arrange(rowname)
+
+
+F2_offspring_temp_traits = bind_cols(F2_offspring_temp_traits, 
+                                 identifiers) %>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F)
+
+
+offspring_temp_traits = F2_offspring_temp_traits %>% 
+  as_tibble() %>% 
+  group_by(lake_morph_Pair_Full_Temp) %>% 
+  select(jaw_length:body_length)
+
+vars_keep = names(offspring_temp_traits)[c(2,3,4,5,6,7,8,9,10,11)]
+offspring_temp_trait_cor = offspring_temp_traits %>% 
+  ungroup() %>% 
+  split(.$lake_morph_Pair_Full_Temp) %>% 
+  # ungroup() %>% 
+  map(select, vars_keep) %>% 
+  map(cor)
+
+offspring_temp_graph = offspring_temp_trait_cor %>% 
+  reshape2::melt() %>% 
+  rename(lake_morph_full = L1)
+
+offspring_temp_trait_cor_graph = ggplot(offspring_temp_graph, 
+                                    aes(x = Var1, 
+                                        y = Var2, 
+                                        fill = value))+
+  geom_tile()+
+  facet_wrap(~lake_morph_full, 
+             ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90, 
+                                   vjust = 0.5, 
+                                   hjust=1))
+
+ggsave('Univariate_offspring_temp_trait_integration.tiff', 
+       plot = noallo_trait_cor_graph, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 30, 
+       height = 40)
+
+# Parent temp effects ----------------------------------------------
+
+F2_tps = readland.tps('F2_No_GT.TPS', 
+                      specID = 'imageID')
+
+## superimposition on the entire dataset
+F2_gpa = gpagen(F2_tps, 
+                print.progress = F)
+
+F2_data = geomorph.data.frame(coords = two.d.array(F2_gpa$coords), 
+                              Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+                              parent_temp = identifiers$Parent_temp, 
+                              offspring_temp = identifiers$Offspring_temp,
+                              grand_temp = identifiers$Grand_temp,
+                              morph = identifiers$Morph, 
+                              population = identifiers$Lake,
+                              lake_morph = identifiers$Lake_morph,
+                              lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+
+
+# F2_landmark_data = two.d.array(F2_gpa$coords) %>%
+#   as.data.frame() %>% 
+#   rownames_to_column() %>% 
+#   as_tibble() %>% 
+#   arrange(rowname)
+# 
+# mod_data = bind_cols(F2_landmark_data, 
+#                      identifiers)
+
+### candisc won't work for landmark coordinates. 
+### Here's the work around
+parent_temp_mod = procD.lm(coords ~ morph*offspring_temp,
+                              data = F2_data)
+# mod = lm(fixed_coords ~ Offspring_temp + Parent_temp, 
+#                data = identifiers)
+summary(parent_temp_mod)
+
+parent_temp_residuals = parent_temp_mod$residuals
+
+lmks = data.frame(jaw_length = c(1, 2), 
+                  fbar_23_24 = c(23, 24), 
+                  fbar_8_24 = c(8, 24), 
+                  fbar_8_27 = c(8, 27), 
+                  fbar_23_27 = c(23, 27), 
+                  fbar_25_26 = c(25, 26), 
+                  body_width = c(12, 21), 
+                  caudal1_14_18 = c(14, 18), 
+                  caudal2_15_17 = c(15, 17), 
+                  body_length = c(1, 16),
+                  row.names = c('start', 
+                                'end'))
+
+parent_temp_residuals = arrayspecs(parent_temp_residuals, 
+                                      27, 
+                                      2)
+
+E = parent_temp_residuals
+# A = F2_whole_body_gpa$coords
+F2_parent_temp_traits = interlmkdist(E, 
+                                        lmks)
+
+
+F2_parent_temp_traits = F2_parent_temp_traits %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  arrange(rowname)
+
+
+F2_parent_temp_traits = bind_cols(F2_parent_temp_traits, 
+                                     identifiers) %>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F)
+
+
+parent_temp_traits = F2_parent_temp_traits %>% 
+  as_tibble() %>% 
+  group_by(lake_morph_Pair_Full_Temp) %>% 
+  select(jaw_length:body_length)
+
+vars_keep = names(parent_temp_traits)[c(2,3,4,5,6,7,8,9,10,11)]
+parent_temp_trait_cor = parent_temp_traits %>% 
+  ungroup() %>% 
+  split(.$lake_morph_Pair_Full_Temp) %>% 
+  # ungroup() %>% 
+  map(select, vars_keep) %>% 
+  map(cor)
+
+parent_temp_graph = parent_temp_trait_cor %>% 
+  reshape2::melt() %>% 
+  rename(lake_morph_full = L1)
+
+parent_temp_trait_cor_graph = ggplot(parent_temp_graph, 
+                                        aes(x = Var1, 
+                                            y = Var2, 
+                                            fill = value))+
+  geom_tile()+
+  facet_wrap(~lake_morph_full, 
+             ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90, 
+                                   vjust = 0.5, 
+                                   hjust=1))
+
+ggsave('Univariate_parent_temp_trait_integration.tiff', 
+       plot = noallo_trait_cor_graph, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 30, 
+       height = 40)
+
+
+# Matrix correlations -----------------------------------------------------
+
+## How do the morph, offspring temp, and parent temp data sets
+## correlate back to the original data
+
