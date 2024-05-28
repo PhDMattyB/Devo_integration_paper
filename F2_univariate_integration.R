@@ -633,23 +633,227 @@ parent_test = F2_parent_temp_traits %>%
 
 library(FactoMineR)
 
-coeffRV(uni_test_cor$`ASHNC_12@12`, 
-        off_test_cor$`ASHNC_12@12`)
+# correlate ecotype with original traits ----------------------------------
 
-# parent_temp_traits = F2_parent_temp_traits %>% 
-#   as_tibble() %>% 
-#   group_by(lake_morph_Pair_Full_Temp) %>% 
-#   select(jaw_length:body_length)
-# 
-# vars_keep = names(parent_temp_traits)[c(2,3,4,5,6,7,8,9,10,11)]
-# parent_temp_trait_cor = parent_temp_traits %>% 
-#   ungroup() %>% 
-#   split(.$lake_morph_Pair_Full_Temp) %>% 
-#   # ungroup() %>% 
-#   map(select, vars_keep) %>% 
-#   map(cor)
-# 
-# parent_temp_graph = parent_temp_trait_cor %>% 
-#   reshape2::melt() %>% 
-  rename(lake_morph_full = L1)
+coeffRV(uni_test$`ASHNC_12@12`, 
+        ecotype_test$`ASHNC_12@12`)
+coeffRV(uni_test$`ASHNC_12@18`, 
+        ecotype_test$`ASHNC_12@18`)
+coeffRV(uni_test$`ASHNC_18@12`, 
+        ecotype_test$`ASHNC_18@12`)
+coeffRV(uni_test$`ASHNC_18@18`, 
+        ecotype_test$`ASHNC_18@18`)
+
+coeffRV(uni_test$`ASHNW_12@12`, 
+        ecotype_test$`ASHNW_12@12`)
+coeffRV(uni_test$`ASHNW_12@18`, 
+        ecotype_test$`ASHNW_12@18`)
+coeffRV(uni_test$`ASHNW_18@12`, 
+        ecotype_test$`ASHNW_18@12`)
+coeffRV(uni_test$`ASHNW_18@18`, 
+        ecotype_test$`ASHNW_18@18`)
+
+coeffRV(uni_test$`CSWYC_12@12`, 
+        ecotype_test$`CSWYC_12@12`)
+coeffRV(uni_test$`CSWYC_12@18`, 
+        ecotype_test$`CSWYC_12@18`)
+coeffRV(uni_test$`CSWYC_18@12`, 
+        ecotype_test$`CSWYC_18@12`)
+coeffRV(uni_test$`CSWYC_18@18`, 
+        ecotype_test$`CSWYC_18@18`)
+
+coeffRV(uni_test$`GTSW_12@12`, 
+        ecotype_test$`GTSW_12@12`)
+coeffRV(uni_test$`GTSW_12@18`, 
+        ecotype_test$`GTSW_12@18`)
+coeffRV(uni_test$`GTSW_18@12`, 
+        ecotype_test$`GTSW_18@12`)
+coeffRV(uni_test$`GTSW_18@18`, 
+        ecotype_test$`GTSW_18@18`)
+
+coeffRV(uni_test$`MYVC_12@12`, 
+        ecotype_test$`MYVC_12@12`)
+coeffRV(uni_test$`MYVC_12@18`, 
+        ecotype_test$`MYVC_12@18`)
+coeffRV(uni_test$`MYVC_18@12`, 
+        ecotype_test$`MYVC_18@12`)
+coeffRV(uni_test$`MYVC_18@18`, 
+        ecotype_test$`MYVC_18@18`)
+
+coeffRV(uni_test$`MYVW_12@12`, 
+        ecotype_test$`MYVW_12@12`)
+coeffRV(uni_test$`MYVW_12@18`, 
+        ecotype_test$`MYVW_12@18`)
+coeffRV(uni_test$`MYVW_18@12`, 
+        ecotype_test$`MYVW_18@12`)
+coeffRV(uni_test$`MYVW_18@18`, 
+        ecotype_test$`MYVW_18@18`)
+
+coeffRV(uni_test$`SKRC_12@12`, 
+        ecotype_test$`SKRC_12@12`)
+coeffRV(uni_test$`SKRC_12@18`, 
+        ecotype_test$`SKRC_12@18`)
+coeffRV(uni_test$`SKRC_18@12`, 
+        ecotype_test$`SKRC_18@12`)
+coeffRV(uni_test$`SKRC_18@18`, 
+        ecotype_test$`SKRC_18@18`)
+
+coeffRV(uni_test$`SKRW_12@12`, 
+        ecotype_test$`SKRW_12@12`)
+coeffRV(uni_test$`SKRW_12@18`, 
+        ecotype_test$`SKRW_12@18`)
+coeffRV(uni_test$`SKRW_18@12`, 
+        ecotype_test$`SKRW_18@12`)
+coeffRV(uni_test$`SKRW_18@18`, 
+        ecotype_test$`SKRW_18@18`)
+
+
+# correlate offspring temp and original traits ----------------------------
+
+coeffRV(uni_test$`ASHNC_12@12`, 
+        off_test$`ASHNC_12@12`)
+coeffRV(uni_test$`ASHNC_12@18`, 
+        off_test$`ASHNC_12@18`)
+coeffRV(uni_test$`ASHNC_18@12`, 
+        off_test$`ASHNC_18@12`)
+coeffRV(uni_test$`ASHNC_18@18`, 
+        off_test$`ASHNC_18@18`)
+
+coeffRV(uni_test$`ASHNW_12@12`, 
+        off_test$`ASHNW_12@12`)
+coeffRV(uni_test$`ASHNW_12@18`, 
+        off_test$`ASHNW_12@18`)
+coeffRV(uni_test$`ASHNW_18@12`, 
+        off_test$`ASHNW_18@12`)
+coeffRV(uni_test$`ASHNW_18@18`, 
+        off_test$`ASHNW_18@18`)
+
+coeffRV(uni_test$`CSWYC_12@12`, 
+        off_test$`CSWYC_12@12`)
+coeffRV(uni_test$`CSWYC_12@18`, 
+        off_test$`CSWYC_12@18`)
+coeffRV(uni_test$`CSWYC_18@12`, 
+        off_test$`CSWYC_18@12`)
+coeffRV(uni_test$`CSWYC_18@18`, 
+        off_test$`CSWYC_18@18`)
+
+coeffRV(uni_test$`GTSW_12@12`, 
+        off_test$`GTSW_12@12`)
+coeffRV(uni_test$`GTSW_12@18`, 
+        off_test$`GTSW_12@18`)
+coeffRV(uni_test$`GTSW_18@12`, 
+        off_test$`GTSW_18@12`)
+coeffRV(uni_test$`GTSW_18@18`, 
+        off_test$`GTSW_18@18`)
+
+coeffRV(uni_test$`MYVC_12@12`, 
+        off_test$`MYVC_12@12`)
+coeffRV(uni_test$`MYVC_12@18`, 
+        off_test$`MYVC_12@18`)
+coeffRV(uni_test$`MYVC_18@12`, 
+        off_test$`MYVC_18@12`)
+coeffRV(uni_test$`MYVC_18@18`, 
+        off_test$`MYVC_18@18`)
+
+coeffRV(uni_test$`MYVW_12@12`, 
+        off_test$`MYVW_12@12`)
+coeffRV(uni_test$`MYVW_12@18`, 
+        off_test$`MYVW_12@18`)
+coeffRV(uni_test$`MYVW_18@12`, 
+        off_test$`MYVW_18@12`)
+coeffRV(uni_test$`MYVW_18@18`, 
+        off_test$`MYVW_18@18`)
+
+coeffRV(uni_test$`SKRC_12@12`, 
+        off_test$`SKRC_12@12`)
+coeffRV(uni_test$`SKRC_12@18`, 
+        off_test$`SKRC_12@18`)
+coeffRV(uni_test$`SKRC_18@12`, 
+        off_test$`SKRC_18@12`)
+coeffRV(uni_test$`SKRC_18@18`, 
+        off_test$`SKRC_18@18`)
+
+coeffRV(uni_test$`SKRW_12@12`, 
+        off_test$`SKRW_12@12`)
+coeffRV(uni_test$`SKRW_12@18`, 
+        off_test$`SKRW_12@18`)
+coeffRV(uni_test$`SKRW_18@12`, 
+        off_test$`SKRW_18@12`)
+coeffRV(uni_test$`SKRW_18@18`, 
+        off_test$`SKRW_18@18`)
+
+
+# parent effects with original traits -------------------------------------
+
+coeffRV(uni_test$`ASHNC_12@12`, 
+        parent_test$`ASHNC_12@12`)
+coeffRV(uni_test$`ASHNC_12@18`, 
+        parent_test$`ASHNC_12@18`)
+coeffRV(uni_test$`ASHNC_18@12`, 
+        parent_test$`ASHNC_18@12`)
+coeffRV(uni_test$`ASHNC_18@18`, 
+        parent_test$`ASHNC_18@18`)
+
+coeffRV(uni_test$`ASHNW_12@12`, 
+        parent_test$`ASHNW_12@12`)
+coeffRV(uni_test$`ASHNW_12@18`, 
+        parent_test$`ASHNW_12@18`)
+coeffRV(uni_test$`ASHNW_18@12`, 
+        parent_test$`ASHNW_18@12`)
+coeffRV(uni_test$`ASHNW_18@18`, 
+        parent_test$`ASHNW_18@18`)
+
+coeffRV(uni_test$`CSWYC_12@12`, 
+        parent_test$`CSWYC_12@12`)
+coeffRV(uni_test$`CSWYC_12@18`, 
+        parent_test$`CSWYC_12@18`)
+coeffRV(uni_test$`CSWYC_18@12`, 
+        parent_test$`CSWYC_18@12`)
+coeffRV(uni_test$`CSWYC_18@18`, 
+        parent_test$`CSWYC_18@18`)
+
+coeffRV(uni_test$`GTSW_12@12`, 
+        parent_test$`GTSW_12@12`)
+coeffRV(uni_test$`GTSW_12@18`, 
+        parent_test$`GTSW_12@18`)
+coeffRV(uni_test$`GTSW_18@12`, 
+        parent_test$`GTSW_18@12`)
+coeffRV(uni_test$`GTSW_18@18`, 
+        parent_test$`GTSW_18@18`)
+
+coeffRV(uni_test$`MYVC_12@12`, 
+        parent_test$`MYVC_12@12`)
+coeffRV(uni_test$`MYVC_12@18`, 
+        parent_test$`MYVC_12@18`)
+coeffRV(uni_test$`MYVC_18@12`, 
+        parent_test$`MYVC_18@12`)
+coeffRV(uni_test$`MYVC_18@18`, 
+        parent_test$`MYVC_18@18`)
+
+coeffRV(uni_test$`MYVW_12@12`, 
+        parent_test$`MYVW_12@12`)
+coeffRV(uni_test$`MYVW_12@18`, 
+        parent_test$`MYVW_12@18`)
+coeffRV(uni_test$`MYVW_18@12`, 
+        parent_test$`MYVW_18@12`)
+coeffRV(uni_test$`MYVW_18@18`, 
+        parent_test$`MYVW_18@18`)
+
+coeffRV(uni_test$`SKRC_12@12`, 
+        parent_test$`SKRC_12@12`)
+coeffRV(uni_test$`SKRC_12@18`, 
+        parent_test$`SKRC_12@18`)
+coeffRV(uni_test$`SKRC_18@12`, 
+        parent_test$`SKRC_18@12`)
+coeffRV(uni_test$`SKRC_18@18`, 
+        parent_test$`SKRC_18@18`)
+
+coeffRV(uni_test$`SKRW_12@12`, 
+        parent_test$`SKRW_12@12`)
+coeffRV(uni_test$`SKRW_12@18`, 
+        parent_test$`SKRW_12@18`)
+coeffRV(uni_test$`SKRW_18@12`, 
+        parent_test$`SKRW_18@12`)
+coeffRV(uni_test$`SKRW_18@18`, 
+        parent_test$`SKRW_18@18`)
 
