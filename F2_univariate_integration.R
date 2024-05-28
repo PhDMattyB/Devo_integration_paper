@@ -588,17 +588,68 @@ F2_WC_ecotype_traits
 F2_offspring_temp_traits
 F2_parent_temp_traits
 
-## Ecotype to orginal
-RV(F2_univariate_traits, 
-   F2_WC_ecotype_traits)
-RV(F2_univariate_traits, 
-   F2_offspring_temp_traits)
-RV(F2_univariate_traits, 
-   F2_parent_temp_traits)
+vars_keep = names(parent_temp_traits)[c(2,3,4,5,6,7,8,9,10,11)]
 
-RV(F2_noallo_traits, 
-   F2_WC_ecotype_traits)
-RV(F2_noallo_traits, 
-   F2_offspring_temp_traits)
-RV(F2_noallo_traits, 
-   F2_parent_temp_traits)
+uni_test = F2_univariate_traits %>% 
+  as_tibble() %>% 
+  group_by(lake_morph_Pair_Full_Temp) %>% 
+  select(jaw_length:body_length) %>% 
+  ungroup() %>% 
+  split(.$lake_morph_Pair_Full_Temp) %>% 
+  map(select, vars_keep)
+
+noallo_test = F2_noallo_traits %>% 
+  as_tibble() %>% 
+  group_by(lake_morph_Pair_Full_Temp) %>% 
+  select(jaw_length:body_length) %>% 
+  ungroup() %>% 
+  split(.$lake_morph_Pair_Full_Temp) %>% 
+  map(select, vars_keep)
+
+
+ecotype_test = F2_WC_ecotype_traits %>% 
+  as_tibble() %>% 
+  group_by(lake_morph_Pair_Full_Temp) %>% 
+  select(jaw_length:body_length) %>% 
+  ungroup() %>% 
+  split(.$lake_morph_Pair_Full_Temp) %>% 
+  map(select, vars_keep)
+
+off_test = F2_offspring_temp_traits %>% 
+  as_tibble() %>% 
+  group_by(lake_morph_Pair_Full_Temp) %>% 
+  select(jaw_length:body_length) %>% 
+  ungroup() %>% 
+  split(.$lake_morph_Pair_Full_Temp) %>% 
+  map(select, vars_keep)
+
+parent_test = F2_parent_temp_traits %>% 
+  as_tibble() %>% 
+  group_by(lake_morph_Pair_Full_Temp) %>% 
+  select(jaw_length:body_length) %>% 
+  ungroup() %>% 
+  split(.$lake_morph_Pair_Full_Temp) %>% 
+  map(select, vars_keep)
+
+library(FactoMineR)
+
+coeffRV(uni_test_cor$`ASHNC_12@12`, 
+        off_test_cor$`ASHNC_12@12`)
+
+# parent_temp_traits = F2_parent_temp_traits %>% 
+#   as_tibble() %>% 
+#   group_by(lake_morph_Pair_Full_Temp) %>% 
+#   select(jaw_length:body_length)
+# 
+# vars_keep = names(parent_temp_traits)[c(2,3,4,5,6,7,8,9,10,11)]
+# parent_temp_trait_cor = parent_temp_traits %>% 
+#   ungroup() %>% 
+#   split(.$lake_morph_Pair_Full_Temp) %>% 
+#   # ungroup() %>% 
+#   map(select, vars_keep) %>% 
+#   map(cor)
+# 
+# parent_temp_graph = parent_temp_trait_cor %>% 
+#   reshape2::melt() %>% 
+  rename(lake_morph_full = L1)
+
