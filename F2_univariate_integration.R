@@ -578,3 +578,27 @@ ggsave('Univariate_parent_temp_trait_integration.tiff',
 ## How do the morph, offspring temp, and parent temp data sets
 ## correlate back to the original data
 
+##Going to use the RV coefficient
+
+library(MatrixCorrelation)
+
+F2_univariate_traits
+F2_noallo_traits
+F2_WC_ecotype_traits
+F2_offspring_temp_traits
+F2_parent_temp_traits
+
+## Ecotype to orginal
+RV(F2_univariate_traits, 
+   F2_WC_ecotype_traits)
+RV(F2_univariate_traits, 
+   F2_offspring_temp_traits)
+RV(F2_univariate_traits, 
+   F2_parent_temp_traits)
+
+RV(F2_noallo_traits, 
+   F2_WC_ecotype_traits)
+RV(F2_noallo_traits, 
+   F2_offspring_temp_traits)
+RV(F2_noallo_traits, 
+   F2_parent_temp_traits)
