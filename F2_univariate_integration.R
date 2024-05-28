@@ -119,3 +119,18 @@ cor(x = trait_matrix,
     use = 'everything', 
     method = 'pearson')
 
+
+
+traits = F2_univariate_traits %>% 
+  as_tibble() %>% 
+  group_by(lake_morph_Pair_Full_Temp) %>% 
+  select(jaw_length:body_length)
+
+vars_keep = names(traits)[c(2,3,4,5,6,7,8,9,10,11)]
+trait_cor = traits %>% 
+  ungroup() %>% 
+  split(.$lake_morph_Pair_Full_Temp) %>% 
+  # ungroup() %>% 
+  map(select, vars_keep) %>% 
+  map(cor)
+
