@@ -101,7 +101,7 @@ F2_univariate_traits = bind_cols(F2_univariate_traits,
         remove = F)
 
 
-# trait correlations ------------------------------------------------------
+# trait correlations - with allometry ------------------------------------------------------
 
 traits = F2_univariate_traits %>% 
   as_tibble() %>% 
@@ -137,6 +137,85 @@ trait_cor_graph = ggplot(graph,
 
 ggsave('Univariate_trait_integration.tiff', 
        plot = trait_cor_graph, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 30, 
+       height = 40)
+
+# univariate traits - interlandmark distances no allometry -------------------------------------------------------
+
+lmks = data.frame(jaw_length = c(1, 2), 
+                  fbar_23_24 = c(23, 24), 
+                  fbar_8_24 = c(8, 24), 
+                  fbar_8_27 = c(8, 27), 
+                  fbar_23_27 = c(23, 27), 
+                  fbar_25_26 = c(25, 26), 
+                  body_width = c(12, 21), 
+                  caudal1_14_18 = c(14, 18), 
+                  caudal2_15_17 = c(15, 17), 
+                  body_length = c(1, 16),
+                  row.names = c('start', 
+                                'end'))
+
+A = F2_allometry_adj_shape
+# A = F2_whole_body_gpa$coords
+F2_noallo_traits = interlmkdist(A, 
+                                    lmks)
+
+# arrayspecs(F2_univariate_traits, 
+#            4, 
+#            3)
+
+F2_noallo_traits = F2_noallo_traits %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  arrange(rowname)
+
+
+F2_noallo_traits = bind_cols(F2_noallo_traits, 
+                                 identifiers) %>% 
+  unite('Ecotype_off_temp', 
+        Lake_morph, 
+        Offspring_temp, 
+        sep = '_', 
+        remove = F)
+
+# trait correlations - NO allometry ------------------------------------------------------
+
+noallo_traits = F2_noallo_traits %>% 
+  as_tibble() %>% 
+  group_by(lake_morph_Pair_Full_Temp) %>% 
+  select(jaw_length:body_length)
+
+vars_keep = names(noallo_traits)[c(2,3,4,5,6,7,8,9,10,11)]
+noallo_trait_cor = noallo_traits %>% 
+  ungroup() %>% 
+  split(.$lake_morph_Pair_Full_Temp) %>% 
+  # ungroup() %>% 
+  map(select, vars_keep) %>% 
+  map(cor)
+
+noallo_graph = noallo_trait_cor %>% 
+  reshape2::melt() %>% 
+  rename(lake_morph_full = L1)
+
+noallo_trait_cor_graph = ggplot(noallo_graph, 
+                         aes(x = Var1, 
+                             y = Var2, 
+                             fill = value))+
+  geom_tile()+
+  facet_wrap(~lake_morph_full, 
+             ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90, 
+                                   vjust = 0.5, 
+                                   hjust=1))
+
+ggsave('Univariate_NOallo_trait_integration.tiff', 
+       plot = noallo_trait_cor_graph, 
        dpi = 'retina', 
        units = 'cm', 
        width = 30, 
