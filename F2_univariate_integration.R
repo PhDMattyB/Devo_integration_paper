@@ -99,3 +99,23 @@ F2_univariate_traits = bind_cols(F2_univariate_traits,
         Offspring_temp, 
         sep = '_', 
         remove = F)
+
+
+# trait correlations ------------------------------------------------------
+
+df = F2_univariate_traits %>% 
+  as_tibble() %>% 
+  group_by(lake_morph_Pair_Full_Temp) %>% 
+  select(rowname, 
+         jaw_length:body_length)
+
+trait_matrix = df %>% 
+  ungroup() %>% 
+  select(jaw_length:body_length) %>% 
+  as.matrix()
+
+
+cor(x = trait_matrix, 
+    use = 'everything', 
+    method = 'pearson')
+
