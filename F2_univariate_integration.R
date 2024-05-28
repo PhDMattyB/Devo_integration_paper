@@ -16,7 +16,7 @@ library(MASS)
 library(ppcor)
 library(igraph)
 library(tidyverse)
-
+library(reshape2)
 # Metadata ----------------------------------------------------------------
 identifiers = read_csv('F2_metadata.csv') %>% 
   rename(individualID = Names) %>% 
@@ -78,7 +78,7 @@ lmks = data.frame(jaw_length = c(1, 2),
                                 'end'))
 
 A = F2_gpa$coords
-A = F2_whole_body_gpa$coords
+# A = F2_whole_body_gpa$coords
 F2_univariate_traits = interlmkdist(A, 
                                     lmks)
 
@@ -157,9 +157,9 @@ lmks = data.frame(jaw_length = c(1, 2),
                   row.names = c('start', 
                                 'end'))
 
-A = F2_allometry_adj_shape
+B = F2_allometry_adj_shape
 # A = F2_whole_body_gpa$coords
-F2_noallo_traits = interlmkdist(A, 
+F2_noallo_traits = interlmkdist(B, 
                                     lmks)
 
 # arrayspecs(F2_univariate_traits, 
