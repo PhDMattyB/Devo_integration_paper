@@ -138,7 +138,7 @@ graph = trait_cor %>%
   reshape2::melt() %>% 
   rename(lake_morph_full = L1)
   
-ggplot(graph, 
+trait_cor_graph = ggplot(graph, 
        aes(x = Var1, 
            y = Var2, 
            fill = value))+
