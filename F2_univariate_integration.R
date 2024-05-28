@@ -134,3 +134,14 @@ trait_cor = traits %>%
   map(select, vars_keep) %>% 
   map(cor)
 
+graph = trait_cor %>% 
+  reshape2::melt() %>% 
+  rename(lake_morph_full = L1)
+  
+ggplot(graph, 
+       aes(x = Var1, 
+           y = Var2, 
+           fill = value))+
+  geom_tile()+
+  facet_wrap(~lake_morph_full)
+
