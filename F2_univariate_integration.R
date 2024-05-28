@@ -224,7 +224,7 @@ ggsave('Univariate_NOallo_trait_integration.tiff',
 
 
 
-# Account for offspring temp effects ----------------------------------------------
+# Account for ecotype effects ----------------------------------------------
 
 F2_tps = readland.tps('F2_No_GT.TPS', 
                       specID = 'imageID')
@@ -255,15 +255,13 @@ F2_data = geomorph.data.frame(coords = two.d.array(F2_gpa$coords),
 
 ### candisc won't work for landmark coordinates. 
 ### Here's the work around
-WC_ecotype_mod = procD.lm(coords ~ morph,
+WC_ecotype_mod = procD.lm(coords ~ offspring_temp*parent_temp,
                           data = F2_data)
 # mod = lm(fixed_coords ~ Offspring_temp + Parent_temp, 
 #                data = identifiers)
 summary(WC_ecotype_mod)
 
-WC_ecotype_fitted = WC_ecotype_mod$fitted
-
-
+WC_ecotype_residuals = WC_ecotype_mod$residuals
 
 lmks = data.frame(jaw_length = c(1, 2), 
                   fbar_23_24 = c(23, 24), 
@@ -278,18 +276,15 @@ lmks = data.frame(jaw_length = c(1, 2),
                   row.names = c('start', 
                                 'end'))
 
-WC_ecotype_fitted = arrayspecs(WC_ecotype_fitted, 
+WC_ecotype_residuals = arrayspecs(WC_ecotype_residuals, 
            27, 
            2)
 
-C = WC_ecotype_fitted
+C = WC_ecotype_residuals
 # A = F2_whole_body_gpa$coords
 F2_WC_ecotype_traits = interlmkdist(C, 
                                 lmks)
 
-# arrayspecs(F2_univariate_traits, 
-#            4, 
-#            3)
 
 F2_WC_ecotype_traits = F2_WC_ecotype_traits %>% 
   as.data.frame() %>% 
@@ -306,3 +301,41 @@ F2_WC_ecotype_traits = bind_cols(F2_WC_ecotype_traits,
         remove = F)
 
 
+WC_ecotype_traits = F2_WC_ecotype_traits %>% 
+  as_tibble() %>% 
+  group_by(lake_morph_Pair_Full_Temp) %>% 
+  select(jaw_length:body_length)
+
+vars_keep = names(WC_ecotype_traits)[c(2,3,4,5,6,7,8,9,10,11)]
+WC_ecotype_trait_cor = WC_ecotype_traits %>% 
+  ungroup() %>% 
+  split(.$lake_morph_Pair_Full_Temp) %>% 
+  # ungroup() %>% 
+  map(select, vars_keep) %>% 
+  map(cor)
+
+noallo_graph = noallo_trait_cor %>% 
+  reshape2::melt() %>% 
+  rename(lake_morph_full = L1)
+
+noallo_trait_cor_graph = ggplot(noallo_graph, 
+                                aes(x = Var1, 
+                                    y = Var2, 
+                                    fill = value))+
+  geom_tile()+
+  facet_wrap(~lake_morph_full, 
+             ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90, 
+                                   vjust = 0.5, 
+                                   hjust=1))
+
+ggsave('Univariate_NOallo_trait_integration.tiff', 
+       plot = noallo_trait_cor_graph, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 30, 
+       height = 40)
