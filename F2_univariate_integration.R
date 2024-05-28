@@ -156,5 +156,5 @@ ggsave('Univariate_trait_integration.tiff',
        plot = trait_cor_graph, 
        dpi = 'retina', 
        units = 'cm', 
-       width = 70, 
+       width = 50, 
        height = 30)
