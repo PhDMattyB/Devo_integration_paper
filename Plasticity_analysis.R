@@ -143,6 +143,8 @@ for(i in F2_18deg_range){
   F2_array[,,i] = F2_gpa$coords[,,i] - F2_temp_18deg_array[,,1]
 }
 
+## This is the array to use too pull out the linear traits due
+## to plasticity
 F2_array_consensus = array(0, dim = c(27, 2, 900))
 for(i in 1:900){
   F2_array_consensus[,,i] = F2_array[,,i] + mean_shape_array[,,1]
