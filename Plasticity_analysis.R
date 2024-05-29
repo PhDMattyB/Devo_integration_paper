@@ -37,8 +37,9 @@ identifiers = read_csv('F2_metadata.csv') %>%
                   'Offspring_temp',
                   'Parent_temp',
                   'Grand_temp'),
-                factor)) %>% 
-  arrange(individualID)
+                factor)) 
+# %>% 
+#   arrange(individualID)
 
 
 # Body shape data ---------------------------------------------------------
@@ -109,13 +110,13 @@ F2_univariate_traits = bind_cols(F2_univariate_traits,
 F2_temp_mod = procD.lm(F2_gpa$coords ~ identifiers$Offspring_temp, 
                        iter = 999)
 
+## All individuals have the same fitted values.
+## pull individual from offspring temp of 12 degrees
+F2_temp_fitted = F2_temp_mod$GM$fitted[,,1]
+F2_temp_matrix_12deg = as.matrix(F2_temp_fitted)
+F2_temp_12deg_array = array(F2_temp_matrix_12deg, dim = c(27, 2, 1))
 
+F2_temp_fitted_18deg = F2_temp_mod$GM$fitted[,,31]
+F2_temp_matrix_18deg = as.matrix(F2_temp_fitted_18deg)
+F2_temp_18deg_array = array(F2_temp_matrix_18deg, dim = c(27,2, 1))
 
-
-F2_Fitted_12deg <- Model_F2$GM$fitted[,,1] #Fitted values for F2 @ 12-degrees. Individual 1 reared 12_12
-Matrix_F2_12deg <- as.matrix(F2_Fitted_12deg)
-F2_Fit_12deg_array <- array(Matrix_F2_12deg, dim=c(32,2,1))
-
-F2_Fitted_18deg <- Model_F2$GM$fitted[,,294] #Fitted values for F2 @ 18-degrees. Individual 294 reared 18_18
-Matrix_F2_18deg <- as.matrix(F2_Fitted_18deg) 
-F2_Fit_18deg_array <- array(Matrix_F2_18deg, dim=c(32,2,1))
