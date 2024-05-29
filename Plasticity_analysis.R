@@ -120,3 +120,24 @@ F2_temp_fitted_18deg = F2_temp_mod$GM$fitted[,,31]
 F2_temp_matrix_18deg = as.matrix(F2_temp_fitted_18deg)
 F2_temp_18deg_array = array(F2_temp_matrix_18deg, dim = c(27,2, 1))
 
+identifiers %>% 
+  filter(Offspring_temp == '18') %>% 
+  View()
+
+F2_12deg_range = c(1:30, 61:91, 182:211, 244:273, 304:333, 364:382, 
+                   413:442, 474:503, 534:563, 594:623, 655:683,
+                   714:743, 774:803, 834:857, 871:900)
+F2_18deg_range = c(31:60, 92:121, 152:181, 212:243, 274:303, 
+                   334:363, 383:412, 443:473, 504:533, 564:593, 
+                   624:654, 684:713, 744:773, 804:833, 858:870)
+
+F2_array = array(0, dim = c(27, 2, 900))
+for(i in F2_12deg_range){
+  F2_array[,,i] = F2_gpa$coords[,,i] - F2_temp_12deg_array[,,1]
+}
+
+for(i in F2_18deg_range){
+  F2_array[,,i] = F2_gpa$coords[,,i] - F2_temp_18deg_array[,,1]
+}
+
+
