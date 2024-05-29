@@ -521,6 +521,9 @@ ggsave('Univariate_ecotype_temp_plasticity_trait_integration.tiff',
 # install.packages('lineup')
 library(lineup)
 
+## Need the traits for each ecotype*F1*F2 pair
+## Or maybe just for each ecotype? 
+
 F2_univariate_traits = F2_univariate_traits %>% 
   select(-rowname)
 F2_off_plasticity_traits = F2_off_plasticity_traits %>% 
@@ -532,75 +535,577 @@ F2_ecotype_plasticity_traits = F2_ecotype_plasticity_traits %>%
 
 
 
-F2_univariate_traits = F2_univariate_traits %>% 
-  as_tibble() %>% 
-  group_by(lake_morph_Pair_Full_Temp) %>% 
+# ASHNC matrix compare ----------------------------------------------------
+
+
+ASHNC_original = F2_univariate_traits %>% 
+  # select(-rowname) %>% 
+  filter(Lake_morph == 'ASHNC') %>% 
+  select(jaw_length:body_length)
+ASHNC_F2_temp = F2_off_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'ASHNC')%>% 
+  select(jaw_length:body_length)
+ASHNC_parent_temp = F2_parent_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'ASHNC')%>% 
+  select(jaw_length:body_length)
+ASHNC_ecotype = F2_ecotype_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'ASHNC')%>% 
   select(jaw_length:body_length)
 
-vars_keep = names(F2_univariate_traits)[c(2,3,4,5,6,7,8,9,10,11)]
- F2_univariate_traits %>% 
-  ungroup() %>% 
-  split(.$lake_morph_Pair_Full_Temp) %>% 
-  # ungroup() %>% 
-  map(select, vars_keep) %>% 
-  map(cor)
+corbetw2mat(ASHNC_original, 
+            ASHNC_F2_temp, 
+            what = 'paired', 
+            corthresh = 0.7)
 
-ecotype_plasticity_graph = ecotype_plasticity_trait_cor %>% 
+corbetw2mat(ASHNC_original, 
+            ASHNC_parent_temp, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(ASHNC_original, 
+            ASHNC_ecotype, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+ASHNC_F2_temp = corbetw2mat(ASHNC_original, 
+            ASHNC_F2_temp, 
+            what = 'all', 
+            corthresh = 0.7)
+
+ASHNC_F1_temp = corbetw2mat(ASHNC_original, 
+            ASHNC_parent_temp, 
+            what = 'all', 
+            corthresh = 0.7)
+
+ASHNC_ecotype = corbetw2mat(ASHNC_original, 
+            ASHNC_ecotype, 
+            what = 'all', 
+            corthresh = 0.7)
+
+
+ASHNC_F2_temp = ASHNC_F2_temp %>% 
+      reshape2::melt() %>% 
+  mutate(comparison = 'F2_original', 
+         morph = 'ASHNC')
+ASHNC_F1_temp = ASHNC_F1_temp %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'F1_original', 
+         morph = 'ASHNC')
+ASHNC_ecotype = ASHNC_ecotype %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'Ecotype_original', 
+         morph = 'ASHNC')
+
+ASHNC_df = bind_rows(ASHNC_F2_temp, 
+                     ASHNC_F1_temp, 
+                     ASHNC_ecotype)
+
+
+# ASHNW matrix compare ----------------------------------------------------
+
+ASHNW_original = F2_univariate_traits %>% 
+  # select(-rowname) %>% 
+  filter(Lake_morph == 'ASHNW') %>% 
+  select(jaw_length:body_length)
+ASHNW_F2_temp = F2_off_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'ASHNW')%>% 
+  select(jaw_length:body_length)
+ASHNW_parent_temp = F2_parent_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'ASHNW')%>% 
+  select(jaw_length:body_length)
+ASHNW_ecotype = F2_ecotype_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'ASHNW')%>% 
+  select(jaw_length:body_length)
+
+corbetw2mat(ASHNW_original, 
+            ASHNW_F2_temp, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(ASHNW_original, 
+            ASHNW_parent_temp, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(ASHNW_original, 
+            ASHNW_ecotype, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+ASHNW_F2_temp = corbetw2mat(ASHNW_original, 
+                            ASHNW_F2_temp, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+ASHNW_F1_temp = corbetw2mat(ASHNW_original, 
+                            ASHNW_parent_temp, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+ASHNW_ecotype = corbetw2mat(ASHNW_original, 
+                            ASHNW_ecotype, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+
+ASHNW_F2_temp = ASHNW_F2_temp %>% 
   reshape2::melt() %>% 
-  rename(lake_morph_full = L1)
+  mutate(comparison = 'F2_original', 
+         morph = 'ASHNW')
+ASHNW_F1_temp = ASHNW_F1_temp %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'F1_original', 
+         morph = 'ASHNW')
+ASHNW_ecotype = ASHNW_ecotype %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'Ecotype_original', 
+         morph = 'ASHNW')
 
-corbetw2mat(F2_univariate_traits, 
-            F2_off_plasticity_traits, 
+ASHNW_df = bind_rows(ASHNW_F2_temp, 
+                     ASHNW_F1_temp, 
+                     ASHNW_ecotype)
+
+# MYVC matrix compare ----------------------------------------------------
+
+MYVC_original = F2_univariate_traits %>% 
+  # select(-rowname) %>% 
+  filter(Lake_morph == 'MYVC') %>% 
+  select(jaw_length:body_length)
+MYVC_F2_temp = F2_off_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'MYVC')%>% 
+  select(jaw_length:body_length)
+MYVC_parent_temp = F2_parent_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'MYVC')%>% 
+  select(jaw_length:body_length)
+MYVC_ecotype = F2_ecotype_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'MYVC')%>% 
+  select(jaw_length:body_length)
+
+corbetw2mat(MYVC_original, 
+            MYVC_F2_temp, 
             what = 'paired', 
             corthresh = 0.7)
 
-corbetw2mat(F2_univariate_traits, 
-            F2_parent_plasticity_traits, 
+corbetw2mat(MYVC_original, 
+            MYVC_parent_temp, 
             what = 'paired', 
             corthresh = 0.7)
 
-corbetw2mat(F2_univariate_traits, 
-            F2_ecotype_plasticity_traits, 
+corbetw2mat(MYVC_original, 
+            MYVC_ecotype, 
             what = 'paired', 
             corthresh = 0.7)
 
+MYVC_F2_temp = corbetw2mat(MYVC_original, 
+                            MYVC_F2_temp, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+MYVC_F1_temp = corbetw2mat(MYVC_original, 
+                            MYVC_parent_temp, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+MYVC_ecotype = corbetw2mat(MYVC_original, 
+                            MYVC_ecotype, 
+                            what = 'all', 
+                            corthresh = 0.7)
 
 
-orig_vs_f2_temp = corbetw2mat(F2_univariate_traits, 
-            F2_off_plasticity_traits, 
-            what = 'all', 
-            corthresh = 0.7)
-
-orig_vs_parent_temp = corbetw2mat(F2_univariate_traits, 
-            F2_parent_plasticity_traits, 
-            what = 'all', 
-            corthresh = 0.7)
-
-orig_vs_ecotype = corbetw2mat(F2_univariate_traits, 
-            F2_ecotype_plasticity_traits, 
-            what = 'all', 
-            corthresh = 0.7)
-
-
-
-
-test_graph = orig_vs_f2_temp %>% 
-  # na.omit() %>% 
+MYVC_F2_temp = MYVC_F2_temp %>% 
   reshape2::melt() %>% 
-  rename(lake_morph_full = L1)
+  mutate(comparison = 'F2_original', 
+         morph = 'MYVC')
+MYVC_F1_temp = MYVC_F1_temp %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'F1_original', 
+         morph = 'MYVC')
+MYVC_ecotype = MYVC_ecotype %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'Ecotype_original', 
+         morph = 'MYVC')
 
-ecotype_plasticity_trait_cor_graph = ggplot(ecotype_plasticity_graph, 
-                                            aes(x = Var1, 
-                                                y = Var2, 
-                                                fill = value))+
-  geom_tile()+
-  facet_wrap(~lake_morph_full, 
-             ncol = 4)+
-  theme_bw()+
-  theme(strip.background = element_rect(fill = 'white'),
-        strip.text = element_text(face = 'bold'),
-        axis.title = element_blank(),
-        axis.text.x = element_text(angle = 90, 
-                                   vjust = 0.5, 
-                                   hjust=1))
+MYVC_df = bind_rows(MYVC_F2_temp, 
+                     MYVC_F1_temp, 
+                     MYVC_ecotype)
+
+# MYVW matrix compare ----------------------------------------------------
+
+MYVW_original = F2_univariate_traits %>% 
+  # select(-rowname) %>% 
+  filter(Lake_morph == 'MYVW') %>% 
+  select(jaw_length:body_length)
+MYVW_F2_temp = F2_off_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'MYVW')%>% 
+  select(jaw_length:body_length)
+MYVW_parent_temp = F2_parent_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'MYVW')%>% 
+  select(jaw_length:body_length)
+MYVW_ecotype = F2_ecotype_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'MYVW')%>% 
+  select(jaw_length:body_length)
+
+corbetw2mat(MYVW_original, 
+            MYVW_F2_temp, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(MYVW_original, 
+            MYVW_parent_temp, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(MYVW_original, 
+            MYVW_ecotype, 
+            what = 'paired', 
+            corthresh = 0.7)
+MYVW_F2_temp = corbetw2mat(MYVW_original, 
+                            MYVW_F2_temp, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+MYVW_F1_temp = corbetw2mat(MYVW_original, 
+                            MYVW_parent_temp, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+MYVW_ecotype = corbetw2mat(MYVW_original, 
+                            MYVW_ecotype, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+
+MYVW_F2_temp = MYVW_F2_temp %>% 
+  reshape2::melt() %>% 
+  mutate(comparison = 'F2_original', 
+         morph = 'MYVW')
+MYVW_F1_temp = MYVW_F1_temp %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'F1_original', 
+         morph = 'MYVW')
+MYVW_ecotype = MYVW_ecotype %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'Ecotype_original', 
+         morph = 'MYVW')
+
+MYVW_df = bind_rows(MYVW_F2_temp, 
+                     MYVW_F1_temp, 
+                     MYVW_ecotype)
+
+
+# SKRC matrix compare ----------------------------------------------------
+
+SKRC_original = F2_univariate_traits %>% 
+  # select(-rowname) %>% 
+  filter(Lake_morph == 'SKRC') %>% 
+  select(jaw_length:body_length)
+SKRC_F2_temp = F2_off_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'SKRC')%>% 
+  select(jaw_length:body_length)
+SKRC_parent_temp = F2_parent_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'SKRC')%>% 
+  select(jaw_length:body_length)
+SKRC_ecotype = F2_ecotype_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'SKRC')%>% 
+  select(jaw_length:body_length)
+
+corbetw2mat(SKRC_original, 
+            SKRC_F2_temp, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(SKRC_original, 
+            SKRC_parent_temp, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(SKRC_original, 
+            SKRC_ecotype, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+SKRC_F2_temp = corbetw2mat(SKRC_original, 
+                            SKRC_F2_temp, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+SKRC_F1_temp = corbetw2mat(SKRC_original, 
+                            SKRC_parent_temp, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+SKRC_ecotype = corbetw2mat(SKRC_original, 
+                            SKRC_ecotype, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+
+SKRC_F2_temp = SKRC_F2_temp %>% 
+  reshape2::melt() %>% 
+  mutate(comparison = 'F2_original', 
+         morph = 'SKRC')
+SKRC_F1_temp = SKRC_F1_temp %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'F1_original', 
+         morph = 'SKRC')
+SKRC_ecotype = SKRC_ecotype %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'Ecotype_original', 
+         morph = 'SKRC')
+
+SKRC_df = bind_rows(SKRC_F2_temp, 
+                     SKRC_F1_temp, 
+                     SKRC_ecotype)
+
+# SKRW matrix compare ----------------------------------------------------
+
+SKRW_original = F2_univariate_traits %>% 
+  # select(-rowname) %>% 
+  filter(Lake_morph == 'SKRW') %>% 
+  select(jaw_length:body_length)
+SKRW_F2_temp = F2_off_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'SKRW')%>% 
+  select(jaw_length:body_length)
+SKRW_parent_temp = F2_parent_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'SKRW')%>% 
+  select(jaw_length:body_length)
+SKRW_ecotype = F2_ecotype_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'SKRW')%>% 
+  select(jaw_length:body_length)
+
+corbetw2mat(SKRW_original, 
+            SKRW_F2_temp, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(SKRW_original, 
+            SKRW_parent_temp, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(SKRW_original, 
+            SKRW_ecotype, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+SKRW_F2_temp = corbetw2mat(SKRW_original, 
+                            SKRW_F2_temp, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+SKRW_F1_temp = corbetw2mat(SKRW_original, 
+                            SKRW_parent_temp, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+SKRW_ecotype = corbetw2mat(SKRW_original, 
+                            SKRW_ecotype, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+
+SKRW_F2_temp = SKRW_F2_temp %>% 
+  reshape2::melt() %>% 
+  mutate(comparison = 'F2_original', 
+         morph = 'SKRW')
+SKRW_F1_temp = SKRW_F1_temp %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'F1_original', 
+         morph = 'SKRW')
+SKRW_ecotype = SKRW_ecotype %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'Ecotype_original', 
+         morph = 'SKRW')
+
+SKRW_df = bind_rows(SKRW_F2_temp, 
+                     SKRW_F1_temp, 
+                     SKRW_ecotype)
+
+# CSWYC matrix compare ----------------------------------------------------
+
+CSWYC_original = F2_univariate_traits %>% 
+  # select(-rowname) %>% 
+  filter(Lake_morph == 'CSWYC') %>% 
+  select(jaw_length:body_length)
+CSWYC_F2_temp = F2_off_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'CSWYC')%>% 
+  select(jaw_length:body_length)
+CSWYC_parent_temp = F2_parent_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'CSWYC')%>% 
+  select(jaw_length:body_length)
+CSWYC_ecotype = F2_ecotype_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'CSWYC')%>% 
+  select(jaw_length:body_length)
+
+corbetw2mat(CSWYC_original, 
+            CSWYC_F2_temp, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(CSWYC_original, 
+            CSWYC_parent_temp, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(CSWYC_original, 
+            CSWYC_ecotype, 
+            what = 'paired', 
+            corthresh = 0.7)
+CSWYC_F2_temp = corbetw2mat(CSWYC_original, 
+                            CSWYC_F2_temp, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+CSWYC_F1_temp = corbetw2mat(CSWYC_original, 
+                            CSWYC_parent_temp, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+CSWYC_ecotype = corbetw2mat(CSWYC_original, 
+                            CSWYC_ecotype, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+
+CSWYC_F2_temp = CSWYC_F2_temp %>% 
+  reshape2::melt() %>% 
+  mutate(comparison = 'F2_original', 
+         morph = 'CSWYC')
+CSWYC_F1_temp = CSWYC_F1_temp %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'F1_original', 
+         morph = 'CSWYC')
+CSWYC_ecotype = CSWYC_ecotype %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'Ecotype_original', 
+         morph = 'CSWYC')
+
+CSWYC_df = bind_rows(CSWYC_F2_temp, 
+                     CSWYC_F1_temp, 
+                     CSWYC_ecotype)
+
+# GTSW matrix compare ----------------------------------------------------
+
+GTSW_original = F2_univariate_traits %>% 
+  # select(-rowname) %>% 
+  filter(Lake_morph == 'GTSW') %>% 
+  select(jaw_length:body_length)
+GTSW_F2_temp = F2_off_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'GTSW')%>% 
+  select(jaw_length:body_length)
+GTSW_parent_temp = F2_parent_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'GTSW')%>% 
+  select(jaw_length:body_length)
+GTSW_ecotype = F2_ecotype_plasticity_traits %>% 
+  # select(-rowname)%>% 
+  filter(Lake_morph == 'GTSW')%>% 
+  select(jaw_length:body_length)
+
+corbetw2mat(GTSW_original, 
+            GTSW_F2_temp, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(GTSW_original, 
+            GTSW_parent_temp, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(GTSW_original, 
+            GTSW_ecotype, 
+            what = 'paired', 
+            corthresh = 0.7)
+GTSW_F2_temp = corbetw2mat(GTSW_original, 
+                            GTSW_F2_temp, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+GTSW_F1_temp = corbetw2mat(GTSW_original, 
+                            GTSW_parent_temp, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+GTSW_ecotype = corbetw2mat(GTSW_original, 
+                            GTSW_ecotype, 
+                            what = 'all', 
+                            corthresh = 0.7)
+
+
+GTSW_F2_temp = GTSW_F2_temp %>% 
+  reshape2::melt() %>% 
+  mutate(comparison = 'F2_original', 
+         morph = 'GTSW')
+GTSW_F1_temp = GTSW_F1_temp %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'F1_original', 
+         morph = 'GTSW')
+GTSW_ecotype = GTSW_ecotype %>% 
+  reshape2::melt()%>% 
+  mutate(comparison = 'Ecotype_original', 
+         morph = 'GTSW')
+
+GTSW_df = bind_rows(GTSW_F2_temp, 
+                     GTSW_F1_temp, 
+                     GTSW_ecotype)
+
+# orig_vs_f2_temp = corbetw2mat(F2_univariate_traits, 
+#             F2_off_plasticity_traits, 
+#             what = 'all', 
+#             corthresh = 0.7)
+# 
+# orig_vs_parent_temp = corbetw2mat(F2_univariate_traits, 
+#             F2_parent_plasticity_traits, 
+#             what = 'all', 
+#             corthresh = 0.7)
+# 
+# orig_vs_ecotype = corbetw2mat(F2_univariate_traits, 
+#             F2_ecotype_plasticity_traits, 
+#             what = 'all', 
+#             corthresh = 0.7)
+# 
+# 
+# 
+# 
+# test_graph = orig_vs_f2_temp %>% 
+#   # na.omit() %>% 
+#   reshape2::melt() %>% 
+#   rename(lake_morph_full = L1)
+# 
+# ecotype_plasticity_trait_cor_graph = ggplot(ecotype_plasticity_graph, 
+#                                             aes(x = Var1, 
+#                                                 y = Var2, 
+#                                                 fill = value))+
+#   geom_tile()+
+#   facet_wrap(~lake_morph_full, 
+#              ncol = 4)+
+#   theme_bw()+
+#   theme(strip.background = element_rect(fill = 'white'),
+#         strip.text = element_text(face = 'bold'),
+#         axis.title = element_blank(),
+#         axis.text.x = element_text(angle = 90, 
+#                                    vjust = 0.5, 
+#                                    hjust=1))
 
