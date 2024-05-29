@@ -1071,41 +1071,119 @@ GTSW_df = bind_rows(GTSW_F2_temp,
                      GTSW_F1_temp, 
                      GTSW_ecotype)
 
-# orig_vs_f2_temp = corbetw2mat(F2_univariate_traits, 
-#             F2_off_plasticity_traits, 
-#             what = 'all', 
-#             corthresh = 0.7)
-# 
-# orig_vs_parent_temp = corbetw2mat(F2_univariate_traits, 
-#             F2_parent_plasticity_traits, 
-#             what = 'all', 
-#             corthresh = 0.7)
-# 
-# orig_vs_ecotype = corbetw2mat(F2_univariate_traits, 
-#             F2_ecotype_plasticity_traits, 
-#             what = 'all', 
-#             corthresh = 0.7)
-# 
-# 
-# 
-# 
-# test_graph = orig_vs_f2_temp %>% 
-#   # na.omit() %>% 
-#   reshape2::melt() %>% 
-#   rename(lake_morph_full = L1)
-# 
-# ecotype_plasticity_trait_cor_graph = ggplot(ecotype_plasticity_graph, 
-#                                             aes(x = Var1, 
-#                                                 y = Var2, 
-#                                                 fill = value))+
-#   geom_tile()+
-#   facet_wrap(~lake_morph_full, 
-#              ncol = 4)+
-#   theme_bw()+
-#   theme(strip.background = element_rect(fill = 'white'),
-#         strip.text = element_text(face = 'bold'),
-#         axis.title = element_blank(),
-#         axis.text.x = element_text(angle = 90, 
-#                                    vjust = 0.5, 
-#                                    hjust=1))
 
+# BIGASS DATAFRAME - FINAL FORM -------------------------------------------
+
+big_ass_df = bind_rows(ASHNC_df, 
+                       ASHNW_df, 
+                       MYVC_df, 
+                       MYVW_df, 
+                       SKRC_df, 
+                       SKRW_df, 
+                       CSWYC_df, 
+                       GTSW_df)
+
+F2_effects = big_ass_df %>% 
+  filter(comparison == 'F2_original')
+
+F2_effect_graph = ggplot(F2_effects,
+       aes(x = Var1,
+           y = Var2,
+           fill = value))+
+  geom_tile()+
+  facet_grid(. ~ morph + comparison)+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+ggsave('Effects_F2_temp_integration.tiff', 
+       plot = F2_effect_graph, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 30, 
+       height = 20)
+
+F1_effects = big_ass_df %>% 
+  filter(comparison == 'F1_original')
+
+F1_effect_graph = ggplot(F1_effects,
+       aes(x = Var1,
+           y = Var2,
+           fill = value))+
+  geom_tile()+
+  facet_grid(. ~ morph + comparison)+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+ggsave('Effects_F1_temp_integration.tiff', 
+       plot = F1_effect_graph, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 30, 
+       height = 20)
+
+
+Ecotype_effects = big_ass_df %>% 
+  filter(comparison == 'Ecotype_original')
+
+ecotype_effect_graph = ggplot(Ecotype_effects,
+       aes(x = Var1,
+           y = Var2,
+           fill = value))+
+  geom_tile()+
+  facet_grid(. ~ morph + comparison)+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+ggsave('Effects_ecotype_temp_integration.tiff', 
+       plot = ecotype_effect_graph, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 30, 
+       height = 20)
+
+
+ integration_effects = ggplot(big_ass_df,
+        aes(x = Var1,
+            y = Var2,
+            fill = value))+
+  geom_tile()+
+   facet_grid(. ~ morph + comparison)+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+
+ ggsave('Effects_Factors_on_integration.tiff', 
+        plot = integration_effects, 
+        dpi = 'retina', 
+        units = 'cm', 
+        width = 70, 
+        height = 20)
+ 
