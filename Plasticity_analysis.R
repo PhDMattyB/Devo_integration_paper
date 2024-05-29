@@ -94,8 +94,9 @@ F2_univariate_traits = interlmkdist(A,
 
 F2_univariate_traits = F2_univariate_traits %>% 
   as.data.frame() %>% 
-  rownames_to_column() %>% 
-  arrange(rowname)
+  rownames_to_column() 
+# %>% 
+#   arrange(rowname)
 
 
 F2_univariate_traits = bind_cols(F2_univariate_traits, 
@@ -192,8 +193,9 @@ F2_off_plasticity_traits = interlmkdist(C,
 
 F2_off_plasticity_traits = F2_off_plasticity_traits %>% 
   as.data.frame() %>% 
-  rownames_to_column() %>% 
-  arrange(rowname)
+  rownames_to_column() 
+# %>% 
+#   arrange(rowname)
 
 
 F2_off_plasticity_traits = bind_cols(F2_off_plasticity_traits, 
@@ -326,8 +328,9 @@ F2_parent_effect_traits = interlmkdist(D,
 
 F2_parent_plasticity_traits = F2_parent_effect_traits %>% 
   as.data.frame() %>% 
-  rownames_to_column() %>% 
-  arrange(rowname)
+  rownames_to_column() 
+# %>% 
+#   arrange(rowname)
 
 
 F2_parent_plasticity_traits = bind_cols(F2_parent_plasticity_traits, 
@@ -394,9 +397,9 @@ F2_ecotype_temp_fitted_18deg = F2_ecotype_temp_mod$GM$fitted[,,243]
 F2_ecotype_temp_matrix_18deg = as.matrix(F2_ecotype_temp_fitted_18deg)
 F2_ecotype_temp_18deg_array = array(F2_ecotype_temp_matrix_18deg, dim = c(27,2, 1))
 
-identifiers %>%
-  filter(Morph == 'Cold') %>%
-  View()
+# identifiers %>%
+#   filter(Morph == 'Cold') %>%
+#   View()
 
 F2_ecotype_12deg_range = c(1:121, 244:363, 474:593, 714:833)
 F2_ecotype_18deg_range = c(122:243, 364:473, 594:713, 834:931)
@@ -458,8 +461,9 @@ F2_ecotype_effect_traits = interlmkdist(E,
 
 F2_ecotype_plasticity_traits = F2_ecotype_effect_traits %>% 
   as.data.frame() %>% 
-  rownames_to_column() %>% 
-  arrange(rowname)
+  rownames_to_column() 
+# %>% 
+#   arrange(rowname)
 
 
 F2_ecotype_plasticity_traits = bind_cols(F2_ecotype_plasticity_traits, 
@@ -514,4 +518,89 @@ ggsave('Univariate_ecotype_temp_plasticity_trait_integration.tiff',
 
 # Matrix comparisons ------------------------------------------------------
 
+# install.packages('lineup')
+library(lineup)
+
+F2_univariate_traits = F2_univariate_traits %>% 
+  select(-rowname)
+F2_off_plasticity_traits = F2_off_plasticity_traits %>% 
+  select(-rowname)
+F2_parent_plasticity_traits = F2_parent_plasticity_traits %>% 
+  select(-rowname)
+F2_ecotype_plasticity_traits = F2_ecotype_plasticity_traits %>% 
+  select(-rowname)
+
+
+
+F2_univariate_traits = F2_univariate_traits %>% 
+  as_tibble() %>% 
+  group_by(lake_morph_Pair_Full_Temp) %>% 
+  select(jaw_length:body_length)
+
+vars_keep = names(F2_univariate_traits)[c(2,3,4,5,6,7,8,9,10,11)]
+ F2_univariate_traits %>% 
+  ungroup() %>% 
+  split(.$lake_morph_Pair_Full_Temp) %>% 
+  # ungroup() %>% 
+  map(select, vars_keep) %>% 
+  map(cor)
+
+ecotype_plasticity_graph = ecotype_plasticity_trait_cor %>% 
+  reshape2::melt() %>% 
+  rename(lake_morph_full = L1)
+
+corbetw2mat(F2_univariate_traits, 
+            F2_off_plasticity_traits, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(F2_univariate_traits, 
+            F2_parent_plasticity_traits, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(F2_univariate_traits, 
+            F2_ecotype_plasticity_traits, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+
+
+orig_vs_f2_temp = corbetw2mat(F2_univariate_traits, 
+            F2_off_plasticity_traits, 
+            what = 'all', 
+            corthresh = 0.7)
+
+orig_vs_parent_temp = corbetw2mat(F2_univariate_traits, 
+            F2_parent_plasticity_traits, 
+            what = 'all', 
+            corthresh = 0.7)
+
+orig_vs_ecotype = corbetw2mat(F2_univariate_traits, 
+            F2_ecotype_plasticity_traits, 
+            what = 'all', 
+            corthresh = 0.7)
+
+
+
+
+test_graph = orig_vs_f2_temp %>% 
+  # na.omit() %>% 
+  reshape2::melt() %>% 
+  rename(lake_morph_full = L1)
+
+ecotype_plasticity_trait_cor_graph = ggplot(ecotype_plasticity_graph, 
+                                            aes(x = Var1, 
+                                                y = Var2, 
+                                                fill = value))+
+  geom_tile()+
+  facet_wrap(~lake_morph_full, 
+             ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90, 
+                                   vjust = 0.5, 
+                                   hjust=1))
 
