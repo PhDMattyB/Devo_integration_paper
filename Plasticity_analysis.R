@@ -63,7 +63,10 @@ F2_shape_resid = arrayspecs(allometry_model1$residuals,
 F2_allometry_adj_shape = F2_shape_resid + array(F2_gpa$consensus, 
                                                 dim(F2_shape_resid))
 
-
+mean_shape = mshape(F2_gpa$coords)
+matrix_mean_shape = as.matrix(mean_shape)
+mean_shape_array = array(matrix_mean_shape, 
+                         dim = c(27, 2, 1))
 # univariate trait data ---------------------------------------------------
 
 
@@ -140,4 +143,12 @@ for(i in F2_18deg_range){
   F2_array[,,i] = F2_gpa$coords[,,i] - F2_temp_18deg_array[,,1]
 }
 
+F2_array_consensus = array(0, dim = c(27, 2, 900))
+for(i in 1:900){
+  F2_array_consensus[,,i] = F2_array[,,i] + mean_shape_array[,,1]
+}
+
+
+test_gpa = gpagen(F2_array_consensus)
+test_lm = geomorph.data.frame(test_gpa)
 
