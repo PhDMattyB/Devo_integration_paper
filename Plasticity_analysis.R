@@ -428,9 +428,13 @@ ASHN_F2_plast = ggplot(ASHN_F2_effect,
   theme(strip.background = element_rect(fill = 'white'),
         strip.text = element_text(face = 'bold'),
         axis.title = element_blank(),
-        axis.text.x = element_text(angle = 90,
-                                   vjust = 0.5,
-                                   hjust=1))
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1), 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank(), 
+        axis.text.y = element_blank(), 
+        axis.ticks.y = element_blank())
 
 # MYV F2 effect matrix compare -------------------------------------------
 off_plasticity_trait_cor$MYVC
@@ -527,9 +531,13 @@ MYV_F2_plasticity = ggplot(MYV_F2_temp_cor,
   theme(strip.background = element_rect(fill = 'white'),
         strip.text = element_text(face = 'bold'),
         axis.title = element_blank(),
-        axis.text.x = element_text(angle = 90,
-                                   vjust = 0.5,
-                                   hjust=1))
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1), 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank(), 
+        axis.text.y = element_blank(), 
+        axis.ticks.y = element_blank())
 
 # SKR F2 effect matrix compare -------------------------------------------
 off_plasticity_trait_cor$SKRC
@@ -626,9 +634,13 @@ SKR_F2_plasticity = ggplot(SKR_F2_temp_cor,
   theme(strip.background = element_rect(fill = 'white'),
         strip.text = element_text(face = 'bold'),
         axis.title = element_blank(),
-        axis.text.x = element_text(angle = 90,
-                                   vjust = 0.5,
-                                   hjust=1))
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1), 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank(), 
+        axis.text.y = element_blank(), 
+        axis.ticks.y = element_blank())
 
 
 # GTSCSWY F2 effect matrix compare -------------------------------------------
@@ -728,7 +740,9 @@ GTSCSWY_F2_plasticity = ggplot(GTSCSWY_F2_temp_cor,
         axis.title = element_blank(),
         axis.text.x = element_text(angle = 90,
                                    vjust = 0.5,
-                                   hjust=1))
+                                   hjust=1), 
+        axis.text.y = element_blank(), 
+        axis.ticks.y = element_blank())
 
 # parental temp effects ---------------------------------------------------
 
@@ -975,9 +989,12 @@ ASHN_F1_plast = ggplot(ASHN_F1_effect,
   theme(strip.background = element_rect(fill = 'white'),
         strip.text = element_text(face = 'bold'),
         axis.title = element_blank(),
-        axis.text.x = element_text(angle = 90,
-                                   vjust = 0.5,
-                                   hjust=1))
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
 
 # MYV F2 effect matrix compare -------------------------------------------
 corbetw2mat(parent_plasticity_trait_cor$MYVC, 
@@ -1071,9 +1088,12 @@ MYV_F1_plasticity = ggplot(MYV_F1_temp_cor,
   theme(strip.background = element_rect(fill = 'white'),
         strip.text = element_text(face = 'bold'),
         axis.title = element_blank(),
-        axis.text.x = element_text(angle = 90,
-                                   vjust = 0.5,
-                                   hjust=1))
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1), 
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
 
 # SKR F2 effect matrix compare -------------------------------------------
 
@@ -1168,9 +1188,12 @@ SKR_F1_plasticity = ggplot(SKR_F1_temp_cor,
   theme(strip.background = element_rect(fill = 'white'),
         strip.text = element_text(face = 'bold'),
         axis.title = element_blank(),
-        axis.text.x = element_text(angle = 90,
-                                   vjust = 0.5,
-                                   hjust=1))
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1), 
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
 
 
 # GTSCSWY F2 effect matrix compare -------------------------------------------
@@ -1267,8 +1290,20 @@ GTSCSWY_F1_plasticity = ggplot(GTSCSWY_F1_temp_cor,
         axis.title = element_blank(),
         axis.text.x = element_text(angle = 90,
                                    vjust = 0.5,
-                                   hjust=1))
+                                   hjust=1), 
+        legend.position = 'none')
 
+
+
+# F1 + F2 combo graphs ----------------------------------------------------
+library(patchwork)
+
+ASHN_combo_graphs = ASHN_F1_plast | ASHN_F2_plast
+MYV_combo_graphs = MYV_F1_plasticity | MYV_F2_plasticity
+SKR_combo_graphs = SKR_F1_plasticity | SKR_F2_plasticity
+GTSCSWY_combo_graphs = GTSCSWY_F1_plasticity | GTSCSWY_F2_plasticity
+
+Big_graph = ASHN_combo_graphs/MYV_combo_graphs/SKR_combo_graphs/GTSCSWY_combo_graphs
 
 
 ##
