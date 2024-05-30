@@ -194,9 +194,24 @@ lmks = data.frame(jaw_length = c(1, 2),
                   caudal1_14_18 = c(14, 18), 
                   caudal2_15_17 = c(15, 17), 
                   body_length = c(1, 16),
+                  head_depth = c(1, 22), 
+                  jaw_2_6 = c(2, 6), 
+                  lm_6_12 = c(6, 12), 
+                  lm_12_13 = c(12, 13), 
+                  lm_13_14 = c(13, 14), 
+                  lm_14_15 = c(14, 15), 
+                  lm_6_21 = c(6, 21), 
+                  lm_20_21 = c(20, 21), 
+                  lm_21_13 = c(21, 13), 
+                  lm_20_13 = c(20, 13), 
+                  lm_12_19 = c(12, 19), 
+                  lm_13_19 = c(13, 19), 
+                  lm_19_18 = c(19, 18), 
+                  lm_18_17 = c(18, 17), 
+                  lm_1_23 = c(1, 23), 
+                  lm_23_2 = c(23, 2),
                   row.names = c('start', 
                                 'end'))
-
 # WC_ecotype_residuals = arrayspecs(WC_ecotype_residuals, 
 #                                   27, 
 #                                   2)
@@ -223,44 +238,44 @@ F2_off_plasticity_traits = bind_cols(F2_off_plasticity_traits,
         remove = F)
 
 
-off_plasticity_traits = F2_off_plasticity_traits %>% 
-  as_tibble() %>% 
-  group_by(lake_morph_Pair_Full_Temp) %>% 
-  select(jaw_length:body_length)
-
-vars_keep = names(off_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11)]
-off_plasticity_trait_cor = off_plasticity_traits %>% 
-  ungroup() %>% 
-  split(.$lake_morph_Pair_Full_Temp) %>% 
-  # ungroup() %>% 
-  map(select, vars_keep) %>% 
-  map(cor)
-
-off_plasticity_graph = off_plasticity_trait_cor %>% 
-  reshape2::melt() %>% 
-  rename(lake_morph_full = L1)
-
-off_plasticity_trait_cor_graph = ggplot(off_plasticity_graph, 
-                                    aes(x = Var1, 
-                                        y = Var2, 
-                                        fill = value))+
-  geom_tile()+
-  facet_wrap(~lake_morph_full, 
-             ncol = 4)+
-  theme_bw()+
-  theme(strip.background = element_rect(fill = 'white'),
-        strip.text = element_text(face = 'bold'),
-        axis.title = element_blank(),
-        axis.text.x = element_text(angle = 90, 
-                                   vjust = 0.5, 
-                                   hjust=1))
-
-ggsave('Univariate_offtemp_plasticity_trait_integration.tiff', 
-       plot = off_plasticity_trait_cor_graph, 
-       dpi = 'retina', 
-       units = 'cm', 
-       width = 30, 
-       height = 40)
+# off_plasticity_traits = F2_off_plasticity_traits %>% 
+#   as_tibble() %>% 
+#   group_by(lake_morph_Pair_Full_Temp) %>% 
+#   select(jaw_length:body_length)
+# 
+# vars_keep = names(off_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11)]
+# off_plasticity_trait_cor = off_plasticity_traits %>% 
+#   ungroup() %>% 
+#   split(.$lake_morph_Pair_Full_Temp) %>% 
+#   # ungroup() %>% 
+#   map(select, vars_keep) %>% 
+#   map(cor)
+# 
+# off_plasticity_graph = off_plasticity_trait_cor %>% 
+#   reshape2::melt() %>% 
+#   rename(lake_morph_full = L1)
+# 
+# off_plasticity_trait_cor_graph = ggplot(off_plasticity_graph, 
+#                                     aes(x = Var1, 
+#                                         y = Var2, 
+#                                         fill = value))+
+#   geom_tile()+
+#   facet_wrap(~lake_morph_full, 
+#              ncol = 4)+
+#   theme_bw()+
+#   theme(strip.background = element_rect(fill = 'white'),
+#         strip.text = element_text(face = 'bold'),
+#         axis.title = element_blank(),
+#         axis.text.x = element_text(angle = 90, 
+#                                    vjust = 0.5, 
+#                                    hjust=1))
+# 
+# ggsave('Univariate_offtemp_plasticity_trait_integration.tiff', 
+#        plot = off_plasticity_trait_cor_graph, 
+#        dpi = 'retina', 
+#        units = 'cm', 
+#        width = 30, 
+#        height = 40)
 
 
 # parental temp effects ---------------------------------------------------
@@ -329,9 +344,24 @@ lmks = data.frame(jaw_length = c(1, 2),
                   caudal1_14_18 = c(14, 18), 
                   caudal2_15_17 = c(15, 17), 
                   body_length = c(1, 16),
+                  head_depth = c(1, 22), 
+                  jaw_2_6 = c(2, 6), 
+                  lm_6_12 = c(6, 12), 
+                  lm_12_13 = c(12, 13), 
+                  lm_13_14 = c(13, 14), 
+                  lm_14_15 = c(14, 15), 
+                  lm_6_21 = c(6, 21), 
+                  lm_20_21 = c(20, 21), 
+                  lm_21_13 = c(21, 13), 
+                  lm_20_13 = c(20, 13), 
+                  lm_12_19 = c(12, 19), 
+                  lm_13_19 = c(13, 19), 
+                  lm_19_18 = c(19, 18), 
+                  lm_18_17 = c(18, 17), 
+                  lm_1_23 = c(1, 23), 
+                  lm_23_2 = c(23, 2),
                   row.names = c('start', 
                                 'end'))
-
 # WC_ecotype_residuals = arrayspecs(WC_ecotype_residuals, 
 #                                   27, 
 #                                   2)
@@ -358,46 +388,46 @@ F2_parent_plasticity_traits = bind_cols(F2_parent_plasticity_traits,
         remove = F)
 
 
-parent_plasticity_traits = F2_parent_plasticity_traits %>% 
-  as_tibble() %>% 
-  group_by(lake_morph_Pair_Full_Temp) %>% 
-  select(jaw_length:body_length)
+# parent_plasticity_traits = F2_parent_plasticity_traits %>% 
+#   as_tibble() %>% 
+#   group_by(lake_morph_Pair_Full_Temp) %>% 
+#   select(jaw_length:body_length)
+# 
+# vars_keep = names(parent_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11)]
+# parent_plasticity_trait_cor = parent_plasticity_traits %>% 
+#   ungroup() %>% 
+#   split(.$lake_morph_Pair_Full_Temp) %>% 
+#   # ungroup() %>% 
+#   map(select, vars_keep) %>% 
+#   map(cor)
+# 
+# parent_plasticity_graph = parent_plasticity_trait_cor %>% 
+#   reshape2::melt() %>% 
+#   rename(lake_morph_full = L1)
+# 
+# parent_plasticity_trait_cor_graph = ggplot(parent_plasticity_graph, 
+#                                         aes(x = Var1, 
+#                                             y = Var2, 
+#                                             fill = value))+
+#   geom_tile()+
+#   facet_wrap(~lake_morph_full, 
+#              ncol = 4)+
+#   theme_bw()+
+#   theme(strip.background = element_rect(fill = 'white'),
+#         strip.text = element_text(face = 'bold'),
+#         axis.title = element_blank(),
+#         axis.text.x = element_text(angle = 90, 
+#                                    vjust = 0.5, 
+#                                    hjust=1))
+# 
+# ggsave('Univariate_parent_temp_plasticity_trait_integration.tiff', 
+#        plot = parent_plasticity_trait_cor_graph, 
+#        dpi = 'retina', 
+#        units = 'cm', 
+#        width = 30, 
+#        height = 40)
 
-vars_keep = names(parent_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11)]
-parent_plasticity_trait_cor = parent_plasticity_traits %>% 
-  ungroup() %>% 
-  split(.$lake_morph_Pair_Full_Temp) %>% 
-  # ungroup() %>% 
-  map(select, vars_keep) %>% 
-  map(cor)
-
-parent_plasticity_graph = parent_plasticity_trait_cor %>% 
-  reshape2::melt() %>% 
-  rename(lake_morph_full = L1)
-
-parent_plasticity_trait_cor_graph = ggplot(parent_plasticity_graph, 
-                                        aes(x = Var1, 
-                                            y = Var2, 
-                                            fill = value))+
-  geom_tile()+
-  facet_wrap(~lake_morph_full, 
-             ncol = 4)+
-  theme_bw()+
-  theme(strip.background = element_rect(fill = 'white'),
-        strip.text = element_text(face = 'bold'),
-        axis.title = element_blank(),
-        axis.text.x = element_text(angle = 90, 
-                                   vjust = 0.5, 
-                                   hjust=1))
-
-ggsave('Univariate_parent_temp_plasticity_trait_integration.tiff', 
-       plot = parent_plasticity_trait_cor_graph, 
-       dpi = 'retina', 
-       units = 'cm', 
-       width = 30, 
-       height = 40)
-
-
+##
 # ecotype effects ---------------------------------------------------------
 
 F2_ecotype_temp_mod = procD.lm(F2_gpa$coords ~ identifiers$Morph, 
