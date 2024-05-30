@@ -1318,6 +1318,690 @@ ggsave('Figure1_Effects_F1_F2_on_Integration.tiff',
 ##
 
 
+
+
+# Compare F1 and F2 effects to original data ------------------------------
+
+orig_uni_graph = orig_uni_trait_cor %>%
+  reshape2::melt() %>%
+  rename(lake_morph = L1)
+
+off_plasticity_graph = off_plasticity_trait_cor %>%
+  reshape2::melt() %>%
+  rename(lake_morph = L1)
+
+parent_plasticity_graph = parent_plasticity_trait_cor %>%
+  reshape2::melt() %>%
+  rename(lake_morph = L1)
+
+
+
+# ASHNC F1+F2 = Original --------------------------------------------------
+ASHNC_original = orig_uni_trait_cor$ASHNC 
+
+ASHNC_F2 = off_plasticity_trait_cor$ASHNC 
+
+ASHNC_F1 = parent_plasticity_trait_cor$ASHNC
+
+
+ASHNC_F1_original = corbetw2mat(ASHNC_original, 
+                                ASHNC_F1, 
+                                what = 'all', 
+                                corthresh = 0.7) 
+
+ASHNC_F2_original = corbetw2mat(ASHNC_original, 
+                                ASHNC_F2, 
+                                what = 'all', 
+                                corthresh = 0.7) 
+
+
+ASHNC_F1_original = ASHNC_F1_original %>%
+  reshape2::melt() 
+
+ASHNC_F2_original = ASHNC_F2_original %>%
+  reshape2::melt() 
+
+
+ASHNC_F1_original_plot = ggplot(ASHNC_F1_original,
+                       aes(x = Var1,
+                           y = Var2,
+                           fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'A) ASHNC F1 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+ASHNC_F2_original_plot = ggplot(ASHNC_F2_original,
+                                aes(x = Var1,
+                                    y = Var2,
+                                    fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'B) ASHNC F2 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        # legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+ASHNC_compare = ASHNC_F1_original_plot|ASHNC_F2_original_plot
+
+# ASHNW F1+F2 = Original --------------------------------------------------
+ASHNW_original = orig_uni_trait_cor$ASHNW 
+
+ASHNW_F2 = off_plasticity_trait_cor$ASHNW 
+
+ASHNW_F1 = parent_plasticity_trait_cor$ASHNW
+
+
+ASHNW_F1_original = corbetw2mat(ASHNW_original, 
+                                ASHNW_F1, 
+                                what = 'all', 
+                                corthresh = 0.7) 
+
+ASHNW_F2_original = corbetw2mat(ASHNW_original, 
+                                ASHNW_F2, 
+                                what = 'all', 
+                                corthresh = 0.7) 
+
+
+ASHNW_F1_original = ASHNW_F1_original %>%
+  reshape2::melt() 
+
+ASHNW_F2_original = ASHNW_F2_original %>%
+  reshape2::melt() 
+
+
+ASHNW_F1_original_plot = ggplot(ASHNW_F1_original,
+                                aes(x = Var1,
+                                    y = Var2,
+                                    fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'C) ASHNW F1 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+ASHNW_F2_original_plot = ggplot(ASHNW_F2_original,
+                                aes(x = Var1,
+                                    y = Var2,
+                                    fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'D) ASHNW F2 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        # legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+ASHNW_compare = ASHNW_F1_original_plot|ASHNW_F2_original_plot
+
+ASHN_Matrix_evo = ASHNC_compare/ASHNW_compare
+
+
+# MYVC F1+F2 = Original --------------------------------------------------
+MYVC_original = orig_uni_trait_cor$MYVC 
+
+MYVC_F2 = off_plasticity_trait_cor$MYVC 
+
+MYVC_F1 = parent_plasticity_trait_cor$MYVC
+
+
+MYVC_F1_original = corbetw2mat(MYVC_original, 
+                                MYVC_F1, 
+                                what = 'all', 
+                                corthresh = 0.7) 
+
+MYVC_F2_original = corbetw2mat(MYVC_original, 
+                                MYVC_F2, 
+                                what = 'all', 
+                                corthresh = 0.7) 
+
+
+MYVC_F1_original = MYVC_F1_original %>%
+  reshape2::melt() 
+
+MYVC_F2_original = MYVC_F2_original %>%
+  reshape2::melt() 
+
+
+MYVC_F1_original_plot = ggplot(MYVC_F1_original,
+                                aes(x = Var1,
+                                    y = Var2,
+                                    fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'A) MYVC F1 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+MYVC_F2_original_plot = ggplot(MYVC_F2_original,
+                                aes(x = Var1,
+                                    y = Var2,
+                                    fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'B) MYVC F2 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        # legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+MYVC_compare = MYVC_F1_original_plot|MYVC_F2_original_plot
+
+# MYVW F1+F2 = Original --------------------------------------------------
+MYVW_original = orig_uni_trait_cor$MYVW 
+
+MYVW_F2 = off_plasticity_trait_cor$MYVW 
+
+MYVW_F1 = parent_plasticity_trait_cor$MYVW
+
+
+MYVW_F1_original = corbetw2mat(MYVW_original, 
+                                MYVW_F1, 
+                                what = 'all', 
+                                corthresh = 0.7) 
+
+MYVW_F2_original = corbetw2mat(MYVW_original, 
+                                MYVW_F2, 
+                                what = 'all', 
+                                corthresh = 0.7) 
+
+
+MYVW_F1_original = MYVW_F1_original %>%
+  reshape2::melt() 
+
+MYVW_F2_original = MYVW_F2_original %>%
+  reshape2::melt() 
+
+
+MYVW_F1_original_plot = ggplot(MYVW_F1_original,
+                                aes(x = Var1,
+                                    y = Var2,
+                                    fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'C) MYVW F1 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+MYVW_F2_original_plot = ggplot(MYVW_F2_original,
+                                aes(x = Var1,
+                                    y = Var2,
+                                    fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'D) MYVW F2 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        # legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+MYVW_compare = MYVW_F1_original_plot|MYVW_F2_original_plot
+
+MYV_Matrix_evo = MYVC_compare/MYVW_compare
+
+# SKRC F1+F2 = Original --------------------------------------------------
+SKRC_original = orig_uni_trait_cor$SKRC 
+
+SKRC_F2 = off_plasticity_trait_cor$SKRC 
+
+SKRC_F1 = parent_plasticity_trait_cor$SKRC
+
+
+SKRC_F1_original = corbetw2mat(SKRC_original, 
+                               SKRC_F1, 
+                               what = 'all', 
+                               corthresh = 0.7) 
+
+SKRC_F2_original = corbetw2mat(SKRC_original, 
+                               SKRC_F2, 
+                               what = 'all', 
+                               corthresh = 0.7) 
+
+
+SKRC_F1_original = SKRC_F1_original %>%
+  reshape2::melt() 
+
+SKRC_F2_original = SKRC_F2_original %>%
+  reshape2::melt() 
+
+
+SKRC_F1_original_plot = ggplot(SKRC_F1_original,
+                               aes(x = Var1,
+                                   y = Var2,
+                                   fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'A) SKRC F1 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+SKRC_F2_original_plot = ggplot(SKRC_F2_original,
+                               aes(x = Var1,
+                                   y = Var2,
+                                   fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'B) SKRC F2 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        # legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+SKRC_compare = SKRC_F1_original_plot|SKRC_F2_original_plot
+
+# SKRW F1+F2 = Original --------------------------------------------------
+SKRW_original = orig_uni_trait_cor$SKRW 
+
+SKRW_F2 = off_plasticity_trait_cor$SKRW 
+
+SKRW_F1 = parent_plasticity_trait_cor$SKRW
+
+
+SKRW_F1_original = corbetw2mat(SKRW_original, 
+                               SKRW_F1, 
+                               what = 'all', 
+                               corthresh = 0.7) 
+
+SKRW_F2_original = corbetw2mat(SKRW_original, 
+                               SKRW_F2, 
+                               what = 'all', 
+                               corthresh = 0.7) 
+
+
+SKRW_F1_original = SKRW_F1_original %>%
+  reshape2::melt() 
+
+SKRW_F2_original = SKRW_F2_original %>%
+  reshape2::melt() 
+
+
+SKRW_F1_original_plot = ggplot(SKRW_F1_original,
+                               aes(x = Var1,
+                                   y = Var2,
+                                   fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'C) SKRW F1 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+SKRW_F2_original_plot = ggplot(SKRW_F2_original,
+                               aes(x = Var1,
+                                   y = Var2,
+                                   fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'D) SKRW F2 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        # legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+SKRW_compare = SKRW_F1_original_plot|SKRW_F2_original_plot
+
+SKR_Matrix_evo = SKRC_compare/SKRW_compare
+
+# CSWYC F1+F2 = Original --------------------------------------------------
+CSWYC_original = orig_uni_trait_cor$CSWYC 
+
+CSWYC_F2 = off_plasticity_trait_cor$CSWYC 
+
+CSWYC_F1 = parent_plasticity_trait_cor$CSWYC
+
+
+CSWYC_F1_original = corbetw2mat(CSWYC_original, 
+                               CSWYC_F1, 
+                               what = 'all', 
+                               corthresh = 0.7) 
+
+CSWYC_F2_original = corbetw2mat(CSWYC_original, 
+                               CSWYC_F2, 
+                               what = 'all', 
+                               corthresh = 0.7) 
+
+
+CSWYC_F1_original = CSWYC_F1_original %>%
+  reshape2::melt() 
+
+CSWYC_F2_original = CSWYC_F2_original %>%
+  reshape2::melt() 
+
+
+CSWYC_F1_original_plot = ggplot(CSWYC_F1_original,
+                               aes(x = Var1,
+                                   y = Var2,
+                                   fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'A) CSWYC F1 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+CSWYC_F2_original_plot = ggplot(CSWYC_F2_original,
+                               aes(x = Var1,
+                                   y = Var2,
+                                   fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'B) CSWYC F2 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        # legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+CSWYC_compare = CSWYC_F1_original_plot|CSWYC_F2_original_plot
+
+# GTSW F1+F2 = Original --------------------------------------------------
+GTSW_original = orig_uni_trait_cor$GTSW 
+
+GTSW_F2 = off_plasticity_trait_cor$GTSW 
+
+GTSW_F1 = parent_plasticity_trait_cor$GTSW
+
+
+GTSW_F1_original = corbetw2mat(GTSW_original, 
+                               GTSW_F1, 
+                               what = 'all', 
+                               corthresh = 0.7) 
+
+GTSW_F2_original = corbetw2mat(GTSW_original, 
+                               GTSW_F2, 
+                               what = 'all', 
+                               corthresh = 0.7) 
+
+
+GTSW_F1_original = GTSW_F1_original %>%
+  reshape2::melt() 
+
+GTSW_F2_original = GTSW_F2_original %>%
+  reshape2::melt() 
+
+
+GTSW_F1_original_plot = ggplot(GTSW_F1_original,
+                               aes(x = Var1,
+                                   y = Var2,
+                                   fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'C) GTSW F1 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+GTSW_F2_original_plot = ggplot(GTSW_F2_original,
+                               aes(x = Var1,
+                                   y = Var2,
+                                   fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffff3f",
+                       mid = "#007f5f",
+                       high = "#ffff3f") +
+  labs(title = 'D) GTSW F2 vs Original')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        # legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+GTSW_compare = GTSW_F1_original_plot|GTSW_F2_original_plot
+
+GTSCSWY_Matrix_evo = CSWYC_compare/GTSW_compare
+
+
 # Code I dont need but scared to delete -----------------------------------
 
 # ecotype effects ---------------------------------------------------------
