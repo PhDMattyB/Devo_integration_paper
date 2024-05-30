@@ -96,6 +96,7 @@ lmks = data.frame(jaw_length = c(1, 2),
                   lm_18_17 = c(18, 17), 
                   lm_1_23 = c(1, 23), 
                   lm_23_2 = c(23, 2),
+                  # lm_1_23 = c(1, 13),
                   row.names = c('start', 
                                 'end'))
 
@@ -121,7 +122,58 @@ F2_univariate_traits = bind_cols(F2_univariate_traits,
         Lake_morph, 
         Offspring_temp, 
         sep = '_', 
-        remove = F)
+        remove = F) %>% 
+  mutate(ratio1 = lm_1_23/fbar_23_27, 
+         ratio2 = lm_1_23/lm_23_2) %>% 
+  select(rowname, 
+         jaw_length:lm_23_2, 
+         ratio1:ratio2, 
+         everything())
+
+orig_uni_traits = F2_univariate_traits %>%
+  as_tibble() %>%
+  group_by(Lake_morph) %>%
+  select(jaw_length:ratio2)
+
+vars_keep = names(orig_uni_traits)[c(2,3,4,5,6,7,8,9,10,11, 
+                                           12,13,14,15,16,17,18, 
+                                           19,20,21,22,23,24,25,26,
+                                           27,28,29)]
+orig_uni_trait_cor = orig_uni_traits %>%
+  ungroup() %>%
+  # split(.$lake_morph_Pair_Full_Temp) %>%
+  split(.$Lake_morph) %>% 
+  # ungroup() %>%
+  map(select, vars_keep) %>%
+  map(cor)
+
+orig_uni_graph = orig_uni_trait_cor %>%
+  reshape2::melt() %>%
+  rename(lake_morph = L1)
+
+orig_uni_trait_cor_graph = ggplot(orig_uni_graph,
+                                        aes(x = Var1,
+                                            y = Var2,
+                                            fill = value))+
+  geom_tile()+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  facet_wrap(~lake_morph,
+             ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+ggsave('Univariate_original_plasticity_trait_ecotype_integration.tiff',
+       plot = orig_uni_trait_cor_graph,
+       dpi = 'retina',
+       units = 'cm',
+       width = 35,
+       height = 20)
 
 
 
@@ -235,47 +287,59 @@ F2_off_plasticity_traits = bind_cols(F2_off_plasticity_traits,
         Lake_morph, 
         Offspring_temp, 
         sep = '_', 
-        remove = F)
+        remove = F) %>% 
+  mutate(ratio1 = lm_1_23/fbar_23_27, 
+         ratio2 = lm_1_23/lm_23_2) %>% 
+  select(rowname, 
+         jaw_length:lm_23_2, 
+         ratio1:ratio2, 
+         everything())
 
 
-# off_plasticity_traits = F2_off_plasticity_traits %>% 
-#   as_tibble() %>% 
-#   group_by(lake_morph_Pair_Full_Temp) %>% 
-#   select(jaw_length:body_length)
-# 
-# vars_keep = names(off_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11)]
-# off_plasticity_trait_cor = off_plasticity_traits %>% 
-#   ungroup() %>% 
-#   split(.$lake_morph_Pair_Full_Temp) %>% 
-#   # ungroup() %>% 
-#   map(select, vars_keep) %>% 
-#   map(cor)
-# 
-# off_plasticity_graph = off_plasticity_trait_cor %>% 
-#   reshape2::melt() %>% 
-#   rename(lake_morph_full = L1)
-# 
-# off_plasticity_trait_cor_graph = ggplot(off_plasticity_graph, 
-#                                     aes(x = Var1, 
-#                                         y = Var2, 
-#                                         fill = value))+
-#   geom_tile()+
-#   facet_wrap(~lake_morph_full, 
-#              ncol = 4)+
-#   theme_bw()+
-#   theme(strip.background = element_rect(fill = 'white'),
-#         strip.text = element_text(face = 'bold'),
-#         axis.title = element_blank(),
-#         axis.text.x = element_text(angle = 90, 
-#                                    vjust = 0.5, 
-#                                    hjust=1))
-# 
-# ggsave('Univariate_offtemp_plasticity_trait_integration.tiff', 
-#        plot = off_plasticity_trait_cor_graph, 
-#        dpi = 'retina', 
-#        units = 'cm', 
-#        width = 30, 
-#        height = 40)
+off_plasticity_traits = F2_off_plasticity_traits %>%
+  as_tibble() %>%
+  group_by(Lake_morph) %>%
+  select(jaw_length:ratio2)
+
+vars_keep = names(off_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11, 
+                                           12,13,14,15,16,17,18, 
+                                           19,20,21,22,23,24,25,26,
+                                           27,28,29)]
+off_plasticity_trait_cor = off_plasticity_traits %>%
+  ungroup() %>%
+  # split(.$lake_morph_Pair_Full_Temp) %>%
+  split(.$Lake_morph) %>% 
+  # ungroup() %>%
+  map(select, vars_keep) %>%
+  map(cor)
+
+off_plasticity_graph = off_plasticity_trait_cor %>%
+  reshape2::melt() %>%
+  rename(lake_morph = L1)
+
+off_plasticity_trait_cor_graph = ggplot(off_plasticity_graph,
+                                    aes(x = Var1,
+                                        y = Var2,
+                                        fill = value))+
+  geom_tile()+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  facet_wrap(~lake_morph,
+             ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+ggsave('Univariate_offtemp_plasticity_trait_ecotype_integration.tiff',
+       plot = off_plasticity_trait_cor_graph,
+       dpi = 'retina',
+       units = 'cm',
+       width = 35,
+       height = 20)
 
 
 # parental temp effects ---------------------------------------------------
@@ -293,9 +357,9 @@ F2_parent_temp_fitted_18deg = F2_parent_temp_mod$GM$fitted[,,61]
 F2_parent_temp_matrix_18deg = as.matrix(F2_parent_temp_fitted_18deg)
 F2_parent_temp_18deg_array = array(F2_parent_temp_matrix_18deg, dim = c(27,2, 1))
 
-identifiers %>%
-  filter(Parent_temp == '12') %>%
-  View()
+# identifiers %>%
+#   filter(Parent_temp == '12') %>%
+#   View()
 
 F2_parent_12deg_range = c(1:60, 122:181, 244:303, 364:442, 474:533, 594:654, 
                    714:773, 834:870)
@@ -385,47 +449,58 @@ F2_parent_plasticity_traits = bind_cols(F2_parent_plasticity_traits,
         Lake_morph, 
         Offspring_temp, 
         sep = '_', 
-        remove = F)
+        remove = F) %>% 
+  mutate(ratio1 = lm_1_23/fbar_23_27, 
+         ratio2 = lm_1_23/lm_23_2) %>% 
+  select(rowname, 
+         jaw_length:lm_23_2, 
+         ratio1:ratio2, 
+         everything())
 
 
-# parent_plasticity_traits = F2_parent_plasticity_traits %>% 
-#   as_tibble() %>% 
-#   group_by(lake_morph_Pair_Full_Temp) %>% 
-#   select(jaw_length:body_length)
-# 
-# vars_keep = names(parent_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11)]
-# parent_plasticity_trait_cor = parent_plasticity_traits %>% 
-#   ungroup() %>% 
-#   split(.$lake_morph_Pair_Full_Temp) %>% 
-#   # ungroup() %>% 
-#   map(select, vars_keep) %>% 
-#   map(cor)
-# 
-# parent_plasticity_graph = parent_plasticity_trait_cor %>% 
-#   reshape2::melt() %>% 
-#   rename(lake_morph_full = L1)
-# 
-# parent_plasticity_trait_cor_graph = ggplot(parent_plasticity_graph, 
-#                                         aes(x = Var1, 
-#                                             y = Var2, 
-#                                             fill = value))+
-#   geom_tile()+
-#   facet_wrap(~lake_morph_full, 
-#              ncol = 4)+
-#   theme_bw()+
-#   theme(strip.background = element_rect(fill = 'white'),
-#         strip.text = element_text(face = 'bold'),
-#         axis.title = element_blank(),
-#         axis.text.x = element_text(angle = 90, 
-#                                    vjust = 0.5, 
-#                                    hjust=1))
-# 
-# ggsave('Univariate_parent_temp_plasticity_trait_integration.tiff', 
-#        plot = parent_plasticity_trait_cor_graph, 
-#        dpi = 'retina', 
-#        units = 'cm', 
-#        width = 30, 
-#        height = 40)
+parent_plasticity_traits = F2_parent_plasticity_traits %>%
+  as_tibble() %>%
+  group_by(Lake_morph) %>%
+  select(jaw_length:ratio2)
+
+vars_keep = names(off_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11, 
+                                           12,13,14,15,16,17,18, 
+                                           19,20,21,22,23,24,25,26,
+                                           27,28,29)]
+parent_plasticity_trait_cor = parent_plasticity_traits %>%
+  ungroup() %>%
+  split(.$Lake_morph) %>%
+  # ungroup() %>%
+  map(select, vars_keep) %>%
+  map(cor)
+
+parent_plasticity_graph = parent_plasticity_trait_cor %>%
+  reshape2::melt() %>%
+  rename(lake_morph = L1)
+
+parent_plasticity_trait_cor_graph = ggplot(parent_plasticity_graph,
+                                        aes(x = Var1,
+                                            y = Var2,
+                                            fill = value))+
+  geom_tile()+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  facet_wrap(~lake_morph,
+             ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+ggsave('Univariate_parent_temp_plasticity_trait_ecotype_integration.tiff',
+       plot = parent_plasticity_trait_cor_graph,
+       dpi = 'retina',
+       units = 'cm',
+       width = 35,
+       height = 20)
 
 ##
 # ecotype effects ---------------------------------------------------------
@@ -578,6 +653,31 @@ F2_parent_plasticity_traits = F2_parent_plasticity_traits %>%
   select(-rowname)
 F2_ecotype_plasticity_traits = F2_ecotype_plasticity_traits %>% 
   select(-rowname)
+
+
+# ASHN ecotype comparisons F2 temp effect ---------------------------------
+ASHNC_F2_temp_effects = F2_off_plasticity_traits %>% 
+  filter(Lake_morph == 'ASHNC')  %>% 
+  select(jaw_length:ratio2)
+  # View()
+  # distinct(jaw_length)
+# slice(1)
+
+ASHNW_F2_temp_effects = F2_off_plasticity_traits %>% 
+  filter(Lake_morph == 'ASHNW') %>% 
+  slice(-122) %>% 
+  select(jaw_length:ratio2)
+
+
+corbetw2mat(ASHNC_F2_temp_effects, 
+            ASHNW_F2_temp_effects, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(ASHNC_F2_temp_effects, 
+            ASHNW_F2_temp_effects, 
+            what = 'all', 
+            corthresh = 0.7)
 
 
 
