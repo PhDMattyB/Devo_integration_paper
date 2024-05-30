@@ -116,6 +116,52 @@ F2_multi_789 = geomorph.data.frame(coords = two.d.array(multi_shape_789$coords),
                                    lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
 
 
+## operculum shape
+F2_whole_body = readland.tps('F2_No_GT.TPS', 
+                               specID = 'imageID')
+F2_whole_body = gpagen(F2_whole_body)
+F2_whole_body = geomorph.data.frame(coords = two.d.array(F2_whole_body$coords), 
+                                   Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+                                   parent_temp = identifiers$Parent_temp, 
+                                   offspring_temp = identifiers$Offspring_temp,
+                                   grand_temp = identifiers$Grand_temp,
+                                   morph = identifiers$Morph, 
+                                   population = identifiers$Lake,
+                                   lake_morph = identifiers$Lake_morph,
+                                   lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+
+# whole body ecotype Disparity analysis ------------------------------------------------------
+
+F2_whole_body
+
+# lake_ecotype_disparity = morphol.disparity(coords ~ 1,
+#                                            groups = ~lake_morph,
+#                                            data = F2_cranio_geo_df,
+#                                            iter = 999)
+
+F2_whole_body_disp = morphol.disparity(coords ~ 1,
+                                  groups = ~lake_morph_full,
+                                  data = F2_whole_body,
+                                  iter = 999)
+
+Whole_body_pval = F2_whole_body_disp$PV.dist.Pval
+Whole_body_disp = F2_whole_body_disp$PV.dist
+# disp_proc_var = full_mod_disp$Procrustes.var
+
+
+Whole_body_pval %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('Full_LM_set_disparity_pvals.csv')
+
+Whole_body_disp %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('Full_LM_set_disparity_estimates.csv')
+
+
 # craniofacial ecotype Disparity analysis ------------------------------------------------------
 
 F2_cranio_geo_df
