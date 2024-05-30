@@ -561,37 +561,22 @@ body_length_fitted %>%
 
 ## multivariate traits
 cranio_ashn = read_csv('F2_cranio_shape_cva_per_pop.csv') %>% 
-  filter(Lake == 'ASHN')
+  # filter(Lake == 'ASHN')
+  filter(Lake_morph == 'ASHNC')
 body_shape_ashn = read_csv('F2_body_shape_cva_per_pop.csv') %>% 
-  filter(Lake == 'ASHN')
+  # filter(Lake == 'ASHN')
+  filter(Lake_morph == 'ASHNC')
 fbar_ashn = read_csv('F2_4bar_shape_cva_per_pop.csv') %>% 
-  filter(Lake == 'ASHN')
+  # filter(Lake == 'ASHN')
+  filter(Lake_morph == 'ASHNC')
 eye_shape_ashn = read_csv('F2_eye_shape_cva_per_pop.csv') %>% 
-  filter(Lake == 'ASHN')
+  # filter(Lake == 'ASHN')
+  filter(Lake_morph == 'ASHNC')
 operculum_shape_ashn = read_csv('F2_operculum_shape_cva_per_pop.csv') %>% 
-  filter(Lake == 'ASHN')
+  # filter(Lake == 'ASHN')
+  filter(Lake_morph == 'ASHNC')
 
-##Univariate traits
-jaw_length_ASHN = read_csv('F2_jaw_length_fitted_per_pop.csv') %>% 
-  filter(Lake == 'ASHN')
-fbar2324_ASHN = read_csv('F2_fbar2324_fitted_per_pop.csv') %>% 
-  filter(Lake == 'ASHN')
-fbar824_ASHN = read_csv('F2_fbar824_fitted_per_pop.csv') %>% 
-  filter(Lake == 'ASHN')
-fbar827_ASHN = read_csv('F2_fbar827_fitted_per_pop.csv') %>% 
-  filter(Lake == 'ASHN')
-fbar2327_ASHN = read_csv('F2_fbar2327_fitted_per_pop.csv') %>% 
-  filter(Lake == 'ASHN')
-fbar2526_ASHN = read_csv('F2_fbar2526_fitted_per_pop.csv') %>% 
-  filter(Lake == 'ASHN')
-body_depth_ASHN = read_csv('F2_body_depth_fitted_per_pop.csv') %>% 
-  filter(Lake == 'ASHN')
-caudal_depth1_ASHN = read_csv('F2_caudal_depth1_fitted_per_pop.csv') %>% 
-  filter(Lake == 'ASHN')
-caudal_depth2_ASHN = read_csv('F2_caudal_depth2_fitted_per_pop.csv') %>% 
-  filter(Lake == 'ASHN')
-body_length_ASHN = read_csv('F2_body_length_fitted_per_pop.csv') %>% 
-  filter(Lake == 'ASHN')
+
 ##
 # ASHN ld axes data viz ---------------------------------------------------
 
@@ -627,60 +612,28 @@ ggplot(data = ASHN_data,
 
 
 
-# ASHN_ integration -------------------------------------------------------
+# ASHNC integration -------------------------------------------------------
 
-ASHN_lm_integration_ecotype = bind_cols(cranio_ashn$LD1, 
+ASHNC_lm_integration_ecotype = bind_cols(cranio_ashn$LD1, 
                                         body_shape_ashn$LD1, 
                                         fbar_ashn$LD2, 
                                         eye_shape_ashn$LD1, 
-                                        operculum_shape_ashn$LD2, 
-                                        jaw_length_ASHN$jaw_length, 
-                                        fbar2324_ASHN$fbar_2324, 
-                                        fbar824_ASHN$fbar_824, 
-                                        fbar827_ASHN$fbar_827, 
-                                        fbar2327_ASHN$fbar_2327, 
-                                        fbar2526_ASHN$fbar_2526, 
-                                        body_depth_ASHN$body_depth, 
-                                        caudal_depth1_ASHN$caudal_depth1, 
-                                        caudal_depth2_ASHN$caudal_depth2, 
-                                        body_length_ASHN$body_length) %>% 
+                                        operculum_shape_ashn$LD2) %>% 
   rename(cranio_shape = 1, 
          body_shape = 2, 
          fbar_shape = 3, 
          eye_shape = 4, 
-         operculum_shape = 5, 
-         jaw_length = 6, 
-         fbar2324 = 7, 
-         fbar824 = 8, 
-         fbar827 = 9, 
-         fbar2327 = 10, 
-         fbar2526 = 11, 
-         body_depth = 12, 
-         caudal_depth1 = 13, 
-         caudal_depth2 = 14, 
-         body_length = 15)
-
-## integration of univariate traits
-ASHN_univariate = ASHN_lm_integration_ecotype %>% 
-  dplyr::select(jaw_length, 
-                body_length, 
-                body_depth)
-
-ASHN_uni_pcor = pcor(x = ASHN_univariate, 
-                                   method = 'pearson')
-
-ASHN_uni_pcor$p.value
-ASHN_uni_pcor$estimate
+         operculum_shape = 5)
 
 ## integration of multivariate traits
-ASHN_multivariate = ASHN_lm_integration_ecotype %>% 
+ASHNC_multivariate = ASHNC_lm_integration_ecotype %>% 
   dplyr::select(cranio_shape, 
          body_shape, 
          fbar_shape, 
          eye_shape, 
          operculum_shape)
 
-ASHN_multi_int_ecotype_pcor = pcor(x = ASHN_multivariate, 
+ASHNC_multi_int_ecotype_pcor = pcor(x = ASHNC_multivariate, 
                                      method = 'pearson')
 
 ASHN_multi_int_ecotype_pcor$p.value
