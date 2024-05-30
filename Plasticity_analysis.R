@@ -1316,6 +1316,10 @@ ggsave('Figure1_Effects_F1_F2_on_Integration.tiff',
        width = 40,
        height = 40)
 ##
+
+
+# Code I dont need but scared to delete -----------------------------------
+
 # ecotype effects ---------------------------------------------------------
 
 F2_ecotype_temp_mod = procD.lm(F2_gpa$coords ~ identifiers$Morph, 
