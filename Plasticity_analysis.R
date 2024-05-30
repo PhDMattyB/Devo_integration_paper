@@ -345,15 +345,91 @@ ggsave('Univariate_offtemp_plasticity_trait_ecotype_integration.tiff',
 off_plasticity_trait_cor$ASHNC
 off_plasticity_trait_cor$ASHNW
 
-corbetw2mat(off_plasticity_trait_cor$ASHNC, 
-            off_plasticity_trait_cor$ASHNW, 
-            what = 'paired', 
-            corthresh = 0.7)
 
-corbetw2mat(off_plasticity_trait_cor$ASHNC, 
+test_ASHNC = off_plasticity_trait_cor$ASHNC %>%
+  reshape2::melt() 
+
+ggplot(test_ASHNC,
+       aes(x = Var1,
+           y = Var2,
+           fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#003049",
+                       mid = "#fefae0",
+                       high = "#d62828") +
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+test_ASHNW = off_plasticity_trait_cor$ASHNW %>%
+  reshape2::melt() 
+
+ggplot(test_ASHNW,
+       aes(x = Var1,
+           y = Var2,
+           fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#003049",
+                       mid = "#fefae0",
+                       high = "#d62828") +
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+
+
+ASHN_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$ASHNC, 
             off_plasticity_trait_cor$ASHNW, 
             what = 'all', 
             corthresh = 0.7)
+
+test = ASHN_F2_temp_cor %>%
+  reshape2::melt() 
+
+ggplot(test,
+       aes(x = Var1,
+           y = Var2,
+           fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ade8f4",
+                       mid = "#ff006e",
+                       high = "#ade8f4") +
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
 
 ## MYV
 off_plasticity_trait_cor$MYVC
@@ -364,7 +440,7 @@ corbetw2mat(off_plasticity_trait_cor$MYVC,
             what = 'paired', 
             corthresh = 0.7)
 
-corbetw2mat(off_plasticity_trait_cor$MYVC, 
+MYV_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$MYVC, 
             off_plasticity_trait_cor$MYVW, 
             what = 'all', 
             corthresh = 0.7)
@@ -378,7 +454,7 @@ corbetw2mat(off_plasticity_trait_cor$SKRC,
             what = 'paired', 
             corthresh = 0.7)
 
-corbetw2mat(off_plasticity_trait_cor$SKRC, 
+SKR_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$SKRC, 
             off_plasticity_trait_cor$SKRW, 
             what = 'all', 
             corthresh = 0.7)
@@ -392,7 +468,7 @@ corbetw2mat(off_plasticity_trait_cor$CSWYC,
             what = 'paired', 
             corthresh = 0.7)
 
-corbetw2mat(off_plasticity_trait_cor$CSWYC, 
+GTS_CSWY_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$CSWYC, 
             off_plasticity_trait_cor$GTSW, 
             what = 'all', 
             corthresh = 0.7)
@@ -567,7 +643,7 @@ corbetw2mat(parent_plasticity_trait_cor$ASHNC,
             what = 'paired', 
             corthresh = 0.7)
 
-corbetw2mat(parent_plasticity_trait_cor$ASHNC, 
+ASHN_F1_temp_cor = corbetw2mat(parent_plasticity_trait_cor$ASHNC, 
             parent_plasticity_trait_cor$ASHNW, 
             what = 'all', 
             corthresh = 0.7)
@@ -581,7 +657,7 @@ corbetw2mat(parent_plasticity_trait_cor$MYVC,
             what = 'paired', 
             corthresh = 0.7)
 
-corbetw2mat(parent_plasticity_trait_cor$MYVC, 
+MYV_F1_temp_cor = corbetw2mat(parent_plasticity_trait_cor$MYVC, 
             parent_plasticity_trait_cor$MYVW, 
             what = 'all', 
             corthresh = 0.7)
@@ -595,7 +671,7 @@ corbetw2mat(parent_plasticity_trait_cor$SKRC,
             what = 'paired', 
             corthresh = 0.7)
 
-corbetw2mat(parent_plasticity_trait_cor$SKRC, 
+SKR_F1_temp_cor = corbetw2mat(parent_plasticity_trait_cor$SKRC, 
             parent_plasticity_trait_cor$SKRW, 
             what = 'all', 
             corthresh = 0.7)
@@ -609,7 +685,7 @@ corbetw2mat(parent_plasticity_trait_cor$CSWYC,
             what = 'paired', 
             corthresh = 0.7)
 
-corbetw2mat(parent_plasticity_trait_cor$CSWYC, 
+GTS_CSWY_F1_temp_cor = corbetw2mat(parent_plasticity_trait_cor$CSWYC, 
             parent_plasticity_trait_cor$GTSW, 
             what = 'all', 
             corthresh = 0.7)
