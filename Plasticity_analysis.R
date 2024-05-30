@@ -981,6 +981,7 @@ ASHN_F1_plast = ggplot(ASHN_F1_effect,
   scale_fill_gradient2(low = "#ade8f4",
                        mid = "#ff006e",
                        high = "#ade8f4") +
+  labs(title = 'A) ASHN')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1080,6 +1081,7 @@ MYV_F1_plasticity = ggplot(MYV_F1_temp_cor,
   scale_fill_gradient2(low = "#ade8f4",
                        mid = "#ff006e",
                        high = "#ade8f4") +
+  labs(title = 'B) MYV')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1180,6 +1182,7 @@ SKR_F1_plasticity = ggplot(SKR_F1_temp_cor,
   scale_fill_gradient2(low = "#ade8f4",
                        mid = "#ff006e",
                        high = "#ade8f4") +
+  labs(title = 'C) SKR')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1280,6 +1283,7 @@ GTSCSWY_F1_plasticity = ggplot(GTSCSWY_F1_temp_cor,
   scale_fill_gradient2(low = "#ade8f4",
                        mid = "#ff006e",
                        high = "#ade8f4") +
+  labs(title = 'D) GTS-CSWY')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1305,7 +1309,12 @@ GTSCSWY_combo_graphs = GTSCSWY_F1_plasticity | GTSCSWY_F2_plasticity
 
 Big_graph = ASHN_combo_graphs/MYV_combo_graphs/SKR_combo_graphs/GTSCSWY_combo_graphs
 
-
+ggsave('Figure1_Effects_F1_F2_on_Integration.tiff',
+       plot = Big_graph,
+       dpi = 'retina',
+       units = 'cm',
+       width = 40,
+       height = 40)
 ##
 # ecotype effects ---------------------------------------------------------
 
