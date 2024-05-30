@@ -341,10 +341,11 @@ ggsave('Univariate_offtemp_plasticity_trait_ecotype_integration.tiff',
        width = 35,
        height = 20)
 
+# ASHN F2 effect matrix compare -------------------------------------------
+
 ## ASHN
 off_plasticity_trait_cor$ASHNC
 off_plasticity_trait_cor$ASHNW
-
 
 test_ASHNC = off_plasticity_trait_cor$ASHNC %>%
   reshape2::melt() 
@@ -431,7 +432,7 @@ ggplot(test,
                                    vjust = 0.5,
                                    hjust=1))
 
-## MYV
+# MYV F2 effect matrix compare -------------------------------------------
 off_plasticity_trait_cor$MYVC
 off_plasticity_trait_cor$MYVW
 
@@ -445,7 +446,92 @@ MYV_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$MYVC,
             what = 'all', 
             corthresh = 0.7)
 
-## SKR
+MYVC_F2_temp = off_plasticity_trait_cor$MYVC %>%
+  reshape2::melt() 
+
+ggplot(MYVC_F2_temp,
+       aes(x = Var1,
+           y = Var2,
+           fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#003049",
+                       mid = "#fefae0",
+                       high = "#d62828") +
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+MYVW_F2_temp = off_plasticity_trait_cor$MYVW %>%
+  reshape2::melt() 
+
+ggplot(MYVW_F2_temp,
+       aes(x = Var1,
+           y = Var2,
+           fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#003049",
+                       mid = "#fefae0",
+                       high = "#d62828") +
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+
+
+MYV_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$MYVC, 
+                               off_plasticity_trait_cor$MYVW, 
+                               what = 'all', 
+                               corthresh = 0.7)
+
+MYV_F2_temp_cor = MYV_F2_temp_cor %>%
+  reshape2::melt() 
+
+ggplot(MYV_F2_temp_cor,
+       aes(x = Var1,
+           y = Var2,
+           fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ade8f4",
+                       mid = "#ff006e",
+                       high = "#ade8f4") +
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+# SKR F2 effect matrix compare -------------------------------------------
 off_plasticity_trait_cor$SKRC
 off_plasticity_trait_cor$SKRW
 
@@ -459,7 +545,93 @@ SKR_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$SKRC,
             what = 'all', 
             corthresh = 0.7)
 
-## GTS CSWY
+SKRC_F2_temp = off_plasticity_trait_cor$SKRC %>%
+  reshape2::melt() 
+
+ggplot(SKRC_F2_temp,
+       aes(x = Var1,
+           y = Var2,
+           fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#003049",
+                       mid = "#fefae0",
+                       high = "#d62828") +
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+SKRW_F2_temp = off_plasticity_trait_cor$SKRW %>%
+  reshape2::melt() 
+
+ggplot(SKRW_F2_temp,
+       aes(x = Var1,
+           y = Var2,
+           fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#003049",
+                       mid = "#fefae0",
+                       high = "#d62828") +
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+
+
+SKR_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$SKRC, 
+                              off_plasticity_trait_cor$SKRW, 
+                              what = 'all', 
+                              corthresh = 0.7)
+
+SKR_F2_temp_cor = SKR_F2_temp_cor %>%
+  reshape2::melt() 
+
+ggplot(SKR_F2_temp_cor,
+       aes(x = Var1,
+           y = Var2,
+           fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ade8f4",
+                       mid = "#ff006e",
+                       high = "#ade8f4") +
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+
+# GTSCSWY F2 effect matrix compare -------------------------------------------
 off_plasticity_trait_cor$CSWYC
 off_plasticity_trait_cor$GTSW
 
@@ -472,6 +644,91 @@ GTS_CSWY_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$CSWYC,
             off_plasticity_trait_cor$GTSW, 
             what = 'all', 
             corthresh = 0.7)
+
+CSWYC_F2_temp = off_plasticity_trait_cor$CSWYC %>%
+  reshape2::melt() 
+
+ggplot(CSWYC_F2_temp,
+       aes(x = Var1,
+           y = Var2,
+           fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#003049",
+                       mid = "#fefae0",
+                       high = "#d62828") +
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+GTSW_F2_temp = off_plasticity_trait_cor$GTSW %>%
+  reshape2::melt() 
+
+ggplot(GTSW_F2_temp,
+       aes(x = Var1,
+           y = Var2,
+           fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#003049",
+                       mid = "#fefae0",
+                       high = "#d62828") +
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
+
+
+
+GTSCSWY_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$CSWYC, 
+                              off_plasticity_trait_cor$GTSW, 
+                              what = 'all', 
+                              corthresh = 0.7)
+
+GTSCSWY_F2_temp_cor = GTSCSWY_F2_temp_cor %>%
+  reshape2::melt() 
+
+ggplot(GTSCSWY_F2_temp_cor,
+       aes(x = Var1,
+           y = Var2,
+           fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ade8f4",
+                       mid = "#ff006e",
+                       high = "#ade8f4") +
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1))
 
 # parental temp effects ---------------------------------------------------
 
