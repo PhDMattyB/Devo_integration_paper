@@ -341,6 +341,61 @@ ggsave('Univariate_offtemp_plasticity_trait_ecotype_integration.tiff',
        width = 35,
        height = 20)
 
+## ASHN
+off_plasticity_trait_cor$ASHNC
+off_plasticity_trait_cor$ASHNW
+
+corbetw2mat(off_plasticity_trait_cor$ASHNC, 
+            off_plasticity_trait_cor$ASHNW, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(off_plasticity_trait_cor$ASHNC, 
+            off_plasticity_trait_cor$ASHNW, 
+            what = 'all', 
+            corthresh = 0.7)
+
+## MYV
+off_plasticity_trait_cor$MYVC
+off_plasticity_trait_cor$MYVW
+
+corbetw2mat(off_plasticity_trait_cor$MYVC, 
+            off_plasticity_trait_cor$MYVW, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(off_plasticity_trait_cor$MYVC, 
+            off_plasticity_trait_cor$MYVW, 
+            what = 'all', 
+            corthresh = 0.7)
+
+## SKR
+off_plasticity_trait_cor$SKRC
+off_plasticity_trait_cor$SKRW
+
+corbetw2mat(off_plasticity_trait_cor$SKRC, 
+            off_plasticity_trait_cor$SKRW, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(off_plasticity_trait_cor$SKRC, 
+            off_plasticity_trait_cor$SKRW, 
+            what = 'all', 
+            corthresh = 0.7)
+
+## GTS CSWY
+off_plasticity_trait_cor$CSWYC
+off_plasticity_trait_cor$GTSW
+
+corbetw2mat(off_plasticity_trait_cor$CSWYC, 
+            off_plasticity_trait_cor$GTSW, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(off_plasticity_trait_cor$CSWYC, 
+            off_plasticity_trait_cor$GTSW, 
+            what = 'all', 
+            corthresh = 0.7)
 
 # parental temp effects ---------------------------------------------------
 
@@ -501,6 +556,65 @@ ggsave('Univariate_parent_temp_plasticity_trait_ecotype_integration.tiff',
        units = 'cm',
        width = 35,
        height = 20)
+
+
+## ASHN
+parent_plasticity_trait_cor$ASHNC
+parent_plasticity_trait_cor$ASHNW
+
+corbetw2mat(parent_plasticity_trait_cor$ASHNC, 
+            parent_plasticity_trait_cor$ASHNW, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(parent_plasticity_trait_cor$ASHNC, 
+            parent_plasticity_trait_cor$ASHNW, 
+            what = 'all', 
+            corthresh = 0.7)
+
+## MYV
+parent_plasticity_trait_cor$MYVC
+parent_plasticity_trait_cor$MYVW
+
+corbetw2mat(parent_plasticity_trait_cor$MYVC, 
+            parent_plasticity_trait_cor$MYVW, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(parent_plasticity_trait_cor$MYVC, 
+            parent_plasticity_trait_cor$MYVW, 
+            what = 'all', 
+            corthresh = 0.7)
+
+## SKR
+parent_plasticity_trait_cor$SKRC
+parent_plasticity_trait_cor$SKRW
+
+corbetw2mat(parent_plasticity_trait_cor$SKRC, 
+            parent_plasticity_trait_cor$SKRW, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(parent_plasticity_trait_cor$SKRC, 
+            parent_plasticity_trait_cor$SKRW, 
+            what = 'all', 
+            corthresh = 0.7)
+
+## GTS CSWY
+parent_plasticity_trait_cor$CSWYC
+parent_plasticity_trait_cor$GTSW
+
+corbetw2mat(parent_plasticity_trait_cor$CSWYC, 
+            parent_plasticity_trait_cor$GTSW, 
+            what = 'paired', 
+            corthresh = 0.7)
+
+corbetw2mat(parent_plasticity_trait_cor$CSWYC, 
+            parent_plasticity_trait_cor$GTSW, 
+            what = 'all', 
+            corthresh = 0.7)
+
+
 
 ##
 # ecotype effects ---------------------------------------------------------
