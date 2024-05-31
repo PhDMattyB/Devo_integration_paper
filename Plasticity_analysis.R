@@ -2002,6 +2002,13 @@ GTSW_compare = GTSW_F1_original_plot|GTSW_F2_original_plot
 GTSCSWY_Matrix_evo = CSWYC_compare/GTSW_compare
 
 
+
+# nmds between trait matrices ---------------------------------------------
+
+
+
+
+
 # Code I dont need but scared to delete -----------------------------------
 
 # ecotype effects ---------------------------------------------------------
