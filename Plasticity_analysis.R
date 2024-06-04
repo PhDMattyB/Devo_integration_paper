@@ -2005,7 +2005,8 @@ GTSCSWY_Matrix_evo = CSWYC_compare/GTSW_compare
 
 # nmds between trait matrices ---------------------------------------------
 
-ASHNC_original = orig_uni_trait_cor$ASHNC 
+ASHNC_original = orig_uni_trait_cor$ASHNC %>% 
+  mutate(matrix_group = 'Original')
 
 ASHNC_F2 = off_plasticity_trait_cor$ASHNC 
 
