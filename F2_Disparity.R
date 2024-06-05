@@ -162,6 +162,15 @@ Whole_body_disp %>%
   write_csv('Full_LM_set_disparity_estimates.csv')
 
 
+F2_whole_body_disp = morphol.disparity(coords ~ 1,
+                                       groups = ~lake_morph,
+                                       data = F2_whole_body,
+                                       iter = 999)
+
+Whole_body_pval = F2_whole_body_disp$PV.dist.Pval
+Whole_body_disp = F2_whole_body_disp$PV.dist
+disp_proc_var = F2_whole_body_disp$Procrustes.var
+
 # F1 corrected landmarks --------------------------------------------------
 
 
@@ -183,7 +192,6 @@ F1_effects_mod_disp = morphol.disparity(coords ~ 1,
                                   groups = ~lake_morph_full,
                                   data = F1_effects,
                                   iter = 999)
-
 F1_disp_pval = F1_effects_mod_disp$PV.dist.Pval
 F1_disp_vals = F1_effects_mod_disp$PV.dist
 F1_disp_proc_var = F1_effects_mod_disp$Procrustes.var
@@ -200,6 +208,26 @@ F1_disp_vals %>%
   as_tibble() %>% 
   write_csv('F1_Effects_whole_body.csv')
 
+F1_effects_morph_mod_disp = morphol.disparity(coords ~ 1,
+                                        groups = ~lake_morph,
+                                        data = F1_effects,
+                                        iter = 999)
+
+F1_disp_pval = F1_effects_morph_mod_disp$PV.dist.Pval
+F1_disp_vals = F1_effects_morph_mod_disp$PV.dist
+F1_disp_proc_var = F1_effects_morph_mod_disp$Procrustes.var
+
+F1_disp_pval %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('F1_morph_Effects_whole_body_pvals.csv')
+
+F1_disp_vals %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('F1_morph_Effects_whole_body_estimates.csv')
 
 # F2 effects --------------------------------------------------------------
 F2_effects = readland.tps('F2_Corrected_landmarks.tps', 
@@ -236,6 +264,27 @@ F2_disp_vals %>%
   rownames_to_column() %>% 
   as_tibble() %>% 
   write_csv('F2_Effects_whole_body.csv')
+
+F2_effects_morph_mod_disp = morphol.disparity(coords ~ 1,
+                                        groups = ~lake_morph,
+                                        data = F2_effects,
+                                        iter = 999)
+
+F2_disp_pval = F2_effects_morph_mod_disp$PV.dist.Pval
+F2_disp_vals = F2_effects_morph_mod_disp$PV.dist
+F2_disp_proc_var = F2_effects_morph_mod_disp$Procrustes.var
+
+F2_disp_pval %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('F2_morph_Effects_whole_body_pvals.csv')
+
+F2_disp_vals %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('F2_morph_Effects_whole_body_estimates.csv')
 
 
 # craniofacial ecotype Disparity analysis ------------------------------------------------------
