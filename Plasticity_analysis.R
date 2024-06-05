@@ -223,8 +223,7 @@ for(i in 1:931){
 
 plasticity_gpa = gpagen(F2_array_consensus)
 # test_lm = geomorph.data.frame(plasticity_gpa)
-
-
+s
 F2_plasticity_data = geomorph.data.frame(plasticity_gpa, 
                               Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
                               parent_temp = identifiers$Parent_temp, 
@@ -788,6 +787,9 @@ for(i in 1:931){
 parent_effect_gpa = gpagen(F2_parent_array_consensus)
 # test_lm = geomorph.data.frame(plasticity_gpa)
 
+
+writeland.tps(parent_effect_gpa$coords, 
+              'F1_Corrected_landmarks.tps')
 
 F2_parent_effect_data = geomorph.data.frame(parent_effect_gpa, 
                                          Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
@@ -2018,6 +2020,11 @@ ggsave('Univariate_F1_F2_effects_phenotypic_integration.tiff',
        units = 'cm',
        width = 50,
        height = 30)
+
+
+# Disparity for F1 and F2 corrected shapes --------------------------------
+
+
 
 # nmds between trait matrices ---------------------------------------------
 

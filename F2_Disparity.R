@@ -146,7 +146,7 @@ F2_whole_body_disp = morphol.disparity(coords ~ 1,
 
 Whole_body_pval = F2_whole_body_disp$PV.dist.Pval
 Whole_body_disp = F2_whole_body_disp$PV.dist
-# disp_proc_var = full_mod_disp$Procrustes.var
+disp_proc_var = full_mod_disp$Procrustes.var
 
 
 Whole_body_pval %>% 
@@ -160,6 +160,82 @@ Whole_body_disp %>%
   rownames_to_column() %>% 
   as_tibble() %>% 
   write_csv('Full_LM_set_disparity_estimates.csv')
+
+
+# F1 corrected landmarks --------------------------------------------------
+
+
+F1_effects = readland.tps('F1_Corrected_landmarks.tps', 
+                             specID = 'imageID')
+F1_effects = gpagen(F1_effects)
+F1_effects = geomorph.data.frame(coords = two.d.array(F1_effects), 
+                                    Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+                                    parent_temp = identifiers$Parent_temp, 
+                                    offspring_temp = identifiers$Offspring_temp,
+                                    grand_temp = identifiers$Grand_temp,
+                                    morph = identifiers$Morph, 
+                                    population = identifiers$Lake,
+                                    lake_morph = identifiers$Lake_morph,
+                                    lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+
+
+F1_effects_mod_disp = morphol.disparity(coords ~ 1,
+                                  groups = ~lake_morph_full,
+                                  data = F1_effects,
+                                  iter = 999)
+
+F1_disp_pval = F1_effects_mod_disp$PV.dist.Pval
+F1_disp_vals = F1_effects_mod_disp$PV.dist
+F1_disp_proc_var = F1_effects_mod_disp$Procrustes.var
+
+F1_disp_pval %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('F1_Effects_whole_body.csv')
+
+F1_disp_vals %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('F1_Effects_whole_body.csv')
+
+
+# F2 effects --------------------------------------------------------------
+F2_effects = readland.tps('F2_Corrected_landmarks.tps', 
+                          specID = 'imageID')
+F2_effects = gpagen(F2_effects)
+F2_effects = geomorph.data.frame(coords = two.d.array(F2_effects$coords), 
+                                 Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+                                 parent_temp = identifiers$Parent_temp, 
+                                 offspring_temp = identifiers$Offspring_temp,
+                                 grand_temp = identifiers$Grand_temp,
+                                 morph = identifiers$Morph, 
+                                 population = identifiers$Lake,
+                                 lake_morph = identifiers$Lake_morph,
+                                 lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+
+
+F2_effects_mod_disp = morphol.disparity(coords ~ 1,
+                                        groups = ~lake_morph_full,
+                                        data = F2_effects,
+                                        iter = 999)
+
+F2_disp_pval = F2_effects_mod_disp$PV.dist.Pval
+F2_disp_vals = F2_effects_mod_disp$PV.dist
+F2_disp_proc_var = F2_effects_mod_disp$Procrustes.var
+
+F2_disp_pval %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('F2_Effects_whole_body.csv')
+
+F2_disp_vals %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('F2_Effects_whole_body.csv')
 
 
 # craniofacial ecotype Disparity analysis ------------------------------------------------------
