@@ -1373,7 +1373,7 @@ ASHNC_F1_original_plot = ggplot(ASHNC_F1_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'A) ASHNC F1 vs Original')+
+  labs(title = 'ASHNC F1 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1400,7 +1400,7 @@ ASHNC_F2_original_plot = ggplot(ASHNC_F2_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'B) ASHNC F2 vs Original')+
+  labs(title = 'ASHNC F2 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1414,7 +1414,8 @@ ASHNC_F2_original_plot = ggplot(ASHNC_F2_original,
         #                            hjust=1),
         # legend.position = 'none', 
         axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank())
+        axis.ticks.x = element_blank(), 
+        legend.position = 'none')
 
 ASHNC_compare = ASHNC_F1_original_plot|ASHNC_F2_original_plot
 
@@ -1455,7 +1456,7 @@ ASHNW_F1_original_plot = ggplot(ASHNW_F1_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'C) ASHNW F1 vs Original')+
+  labs(title = 'ASHNW F1 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1482,7 +1483,7 @@ ASHNW_F2_original_plot = ggplot(ASHNW_F2_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'D) ASHNW F2 vs Original')+
+  labs(title = 'ASHNW F2 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1496,7 +1497,8 @@ ASHNW_F2_original_plot = ggplot(ASHNW_F2_original,
         #                            hjust=1),
         # legend.position = 'none', 
         axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank())
+        axis.ticks.x = element_blank(), 
+        legend.position = 'none')
 
 ASHNW_compare = ASHNW_F1_original_plot|ASHNW_F2_original_plot
 
@@ -1540,7 +1542,7 @@ MYVC_F1_original_plot = ggplot(MYVC_F1_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'A) MYVC F1 vs Original')+
+  labs(title = 'MYVC F1 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1567,7 +1569,7 @@ MYVC_F2_original_plot = ggplot(MYVC_F2_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'B) MYVC F2 vs Original')+
+  labs(title = 'MYVC F2 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1581,7 +1583,8 @@ MYVC_F2_original_plot = ggplot(MYVC_F2_original,
         #                            hjust=1),
         # legend.position = 'none', 
         axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank())
+        axis.ticks.x = element_blank(), 
+        legend.position = 'none')
 
 MYVC_compare = MYVC_F1_original_plot|MYVC_F2_original_plot
 
@@ -1622,7 +1625,7 @@ MYVW_F1_original_plot = ggplot(MYVW_F1_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'C) MYVW F1 vs Original')+
+  labs(title = 'MYVW F1 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1649,7 +1652,7 @@ MYVW_F2_original_plot = ggplot(MYVW_F2_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'D) MYVW F2 vs Original')+
+  labs(title = 'MYVW F2 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1663,7 +1666,8 @@ MYVW_F2_original_plot = ggplot(MYVW_F2_original,
         #                            hjust=1),
         # legend.position = 'none', 
         axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank())
+        axis.ticks.x = element_blank(), 
+        legend.position = 'none')
 
 MYVW_compare = MYVW_F1_original_plot|MYVW_F2_original_plot
 
@@ -1706,7 +1710,7 @@ SKRC_F1_original_plot = ggplot(SKRC_F1_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'A) SKRC F1 vs Original')+
+  labs(title = 'SKRC F1 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1733,7 +1737,7 @@ SKRC_F2_original_plot = ggplot(SKRC_F2_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'B) SKRC F2 vs Original')+
+  labs(title = 'SKRC F2 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1747,7 +1751,8 @@ SKRC_F2_original_plot = ggplot(SKRC_F2_original,
         #                            hjust=1),
         # legend.position = 'none', 
         axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank())
+        axis.ticks.x = element_blank(), 
+        legend.position = 'none')
 
 SKRC_compare = SKRC_F1_original_plot|SKRC_F2_original_plot
 
@@ -1788,7 +1793,7 @@ SKRW_F1_original_plot = ggplot(SKRW_F1_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'C) SKRW F1 vs Original')+
+  labs(title = 'SKRW F1 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1815,7 +1820,7 @@ SKRW_F2_original_plot = ggplot(SKRW_F2_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'D) SKRW F2 vs Original')+
+  labs(title = 'SKRW F2 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1829,7 +1834,8 @@ SKRW_F2_original_plot = ggplot(SKRW_F2_original,
         #                            hjust=1),
         # legend.position = 'none', 
         axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank())
+        axis.ticks.x = element_blank(), 
+        legend.position = 'none')
 
 SKRW_compare = SKRW_F1_original_plot|SKRW_F2_original_plot
 
@@ -1872,7 +1878,7 @@ CSWYC_F1_original_plot = ggplot(CSWYC_F1_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'A) CSWYC F1 vs Original')+
+  labs(title = 'CSWYC F1 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1899,7 +1905,7 @@ CSWYC_F2_original_plot = ggplot(CSWYC_F2_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'B) CSWYC F2 vs Original')+
+  labs(title = 'CSWYC F2 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1913,7 +1919,8 @@ CSWYC_F2_original_plot = ggplot(CSWYC_F2_original,
         #                            hjust=1),
         # legend.position = 'none', 
         axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank())
+        axis.ticks.x = element_blank(), 
+        legend.position = 'none')
 
 CSWYC_compare = CSWYC_F1_original_plot|CSWYC_F2_original_plot
 
@@ -1954,7 +1961,7 @@ GTSW_F1_original_plot = ggplot(GTSW_F1_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'C) GTSW F1 vs Original')+
+  labs(title = 'GTSW F1 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1981,7 +1988,7 @@ GTSW_F2_original_plot = ggplot(GTSW_F2_original,
   scale_fill_gradient2(low = "#ffff3f",
                        mid = "#007f5f",
                        high = "#ffff3f") +
-  labs(title = 'D) GTSW F2 vs Original')+
+  labs(title = 'GTSW F2 vs Original')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -2002,6 +2009,15 @@ GTSW_compare = GTSW_F1_original_plot|GTSW_F2_original_plot
 GTSCSWY_Matrix_evo = CSWYC_compare/GTSW_compare
 
 
+F1_F2_effects = ASHN_Matrix_evo|MYV_Matrix_evo|SKR_Matrix_evo|GTSCSWY_Matrix_evo
+
+
+ggsave('Univariate_F1_F2_effects_phenotypic_integration.tiff',
+       plot = F1_F2_effects,
+       dpi = 'retina',
+       units = 'cm',
+       width = 50,
+       height = 30)
 
 # nmds between trait matrices ---------------------------------------------
 
