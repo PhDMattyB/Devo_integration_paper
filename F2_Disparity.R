@@ -177,7 +177,7 @@ disp_proc_var = F2_whole_body_disp$Procrustes.var
 F1_effects = readland.tps('F1_Corrected_landmarks.tps', 
                              specID = 'imageID')
 F1_effects = gpagen(F1_effects)
-F1_effects = geomorph.data.frame(coords = two.d.array(F1_effects), 
+F1_effects = geomorph.data.frame(coords = two.d.array(F1_effects$coords), 
                                     Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
                                     parent_temp = identifiers$Parent_temp, 
                                     offspring_temp = identifiers$Offspring_temp,
@@ -186,6 +186,9 @@ F1_effects = geomorph.data.frame(coords = two.d.array(F1_effects),
                                     population = identifiers$Lake,
                                     lake_morph = identifiers$Lake_morph,
                                     lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+
+
+
 
 
 F1_effects_mod_disp = morphol.disparity(coords ~ 1,

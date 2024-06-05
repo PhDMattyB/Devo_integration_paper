@@ -2040,15 +2040,15 @@ ggsave('Univariate_F1_F2_effects_phenotypic_integration.tiff',
 F1_effects = readland.tps('F1_Corrected_landmarks.tps', 
                           specID = 'imageID')
 F1_effects = gpagen(F1_effects)
-# F1_effects = geomorph.data.frame(coords = two.d.array(F1_effects), 
-#                                  Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
-#                                  parent_temp = identifiers$Parent_temp, 
-#                                  offspring_temp = identifiers$Offspring_temp,
-#                                  grand_temp = identifiers$Grand_temp,
-#                                  morph = identifiers$Morph, 
-#                                  population = identifiers$Lake,
-#                                  lake_morph = identifiers$Lake_morph,
-#                                  lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+F1_effects = geomorph.data.frame(coords = two.d.array(F1_effects$coords),
+                                 Full_factor = identifiers$Ecotype_Pair_Full_Temp,
+                                 parent_temp = identifiers$Parent_temp,
+                                 offspring_temp = identifiers$Offspring_temp,
+                                 grand_temp = identifiers$Grand_temp,
+                                 morph = identifiers$Morph,
+                                 population = identifiers$Lake,
+                                 lake_morph = identifiers$Lake_morph,
+                                 lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
 
 subset_F1_effect_coords = coords.subset(F1_effects$coords,
                                               identifiers$Lake_morph)
