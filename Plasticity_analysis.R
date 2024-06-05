@@ -67,6 +67,20 @@ mean_shape = mshape(F2_gpa$coords)
 matrix_mean_shape = as.matrix(mean_shape)
 mean_shape_array = array(matrix_mean_shape, 
                          dim = c(27, 2, 1))
+
+
+# PCA original dataset ----------------------------------------------------
+
+shape_pca = gm.prcomp(F2_gpa$coords)
+plot(shape_pca)
+plot.gm.prcomp(F2_gps$coords)
+
+# univar_test = F2_univariate_traits %>% 
+#   select(jaw_length:ratio2)
+
+pca_test = gm.prcomp(univar_test)
+
+
 # univariate trait data ---------------------------------------------------
 
 
@@ -223,7 +237,7 @@ for(i in 1:931){
 
 plasticity_gpa = gpagen(F2_array_consensus)
 # test_lm = geomorph.data.frame(plasticity_gpa)
-s
+
 F2_plasticity_data = geomorph.data.frame(plasticity_gpa, 
                               Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
                               parent_temp = identifiers$Parent_temp, 
@@ -2022,9 +2036,60 @@ ggsave('Univariate_F1_F2_effects_phenotypic_integration.tiff',
        height = 30)
 
 
-# Disparity for F1 and F2 corrected shapes --------------------------------
+# integration for F1 and F2 corrected shapes --------------------------------
+F1_effects = readland.tps('F1_Corrected_landmarks.tps', 
+                          specID = 'imageID')
+F1_effects = gpagen(F1_effects)
+# F1_effects = geomorph.data.frame(coords = two.d.array(F1_effects), 
+#                                  Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
+#                                  parent_temp = identifiers$Parent_temp, 
+#                                  offspring_temp = identifiers$Offspring_temp,
+#                                  grand_temp = identifiers$Grand_temp,
+#                                  morph = identifiers$Morph, 
+#                                  population = identifiers$Lake,
+#                                  lake_morph = identifiers$Lake_morph,
+#                                  lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+
+subset_F1_effect_coords = coords.subset(F1_effects$coords,
+                                              identifiers$Lake_morph)
+
+vrel_F1_effect = Map(function(x) integration.Vrel(x),
+                           subset_F1_effect_coords)
+
+compare.ZVrel(vrel_F1_effect$ASHNC,
+              vrel_F1_effect$ASHNW)
+
+compare.ZVrel(vrel_F1_effect$MYVC,
+              vrel_F1_effect$MYVW)
+
+compare.ZVrel(vrel_F1_effect$SKRC,
+              vrel_F1_effect$SKRW)
+
+compare.ZVrel(vrel_F1_effect$GTSW,
+              vrel_F1_effect$CSWYC)
 
 
+
+F2_effects = readland.tps('F2_Corrected_landmarks.tps', 
+                          specID = 'imageID')
+F2_effects = gpagen(F2_effects)
+subset_F2_effect_coords = coords.subset(F2_effects$coords,
+                                        identifiers$Lake_morph)
+
+vrel_F2_effect = Map(function(x) integration.Vrel(x),
+                     subset_F2_effect_coords)
+
+compare.ZVrel(vrel_F2_effect$ASHNC,
+              vrel_F2_effect$ASHNW)
+
+compare.ZVrel(vrel_F2_effect$MYVC,
+              vrel_F2_effect$MYVW)
+
+compare.ZVrel(vrel_F2_effect$SKRC,
+              vrel_F2_effect$SKRW)
+
+compare.ZVrel(vrel_F2_effect$GTSW,
+              vrel_F2_effect$CSWYC)
 
 # nmds between trait matrices ---------------------------------------------
 
