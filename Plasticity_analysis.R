@@ -2006,11 +2006,22 @@ GTSCSWY_Matrix_evo = CSWYC_compare/GTSW_compare
 # nmds between trait matrices ---------------------------------------------
 
 ASHNC_original = orig_uni_trait_cor$ASHNC %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
   mutate(matrix_group = 'Original')
 
-ASHNC_F2 = off_plasticity_trait_cor$ASHNC 
+ASHNC_F2 = off_plasticity_trait_cor$ASHNC %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  mutate(matrix_group = 'F2 effect')
 
-ASHNC_F1 = parent_plasticity_trait_cor$ASHNC
+ASHNC_F1 = parent_plasticity_trait_cor$ASHNC%>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  mutate(matrix_group = 'F1 effect')
 
 
 
