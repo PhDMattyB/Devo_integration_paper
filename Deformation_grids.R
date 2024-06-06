@@ -50,6 +50,9 @@ F2_gpa = gpagen(F2_tps,
 F2_original_data = two.d.array(F2_gpa$coords) # get coords into an array
 F2_original_data = cbind(identifiers, F2_original_data) # bind with the variables; all in the correct order
 
+procD.lm(F2_gpa$coords ~ Parent_temp*Offspring_temp*Lake_Morph, 
+         data = F2_original_data)
+
 F2_orig_ordered = F2_oringial_data[order(F2_original_data$Lake_morph),]  # order to make it easier to split the dataset
 
 rownames(F2_orig_ordered) <- as.integer(1:931) #name rows to make it easier to organise
@@ -97,6 +100,9 @@ F1_effect_gpa = gpagen(F1_effect_tps,
 
 F1_effect_data = two.d.array(F1_effect_gpa$coords) # get coords into an array
 F1_effect_data = cbind(identifiers, F1_effect_data) # bind with the variables; all in the correct order
+
+
+
 
 F1_effect_ordered = F1_effect_data[order(F1_effect_data$Lake_morph),]  # order to make it easier to split the dataset
 
@@ -178,4 +184,39 @@ plotRefToTarget(ASHNC_F2_mean,
                 links=links, 
                 gridPars=ASHNC_F2_def)
 
+
+
+# ASHN Original vs F1 and F2 effect ----------------------------------------------------
+
+
+ASHNC_orgin_f1_def <- gridPar(tar.pt.size=0.8, tar.pt.bg = "green", tar.link.col="black", tar.link.lwd = 2.5,grid.col='darkgreen', grid.lty = 10, n.col.cell = 30)
+plotRefToTarget(ASHNC_orig_mean, 
+                ASHNC_F1_mean, 
+                mag=10, 
+                links=links, 
+                gridPars=ASHNC_F2_def)
+
+
+ASHNC_origin_f2_def <- gridPar(tar.pt.size=0.8, tar.pt.bg = "green", tar.link.col="black", tar.link.lwd = 2.5,grid.col='darkgreen', grid.lty = 10, n.col.cell = 30)
+plotRefToTarget(ASHNC_orig_mean, 
+                ASHNC_F2_mean, 
+                mag=10, 
+                links=links, 
+                gridPars=ASHNC_F2_def)
+
+
+ASHNW_orgin_f1_def <- gridPar(tar.pt.size=0.8, tar.pt.bg = "green", tar.link.col="black", tar.link.lwd = 2.5,grid.col='darkgreen', grid.lty = 10, n.col.cell = 30)
+plotRefToTarget(ASHNW_orig_mean, 
+                ASHNW_F1_mean, 
+                mag=10, 
+                links=links, 
+                gridPars=ASHNW_F2_def)
+
+
+ASHNW_origin_f2_def <- gridPar(tar.pt.size=0.8, tar.pt.bg = "green", tar.link.col="black", tar.link.lwd = 2.5,grid.col='darkgreen', grid.lty = 10, n.col.cell = 30)
+plotRefToTarget(ASHNW_orig_mean, 
+                ASHNW_F2_mean, 
+                mag=10, 
+                links=links, 
+                gridPars=ASHNW_F2_def)
 
