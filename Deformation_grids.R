@@ -400,14 +400,11 @@ warm_wild_def <- gridPar(tar.pt.size=0.8,
                           grid.col='black', 
                           grid.lty = 10, 
                           n.col.cell = 30)
-plotRefToTarget(warm_wild_mean, 
+plotRefToTarget(cold_wild_mean, 
                 warm_wild_mean, 
                 mag=4, 
                 links=links, 
                 gridPars=warm_wild_def)
-
-
-
 
 
 # F2 cold vs warm original traits ------------------------------------------------------
@@ -647,4 +644,64 @@ plotRefToTarget(warm_orig_mean,
                 mag=20, 
                 links=links, 
                 gridPars=warm_origin_f2_def)
+
+
+# Wild ecotype vs F1 + F2 Effects ----------------------------------------------
+
+## F1 effects cold ecotype
+cold_wild_f1_def <- gridPar(tar.pt.size=0.8,
+                              tar.pt.bg = "#ade8f4", 
+                              tar.link.col="black", 
+                              tar.link.lwd = 2.5,
+                              grid.col='black', 
+                              grid.lty = 10, 
+                              n.col.cell = 30)
+plotRefToTarget(cold_wild_mean, 
+                cold_F1_mean, 
+                mag=2, 
+                links=links, 
+                gridPars=cold_wild_f1_def)
+
+## F2 effects
+cold_wild_f2_def <- gridPar(tar.pt.size=0.8, 
+                              tar.pt.bg = "#ade8f4", 
+                              tar.link.col="black", 
+                              tar.link.lwd = 2.5,
+                              grid.col='black', 
+                              grid.lty = 10, 
+                              n.col.cell = 30)
+plotRefToTarget(cold_wild_mean, 
+                cold_F2_mean, 
+                mag=2, 
+                links=links, 
+                gridPars=cold_wild_f2_def)
+
+
+warm_wild_f1_def <- gridPar(tar.pt.size=0.8, 
+                              tar.pt.bg = "#ff006e", 
+                              tar.link.col="black", 
+                              tar.link.lwd = 2.5,
+                              grid.col='black', 
+                              grid.lty = 10, 
+                              n.col.cell = 30)
+plotRefToTarget(warm_wild_mean, 
+                warm_F1_mean, 
+                mag=3, 
+                links=links, 
+                gridPars=warm_wild_f1_def)
+
+
+warm_wild_f2_def <- gridPar(tar.pt.size=0.8, 
+                              tar.pt.bg = "#ff006e", 
+                              tar.link.col="black", 
+                              tar.link.lwd = 2.5,
+                              grid.col='black', 
+                              grid.lty = 10, 
+                              n.col.cell = 30)
+plotRefToTarget(warm_wild_mean, 
+                warm_F2_mean, 
+                mag=3, 
+                links=links, 
+                gridPars=warm_wild_f2_def)
+
 
