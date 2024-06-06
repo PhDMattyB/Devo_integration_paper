@@ -37,7 +37,7 @@ identifiers = read_csv('F2_metadata.csv') %>%
                   'Grand_temp'),
                 factor))
 
-# Original F2 traits ------------------------------------------------------
+#  ASHN Original F2 traits ------------------------------------------------------
 
 F2_tps = readland.tps('F2_No_GT.TPS', 
                       specID = 'imageID')
