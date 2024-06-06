@@ -75,14 +75,26 @@ ASHNW_orig_mean = mshape(ASHNW_orig_shape)
 
 links <- cbind(c(1,2,6,12,13,14,15,16,17,18,19,20,21,22,2,23,23,24,8,25,10,8,7,7), 
                c(2,6,12,13,14,15,16,17,18,19,20,21,22,1,23,27,24,8,27,26,11,9,8,9))
-ASHNC_def <- gridPar(tar.pt.size=0.8, tar.pt.bg = "#ade8f4", tar.link.col="black", tar.link.lwd = 2.5,grid.col='darkgreen', grid.lty = 10, n.col.cell = 30)
+ASHNC_def <- gridPar(tar.pt.size=0.8, 
+                     tar.pt.bg = "#ade8f4", 
+                     tar.link.col="black", 
+                     tar.link.lwd = 2.5,
+                     grid.col='black', 
+                     grid.lty = 10, 
+                     n.col.cell = 30)
 plotRefToTarget(ASHNW_orig_mean, 
                 ASHNC_orig_mean, 
                 mag=4, 
                 links=links, 
                 gridPars=ASHNC_def)
 
-ASHNW_def <- gridPar(tar.pt.size=0.8, tar.pt.bg = "#ff006e", tar.link.col="black", tar.link.lwd = 2.5,grid.col='darkgreen', grid.lty = 10, n.col.cell = 30)
+ASHNW_def <- gridPar(tar.pt.size=0.8, 
+                     tar.pt.bg = "#ff006e", 
+                     tar.link.col="black", 
+                     tar.link.lwd = 2.5,
+                     grid.col='black', 
+                     grid.lty = 10, 
+                     n.col.cell = 30)
 plotRefToTarget(ASHNC_orig_mean, 
                 ASHNW_orig_mean, 
                 mag=4, 
@@ -134,7 +146,7 @@ ASHNC_F1_def <- gridPar(tar.pt.size=0.8,
                         n.col.cell = 30)
 plotRefToTarget(ASHNW_F1_mean, 
                 ASHNC_F1_mean, 
-                mag=3, 
+                mag=4, 
                 links=links, 
                 gridPars=ASHNC_F1_def)
 
