@@ -50,8 +50,9 @@ F2_gpa = gpagen(F2_tps,
 F2_original_data = two.d.array(F2_gpa$coords) # get coords into an array
 F2_original_data = cbind(identifiers, F2_original_data) # bind with the variables; all in the correct order
 
-procD.lm(F2_gpa$coords ~ Parent_temp*Offspring_temp*Lake_Morph, 
-         data = F2_original_data)
+test_lm = procD.lm(F2_gpa$coords ~ identifiers$Parent_temp*identifiers$Offspring_temp*identifiers$Lake_morph, 
+         iter = 999)
+summary(test_lm)
 
 F2_orig_ordered = F2_oringial_data[order(F2_original_data$Lake_morph),]  # order to make it easier to split the dataset
 
