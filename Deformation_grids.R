@@ -343,3 +343,308 @@ plotRefToTarget(ASHNC_wild_mean,
                 mag=4, 
                 links=links, 
                 gridPars=ASHNW_wild_def)
+
+
+
+# Wild geothermal vs ambient grids ----------------------------------------
+wild_tps = readland.tps('Wild_Final.TPS', 
+                        specID = 'imageID')
+
+wild_identifiers = read_csv('TPS_Wild_metadata.csv') 
+
+## superimposition on the entire dataset
+wild_gpa = gpagen(wild_tps, 
+                  print.progress = F)
+
+
+wild_effect_data = two.d.array(wild_gpa$coords) # get coords into an array
+wild_effect_data = cbind(wild_identifiers, wild_effect_data) # bind with the variables; all in the correct order
+
+wild_effect_ordered = wild_effect_data[order(wild_effect_data$Morph),]  # order to make it easier to split the dataset
+
+rownames(wild_effect_ordered) <- as.integer(1:331) #name rows to make it easier to organise
+
+
+cold_wild_shape = wild_effect_ordered[1:171,]
+warm_wild_shape = wild_effect_ordered[172:331,]
+
+cold_wild_shape = cold_wild_shape[,-c(1:5)]
+cold_wild_shape = arrayspecs(cold_wild_shape, 27, 2)
+cold_wild_mean = mshape(cold_wild_shape)
+
+warm_wild_shape = warm_wild_shape[,-c(1:5)]
+warm_wild_shape = arrayspecs(warm_wild_shape, 27, 2)
+warm_wild_mean = mshape(warm_wild_shape)
+
+####plotRefToTarget (reference, target species)
+
+links <- cbind(c(1,2,6,12,13,14,15,16,17,18,19,20,21,22,2,23,23,24,8,25,10,8,7,7), 
+               c(2,6,12,13,14,15,16,17,18,19,20,21,22,1,23,27,24,8,27,26,11,9,8,9))
+cold_wild_def <- gridPar(tar.pt.size=0.8, 
+                          tar.pt.bg = "#ade8f4", 
+                          tar.link.col="black", 
+                          tar.link.lwd = 2.5,
+                          grid.col='black', 
+                          grid.lty = 10, 
+                          n.col.cell = 30)
+plotRefToTarget(warm_wild_mean, 
+                cold_wild_mean, 
+                mag=3, 
+                links=links, 
+                gridPars=cold_wild_def)
+
+warm_wild_def <- gridPar(tar.pt.size=0.8, 
+                          tar.pt.bg = "#ff006e", 
+                          tar.link.col="black", 
+                          tar.link.lwd = 2.5,
+                          grid.col='black', 
+                          grid.lty = 10, 
+                          n.col.cell = 30)
+plotRefToTarget(warm_wild_mean, 
+                warm_wild_mean, 
+                mag=4, 
+                links=links, 
+                gridPars=warm_wild_def)
+
+
+
+
+
+# F2 cold vs warm original traits ------------------------------------------------------
+
+F2_tps = readland.tps('F2_No_GT.TPS', 
+                      specID = 'imageID')
+
+## superimposition on the entire dataset
+F2_gpa = gpagen(F2_tps, 
+                print.progress = F)
+
+
+F2_original_data = two.d.array(F2_gpa$coords) # get coords into an array
+F2_original_data = cbind(identifiers, F2_original_data) # bind with the variables; all in the correct order
+
+# test_lm = procD.lm(F2_gpa$coords ~ identifiers$Parent_temp*identifiers$Offspring_temp*identifiers$Lake_morph, 
+#                    iter = 999)
+# summary(test_lm)
+
+F2_orig_ordered = F2_oringial_data[order(F2_original_data$Morph),]  # order to make it easier to split the dataset
+
+rownames(F2_orig_ordered) <- as.integer(1:931) #name rows to make it easier to organise
+
+cold_orig_shape = F2_orig_ordered[1:481,]
+warm_orig_shape = F2_orig_ordered[482:931,]
+
+# test = cold_orig_shape[,-c(1:3)]
+cold_orig_shape = arrayspecs(cold_orig_shape, 27, 2)
+cold_orig_mean = mshape(cold_orig_shape)
+
+warm_orig_shape = arrayspecs(warm_orig_shape, 27, 2)
+warm_orig_mean = mshape(warm_orig_shape)
+
+####plotRefToTarget (reference, target species)
+
+links <- cbind(c(1,2,6,12,13,14,15,16,17,18,19,20,21,22,2,23,23,24,8,25,10,8,7,7), 
+               c(2,6,12,13,14,15,16,17,18,19,20,21,22,1,23,27,24,8,27,26,11,9,8,9))
+cold_def <- gridPar(tar.pt.size=0.8, 
+                     tar.pt.bg = "#ade8f4", 
+                     tar.link.col="black", 
+                     tar.link.lwd = 2.5,
+                     grid.col='black', 
+                     grid.lty = 10, 
+                     n.col.cell = 30)
+plotRefToTarget(warm_orig_mean, 
+                cold_orig_mean, 
+                mag=4, 
+                links=links, 
+                gridPars=cold_def)
+
+warm_def <- gridPar(tar.pt.size=0.8, 
+                     tar.pt.bg = "#ff006e", 
+                     tar.link.col="black", 
+                     tar.link.lwd = 2.5,
+                     grid.col='black', 
+                     grid.lty = 10, 
+                     n.col.cell = 30)
+plotRefToTarget(cold_orig_mean, 
+                warm_orig_mean, 
+                mag=4, 
+                links=links, 
+                gridPars=warm_def)
+
+
+
+# cold vs warm F1 effect deformation grids ----------------------------------------
+F1_effect_tps = readland.tps('F1_Corrected_landmarks.tps', 
+                             specID = 'imageID')
+
+F1_effect_gpa = gpagen(F1_effect_tps, 
+                       print.progress = F)
+
+
+F1_effect_data = two.d.array(F1_effect_gpa$coords) # get coords into an array
+F1_effect_data = cbind(identifiers, F1_effect_data) # bind with the variables; all in the correct order
+
+
+
+
+F1_effect_ordered = F1_effect_data[order(F1_effect_data$Morph),]  # order to make it easier to split the dataset
+
+rownames(F1_effect_ordered) <- as.integer(1:931) #name rows to make it easier to organise
+
+
+cold_F1_shape = F1_effect_ordered[1:481,]
+warm_F1_shape = F1_effect_ordered[482:931,]
+
+cold_F1_shape = cold_F1_shape[,-c(1:12)]
+cold_F1_shape = arrayspecs(cold_F1_shape, 27, 2)
+cold_F1_mean = mshape(cold_F1_shape)
+
+warm_F1_shape = warm_F1_shape[,-c(1:12)]
+warm_F1_shape = arrayspecs(warm_F1_shape, 27, 2)
+warm_F1_mean = mshape(warm_F1_shape)
+
+####plotRefToTarget (reference, target species)
+
+links <- cbind(c(1,2,6,12,13,14,15,16,17,18,19,20,21,22,2,23,23,24,8,25,10,8,7,7), 
+               c(2,6,12,13,14,15,16,17,18,19,20,21,22,1,23,27,24,8,27,26,11,9,8,9))
+cold_F1_def <- gridPar(tar.pt.size=0.8, 
+                        tar.pt.bg = "#ade8f4", 
+                        tar.link.col="black", 
+                        tar.link.lwd = 2.5,
+                        grid.col='black', 
+                        grid.lty = 10, 
+                        n.col.cell = 30)
+plotRefToTarget(warm_F1_mean, 
+                cold_F1_mean, 
+                mag=4, 
+                links=links, 
+                gridPars=cold_F1_def)
+
+warm_F1_def <- gridPar(tar.pt.size=0.8, 
+                        tar.pt.bg = "#ff006e", 
+                        tar.link.col="black", 
+                        tar.link.lwd = 2.5,
+                        grid.col='black', 
+                        grid.lty = 10, 
+                        n.col.cell = 30)
+plotRefToTarget(cold_F1_mean, 
+                warm_F1_mean, 
+                mag=4, 
+                links=links, 
+                gridPars=warm_F1_def)
+
+# cold vs warm F2 effect deformation grids ----------------------------------------
+F2_effect_tps = readland.tps('F2_Corrected_landmarks.tps', 
+                             specID = 'imageID')
+
+F2_effect_gpa = gpagen(F2_effect_tps, 
+                       print.progress = F)
+
+
+F2_effect_data = two.d.array(F2_effect_gpa$coords) # get coords into an array
+F2_effect_data = cbind(identifiers, F2_effect_data) # bind with the variables; all in the correct order
+
+F2_effect_ordered = F2_effect_data[order(F2_effect_data$Morph),]  # order to make it easier to split the dataset
+
+rownames(F2_effect_ordered) <- as.integer(1:931) #name rows to make it easier to organise
+
+
+cold_F2_shape = F2_effect_ordered[1:481,]
+warm_F2_shape = F2_effect_ordered[482:931,]
+
+cold_F2_shape = cold_F2_shape[,-c(1:12)]
+cold_F2_shape = arrayspecs(cold_F2_shape, 27, 2)
+cold_F2_mean = mshape(cold_F2_shape)
+
+warm_F2_shape = warm_F2_shape[,-c(1:12)]
+warm_F2_shape = arrayspecs(warm_F2_shape, 27, 2)
+warm_F2_mean = mshape(warm_F2_shape)
+
+####plotRefToTarget (reference, target species)
+
+links <- cbind(c(1,2,6,12,13,14,15,16,17,18,19,20,21,22,2,23,23,24,8,25,10,8,7,7), 
+               c(2,6,12,13,14,15,16,17,18,19,20,21,22,1,23,27,24,8,27,26,11,9,8,9))
+cold_F2_def <- gridPar(tar.pt.size=0.8, 
+                        tar.pt.bg = "#ade8f4", 
+                        tar.link.col="black", 
+                        tar.link.lwd = 2.5,
+                        grid.col='black', 
+                        grid.lty = 10, 
+                        n.col.cell = 30)
+plotRefToTarget(warm_F2_mean, 
+                cold_F2_mean, 
+                mag=4, 
+                links=links, 
+                gridPars=cold_F2_def)
+
+warm_F2_def <- gridPar(tar.pt.size=0.8, 
+                        tar.pt.bg = "#ff006e", 
+                        tar.link.col="black", 
+                        tar.link.lwd = 2.5,
+                        grid.col='black', 
+                        grid.lty = 10, 
+                        n.col.cell = 30)
+plotRefToTarget(cold_F2_mean, 
+                warm_F2_mean, 
+                mag=4, 
+                links=links, 
+                gridPars=warm_F2_def)
+
+# cold vs warm Original vs F1 and F2 effect ----------------------------------------------------
+
+
+cold_origin_f1_def <- gridPar(tar.pt.size=0.8,
+                               tar.pt.bg = "#ade8f4", 
+                               tar.link.col="black", 
+                               tar.link.lwd = 2.5,
+                               grid.col='black', 
+                               grid.lty = 10, 
+                               n.col.cell = 30)
+plotRefToTarget(cold_orig_mean, 
+                cold_F1_mean, 
+                mag=20, 
+                links=links, 
+                gridPars=cold_origin_f1_def)
+
+
+cold_origin_f2_def <- gridPar(tar.pt.size=0.8, 
+                               tar.pt.bg = "#ade8f4", 
+                               tar.link.col="black", 
+                               tar.link.lwd = 2.5,
+                               grid.col='black', 
+                               grid.lty = 10, 
+                               n.col.cell = 30)
+plotRefToTarget(cold_orig_mean, 
+                cold_F2_mean, 
+                mag=20, 
+                links=links, 
+                gridPars=cold_origin_f2_def)
+
+
+warm_origin_f1_def <- gridPar(tar.pt.size=0.8, 
+                               tar.pt.bg = "#ff006e", 
+                               tar.link.col="black", 
+                               tar.link.lwd = 2.5,
+                               grid.col='black', 
+                               grid.lty = 10, 
+                               n.col.cell = 30)
+plotRefToTarget(warm_orig_mean, 
+                warm_F1_mean, 
+                mag=20, 
+                links=links, 
+                gridPars=warm_origin_f1_def)
+
+
+warm_origin_f2_def <- gridPar(tar.pt.size=0.8, 
+                               tar.pt.bg = "#ff006e", 
+                               tar.link.col="black", 
+                               tar.link.lwd = 2.5,
+                               grid.col='black', 
+                               grid.lty = 10, 
+                               n.col.cell = 30)
+plotRefToTarget(warm_orig_mean, 
+                warm_F2_mean, 
+                mag=20, 
+                links=links, 
+                gridPars=warm_origin_f2_def)
+
