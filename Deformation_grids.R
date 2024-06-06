@@ -221,3 +221,53 @@ plotRefToTarget(ASHNW_orig_mean,
                 links=links, 
                 gridPars=ASHNW_F2_def)
 
+
+
+# ASHN wild deformation grids ---------------------------------------------
+
+wild_tps = readland.tps('Wild_Final.TPS', 
+                        specID = 'imageID')
+
+wild_identifiers = read_csv('TPS_Wild_metadata.csv') 
+
+## superimposition on the entire dataset
+wild_gpa = gpagen(wild_tps, 
+                  print.progress = F)
+
+
+wild_effect_data = two.d.array(wild_gpa$coords) # get coords into an array
+wild_effect_data = cbind(wild_identifiers, wild_effect_data) # bind with the variables; all in the correct order
+
+wild_effect_ordered = wild_effect_data[order(wild_effect_data$Lake_morph),]  # order to make it easier to split the dataset
+
+rownames(wild_effect_ordered) <- as.integer(1:331) #name rows to make it easier to organise
+
+
+ASHNC_wild_shape = wild_effect_ordered[1:30,]
+ASHNW_wild_shape = wild_effect_ordered[31:60,]
+
+ASHNC_wild_shape = ASHNC_wild_shape[,-c(1:5)]
+ASHNC_wild_shape = arrayspecs(ASHNC_wild_shape, 27, 2)
+ASHNC_wild_mean = mshape(ASHNC_wild_shape)
+
+ASHNW_wild_shape = ASHNW_wild_shape[,-c(1:5)]
+ASHNW_wild_shape = arrayspecs(ASHNW_wild_shape, 27, 2)
+ASHNW_wild_mean = mshape(ASHNW_wild_shape)
+
+####plotRefToTarget (reference, target species)
+
+links <- cbind(c(1,2,6,12,13,14,15,16,17,18,19,20,21,22,2,23,23,24,8,25,10,8,7,7), 
+               c(2,6,12,13,14,15,16,17,18,19,20,21,22,1,23,27,24,8,27,26,11,9,8,9))
+ASHNC_wild_def <- gridPar(tar.pt.size=0.8, tar.pt.bg = "green", tar.link.col="black", tar.link.lwd = 2.5,grid.col='darkgreen', grid.lty = 10, n.col.cell = 30)
+plotRefToTarget(ASHNW_wild_mean, 
+                ASHNC_wild_mean, 
+                mag=3, 
+                links=links, 
+                gridPars=ASHNC_wild_def)
+
+ASHNW_wild_def <- gridPar(tar.pt.size=0.8, tar.pt.bg = "green", tar.link.col="black", tar.link.lwd = 2.5,grid.col='darkgreen', grid.lty = 10, n.col.cell = 30)
+plotRefToTarget(ASHNC_wild_mean, 
+                ASHNW_wild_mean, 
+                mag=4, 
+                links=links, 
+                gridPars=ASHNC_wild_def)
