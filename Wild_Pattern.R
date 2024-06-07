@@ -134,3 +134,230 @@ ggsave('Wild_Univariate__trait_ecotype_integration.tiff',
        width = 35,
        height = 20)
 
+
+
+# ASHN trait correlations -------------------------------------------------
+
+ASHN_wild_cor = corbetw2mat(wild_uni_trait_cor$ASHNC, 
+                               wild_uni_trait_cor$ASHNW, 
+                               what = 'all', 
+                               corthresh = 0.5)
+
+ASHN_wild_cor = ASHN_wild_cor %>%
+  reshape2::melt() 
+
+ASHN_wild_cor_graph = ggplot(ASHN_wild_cor,
+                       aes(x = Var1,
+                           y = Var2,
+                           fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ade8f4",
+                       mid = "#ff006e",
+                       high = "#ade8f4") +
+  labs(title = 'A) ASHN')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+
+# MYV trait correlations -------------------------------------------------
+
+MYV_wild_cor = corbetw2mat(wild_uni_trait_cor$MYVC, 
+                            wild_uni_trait_cor$MYVW, 
+                            what = 'all', 
+                            corthresh = 0.5)
+
+MYV_wild_cor = MYV_wild_cor %>%
+  reshape2::melt() 
+
+MYV_wild_cor_graph = ggplot(MYV_wild_cor,
+                             aes(x = Var1,
+                                 y = Var2,
+                                 fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ade8f4",
+                       mid = "#ff006e",
+                       high = "#ade8f4") +
+  labs(title = 'A) MYV')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+
+# SKR trait correlations -------------------------------------------------
+
+SKR_wild_cor = corbetw2mat(wild_uni_trait_cor$SKRC, 
+                           wild_uni_trait_cor$SKRW, 
+                           what = 'all', 
+                           corthresh = 0.5)
+
+SKR_wild_cor = SKR_wild_cor %>%
+  reshape2::melt() 
+
+SKR_wild_cor_graph = ggplot(SKR_wild_cor,
+                            aes(x = Var1,
+                                y = Var2,
+                                fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ade8f4",
+                       mid = "#ff006e",
+                       high = "#ade8f4") +
+  labs(title = 'A) SKR')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+# GTS_CSWY trait correlations -------------------------------------------------
+
+GTS_CSWY_wild_cor = corbetw2mat(wild_uni_trait_cor$CSWY, 
+                                wild_uni_trait_cor$GTS, 
+                                what = 'all', 
+                                corthresh = 0.5)
+
+GTS_CSWY_wild_cor = GTS_CSWY_wild_cor %>%
+  reshape2::melt() 
+
+GTS_CSWY_wild_cor_graph = ggplot(GTS_CSWY_wild_cor,
+                                 aes(x = Var1,
+                                     y = Var2,
+                                     fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ade8f4",
+                       mid = "#ff006e",
+                       high = "#ade8f4") +
+  labs(title = 'A) GTS_CSWY')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+
+
+# RKLT trait correlations -------------------------------------------------
+
+RKLT_wild_cor = corbetw2mat(wild_uni_trait_cor$RKLTC, 
+                           wild_uni_trait_cor$RKLTW, 
+                           what = 'all', 
+                           corthresh = 0.5)
+
+RKLT_wild_cor = RKLT_wild_cor %>%
+  reshape2::melt() 
+
+RKLT_wild_cor_graph = ggplot(RKLT_wild_cor,
+                            aes(x = Var1,
+                                y = Var2,
+                                fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ade8f4",
+                       mid = "#ff006e",
+                       high = "#ade8f4") +
+  labs(title = 'A) RKLT')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
+# STN trait correlations -------------------------------------------------
+
+STN_wild_cor = corbetw2mat(wild_uni_trait_cor$STNC, 
+                           wild_uni_trait_cor$STNW, 
+                           what = 'all', 
+                           corthresh = 0.5)
+
+STN_wild_cor = STN_wild_cor %>%
+  reshape2::melt() 
+
+STN_wild_cor_graph = ggplot(STN_wild_cor,
+                            aes(x = Var1,
+                                y = Var2,
+                                fill = value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ade8f4",
+                       mid = "#ff006e",
+                       high = "#ade8f4") +
+  labs(title = 'A) STN')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none', 
+        axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+
