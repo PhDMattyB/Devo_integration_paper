@@ -997,7 +997,7 @@ ASHN_F1_plast = ggplot(ASHN_F1_effect,
   scale_fill_gradient2(low = "#ade8f4",
                        mid = "#ff006e",
                        high = "#ade8f4") +
-  labs(title = 'A) ASHN')+
+  # labs(title = 'A) ASHN')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1010,8 +1010,8 @@ ASHN_F1_plast = ggplot(ASHN_F1_effect,
         #                            vjust = 0.5,
         #                            hjust=1),
         legend.position = 'none', 
-        axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank())
+        axis.text = element_blank(), 
+        axis.ticks = element_blank())
 
 # MYV F2 effect matrix compare -------------------------------------------
 corbetw2mat(parent_plasticity_trait_cor$MYVC, 
@@ -1097,7 +1097,7 @@ MYV_F1_plasticity = ggplot(MYV_F1_temp_cor,
   scale_fill_gradient2(low = "#ade8f4",
                        mid = "#ff006e",
                        high = "#ade8f4") +
-  labs(title = 'B) MYV')+
+  # labs(title = 'B) MYV')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1110,8 +1110,8 @@ MYV_F1_plasticity = ggplot(MYV_F1_temp_cor,
         #                            vjust = 0.5,
         #                            hjust=1), 
         legend.position = 'none', 
-        axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank())
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
 
 # SKR F2 effect matrix compare -------------------------------------------
 
@@ -1198,7 +1198,7 @@ SKR_F1_plasticity = ggplot(SKR_F1_temp_cor,
   scale_fill_gradient2(low = "#ade8f4",
                        mid = "#ff006e",
                        high = "#ade8f4") +
-  labs(title = 'C) SKR')+
+  # labs(title = 'C) SKR')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1211,8 +1211,8 @@ SKR_F1_plasticity = ggplot(SKR_F1_temp_cor,
         #                            vjust = 0.5,
         #                            hjust=1), 
         legend.position = 'none', 
-        axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank())
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
 
 
 # GTSCSWY F2 effect matrix compare -------------------------------------------
@@ -1299,7 +1299,7 @@ GTSCSWY_F1_plasticity = ggplot(GTSCSWY_F1_temp_cor,
   scale_fill_gradient2(low = "#ade8f4",
                        mid = "#ff006e",
                        high = "#ade8f4") +
-  labs(title = 'D) GTS-CSWY')+
+  # labs(title = 'D) GTS-CSWY')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1308,6 +1308,8 @@ GTSCSWY_F1_plasticity = ggplot(GTSCSWY_F1_temp_cor,
   theme(strip.background = element_rect(fill = 'white'),
         strip.text = element_text(face = 'bold'),
         axis.title = element_blank(),
+        axis.text.y = element_blank(), 
+        axis.ticks.y = element_blank(),
         axis.text.x = element_text(angle = 90,
                                    vjust = 0.5,
                                    hjust=1), 

@@ -368,3 +368,19 @@ STN_wild_cor_graph = ggplot(STN_wild_cor,
 # Combine correlation graphs ----------------------------------------------
 wild_cor_graphs = ASHN_wild_cor_graph/MYV_wild_cor_graph/SKR_wild_cor_graph/GTS_CSWY_wild_cor_graph
 
+
+
+ASHN_combo_graphs = ASHN_wild_cor_graph|ASHN_F1_plast | ASHN_F2_plast
+MYV_combo_graphs = MYV_wild_cor_graph|MYV_F1_plasticity | MYV_F2_plasticity
+SKR_combo_graphs = SKR_wild_cor_graph|SKR_F1_plasticity | SKR_F2_plasticity
+GTSCSWY_combo_graphs = GTS_CSWY_wild_cor_graph|GTSCSWY_F1_plasticity | GTSCSWY_F2_plasticity
+
+Big_graph = ASHN_combo_graphs/MYV_combo_graphs/SKR_combo_graphs/GTSCSWY_combo_graphs
+
+ggsave('Figure1_Effects_F1_F2_on_Integration.tiff',
+       plot = Big_graph,
+       dpi = 'retina',
+       units = 'cm',
+       width = 40,
+       height = 40)
+##
