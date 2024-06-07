@@ -195,7 +195,7 @@ MYV_wild_cor_graph = ggplot(MYV_wild_cor,
   scale_fill_gradient2(low = "#ade8f4",
                        mid = "#ff006e",
                        high = "#ade8f4") +
-  labs(title = 'A) MYV')+
+  labs(title = 'B) MYV')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -233,7 +233,7 @@ SKR_wild_cor_graph = ggplot(SKR_wild_cor,
   scale_fill_gradient2(low = "#ade8f4",
                        mid = "#ff006e",
                        high = "#ade8f4") +
-  labs(title = 'A) SKR')+
+  labs(title = 'C) SKR')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -269,7 +269,7 @@ GTS_CSWY_wild_cor_graph = ggplot(GTS_CSWY_wild_cor,
   scale_fill_gradient2(low = "#ade8f4",
                        mid = "#ff006e",
                        high = "#ade8f4") +
-  labs(title = 'A) GTS_CSWY')+
+  labs(title = 'D) GTS-CSWY')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -278,12 +278,12 @@ GTS_CSWY_wild_cor_graph = ggplot(GTS_CSWY_wild_cor,
   theme(strip.background = element_rect(fill = 'white'),
         strip.text = element_text(face = 'bold'),
         axis.title = element_blank(),
-        # axis.text.x = element_text(angle = 90,
-        #                            vjust = 0.5,
-        #                            hjust=1),
-        legend.position = 'none', 
-        axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank())
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5,
+                                   hjust=1),
+        legend.position = 'none') 
+        # axis.text.x = element_blank(), 
+        # axis.ticks.x = element_blank())
 
 
 
@@ -360,4 +360,11 @@ STN_wild_cor_graph = ggplot(STN_wild_cor,
         legend.position = 'none', 
         axis.text.x = element_blank(), 
         axis.ticks.x = element_blank())
+
+
+
+
+
+# Combine correlation graphs ----------------------------------------------
+wild_cor_graphs = ASHN_wild_cor_graph/MYV_wild_cor_graph/SKR_wild_cor_graph/GTS_CSWY_wild_cor_graph
 
