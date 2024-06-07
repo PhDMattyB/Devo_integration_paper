@@ -157,7 +157,7 @@ ASHN_wild_cor_graph = ggplot(ASHN_wild_cor,
   scale_fill_gradient2(low = "#ade8f4",
                        mid = "#ff006e",
                        high = "#ade8f4") +
-  labs(title = 'A) ASHN')+
+  labs(title = 'A) ASHN Wild')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -166,6 +166,7 @@ ASHN_wild_cor_graph = ggplot(ASHN_wild_cor,
   theme(strip.background = element_rect(fill = 'white'),
         strip.text = element_text(face = 'bold'),
         axis.title = element_blank(),
+        plot.title = element_text(size = 22),
         # axis.text.x = element_text(angle = 90,
         #                            vjust = 0.5,
         #                            hjust=1),
@@ -204,6 +205,7 @@ MYV_wild_cor_graph = ggplot(MYV_wild_cor,
   theme(strip.background = element_rect(fill = 'white'),
         strip.text = element_text(face = 'bold'),
         axis.title = element_blank(),
+        plot.title = element_text(size = 22),
         # axis.text.x = element_text(angle = 90,
         #                            vjust = 0.5,
         #                            hjust=1),
@@ -242,6 +244,7 @@ SKR_wild_cor_graph = ggplot(SKR_wild_cor,
   theme(strip.background = element_rect(fill = 'white'),
         strip.text = element_text(face = 'bold'),
         axis.title = element_blank(),
+        plot.title = element_text(size = 22),
         # axis.text.x = element_text(angle = 90,
         #                            vjust = 0.5,
         #                            hjust=1),
@@ -278,6 +281,7 @@ GTS_CSWY_wild_cor_graph = ggplot(GTS_CSWY_wild_cor,
   theme(strip.background = element_rect(fill = 'white'),
         strip.text = element_text(face = 'bold'),
         axis.title = element_blank(),
+        plot.title = element_text(size = 22),
         axis.text.x = element_text(angle = 90,
                                    vjust = 0.5,
                                    hjust=1),
@@ -377,10 +381,10 @@ GTSCSWY_combo_graphs = GTS_CSWY_wild_cor_graph|GTSCSWY_F1_plasticity | GTSCSWY_F
 
 Big_graph = ASHN_combo_graphs/MYV_combo_graphs/SKR_combo_graphs/GTSCSWY_combo_graphs
 
-ggsave('Figure1_Effects_F1_F2_on_Integration.tiff',
+ggsave('Figure1_Effects_wild_F1_F2_on_Integration.tiff',
        plot = Big_graph,
        dpi = 'retina',
        units = 'cm',
-       width = 40,
-       height = 40)
+       width = 60,
+       height = 60)
 ##

@@ -414,7 +414,7 @@ ASHNC_cor_plot = ggplot(test_ASHNW,
 
 
 
-ASHNW_cor_plot = ASHN_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$ASHNC, 
+ASHN_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$ASHNC, 
             off_plasticity_trait_cor$ASHNW, 
             what = 'all', 
             corthresh = 0.7)
@@ -433,6 +433,7 @@ ASHN_F2_plast = ggplot(ASHN_F2_effect,
   scale_fill_gradient2(low = "#ade8f4",
                        mid = "#ff006e",
                        high = "#ade8f4") +
+  labs(title = 'F2 effect')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -441,6 +442,7 @@ ASHN_F2_plast = ggplot(ASHN_F2_effect,
   theme(strip.background = element_rect(fill = 'white'),
         strip.text = element_text(face = 'bold'),
         axis.title = element_blank(),
+        plot.title = element_text(size = 22),
         # axis.text.x = element_text(angle = 90,
         #                            vjust = 0.5,
         #                            hjust=1), 
@@ -997,7 +999,7 @@ ASHN_F1_plast = ggplot(ASHN_F1_effect,
   scale_fill_gradient2(low = "#ade8f4",
                        mid = "#ff006e",
                        high = "#ade8f4") +
-  # labs(title = 'A) ASHN')+
+  labs(title = 'F1 effect')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1006,6 +1008,7 @@ ASHN_F1_plast = ggplot(ASHN_F1_effect,
   theme(strip.background = element_rect(fill = 'white'),
         strip.text = element_text(face = 'bold'),
         axis.title = element_blank(),
+        plot.title = element_text(size = 22),
         # axis.text.x = element_text(angle = 90,
         #                            vjust = 0.5,
         #                            hjust=1),
@@ -1097,7 +1100,7 @@ MYV_F1_plasticity = ggplot(MYV_F1_temp_cor,
   scale_fill_gradient2(low = "#ade8f4",
                        mid = "#ff006e",
                        high = "#ade8f4") +
-  # labs(title = 'B) MYV')+
+  # labs(title = 'F1 effect')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
