@@ -33,6 +33,39 @@ wild_gpa = gpagen(wild_tps,
                   print.progress = F)
 
 
+# wild disparity ----------------------------------------------------------
+wild_df = geomorph.data.frame(coords = two.d.array(wild_gpa$coords), 
+                                 Lake = wild_identifiers$Lake, 
+                                 Morph = wild_identifiers$Morph, 
+                                 Ecotypes = wild_identifiers$Lake_morph)
+
+
+
+wild_disp_mod = morphol.disparity(coords ~ 1,
+                                      groups = ~Ecotypes,
+                                      data = wild_df,
+                                      iter = 999)
+
+wild_disp_pval = wild_disp_mod$PV.dist.Pval
+wild_disp_vals = wild_disp_mod$PV.dist
+wild_disp_proc_var = wild_disp_mod$Procrustes.var
+
+eye_disp_pval %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('Eye_disparity_pvals.csv')
+
+eye_disp_vals %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  write_csv('Eye_disparity_estimates.csv')
+
+
+
+
+# wild univariate traits --------------------------------------------------
 
 lmks = data.frame(jaw_length = c(1, 2), 
                   fbar_23_24 = c(23, 24), 

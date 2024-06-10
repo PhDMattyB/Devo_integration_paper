@@ -18,7 +18,7 @@ library(tidyverse)
 wild_tps = readland.tps('Wild_Final.TPS', 
                         specID = 'imageID')
 
-identifiers = read_csv('TPS_Wild_metadata.csv') 
+wild_identifiers = read_csv('TPS_Wild_metadata.csv') 
 
 ## superimposition on the entire dataset
 wild_gpa = gpagen(wild_tps, 
@@ -85,7 +85,7 @@ plot(PCA_allometry_adj)
 ## integration with allometric variation
 
 subset_wild_coords = coords.subset(wild_gpa$coords, 
-                                   identifiers$Lake_morph)
+                                   wild_identifiers$Lake_morph)
 
 vrel_wild_coords = Map(function(x) integration.Vrel(x), 
                        subset_wild_coords)
