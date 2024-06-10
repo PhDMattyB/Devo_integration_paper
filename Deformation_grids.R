@@ -389,6 +389,7 @@ cold_wild_def <- gridPar(tar.pt.size=0.8,
                           n.col.cell = 30)
 plotRefToTarget(warm_wild_mean, 
                 cold_wild_mean, 
+                method = 'TPS',
                 mag=4, 
                 links=links, 
                 gridPars=cold_wild_def)
@@ -401,7 +402,8 @@ warm_wild_def <- gridPar(tar.pt.size=0.8,
                           grid.lty = 10, 
                           n.col.cell = 30)
 plotRefToTarget(cold_wild_mean, 
-                warm_wild_mean, 
+                warm_wild_mean,
+                method = 'TPS',
                 mag=4, 
                 links=links, 
                 gridPars=warm_wild_def)
