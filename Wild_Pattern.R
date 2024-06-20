@@ -187,7 +187,7 @@ ASHN_wild_cor_graph = ggplot(ASHN_wild_cor,
   # scale_fill_gradient2(low = "#003049",
   #                      mid = "#eae2b7",
   #                      high = "#d62828") +
-  scale_fill_gradient2(low = "#ade8f4",
+  scale_fill_gradient2(low = "#219ebc",
                        mid = "#ff006e",
                        high = "#ade8f4") +
   labs(title = 'A) ASHN Wild')+
@@ -226,7 +226,7 @@ MYV_wild_cor_graph = ggplot(MYV_wild_cor,
   # scale_fill_gradient2(low = "#003049",
   #                      mid = "#eae2b7",
   #                      high = "#d62828") +
-  scale_fill_gradient2(low = "#ade8f4",
+  scale_fill_gradient2(low = "#219ebc",
                        mid = "#ff006e",
                        high = "#ade8f4") +
   labs(title = 'B) MYV')+
@@ -265,7 +265,7 @@ SKR_wild_cor_graph = ggplot(SKR_wild_cor,
   # scale_fill_gradient2(low = "#003049",
   #                      mid = "#eae2b7",
   #                      high = "#d62828") +
-  scale_fill_gradient2(low = "#ade8f4",
+  scale_fill_gradient2(low = "#219ebc",
                        mid = "#ff006e",
                        high = "#ade8f4") +
   labs(title = 'C) SKR')+
@@ -302,7 +302,7 @@ GTS_CSWY_wild_cor_graph = ggplot(GTS_CSWY_wild_cor,
   # scale_fill_gradient2(low = "#003049",
   #                      mid = "#eae2b7",
   #                      high = "#d62828") +
-  scale_fill_gradient2(low = "#ade8f4",
+  scale_fill_gradient2(low = "#219ebc",
                        mid = "#ff006e",
                        high = "#ade8f4") +
   labs(title = 'D) GTS-CSWY')+
@@ -407,14 +407,14 @@ wild_cor_graphs = ASHN_wild_cor_graph/MYV_wild_cor_graph/SKR_wild_cor_graph/GTS_
 
 
 
-ASHN_combo_graphs = ASHN_wild_cor_graph|ASHN_F1_plast | ASHN_F2_plast
-MYV_combo_graphs = MYV_wild_cor_graph|MYV_F1_plasticity | MYV_F2_plasticity
-SKR_combo_graphs = SKR_wild_cor_graph|SKR_F1_plasticity | SKR_F2_plasticity
-GTSCSWY_combo_graphs = GTS_CSWY_wild_cor_graph|GTSCSWY_F1_plasticity | GTSCSWY_F2_plasticity
+ASHN_combo_graphs = ASHN_wild_cor_graph| ASHN_F2_plast| ASHN_F1_plast
+MYV_combo_graphs = MYV_wild_cor_graph|MYV_F2_plasticity|MYV_F1_plasticity
+SKR_combo_graphs = SKR_wild_cor_graph|SKR_F2_plasticity|SKR_F1_plasticity
+GTSCSWY_combo_graphs = GTS_CSWY_wild_cor_graph| GTSCSWY_F2_plasticity|GTSCSWY_F1_plasticity
 
 Big_graph = ASHN_combo_graphs/MYV_combo_graphs/SKR_combo_graphs/GTSCSWY_combo_graphs
 
-ggsave('Figure1_Effects_wild_F1_F2_on_Integration.tiff',
+ggsave('Figure1_Effects_wild_F1_F2_on_Integration_version2.tiff',
        plot = Big_graph,
        dpi = 'retina',
        units = 'cm',
