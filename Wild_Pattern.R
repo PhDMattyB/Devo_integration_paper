@@ -405,8 +405,6 @@ STN_wild_cor_graph = ggplot(STN_wild_cor,
 # Combine correlation graphs ----------------------------------------------
 wild_cor_graphs = ASHN_wild_cor_graph/MYV_wild_cor_graph/SKR_wild_cor_graph/GTS_CSWY_wild_cor_graph
 
-
-
 ASHN_combo_graphs = ASHN_wild_cor_graph| ASHN_F2_plast| ASHN_F1_plast
 MYV_combo_graphs = MYV_wild_cor_graph|MYV_F2_plasticity|MYV_F1_plasticity
 SKR_combo_graphs = SKR_wild_cor_graph|SKR_F2_plasticity|SKR_F1_plasticity
