@@ -20,6 +20,10 @@ wild_tps = readland.tps('Wild_Final.TPS',
 
 wild_identifiers = read_csv('TPS_Wild_metadata.csv') 
 
+wild_identifiers %>% 
+  group_by(Lake_morph) %>% 
+  summarize(n = n())
+
 ## superimposition on the entire dataset
 wild_gpa = gpagen(wild_tps, 
                        print.progress = F)
