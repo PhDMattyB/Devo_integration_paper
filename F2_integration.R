@@ -21,6 +21,11 @@ F2_tps = readland.tps('F2_No_GT.TPS',
 
 identifiers = read_csv('F2_Metadata.CSV', 
                        col_names = T) 
+identifiers %>% 
+  group_by(Lake_morph, 
+           Parent_temp, 
+           Offspring_temp) %>% 
+  summarize(n = n()) 
 
 ## superimposition on the entire dataset
 F2_gpa = gpagen(F2_tps, 
