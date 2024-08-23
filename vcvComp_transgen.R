@@ -42,9 +42,11 @@ F2_identifiers = read_csv('F2_metadata.csv') %>%
 
 
 wild_univariate = read_csv('Wild_Univariate_traits.csv') %>% 
+  mutate(Group = 'Wild') %>% 
   select(-Order, 
          -rowname) %>% 
-  select(ImageID, 
+  select(Group, 
+         ImageID, 
          Lake, 
          Morph, 
          Lake_morph, 
@@ -52,6 +54,7 @@ wild_univariate = read_csv('Wild_Univariate_traits.csv') %>%
   rename(individualID = ImageID) 
 
 F2_parental_effects = read_csv('F1_Plasticity_Corrected.csv') %>% 
+  mutate(Group = 'Transgen') %>% 
   select(-Order, 
          -rowname, 
          -Lake, 
@@ -61,7 +64,8 @@ F2_parental_effects = read_csv('F1_Plasticity_Corrected.csv') %>%
          -Parent_temp, 
          -Offspring_temp, 
          -Full_temp) %>% 
-  select(individualID, 
+  select(Group, 
+         individualID, 
          Ecotype_pair, 
          Morph, 
          Lake_morph,
@@ -71,7 +75,8 @@ F2_parental_effects = read_csv('F1_Plasticity_Corrected.csv') %>%
 # F2_parental_effects = bind_cols(F2_identifiers, 
 #                                 F2_parental_effects)
 
-F2_offspring_effects = read_csv('F2_Corrected_F2_temp_only.csv')%>% 
+F2_offspring_effects = read_csv('F2_Corrected_F2_temp_only.csv')%>%
+  mutate(Group = 'Withingen') %>% 
   select(-Order, 
          -rowname, 
          -Lake, 
@@ -81,9 +86,17 @@ F2_offspring_effects = read_csv('F2_Corrected_F2_temp_only.csv')%>%
          -Parent_temp, 
          -Offspring_temp, 
          -Full_temp) %>% 
-  select(individualID, 
+  select(Group, 
+         individualID, 
          Ecotype_pair, 
          Morph, 
          Lake_morph,
          everything())
+
+
+Full_data = bind_rows(wild_univariate, 
+                      F2_parental_effects, 
+                      F2_offspring_effects)
+
+
 
