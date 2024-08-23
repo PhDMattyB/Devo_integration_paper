@@ -105,18 +105,19 @@ Full_data = bind_rows(wild_univariate,
 # vcvComp analysis --------------------------------------------------------
 
 Traits = Full_data %>% 
-  select(6:34)
+  select(-Group, 
+         -individualID, 
+         -Lake, 
+         -Morph, 
+         -Lake_morph)
 
 PCA = prcomp(Traits, 
                        rank. = 5, 
                        tol = sqrt(.Machine$double.eps))
-pca_scores = phenotype_pca$x
-
-test = prcomp(proc_coord,
-              # rank. = 5,
-              tol = sqrt(.Machine$double.eps))
+pca_scores = PCA$x
 
 ## scree plot to determiine number of pc axes to use in model
-factoextra::fviz_eig(test)
+factoextra::fviz_eig(PCA)
+
 
 
