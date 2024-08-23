@@ -209,6 +209,7 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
              aes(shape = Effect))+
   # scale_color_manual(values = pop_only_pal)+
   guides(col=guide_legend(title = 'Population'))+
+  theme_bw()+
   theme(panel.grid = element_blank(), 
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12))
