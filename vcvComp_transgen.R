@@ -111,6 +111,18 @@ Traits = Full_data %>%
          -Morph, 
          -Lake_morph)
 
+Trait_ID = Full_data %>% 
+  select(Group, 
+         individualID, 
+         Lake, 
+         Morph, 
+         Lake_morph) %>% 
+  unite(col = 'Big_group', 
+        c('Lake_morph', 
+          'Group'),
+        sep = '_')
+
+
 PCA = prcomp(Traits, 
                        rank. = 5, 
                        tol = sqrt(.Machine$double.eps))
@@ -120,4 +132,12 @@ pca_scores = PCA$x
 factoextra::fviz_eig(PCA)
 
 
+phenotypes_pooled_var = cov.group(pca_scores, 
+                                  groups = Trait_ID$Big_group)
+
+phenotype_eigen_vals = mat.sq.dist(phenotypes_pooled_var, 
+                                   dist. = 'Riemannian')
+
+prcoa = pr.coord(phenotype_eigen_vals)
+prcoa$Variance
 
