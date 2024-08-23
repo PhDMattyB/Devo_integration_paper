@@ -199,6 +199,31 @@ pooled_pc_coords = pooled_pc_coords %>%
            sep = '_', 
            remove = FALSE)
 
+pooled_pc_coords = mutate(.data = pooled_pc_coords, 
+                          POP = as.factor(case_when(
+                            Lake_morph == 'ASHNC' ~ 'ASHN',
+                            Lake_morph == 'ASHNW' ~ 'ASHN',
+                            Lake_morph == 'CSWY' ~ 'CSWY',
+                            Lake_morph == 'GTS' ~ 'GTS',
+                            Lake_morph == 'MYVC' ~ 'MYV',
+                            Lake_morph == 'MYVW' ~ 'MYV',
+                            Lake_morph == 'SKRC' ~ 'SKR',
+                            Lake_morph == 'SKRW' ~ 'SKR')))
+
+# pooled_pc_coords %>% 
+#   write_csv('vcvComp_generation_effect.csv')
+
+pooled_pc_coords = read_csv('vcvComp_generation_effect.csv')
+
+WC_colour_palette = c('#023047', 
+                      '#ffb703', 
+                      '#219ebc', 
+                      '#fb8500', 
+                      '#8ecae6', 
+                      '#c1121f', 
+                      '#2a9d8f', 
+                      '#ffafcc')
+
 principal_coord_analysis = ggplot(data = pooled_pc_coords, 
                                   aes(x = PCo1, 
                                       y = PCo2, 
@@ -207,7 +232,7 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
   # geom_line(col = 'black')+
   geom_point(size = 3,
              aes(shape = Effect))+
-  # scale_color_manual(values = pop_only_pal)+
+  scale_color_manual(values = WC_colour_palette)+
   guides(col=guide_legend(title = 'Population'))+
   theme_bw()+
   theme(panel.grid = element_blank(), 

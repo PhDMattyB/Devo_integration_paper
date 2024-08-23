@@ -267,6 +267,22 @@ pooled_pc_coords = mutate(.data = pooled_pc_coords,
                             POP == 'STNW' ~ 'STN'
                             
                           )))
+pooled_pc_coords = mutate(.data = pooled_pc_coords, 
+                          Lake_morph = as.factor(case_when(
+                            Lake_morph == 'ASHNC' ~ 'ASHNC',
+                            Lake_morph == 'ASHNW' ~ 'ASHNW',
+                            Lake_morph == 'CSWY' ~ 'CSWYC',
+                            Lake_morph == 'GTS' ~ 'GTSW',
+                            Lake_morph == 'MYVC' ~ 'MYVC',
+                            Lake_morph == 'MYVW' ~ 'MYVW',
+                            Lake_morph == 'SKRC' ~ 'SKRC',
+                            Lake_morph == 'SKRW' ~ 'SKRW',
+                            Lake_morph == 'RKLTC' ~ 'RKLTC', 
+                            Lake_morph == 'RKLTW' ~ 'RKLTW', 
+                            Lake_morph == 'STNC' ~ 'STNC', 
+                            Lake_morph == 'STNW' ~ 'STNW'
+                            
+                          )))
 
 # pops_col_pal = c('#277da1',
 #                  '#023e8a',
