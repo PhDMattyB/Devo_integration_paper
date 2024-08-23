@@ -121,6 +121,8 @@ wild_univariate_traits = bind_cols(wild_univariate_traits,
          ratio1:ratio2, 
          everything())
 
+# wild_univariate_traits %>% 
+#   write_csv('Wild_Univariate_traits.csv')
 
 wild_uni_traits = wild_univariate_traits %>%
   as_tibble() %>%

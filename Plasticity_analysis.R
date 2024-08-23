@@ -308,6 +308,8 @@ F2_off_plasticity_traits = bind_cols(F2_off_plasticity_traits,
          ratio1:ratio2, 
          everything())
 
+# F2_off_plasticity_traits %>% 
+#   write_csv('F2_Corrected_F2_temp_only.csv')
 
 off_plasticity_traits = F2_off_plasticity_traits %>%
   as_tibble() %>%
@@ -876,6 +878,9 @@ F2_parent_plasticity_traits = bind_cols(F2_parent_plasticity_traits,
          jaw_length:lm_23_2, 
          ratio1:ratio2, 
          everything())
+
+# F2_parent_plasticity_traits %>% 
+#   write_csv('F1_Plasticity_Corrected.csv')
 
 
 parent_plasticity_traits = F2_parent_plasticity_traits %>%
