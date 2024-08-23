@@ -215,14 +215,14 @@ pooled_pc_coords = mutate(.data = pooled_pc_coords,
 
 pooled_pc_coords = read_csv('vcvComp_generation_effect.csv')
 
-WC_colour_palette = c('#023047', 
-                      '#ffb703', 
-                      '#219ebc', 
-                      '#fb8500', 
-                      '#8ecae6', 
-                      '#c1121f', 
-                      '#2a9d8f', 
-                      '#ffafcc')
+WC_colour_palette = c('#22577a', 
+                      '#f94144', 
+                      '#38a3a5', 
+                      '#f3722c', 
+                      '#57cc99', 
+                      '#f8961e', 
+                      '#80ed99', 
+                      '#f9c74f')
 
 principal_coord_analysis = ggplot(data = pooled_pc_coords, 
                                   aes(x = PCo1, 
