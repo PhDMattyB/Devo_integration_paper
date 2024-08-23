@@ -63,7 +63,8 @@ F2_parental_effects = read_csv('F1_Plasticity_Corrected.csv') %>%
          -Grand_temp, 
          -Parent_temp, 
          -Offspring_temp, 
-         -Full_temp) %>% 
+         -Full_temp,
+         -Ecotype_off_temp) %>% 
   select(Group, 
          individualID, 
          Ecotype_pair, 
@@ -85,18 +86,37 @@ F2_offspring_effects = read_csv('F2_Corrected_F2_temp_only.csv')%>%
          -Grand_temp, 
          -Parent_temp, 
          -Offspring_temp, 
-         -Full_temp) %>% 
+         -Full_temp, 
+         -Ecotype_off_temp) %>% 
   select(Group, 
          individualID, 
          Ecotype_pair, 
          Morph, 
          Lake_morph,
-         everything())
+         everything()) %>% 
+  rename(Lake = Ecotype_pair)
 
 
 Full_data = bind_rows(wild_univariate, 
                       F2_parental_effects, 
                       F2_offspring_effects)
 
+
+# vcvComp analysis --------------------------------------------------------
+
+Traits = Full_data %>% 
+  select(6:34)
+
+PCA = prcomp(Traits, 
+                       rank. = 5, 
+                       tol = sqrt(.Machine$double.eps))
+pca_scores = phenotype_pca$x
+
+test = prcomp(proc_coord,
+              # rank. = 5,
+              tol = sqrt(.Machine$double.eps))
+
+## scree plot to determiine number of pc axes to use in model
+factoextra::fviz_eig(test)
 
 
