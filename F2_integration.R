@@ -573,29 +573,96 @@ CSWYC_18_trans = compare.ZVrel(vrel_F2_craniofacial$`CSWYC_12@18`,
 ## offspring raised at different temps or if their parents were
 ## raised at different temps. 
 
+
+# F2 Integration ----------------------------------------------------------
+
+F2_tps = readland.tps('F2_No_GT.TPS', 
+                      specID = 'imageID')
+
+identifiers = read_csv('F2_Metadata.CSV', 
+                       col_names = T) 
+
+## superimposition on the entire dataset
+F2_gpa = gpagen(F2_tps, 
+                print.progress = F)
+
+subset_F2_coords = coords.subset(F2_gpa$coords,
+                                              identifiers$lake_morph_Pair_Full_Temp)
+
+vrel_F2_ = Map(function(x) integration.Vrel(x),
+                           subset_F2_coords)
+
+compare.ZVrel(vrel_F2$`ASHNC_12@12`,
+              vrel_F2$`ASHNW_12@12`)
+
+compare.ZVrel(vrel_F2_$`ASHNC_12@18`,
+              vrel_F2_$`ASHNW_12@18`)
+
+compare.ZVrel(vrel_F2_$`ASHNC_18@18`,
+              vrel_F2_$`ASHNW_18@18`)
+
+compare.ZVrel(vrel_F2_$`ASHNC_18@12`,
+              vrel_F2_$`ASHNW_18@12`)
+
+
+compare.ZVrel(vrel_F2_$`SKRC_12@12`,
+              vrel_F2_$`SKRW_12@12`)
+
+compare.ZVrel(vrel_F2_$`SKRC_12@18`,
+              vrel_F2_$`SKRW_12@18`)
+
+compare.ZVrel(vrel_F2_$`SKRC_18@18`,
+              vrel_F2_$`SKRW_18@18`)
+
+compare.ZVrel(vrel_F2_$`SKRC_18@12`,
+              vrel_F2_$`SKRW_18@12`)
+
+
+compare.ZVrel(vrel_F2_$`MYVC_12@12`,
+              vrel_F2_$`MYVW_12@12`)
+
+compare.ZVrel(vrel_F2_$`MYVC_12@18`,
+              vrel_F2_$`MYVW_12@18`)
+
+compare.ZVrel(vrel_F2_$`MYVC_18@18`,
+              vrel_F2_$`MYVW_18@18`)
+
+compare.ZVrel(vrel_F2_$`MYVC_18@12`,
+              vrel_F2_$`MYVW_18@12`)
+
+
+compare.ZVrel(vrel_F2_$`GTSW_12@12`,
+              vrel_F2_$`CSWYC_12@12`)
+
+compare.ZVrel(vrel_F2_$`GTSW_12@18`,
+              vrel_F2_$`CSWYC_12@18`)
+
+compare.ZVrel(vrel_F2_$`GTSW_18@18`,
+              vrel_F2_$`CSWYC_18@18`)
+
+compare.ZVrel(vrel_F2_$`GTSW_18@12`,
+              vrel_F2_$`CSWYC_18@12`)
+
 # Lake plasticity and transgenerational integration -----------------------
 
 
 F2_craniofacial = readland.tps('F2_Craniofacial_LM.TPS',
                                specID = 'imageID')
 
-identifiers = read_csv('F2_metadata.csv') %>% 
-  unite('Ecotype_Pair_Full_Temp', 
-        Ecotype_pair, 
-        Full_temp, 
-        sep = '_', 
+identifiers = read_csv('F2_metadata.csv') %>%
+  unite('Ecotype_Pair_Full_Temp',
+        Ecotype_pair,
+        Full_temp,
+        sep = '_',
         remove = F)
 
-identifiers = read_csv('F2_metadata.csv') %>% 
-  unite('lake_morph_Pair_Full_Temp', 
-        Lake_morph, 
-        Full_temp, 
-        sep = '_', 
+identifiers = read_csv('F2_metadata.csv') %>%
+  unite('lake_morph_Pair_Full_Temp',
+        Lake_morph,
+        Full_temp,
+        sep = '_',
         remove = F)
 
-
-F2_craniofacial_gpa = gpagen(F2_craniofacial,
-                             print.progress = F)
 
 
 subset_F2_craniofacial_coords = coords.subset(F2_craniofacial_gpa$coords,

@@ -268,19 +268,19 @@ pooled_pc_coords = mutate(.data = pooled_pc_coords,
                             
                           )))
 pooled_pc_coords = mutate(.data = pooled_pc_coords, 
-                          Lake_morph = as.factor(case_when(
-                            Lake_morph == 'ASHNC' ~ 'ASHNC',
-                            Lake_morph == 'ASHNW' ~ 'ASHNW',
-                            Lake_morph == 'CSWY' ~ 'CSWYC',
-                            Lake_morph == 'GTS' ~ 'GTSW',
-                            Lake_morph == 'MYVC' ~ 'MYVC',
-                            Lake_morph == 'MYVW' ~ 'MYVW',
-                            Lake_morph == 'SKRC' ~ 'SKRC',
-                            Lake_morph == 'SKRW' ~ 'SKRW',
-                            Lake_morph == 'RKLTC' ~ 'RKLTC', 
-                            Lake_morph == 'RKLTW' ~ 'RKLTW', 
-                            Lake_morph == 'STNC' ~ 'STNC', 
-                            Lake_morph == 'STNW' ~ 'STNW'
+                          POP_only = as.factor(case_when(
+                            POP == 'ASHNC' ~ 'ASHN',
+                            POP == 'ASHNW' ~ 'ASHN',
+                            POP == 'CSWY' ~ 'CSWY',
+                            POP == 'GTS' ~ 'GTS',
+                            POP == 'MYVC' ~ 'MYV',
+                            POP == 'MYVW' ~ 'MYV',
+                            POP == 'SKRC' ~ 'SKR',
+                            POP == 'SKRW' ~ 'SKR',
+                            POP == 'RKLTC' ~ 'RKLT', 
+                            POP == 'RKLTW' ~ 'RKLT', 
+                            POP == 'STNC' ~ 'STN', 
+                            POP == 'STNW' ~ 'STN'
                             
                           )))
 

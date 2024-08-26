@@ -103,11 +103,11 @@ MYV_compare = compare.ZVrel(vrel_wild_coords$MYVC,
 SKR_compare = compare.ZVrel(vrel_wild_coords$SKRC, 
                             vrel_wild_coords$SKRW)
 
-STN_compare = compare.ZVrel(vrel_wild_coords$STNC, 
-                            vrel_wild_coords$STNW)
-
-RKLT_compare = compare.ZVrel(vrel_wild_coords$RKLTC, 
-                            vrel_wild_coords$RKLTW)
+# STN_compare = compare.ZVrel(vrel_wild_coords$STNC, 
+#                             vrel_wild_coords$STNW)
+# 
+# RKLT_compare = compare.ZVrel(vrel_wild_coords$RKLTC, 
+#                             vrel_wild_coords$RKLTW)
 
 GTS_CSWY_compare = compare.ZVrel(vrel_wild_coords$CSWY, 
                                  vrel_wild_coords$GTS)
@@ -118,7 +118,7 @@ GTS_CSWY_compare = compare.ZVrel(vrel_wild_coords$CSWY,
 ## standardized for allometry
 
 subset_wild_coords_allo_adj = coords.subset(allometry_adj_shape, 
-                                   identifiers$Lake_morph)
+                                   wild_identifiers$Lake_morph)
 
 vrel_wild_coords_allo_adj = Map(function(x) integration.Vrel(x), 
                        subset_wild_coords_allo_adj)
@@ -132,11 +132,11 @@ MYV_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$MYVC,
 SKR_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$SKRC, 
                             vrel_wild_coords_allo_adj$SKRW)
 
-STN_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$STNC, 
-                            vrel_wild_coords_allo_adj$STNW)
-
-RKLT_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$RKLTC, 
-                             vrel_wild_coords_allo_adj$RKLTW)
+# STN_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$STNC, 
+#                             vrel_wild_coords_allo_adj$STNW)
+# 
+# RKLT_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$RKLTC, 
+#                              vrel_wild_coords_allo_adj$RKLTW)
 
 GTS_CSWY_noallo_compare = compare.ZVrel(vrel_wild_coords_allo_adj$CSWY, 
                                  vrel_wild_coords_allo_adj$GTS)
