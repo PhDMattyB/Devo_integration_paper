@@ -97,4 +97,37 @@ allCorrelations(X1 = parent_plast_GTSW,
 
 # Mat cor wild data -------------------------------------------------------
 
+wild_uni_trait_cor
 
+wild_ASHNW = wild_uni_trait_cor$ASHNW
+wild_ASHNC = wild_uni_trait_cor$ASHNC
+
+allCorrelations(X1 = wild_ASHNW, 
+                X2 = wild_ASHNC, 
+                ncomp1 = 28,
+                ncomp2 = 28)
+
+wild_MYVW = wild_uni_trait_cor$MYVW
+wild_MYVC = wild_uni_trait_cor$MYVC
+
+
+allCorrelations(X1 = wild_MYVW, 
+                X2 = wild_MYVC, 
+                ncomp1 = 28,
+                ncomp2 = 28)
+
+wild_SKRW = wild_uni_trait_cor$SKRW
+wild_SKRC = wild_uni_trait_cor$SKRC
+
+allCorrelations(X1 = wild_SKRW, 
+                X2 = wild_SKRC, 
+                ncomp1 = 28,
+                ncomp2 = 28)
+
+wild_GTSW = wild_uni_trait_cor$GTS
+wild_CSWYC = wild_uni_trait_cor$CSWY
+
+allCorrelations(X1 = wild_GTSW, 
+                X2 = wild_CSWYC, 
+                ncomp1 = 28,
+                ncomp2 = 28)
