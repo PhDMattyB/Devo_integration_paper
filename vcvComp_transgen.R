@@ -291,7 +291,7 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
   scale_color_manual(values = WC_colour_palette)+
   guides(col=guide_legend(title = 'Population'))+
   labs(x = 'PCoA1 (57.2%)',
-       y = 'PCoA2 (9.78%')+
+       y = 'PCoA2 (9.78%)')+
   # labs(x = 'PCoA1 (81.0%)', 
   #      y = 'PCoA2 (12.6%)')+
   theme_bw()+
@@ -299,7 +299,7 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12))
 
-ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/Principal_coord_analysis_pooled_covariance_Euclidean.tiff', 
+ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/Principal_coord_analysis_pooled_covariance_FINAL.tiff', 
        plot = principal_coord_analysis, 
        dpi = 'retina',
        units = 'cm',
