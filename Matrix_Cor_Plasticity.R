@@ -13,6 +13,8 @@ setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/Updated Landmarks/')
 # install.packages('MatrixCorrelation')
 library(MatrixCorrelation)
 
+
+# Mat cor F2 effect -------------------------------------------------------
 ## Run the plasticity_analysis.R script to get the 
 ## corrected trait correlations
 
