@@ -14,7 +14,7 @@ setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/Updated Landmarks/')
 library(MatrixCorrelation)
 
 
-# Mat cor F2 effect -------------------------------------------------------
+# Mat cor F2 offspring effect -------------------------------------------------------
 ## Run the plasticity_analysis.R script to get the 
 ## corrected trait correlations
 
@@ -54,3 +54,8 @@ allCorrelations(X1 = off_plast_GTSW,
                 X2 = off_plast_CSWYC, 
                 ncomp1 = 28,
                 ncomp2 = 28)
+
+
+# Mat cor F1 parental effect -------------------------------------------------
+
+
