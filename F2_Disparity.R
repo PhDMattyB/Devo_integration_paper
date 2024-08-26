@@ -146,7 +146,7 @@ F2_whole_body_disp = morphol.disparity(coords ~ 1,
 
 Whole_body_pval = F2_whole_body_disp$PV.dist.Pval
 Whole_body_disp = F2_whole_body_disp$PV.dist
-disp_proc_var = full_mod_disp$Procrustes.var
+disp_proc_var = F2_whole_body_disp$Procrustes.var
 
 
 Whole_body_pval %>% 

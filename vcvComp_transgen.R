@@ -333,3 +333,28 @@ pooled_pc_coords = prcoa$PCoords %>%
   as.tibble()
 
 
+
+
+
+# Model disparity between datasets ----------------------------------------
+
+## wild disparity
+wild_univariate
+
+wild_traits = wild_univariate %>% 
+  select(-Group, 
+         -individualID, 
+         -Lake, 
+         -Morph, 
+         -Lake_morph)
+
+
+F2_whole_body_disp = morphol.disparity(coords ~ 1,
+                                       groups = ~lake_morph_full,
+                                       data = F2_whole_body,
+                                       iter = 999)
+
+Whole_body_pval = F2_whole_body_disp$PV.dist.Pval
+Whole_body_disp = F2_whole_body_disp$PV.dist
+disp_proc_var = F2_whole_body_disp$Procrustes.var
+
