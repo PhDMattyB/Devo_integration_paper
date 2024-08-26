@@ -92,3 +92,9 @@ allCorrelations(X1 = parent_plast_GTSW,
                 X2 = parent_plast_CSWYC, 
                 ncomp1 = 28,
                 ncomp2 = 28)
+
+
+
+# Mat cor wild data -------------------------------------------------------
+
+
