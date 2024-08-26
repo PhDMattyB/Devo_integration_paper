@@ -12,7 +12,7 @@ setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/Updated Landmarks/')
 library(geomorph)
 library(vcvComp)
 
-
+theme_set(theme_bw())
 # Metadata ----------------------------------------------------------------
 F2_identifiers = read_csv('F2_metadata.csv') %>% 
   rename(individualID = Names) %>% 
@@ -171,42 +171,47 @@ pooled_pc_coords = prcoa$PCoords %>%
   as.tibble()
 
 
-# var_exp = prcoa$Variance$exVar %>% 
-#   as.tibble() %>% 
-#   rename(var_explained = value)
-# var_dim = 1:nrow(prcoa$Variance) %>% 
-#   as.tibble() %>% 
-#   rename(dimensions = value)
-# 
-# var_plot_data = bind_cols(var_dim,
-#                           var_exp) %>%
-#   mutate_if(is.integer, as.character)
-# var_plot_data$dimensions = factor(var_plot_data$dimensions, 
-#                                   levels=c('1', 
-#                                            '2', 
-#                                            '3', 
-#                                            '4', 
-#                                            '5', 
-#                                            '6', 
-#                                            '7', 
-#                                            '8', 
-#                                            '9', 
-#                                            '10', 
-#                                            '11'))
-# # as.character(dimensions) %>% 
-# ggplot(data = var_plot_data, 
-#        aes(x = dimensions, 
-#            y = var_explained))+
-#   geom_col(aes(fill = (as.numeric(dimensions) %% 2 == 0)))+
-#   scale_fill_manual(values = c('#2a9d8f',
-#                                '#e76f51'))+
-#   labs(x = 'Dimensions', 
-#        y = 'Variance explained')+
-#   theme(legend.position = 'none', 
-#         panel.grid = element_blank(), 
-#         axis.title = element_text(size = 14), 
-#         axis.text = element_text(size = 12))
-# 
+var_exp = prcoa$Variance$exVar %>%
+  as.tibble() %>%
+  rename(var_explained = value)
+var_dim = 1:nrow(prcoa$Variance) %>%
+  as.tibble() %>%
+  rename(dimensions = value)
+
+var_plot_data = bind_cols(var_dim,
+                          var_exp) %>%
+  mutate_if(is.integer, as.character)
+var_plot_data$dimensions = factor(var_plot_data$dimensions,
+                                  levels=c('1',
+                                           '2',
+                                           '3',
+                                           '4',
+                                           '5',
+                                           '6',
+                                           '7',
+                                           '8',
+                                           '9',
+                                           '10'))
+# as.character(dimensions) %>%
+Variance_explained = ggplot(data = var_plot_data,
+       aes(x = dimensions,
+           y = var_explained))+
+  geom_col(aes(fill = (as.numeric(dimensions) %% 2 == 0)))+
+  scale_fill_manual(values = c('#2a9d8f',
+                               '#e76f51'))+
+  labs(x = 'Dimensions',
+       y = 'Variance explained')+
+  theme(legend.position = 'none',
+        panel.grid = element_blank(),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12))
+
+ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/PCoA_Variance_axes.tiff', 
+       plot = Variance_explained, 
+       dpi = 'retina',
+       units = 'cm',
+       height = 10, 
+       width = 15)
 
 
 ## Good enough for now
@@ -273,6 +278,8 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
              aes(shape = Effect))+
   scale_color_manual(values = WC_colour_palette)+
   guides(col=guide_legend(title = 'Population'))+
+  labs(x = 'PCoA1 (57.2%)', 
+       y = 'PCoA2 (9.78%')+
   theme_bw()+
   theme(panel.grid = element_blank(), 
         axis.title = element_text(size = 14), 
@@ -284,3 +291,31 @@ ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/Principal_coord_analysis
        units = 'cm',
        height = 10, 
        width = 15)
+
+
+# Plotting shape for each ecotype -----------------------------------------
+
+PCA = prcomp(Traits, 
+             rank. = 5, 
+             tol = sqrt(.Machine$double.eps))
+pca_scores = PCA$x
+
+## scree plot to determiine number of pc axes to use in model
+factoextra::fviz_eig(PCA)
+
+
+phenotypes_pooled_var = cov.group(pca_scores, 
+                                  groups = Trait_ID$Big_group)
+
+phenotype_eigen_vals = mat.sq.dist(phenotypes_pooled_var, 
+                                   dist. = 'Riemannian')
+
+prcoa = pr.coord(phenotype_eigen_vals)
+prcoa$Variance
+
+pooled_pc_coords = prcoa$PCoords %>% 
+  as.data.frame() %>% 
+  rownames_to_column('GROUP') %>% 
+  as.tibble()
+
+
