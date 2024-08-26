@@ -592,8 +592,8 @@ subset_F2_coords = coords.subset(F2_gpa$coords,
 vrel_F2_ = Map(function(x) integration.Vrel(x),
                            subset_F2_coords)
 
-compare.ZVrel(vrel_F2$`ASHNC_12@12`,
-              vrel_F2$`ASHNW_12@12`)
+compare.ZVrel(vrel_F2_$`ASHNC_12@12`,
+              vrel_F2_$`ASHNW_12@12`)
 
 compare.ZVrel(vrel_F2_$`ASHNC_12@18`,
               vrel_F2_$`ASHNW_12@18`)
@@ -611,11 +611,12 @@ compare.ZVrel(vrel_F2_$`SKRC_12@12`,
 compare.ZVrel(vrel_F2_$`SKRC_12@18`,
               vrel_F2_$`SKRW_12@18`)
 
+compare.ZVrel(vrel_F2_$`SKRC_18@12`,
+              vrel_F2_$`SKRW_18@12`)
+
 compare.ZVrel(vrel_F2_$`SKRC_18@18`,
               vrel_F2_$`SKRW_18@18`)
 
-compare.ZVrel(vrel_F2_$`SKRC_18@12`,
-              vrel_F2_$`SKRW_18@12`)
 
 
 compare.ZVrel(vrel_F2_$`MYVC_12@12`,
@@ -637,11 +638,130 @@ compare.ZVrel(vrel_F2_$`GTSW_12@12`,
 compare.ZVrel(vrel_F2_$`GTSW_12@18`,
               vrel_F2_$`CSWYC_12@18`)
 
+compare.ZVrel(vrel_F2_$`GTSW_18@12`,
+              vrel_F2_$`CSWYC_18@12`)
+
 compare.ZVrel(vrel_F2_$`GTSW_18@18`,
               vrel_F2_$`CSWYC_18@18`)
 
+
+# F2 plasticity mag intergration ------------------------------------------
+
+F2_tps = readland.tps('F2_No_GT.TPS', 
+                      specID = 'imageID')
+
+identifiers = read_csv('F2_Metadata.CSV', 
+                       col_names = T) 
+
+## superimposition on the entire dataset
+F2_gpa = gpagen(F2_tps, 
+                print.progress = F)
+
+subset_F2_coords = coords.subset(F2_gpa$coords,
+                                 identifiers$lake_morph_Pair_Full_Temp)
+
+vrel_F2_ = Map(function(x) integration.Vrel(x),
+               subset_F2_coords)
+
+## trans gen
+compare.ZVrel(vrel_F2_$`ASHNW_12@12`,
+              vrel_F2_$`ASHNW_18@12`)
+compare.ZVrel(vrel_F2_$`ASHNW_12@18`,
+              vrel_F2_$`ASHNW_18@18`)
+
+## within gen
+compare.ZVrel(vrel_F2_$`ASHNW_12@12`,
+              vrel_F2_$`ASHNW_12@18`)
+compare.ZVrel(vrel_F2_$`ASHNW_18@12`,
+              vrel_F2_$`ASHNW_18@18`)
+
+## trans gen
+compare.ZVrel(vrel_F2_$`ASHNC_12@12`,
+              vrel_F2_$`ASHNC_18@12`)
+compare.ZVrel(vrel_F2_$`ASHNC_12@18`,
+              vrel_F2_$`ASHNC_18@18`)
+
+## within gen
+compare.ZVrel(vrel_F2_$`ASHNC_12@12`,
+              vrel_F2_$`ASHNC_12@18`)
+compare.ZVrel(vrel_F2_$`ASHNC_18@12`,
+              vrel_F2_$`ASHNC_18@18`)
+
+
+## trans gen
+compare.ZVrel(vrel_F2_$`MYVW_12@12`,
+              vrel_F2_$`MYVW_18@12`)
+compare.ZVrel(vrel_F2_$`MYVW_12@18`,
+              vrel_F2_$`MYVW_18@18`)
+
+## within gen
+compare.ZVrel(vrel_F2_$`MYVW_12@12`,
+              vrel_F2_$`MYVW_12@18`)
+compare.ZVrel(vrel_F2_$`MYVW_18@12`,
+              vrel_F2_$`MYVW_18@18`)
+
+## trans gen
+compare.ZVrel(vrel_F2_$`MYVC_12@12`,
+              vrel_F2_$`MYVC_18@12`)
+compare.ZVrel(vrel_F2_$`MYVC_12@18`,
+              vrel_F2_$`MYVC_18@18`)
+
+## within gen
+compare.ZVrel(vrel_F2_$`MYVC_12@12`,
+              vrel_F2_$`MYVC_12@18`)
+compare.ZVrel(vrel_F2_$`MYVC_18@12`,
+              vrel_F2_$`MYVC_18@18`)
+
+
+## trans gen
+compare.ZVrel(vrel_F2_$`SKRW_12@12`,
+              vrel_F2_$`SKRW_18@12`)
+compare.ZVrel(vrel_F2_$`SKRW_12@18`,
+              vrel_F2_$`SKRW_18@18`)
+
+## within gen
+compare.ZVrel(vrel_F2_$`SKRW_12@12`,
+              vrel_F2_$`SKRW_12@18`)
+compare.ZVrel(vrel_F2_$`SKRW_18@12`,
+              vrel_F2_$`SKRW_18@18`)
+
+## trans gen
+compare.ZVrel(vrel_F2_$`SKRC_12@12`,
+              vrel_F2_$`SKRC_18@12`)
+compare.ZVrel(vrel_F2_$`SKRC_12@18`,
+              vrel_F2_$`SKRC_18@18`)
+
+## within gen
+compare.ZVrel(vrel_F2_$`SKRC_12@12`,
+              vrel_F2_$`SKRC_12@18`)
+compare.ZVrel(vrel_F2_$`SKRC_18@12`,
+              vrel_F2_$`SKRC_18@18`)
+
+
+## trans gen
+compare.ZVrel(vrel_F2_$`GTSW_12@12`,
+              vrel_F2_$`GTSW_18@12`)
+compare.ZVrel(vrel_F2_$`GTSW_12@18`,
+              vrel_F2_$`GTSW_18@18`)
+
+## within gen
+compare.ZVrel(vrel_F2_$`GTSW_12@12`,
+              vrel_F2_$`GTSW_12@18`)
 compare.ZVrel(vrel_F2_$`GTSW_18@12`,
+              vrel_F2_$`GTSW_18@18`)
+
+## trans gen
+compare.ZVrel(vrel_F2_$`CSWYC_12@12`,
               vrel_F2_$`CSWYC_18@12`)
+compare.ZVrel(vrel_F2_$`CSWYC_12@18`,
+              vrel_F2_$`CSWYC_18@18`)
+
+## within gen
+compare.ZVrel(vrel_F2_$`CSWYC_12@12`,
+              vrel_F2_$`CSWYC_12@18`)
+compare.ZVrel(vrel_F2_$`CSWYC_18@12`,
+              vrel_F2_$`CSWYC_18@18`)
+
 
 # Lake plasticity and transgenerational integration -----------------------
 
