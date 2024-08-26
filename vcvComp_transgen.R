@@ -210,10 +210,17 @@ pooled_pc_coords = mutate(.data = pooled_pc_coords,
                             Lake_morph == 'SKRC' ~ 'SKR',
                             Lake_morph == 'SKRW' ~ 'SKR')))
 
+
 # pooled_pc_coords %>% 
 #   write_csv('vcvComp_generation_effect.csv')
 
 pooled_pc_coords = read_csv('vcvComp_generation_effect.csv')
+
+pooled_pc_coords = mutate(.data = pooled_pc_coords, 
+                          Effect = as.factor(case_when(
+                            Effect == 'Wild' ~ 'Wild',
+                            Effect == 'Transgen' ~ 'Trans-generational',
+                            Effect == 'Withingen' ~ 'Within-generational')))
 
 WC_colour_palette = c('#22577a', 
                       '#f94144', 
@@ -224,12 +231,23 @@ WC_colour_palette = c('#22577a',
                       '#80ed99', 
                       '#f9c74f')
 
+pooled_pc_coords %>% 
+  group_by(Effect) %>% 
+  summarize(variance_PCo1 = var(PCo1), 
+            variance_PCo2 = var(PCo2))
+
+pooled_pc_coords$Effect = factor(pooled_pc_coords$Effect, 
+                                 levels = c('Wild',
+                                            'Within-generational',
+                                            'Trans-generational'))
+
 principal_coord_analysis = ggplot(data = pooled_pc_coords, 
                                   aes(x = PCo1, 
                                       y = PCo2, 
                                       col = Lake_morph, 
-                                      group = Effect))+
-  # geom_line(col = 'black')+
+                                      group = Lake_morph))+
+  stat_ellipse(aes(group = Effect))+
+  geom_line(col = 'black')+
   geom_point(size = 3,
              aes(shape = Effect))+
   scale_color_manual(values = WC_colour_palette)+
@@ -239,7 +257,7 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12))
 
-ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/Principal_coord_analysis_pooled_covariance.tiff', 
+ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/Principal_coord_analysis_pooled_covariance_FINAL.tiff', 
        plot = principal_coord_analysis, 
        dpi = 'retina',
        units = 'cm',
