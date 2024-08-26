@@ -206,7 +206,7 @@ Variance_explained = ggplot(data = var_plot_data,
         axis.title = element_text(size = 14),
         axis.text = element_text(size = 12))
 
-ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/PCoA_Variance_axes.tiff', 
+ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/PCoA_Variance_axes_Euclidean.tiff', 
        plot = Variance_explained, 
        dpi = 'retina',
        units = 'cm',
@@ -236,17 +236,30 @@ pooled_pc_coords = mutate(.data = pooled_pc_coords,
 
 
 # pooled_pc_coords %>%
-#   write_csv('vcvComp_generation_effect_F2orig.csv')
+#   write_csv('vcvComp_generation_effect_Euclidean.csv')
 
 pooled_pc_coords = read_csv('vcvComp_generation_effect.csv')
 # pooled_pc_coords = read_csv('vcvComp_generation_effect_F2orig.csv')
+# pooled_pc_coords = read_csv('vcvComp_generation_effect_Euclidean.csv')
+
 pooled_pc_coords = mutate(.data = pooled_pc_coords, 
                           Effect = as.factor(case_when(
                             Effect == 'Wild' ~ 'Wild',
-                            Effect == 'F2' ~ 'F2',
                             Effect == 'Transgen' ~ 'Trans-generational',
                             Effect == 'Withingen' ~ 'Within-generational')))
 
+pooled_pc_coords = mutate(.data = pooled_pc_coords, 
+                          Lake_morph = as.factor(case_when(
+                            Lake_morph == 'ASHNC' ~ 'ASHNC',
+                            Lake_morph == 'ASHNW' ~ 'ASHNW',
+                            Lake_morph == 'CSWY' ~ 'CSWYC',
+                            Lake_morph == 'GTS' ~ 'GTSW',
+                            Lake_morph == 'CSWYC' ~ 'CSWYC',
+                            Lake_morph == 'GTSW' ~ 'GTSW',
+                            Lake_morph == 'MYVC' ~ 'MYVC',
+                            Lake_morph == 'MYVW' ~ 'MYVW',
+                            Lake_morph == 'SKRC' ~ 'SKRC',
+                            Lake_morph == 'SKRW' ~ 'SKRW')))
 WC_colour_palette = c('#22577a', 
                       '#f94144', 
                       '#38a3a5', 
@@ -263,7 +276,6 @@ pooled_pc_coords %>%
 
 pooled_pc_coords$Effect = factor(pooled_pc_coords$Effect, 
                                  levels = c('Wild',
-                                            'F2',
                                             'Within-generational',
                                             'Trans-generational'))
 
@@ -278,14 +290,16 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
              aes(shape = Effect))+
   scale_color_manual(values = WC_colour_palette)+
   guides(col=guide_legend(title = 'Population'))+
-  labs(x = 'PCoA1 (57.2%)', 
+  labs(x = 'PCoA1 (57.2%)',
        y = 'PCoA2 (9.78%')+
+  # labs(x = 'PCoA1 (81.0%)', 
+  #      y = 'PCoA2 (12.6%)')+
   theme_bw()+
   theme(panel.grid = element_blank(), 
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12))
 
-ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/Principal_coord_analysis_pooled_covariance_FINAL.tiff', 
+ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/Principal_coord_analysis_pooled_covariance_Euclidean.tiff', 
        plot = principal_coord_analysis, 
        dpi = 'retina',
        units = 'cm',
