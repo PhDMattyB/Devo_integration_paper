@@ -77,6 +77,7 @@ allCorrelations(X1 = parent_plast_MYVW,
                 ncomp1 = 28,
                 ncomp2 = 28)
 
+parent_plast_SKRW = parent_plasticity_trait_cor$SKRW
 parent_plast_SKRC = parent_plasticity_trait_cor$SKRC
 
 allCorrelations(X1 = parent_plast_SKRW, 
