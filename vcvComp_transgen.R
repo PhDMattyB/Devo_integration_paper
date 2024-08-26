@@ -58,6 +58,24 @@ wild_univariate = read_csv('Wild_Univariate_traits.csv') %>%
                      'GTS',  
                      'CSWY'))
 
+## F2 original data doesn't add anything to the plot
+# F2_original = read_csv('F2_Original_univariate_traits.csv') %>% 
+#   bind_cols(F2_identifiers) %>% 
+#   mutate(Group = 'F2') %>%
+#   select(-Lake_morph...34) %>% 
+#   select(Group, 
+#          individualID, 
+#          Lake, 
+#          Morph, 
+#          Lake_morph...1, 
+#          everything()) %>% 
+#   rename(Lake_morph = Lake_morph...1) %>% 
+#   filter(Lake %in% c('ASHN', 
+#                      'MYV', 
+#                      'SKR', 
+#                      'GTS',  
+#                      'CSWY'))
+
 F2_parental_effects = read_csv('F1_Plasticity_Corrected.csv') %>% 
   mutate(Group = 'Transgen') %>% 
   select(-Order, 
@@ -103,6 +121,7 @@ F2_offspring_effects = read_csv('F2_Corrected_F2_temp_only.csv')%>%
 
 
 Full_data = bind_rows(wild_univariate, 
+                      # F2_original,
                       F2_parental_effects, 
                       F2_offspring_effects)
 
@@ -211,14 +230,15 @@ pooled_pc_coords = mutate(.data = pooled_pc_coords,
                             Lake_morph == 'SKRW' ~ 'SKR')))
 
 
-# pooled_pc_coords %>% 
-#   write_csv('vcvComp_generation_effect.csv')
+# pooled_pc_coords %>%
+#   write_csv('vcvComp_generation_effect_F2orig.csv')
 
 pooled_pc_coords = read_csv('vcvComp_generation_effect.csv')
-
+# pooled_pc_coords = read_csv('vcvComp_generation_effect_F2orig.csv')
 pooled_pc_coords = mutate(.data = pooled_pc_coords, 
                           Effect = as.factor(case_when(
                             Effect == 'Wild' ~ 'Wild',
+                            Effect == 'F2' ~ 'F2',
                             Effect == 'Transgen' ~ 'Trans-generational',
                             Effect == 'Withingen' ~ 'Within-generational')))
 
@@ -238,6 +258,7 @@ pooled_pc_coords %>%
 
 pooled_pc_coords$Effect = factor(pooled_pc_coords$Effect, 
                                  levels = c('Wild',
+                                            'F2',
                                             'Within-generational',
                                             'Trans-generational'))
 

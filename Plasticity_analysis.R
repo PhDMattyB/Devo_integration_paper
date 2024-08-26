@@ -149,6 +149,9 @@ orig_uni_traits = F2_univariate_traits %>%
   group_by(Lake_morph) %>%
   select(jaw_length:ratio2)
 
+# orig_uni_traits %>%
+#   write_csv('F2_Original_univariate_traits.csv')
+
 vars_keep = names(orig_uni_traits)[c(2,3,4,5,6,7,8,9,10,11, 
                                            12,13,14,15,16,17,18, 
                                            19,20,21,22,23,24,25,26,
