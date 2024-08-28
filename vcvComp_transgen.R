@@ -523,4 +523,4 @@ lda_lake_morph = ggplot(plot_lda_lake_morph) +
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12))
 
-lda_morph|lda_lake_morph|lda_full_temp
+lda_lake_morph|lda_morph|lda_full_temp
