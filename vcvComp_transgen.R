@@ -470,6 +470,12 @@ lda_full_temp = ggplot(plot_lda) +
   theme(panel.grid = element_blank(), 
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12))
+ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/WC_LAKES_COMBINED.tiff', 
+       plot = lda_full_temp, 
+       dpi = 'retina',
+       units = 'cm',
+       height = 20, 
+       width = 20)
 
 
 Morph_col_pal = c('#eb5e28', 
