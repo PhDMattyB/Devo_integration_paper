@@ -524,3 +524,241 @@ lda_lake_morph = ggplot(plot_lda_lake_morph) +
         axis.text = element_text(size = 12))
 
 lda_lake_morph|lda_morph|lda_full_temp
+
+
+
+# Divergent selection + variation due to temp -----------------------------
+
+
+# ASHN Discriminant plots -------------------------------------------------
+## ASHN
+F2_ASHN_data = F2_data %>% 
+  filter(Lake == 'ASHN')
+
+ASHN_traits = cbind(F2_ASHN_data$jaw_length, 
+                    F2_ASHN_data$fbar_23_24, 
+                    F2_ASHN_data$fbar_8_24, 
+                    F2_ASHN_data$fbar_8_27, 
+                    F2_ASHN_data$fbar_23_27, 
+                    F2_ASHN_data$fbar_25_26, 
+                    F2_ASHN_data$body_width, 
+                    F2_ASHN_data$caudal1_14_18, 
+                    F2_ASHN_data$caudal2_15_17, 
+                    F2_ASHN_data$body_length,
+                    F2_ASHN_data$head_depth, 
+                    F2_ASHN_data$jaw_2_6, 
+                    F2_ASHN_data$lm_6_12, 
+                    F2_ASHN_data$lm_12_13, 
+                    F2_ASHN_data$lm_13_14, 
+                    F2_ASHN_data$lm_14_15, 
+                    F2_ASHN_data$lm_6_21, 
+                    F2_ASHN_data$lm_20_21, 
+                    F2_ASHN_data$lm_21_13, 
+                    F2_ASHN_data$lm_20_13, 
+                    F2_ASHN_data$lm_12_19, 
+                    F2_ASHN_data$lm_13_19, 
+                    F2_ASHN_data$lm_19_18, 
+                    F2_ASHN_data$lm_18_17, 
+                    F2_ASHN_data$lm_1_23, 
+                    F2_ASHN_data$lm_23_2)
+
+ASHN_manova = manova(ASHN_traits ~ Morph*Full_temp, 
+                           data = F2_ASHN_data)
+summary(ASHN_manova)
+
+effectsize::eta_squared(ASHN_manova)
+
+ASHN_posthoc_1 = lda(F2_ASHN_data$Morph ~ ASHN_traits, 
+                 CV=F)
+
+## tells us how well the analysis did without a cross validation
+table = table(F2_ASHN_data$Morph, 
+              predict(ASHN_posthoc_1)$class)
+sum(table[row(table) == col(table)])/sum(table)
+
+#leave one out cross validation
+## NEED TO ADD CV = TRUE IN THE LDFA
+CV = table(F2_ASHN_data$Morph, 
+             ASHN_posthoc_1$class)
+##Calculate the re-substitution error for the cross validation
+sum(CV[row(CV) == col(CV)])/sum(CV)
+
+ASHN_morph_lda = data.frame(F2_ASHN_data[, "Morph"], 
+                            lda = predict(ASHN_posthoc_1)$x)
+ASHN_lda_morph = ggplot(ASHN_morph_lda) + 
+  geom_density(aes(x = LD1, 
+                   colour = Morph, 
+                   fill = Morph), 
+               size = 4)+
+  # geom_hline(yintercept = 0, 
+  # col = 'black')+
+  # geom_vline(xintercept = 0, 
+  # col = 'black')+
+  scale_color_manual(values = Morph_col_pal)+
+  labs(x = 'LD1', 
+       y = 'Density')+
+  annotate("text", 
+           x = -3, 
+           y = 0.4, 
+           label= "79.4% discrimination")+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12), 
+        legend.position = 'none')
+
+ASHN_posthoc_2 = lda(F2_ASHN_data$Full_temp ~ ASHN_traits, 
+                     CV=F)
+
+## tells us how well the analysis did without a cross validation
+table = table(F2_ASHN_data$Full_temp, 
+              predict(ASHN_posthoc_2)$class)
+sum(table[row(table) == col(table)])/sum(table)
+
+#leave one out cross validation
+## NEED TO ADD CV = TRUE IN THE LDFA
+CV = lda(F2_ASHN_data$Full_temp ~ ASHN_traits, 
+    CV=T)
+CV = table(F2_ASHN_data$Full_temp, 
+           CV$class)
+##Calculate the re-substitution error for the cross validation
+sum(CV[row(CV) == col(CV)])/sum(CV)
+
+
+
+ASHN_ld_temp = data.frame(F2_ASHN_data[, "Full_temp"], 
+                      lda = predict(ASHN_posthoc_2)$x)
+ASHN_lda_temp = ggplot(ASHN_ld_temp) + 
+  geom_point(aes(x = lda.LD1, 
+                 y = lda.LD2, 
+                 colour = Full_temp), 
+             size = 4)+
+  geom_hline(yintercept = 0, 
+             col = 'black')+
+  geom_vline(xintercept = 0, 
+             col = 'black')+
+  scale_color_manual(values = temp_col_pal)+
+  labs(x = 'LD1 (78.2%)', 
+       y = 'LD2 (17.8%)')+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12))
+
+ASHN_LDA_PLOT = ASHN_lda_morph|ASHN_lda_temp
+
+
+# MYV Discriminant plots -------------------------------------------------
+## MYV
+F2_MYV_data = F2_data %>% 
+  filter(Lake == 'MYV')
+
+MYV_traits = cbind(F2_MYV_data$jaw_length, 
+                    F2_MYV_data$fbar_23_24, 
+                    F2_MYV_data$fbar_8_24, 
+                    F2_MYV_data$fbar_8_27, 
+                    F2_MYV_data$fbar_23_27, 
+                    F2_MYV_data$fbar_25_26, 
+                    F2_MYV_data$body_width, 
+                    F2_MYV_data$caudal1_14_18, 
+                    F2_MYV_data$caudal2_15_17, 
+                    F2_MYV_data$body_length,
+                    F2_MYV_data$head_depth, 
+                    F2_MYV_data$jaw_2_6, 
+                    F2_MYV_data$lm_6_12, 
+                    F2_MYV_data$lm_12_13, 
+                    F2_MYV_data$lm_13_14, 
+                    F2_MYV_data$lm_14_15, 
+                    F2_MYV_data$lm_6_21, 
+                    F2_MYV_data$lm_20_21, 
+                    F2_MYV_data$lm_21_13, 
+                    F2_MYV_data$lm_20_13, 
+                    F2_MYV_data$lm_12_19, 
+                    F2_MYV_data$lm_13_19, 
+                    F2_MYV_data$lm_19_18, 
+                    F2_MYV_data$lm_18_17, 
+                    F2_MYV_data$lm_1_23, 
+                    F2_MYV_data$lm_23_2)
+
+MYV_manova = manova(MYV_traits ~ Morph*Full_temp, 
+                     data = F2_MYV_data)
+summary(MYV_manova)
+
+effectsize::eta_squared(MYV_manova)
+
+MYV_posthoc_1 = lda(F2_MYV_data$Morph ~ MYV_traits, 
+                     CV=F)
+
+## tells us how well the analysis did without a cross validation
+table = table(F2_MYV_data$Morph, 
+              predict(MYV_posthoc_1)$class)
+sum(table[row(table) == col(table)])/sum(table)
+
+#leave one out cross validation
+## NEED TO ADD CV = TRUE IN THE LDFA
+CV = lda(F2_MYV_data$Morph ~ MYV_traits, 
+    CV=T)
+CV = table(F2_MYV_data$Morph, 
+           CV$class)
+##Calculate the re-substitution error for the cross validation
+sum(CV[row(CV) == col(CV)])/sum(CV)
+
+MYV_morph_lda = data.frame(F2_MYV_data[, "Morph"], 
+                            lda = predict(MYV_posthoc_1)$x)
+MYV_lda_morph = ggplot(MYV_morph_lda) + 
+  geom_density(aes(x = LD1, 
+                   colour = Morph, 
+                   fill = Morph), 
+               size = 4)+
+  # geom_hline(yintercept = 0, 
+  # col = 'black')+
+  # geom_vline(xintercept = 0, 
+  # col = 'black')+
+  scale_color_manual(values = Morph_col_pal)+
+  labs(x = 'LD1', 
+       y = 'Density')+
+  annotate("text", 
+           x = -2, 
+           y = 0.4, 
+           label= "62.9% discrimination")+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12), 
+        legend.position = 'none')
+
+MYV_posthoc_2 = lda(F2_MYV_data$Full_temp ~ MYV_traits, 
+                     CV=F)
+
+## tells us how well the analysis did without a cross validation
+table = table(F2_MYV_data$Full_temp, 
+              predict(MYV_posthoc_2)$class)
+sum(table[row(table) == col(table)])/sum(table)
+
+#leave one out cross validation
+## NEED TO ADD CV = TRUE IN THE LDFA
+CV = lda(F2_MYV_data$Full_temp ~ MYV_traits, 
+         CV=T)
+CV = table(F2_MYV_data$Full_temp, 
+           CV$class)
+##Calculate the re-substitution error for the cross validation
+sum(CV[row(CV) == col(CV)])/sum(CV)
+
+
+
+MYV_ld_temp = data.frame(F2_MYV_data[, "Full_temp"], 
+                          lda = predict(MYV_posthoc_2)$x)
+MYV_lda_temp = ggplot(MYV_ld_temp) + 
+  geom_point(aes(x = lda.LD1, 
+                 y = lda.LD2, 
+                 colour = Full_temp), 
+             size = 4)+
+  geom_hline(yintercept = 0, 
+             col = 'black')+
+  geom_vline(xintercept = 0, 
+             col = 'black')+
+  scale_color_manual(values = temp_col_pal)+
+  labs(x = 'LD1 (64.9%)', 
+       y = 'LD2 (27.0%)')+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12))
+
+MYV_LDA_PLOT = MYV_lda_morph|MYV_lda_temp
