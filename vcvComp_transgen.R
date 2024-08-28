@@ -30,12 +30,7 @@ F2_identifiers = read_csv('F2_metadata.csv') %>%
                   'Offspring_temp',
                   'Parent_temp',
                   'Grand_temp'),
-                factor)) %>%
-  select(individualID, 
-         Lake, 
-         Ecotype_pair, 
-         Morph, 
-         Lake_morph)
+                factor))
 
 
 # Univariate trait data ---------------------------------------------------
@@ -58,23 +53,6 @@ wild_univariate = read_csv('Wild_Univariate_traits.csv') %>%
                      'GTS',  
                      'CSWY'))
 
-## F2 original data doesn't add anything to the plot
-# F2_original = read_csv('F2_Original_univariate_traits.csv') %>% 
-#   bind_cols(F2_identifiers) %>% 
-#   mutate(Group = 'F2') %>%
-#   select(-Lake_morph...34) %>% 
-#   select(Group, 
-#          individualID, 
-#          Lake, 
-#          Morph, 
-#          Lake_morph...1, 
-#          everything()) %>% 
-#   rename(Lake_morph = Lake_morph...1) %>% 
-#   filter(Lake %in% c('ASHN', 
-#                      'MYV', 
-#                      'SKR', 
-#                      'GTS',  
-#                      'CSWY'))
 
 F2_parental_effects = read_csv('F1_Plasticity_Corrected.csv') %>% 
   mutate(Group = 'Transgen') %>% 
@@ -358,3 +336,191 @@ Whole_body_pval = F2_whole_body_disp$PV.dist.Pval
 Whole_body_disp = F2_whole_body_disp$PV.dist
 disp_proc_var = F2_whole_body_disp$Procrustes.var
 
+
+
+
+
+# Variable vs non-variable environments -----------------------------------
+
+
+## F2 original data doesn't add anything to the plot
+F2_original = read_csv('F2_Original_univariate_traits.csv') %>%
+  bind_cols(F2_identifiers) %>%
+  mutate(Group = 'F2') %>%
+  # select(-Lake_morph...34) %>%
+  select(-Lake_morph...37) %>%
+  # select(Group,
+  #        individualID,
+  #        Lake,
+  #        Morph,
+  #        Lake_morph...1,
+  #        everything()) %>%
+  rename(Lake_morph = Lake_morph...1) %>%
+  filter(Lake %in% c('ASHN',
+                     'MYV',
+                     'SKR',
+                     'GTS',
+                     'CSWY'))
+
+
+F2_data = F2_original %>% 
+  select(Group, 
+         Lake, 
+         Morph, 
+         Lake_morph, 
+         Full_temp, 
+         Grand_temp,
+         Parent_temp, 
+         Offspring_temp,
+         jaw_length:lm_23_2)
+
+Traits = cbind(F2_data$jaw_length, 
+               F2_data$fbar_23_24, 
+               F2_data$fbar_8_24, 
+               F2_data$fbar_8_27, 
+               F2_data$fbar_23_27, 
+               F2_data$fbar_25_26, 
+               F2_data$body_width, 
+               F2_data$caudal1_14_18, 
+               F2_data$caudal2_15_17, 
+               F2_data$body_length,
+               F2_data$head_depth, 
+               F2_data$jaw_2_6, 
+               F2_data$lm_6_12, 
+               F2_data$lm_12_13, 
+               F2_data$lm_13_14, 
+               F2_data$lm_14_15, 
+               F2_data$lm_6_21, 
+               F2_data$lm_20_21, 
+               F2_data$lm_21_13, 
+               F2_data$lm_20_13, 
+               F2_data$lm_12_19, 
+               F2_data$lm_13_19, 
+               F2_data$lm_19_18, 
+               F2_data$lm_18_17, 
+               F2_data$lm_1_23, 
+               F2_data$lm_23_2)
+
+temp_manova = manova(Traits ~ Lake_morph*Parent_temp*Offspring_temp, 
+       data = F2_data)
+
+
+summary(temp_manova)
+
+
+full_temp_manova = manova(Traits ~ Full_temp, 
+                          data = F2_data)
+
+summary(full_temp_manova)
+
+
+Morph_temp_manova = manova(Traits ~ Morph*Full_temp, 
+                          data = F2_data)
+
+summary(Morph_temp_manova)
+
+library(effectsize)
+effectsize::eta_squared(temp_manova)
+effectsize::eta_squared(full_temp_manova)
+effectsize::eta_squared(Morph_temp_manova)
+
+library(MASS)
+post_hoc_1 = lda(F2_data$Lake_morph ~ Traits, 
+                 CV=F)
+post_hoc_1
+
+post_hoc_2 = lda(F2_data$Parent_temp ~ Traits, 
+                 CV=F)
+post_hoc_2
+
+post_hoc_3 = lda(F2_data$Offspring_temp ~ Traits, 
+                 CV=F)
+post_hoc_3
+
+post_hoc_4 = lda(F2_data$Full_temp ~ Traits, 
+                 CV = F)
+post_hoc_4
+
+post_hoc_5 = lda(F2_data$Morph ~ Traits, 
+                 CV = F)
+post_hoc_5
+
+
+temp_col_pal = c('#023047', 
+                 '#e9c46a', 
+                 '#0077b6', 
+                 '#e76f51')
+
+
+
+plot_lda = data.frame(F2_data[, "Full_temp"], 
+                      lda = predict(post_hoc_4)$x)
+lda_full_temp = ggplot(plot_lda) + 
+  geom_point(aes(x = lda.LD1, 
+                 y = lda.LD2, 
+                 colour = Full_temp), 
+             size = 4)+
+  geom_hline(yintercept = 0, 
+             col = 'black')+
+  geom_vline(xintercept = 0, 
+             col = 'black')+
+  scale_color_manual(values = temp_col_pal)+
+  labs(x = 'LD1 (88.35)', 
+       y = 'LD2 (9.0%)')+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12))
+
+
+Morph_col_pal = c('#eb5e28', 
+                  '#457b9d')
+
+plot_lda_morph = data.frame(F2_data[, "Morph"], 
+                      lda = predict(post_hoc_5)$x)
+lda_morph = ggplot(plot_lda_morph) + 
+  geom_density(aes(x = LD1, 
+                 colour = Morph, 
+                 fill = Morph), 
+             size = 4)+
+  # geom_hline(yintercept = 0, 
+             # col = 'black')+
+  # geom_vline(xintercept = 0, 
+             # col = 'black')+
+  scale_color_manual(values = Morph_col_pal)+
+  labs(x = 'LD1', 
+       y = 'Density')+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12), 
+        legend.position = 'none')
+
+
+WC_colour_palette = c('#22577a', 
+                      '#f94144', 
+                      '#38a3a5', 
+                      '#f3722c', 
+                      '#57cc99', 
+                      '#f8961e', 
+                      '#80ed99', 
+                      '#f9c74f')
+plot_lda_lake_morph = data.frame(F2_data[, "Lake_morph"], 
+                            lda = predict(post_hoc_1)$x)
+
+lda_lake_morph = ggplot(plot_lda_lake_morph) + 
+  geom_point(aes(x = lda.LD1,
+                   y = lda.LD2,
+                   colour = Lake_morph, 
+                   fill = Lake_morph), 
+               size = 4)+
+  geom_hline(yintercept = 0,
+  col = 'black')+
+  geom_vline(xintercept = 0,
+  col = 'black')+
+  scale_color_manual(values = WC_colour_palette)+
+  labs(x = 'LD1 (31.2%)', 
+       y = 'LD2 (28.2)')+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12))
+
+lda_morph|lda_lake_morph|lda_full_temp
