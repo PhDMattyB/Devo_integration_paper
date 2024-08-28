@@ -598,7 +598,8 @@ ASHN_lda_morph = ggplot(ASHN_morph_lda) +
   # col = 'black')+
   scale_color_manual(values = Morph_col_pal)+
   labs(x = 'LD1', 
-       y = 'Density')+
+       y = 'Density', 
+       title = 'A)')+
   # annotate("text", 
   #          x = -3, 
   #          y = 0.4, 
@@ -633,7 +634,7 @@ ASHN_lda_temp = ggplot(ASHN_ld_temp) +
   geom_point(aes(x = lda.LD1, 
                  y = lda.LD2, 
                  colour = Full_temp), 
-             size = 4)+
+             size = 3)+
   xlim(min = -5, 
        max = 5)+
   ylim(min = -5, 
@@ -644,10 +645,12 @@ ASHN_lda_temp = ggplot(ASHN_ld_temp) +
              col = 'black')+
   scale_color_manual(values = temp_col_pal)+
   labs(x = 'LD1 (78.2%)', 
-       y = 'LD2 (17.8%)')+
+       y = 'LD2 (17.8%)', 
+       title = 'A)')+
   theme(panel.grid = element_blank(), 
         axis.title = element_text(size = 14), 
-        axis.text = element_text(size = 12))
+        axis.text = element_text(size = 12), 
+        legend.position = 'none')
 
 ASHN_LDA_PLOT = ASHN_lda_morph|ASHN_lda_temp
 
@@ -722,7 +725,8 @@ MYV_lda_morph = ggplot(MYV_morph_lda) +
   # col = 'black')+
   scale_color_manual(values = Morph_col_pal)+
   labs(x = 'LD1', 
-       y = 'Density')+
+       y = 'Density', 
+       title = 'B)')+
   # annotate("text", 
   #          x = -2, 
   #          y = 0.4, 
@@ -757,7 +761,7 @@ MYV_lda_temp = ggplot(MYV_ld_temp) +
   geom_point(aes(x = lda.LD1, 
                  y = lda.LD2, 
                  colour = Full_temp), 
-             size = 4)+
+             size = 3)+
   xlim(min = -5, 
        max = 5)+
   ylim(min = -5, 
@@ -768,10 +772,12 @@ MYV_lda_temp = ggplot(MYV_ld_temp) +
              col = 'black')+
   scale_color_manual(values = temp_col_pal)+
   labs(x = 'LD1 (64.9%)', 
-       y = 'LD2 (27.0%)')+
+       y = 'LD2 (27.0%)', 
+       title = 'B)')+
   theme(panel.grid = element_blank(), 
         axis.title = element_text(size = 14), 
-        axis.text = element_text(size = 12))
+        axis.text = element_text(size = 12), 
+        legend.position = 'none')
 
 MYV_LDA_PLOT = MYV_lda_morph|MYV_lda_temp
 
@@ -845,7 +851,8 @@ SKR_lda_morph = ggplot(SKR_morph_lda) +
   # col = 'black')+
   scale_color_manual(values = Morph_col_pal)+
   labs(x = 'LD1', 
-       y = 'Density')+
+       y = 'Density', 
+       title = 'C)')+
   # annotate("text", 
   #          x = -2.5, 
   #          y = 0.4, 
@@ -880,7 +887,7 @@ SKR_lda_temp = ggplot(SKR_ld_temp) +
   geom_point(aes(x = lda.LD1, 
                  y = lda.LD2, 
                  colour = Full_temp), 
-             size = 4)+
+             size = 3)+
   xlim(min = -5, 
        max = 5)+
   ylim(min = -5, 
@@ -891,10 +898,12 @@ SKR_lda_temp = ggplot(SKR_ld_temp) +
              col = 'black')+
   scale_color_manual(values = temp_col_pal)+
   labs(x = 'LD1 (81.9%)', 
-       y = 'LD2 (10.3%)')+
+       y = 'LD2 (10.3%)', 
+       title = 'C)')+
   theme(panel.grid = element_blank(), 
         axis.title = element_text(size = 14), 
-        axis.text = element_text(size = 12))
+        axis.text = element_text(size = 12), 
+        legend.position = 'none')
 
 SKR_LDA_PLOT = SKR_lda_morph|SKR_lda_temp
 
@@ -970,7 +979,8 @@ GTS_CSWY_lda_morph = ggplot(GTS_CSWY_morph_lda) +
   # col = 'black')+
   scale_color_manual(values = Morph_col_pal)+
   labs(x = 'LD1', 
-       y = 'Density')+
+       y = 'Density', 
+       title = 'D)')+
   # annotate("text", 
   #          x = -2.5, 
   #          y = 0.4, 
@@ -1005,7 +1015,7 @@ GTS_CSWY_lda_temp = ggplot(GTS_CSWY_ld_temp) +
   geom_point(aes(x = lda.LD1, 
                  y = lda.LD2, 
                  colour = Full_temp), 
-             size = 4)+
+             size = 3)+
   xlim(min = -5, 
        max = 5)+
   ylim(min = -5, 
@@ -1016,10 +1026,12 @@ GTS_CSWY_lda_temp = ggplot(GTS_CSWY_ld_temp) +
              col = 'black')+
   scale_color_manual(values = temp_col_pal)+
   labs(x = 'LD1 (83.8%)', 
-       y = 'LD2 (10.8%)')+
+       y = 'LD2 (10.8%)', 
+       title = 'D)')+
   theme(panel.grid = element_blank(), 
         axis.title = element_text(size = 14), 
-        axis.text = element_text(size = 12))
+        axis.text = element_text(size = 12), 
+        legend.position = 'none')
 
 GTS_CSWY_LDA_PLOT = GTS_CSWY_lda_morph|GTS_CSWY_lda_temp
 
@@ -1027,3 +1039,22 @@ GTS_CSWY_LDA_PLOT = GTS_CSWY_lda_morph|GTS_CSWY_lda_temp
 # LDA PLOT COMBINED -------------------------------------------------------
 
 Big_Plot_pappi = ASHN_LDA_PLOT/MYV_LDA_PLOT/SKR_LDA_PLOT/GTS_CSWY_LDA_PLOT
+
+Morph_divergence = (ASHN_lda_morph|MYV_lda_morph)/(SKR_lda_morph|GTS_CSWY_lda_morph)
+
+ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/Multivariate_trait_divergence.tiff', 
+       plot = Morph_divergence, 
+       dpi = 'retina',
+       units = 'cm',
+       height = 10, 
+       width = 15)
+
+
+Temp_divergence = (ASHN_lda_temp|MYV_lda_temp)/(SKR_lda_temp|GTS_CSWY_lda_temp)
+
+ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/Transgenerational_Temp_Effects.tiff', 
+       plot = Temp_divergence, 
+       dpi = 'retina',
+       units = 'cm',
+       height = 15, 
+       width = 20)
