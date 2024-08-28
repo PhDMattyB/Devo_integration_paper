@@ -597,10 +597,10 @@ ASHN_lda_morph = ggplot(ASHN_morph_lda) +
   scale_color_manual(values = Morph_col_pal)+
   labs(x = 'LD1', 
        y = 'Density')+
-  annotate("text", 
-           x = -3, 
-           y = 0.4, 
-           label= "79.4% discrimination")+
+  # annotate("text", 
+  #          x = -3, 
+  #          y = 0.4, 
+  #          label= "79.4% discrimination")+
   theme(panel.grid = element_blank(), 
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12), 
@@ -715,10 +715,10 @@ MYV_lda_morph = ggplot(MYV_morph_lda) +
   scale_color_manual(values = Morph_col_pal)+
   labs(x = 'LD1', 
        y = 'Density')+
-  annotate("text", 
-           x = -2, 
-           y = 0.4, 
-           label= "62.9% discrimination")+
+  # annotate("text", 
+  #          x = -2, 
+  #          y = 0.4, 
+  #          label= "62.9% discrimination")+
   theme(panel.grid = element_blank(), 
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12), 
@@ -762,3 +762,244 @@ MYV_lda_temp = ggplot(MYV_ld_temp) +
         axis.text = element_text(size = 12))
 
 MYV_LDA_PLOT = MYV_lda_morph|MYV_lda_temp
+
+# SKR Discriminant plots -------------------------------------------------
+## SKR
+F2_SKR_data = F2_data %>% 
+  filter(Lake == 'SKR')
+
+SKR_traits = cbind(F2_SKR_data$jaw_length, 
+                   F2_SKR_data$fbar_23_24, 
+                   F2_SKR_data$fbar_8_24, 
+                   F2_SKR_data$fbar_8_27, 
+                   F2_SKR_data$fbar_23_27, 
+                   F2_SKR_data$fbar_25_26, 
+                   F2_SKR_data$body_width, 
+                   F2_SKR_data$caudal1_14_18, 
+                   F2_SKR_data$caudal2_15_17, 
+                   F2_SKR_data$body_length,
+                   F2_SKR_data$head_depth, 
+                   F2_SKR_data$jaw_2_6, 
+                   F2_SKR_data$lm_6_12, 
+                   F2_SKR_data$lm_12_13, 
+                   F2_SKR_data$lm_13_14, 
+                   F2_SKR_data$lm_14_15, 
+                   F2_SKR_data$lm_6_21, 
+                   F2_SKR_data$lm_20_21, 
+                   F2_SKR_data$lm_21_13, 
+                   F2_SKR_data$lm_20_13, 
+                   F2_SKR_data$lm_12_19, 
+                   F2_SKR_data$lm_13_19, 
+                   F2_SKR_data$lm_19_18, 
+                   F2_SKR_data$lm_18_17, 
+                   F2_SKR_data$lm_1_23, 
+                   F2_SKR_data$lm_23_2)
+
+SKR_manova = manova(SKR_traits ~ Morph*Full_temp, 
+                    data = F2_SKR_data)
+summary(SKR_manova)
+
+effectsize::eta_squared(SKR_manova)
+
+SKR_posthoc_1 = lda(F2_SKR_data$Morph ~ SKR_traits, 
+                    CV=F)
+
+## tells us how well the analysis did without a cross validation
+table = table(F2_SKR_data$Morph, 
+              predict(SKR_posthoc_1)$class)
+sum(table[row(table) == col(table)])/sum(table)
+
+#leave one out cross validation
+## NEED TO ADD CV = TRUE IN THE LDFA
+CV = lda(F2_SKR_data$Morph ~ SKR_traits, 
+         CV=T)
+CV = table(F2_SKR_data$Morph, 
+           CV$class)
+##Calculate the re-substitution error for the cross validation
+sum(CV[row(CV) == col(CV)])/sum(CV)
+
+SKR_morph_lda = data.frame(F2_SKR_data[, "Morph"], 
+                           lda = predict(SKR_posthoc_1)$x)
+SKR_lda_morph = ggplot(SKR_morph_lda) + 
+  geom_density(aes(x = LD1, 
+                   colour = Morph, 
+                   fill = Morph), 
+               size = 4)+
+  # geom_hline(yintercept = 0, 
+  # col = 'black')+
+  # geom_vline(xintercept = 0, 
+  # col = 'black')+
+  scale_color_manual(values = Morph_col_pal)+
+  labs(x = 'LD1', 
+       y = 'Density')+
+  # annotate("text", 
+  #          x = -2.5, 
+  #          y = 0.4, 
+  #          label= "78.0% discrimination")+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12), 
+        legend.position = 'none')
+
+SKR_posthoc_2 = lda(F2_SKR_data$Full_temp ~ SKR_traits, 
+                    CV=F)
+
+## tells us how well the analysis did without a cross validation
+table = table(F2_SKR_data$Full_temp, 
+              predict(SKR_posthoc_2)$class)
+sum(table[row(table) == col(table)])/sum(table)
+
+#leave one out cross validation
+## NEED TO ADD CV = TRUE IN THE LDFA
+CV = lda(F2_SKR_data$Full_temp ~ SKR_traits, 
+         CV=T)
+CV = table(F2_SKR_data$Full_temp, 
+           CV$class)
+##Calculate the re-substitution error for the cross validation
+sum(CV[row(CV) == col(CV)])/sum(CV)
+
+
+
+SKR_ld_temp = data.frame(F2_SKR_data[, "Full_temp"], 
+                         lda = predict(SKR_posthoc_2)$x)
+SKR_lda_temp = ggplot(SKR_ld_temp) + 
+  geom_point(aes(x = lda.LD1, 
+                 y = lda.LD2, 
+                 colour = Full_temp), 
+             size = 4)+
+  geom_hline(yintercept = 0, 
+             col = 'black')+
+  geom_vline(xintercept = 0, 
+             col = 'black')+
+  scale_color_manual(values = temp_col_pal)+
+  labs(x = 'LD1 (81.9%)', 
+       y = 'LD2 (10.3%)')+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12))
+
+SKR_LDA_PLOT = SKR_lda_morph|SKR_lda_temp
+
+
+# GTS_CSWY Discriminant plots -------------------------------------------------
+## GTS_CSWY
+F2_GTS_CSWY_data = F2_data %>% 
+  filter(Lake %in% c('GTS', 
+                     'CSWY'))
+
+GTS_CSWY_traits = cbind(F2_GTS_CSWY_data$jaw_length, 
+                   F2_GTS_CSWY_data$fbar_23_24, 
+                   F2_GTS_CSWY_data$fbar_8_24, 
+                   F2_GTS_CSWY_data$fbar_8_27, 
+                   F2_GTS_CSWY_data$fbar_23_27, 
+                   F2_GTS_CSWY_data$fbar_25_26, 
+                   F2_GTS_CSWY_data$body_width, 
+                   F2_GTS_CSWY_data$caudal1_14_18, 
+                   F2_GTS_CSWY_data$caudal2_15_17, 
+                   F2_GTS_CSWY_data$body_length,
+                   F2_GTS_CSWY_data$head_depth, 
+                   F2_GTS_CSWY_data$jaw_2_6, 
+                   F2_GTS_CSWY_data$lm_6_12, 
+                   F2_GTS_CSWY_data$lm_12_13, 
+                   F2_GTS_CSWY_data$lm_13_14, 
+                   F2_GTS_CSWY_data$lm_14_15, 
+                   F2_GTS_CSWY_data$lm_6_21, 
+                   F2_GTS_CSWY_data$lm_20_21, 
+                   F2_GTS_CSWY_data$lm_21_13, 
+                   F2_GTS_CSWY_data$lm_20_13, 
+                   F2_GTS_CSWY_data$lm_12_19, 
+                   F2_GTS_CSWY_data$lm_13_19, 
+                   F2_GTS_CSWY_data$lm_19_18, 
+                   F2_GTS_CSWY_data$lm_18_17, 
+                   F2_GTS_CSWY_data$lm_1_23, 
+                   F2_GTS_CSWY_data$lm_23_2)
+
+GTS_CSWY_manova = manova(GTS_CSWY_traits ~ Morph*Full_temp, 
+                    data = F2_GTS_CSWY_data)
+summary(GTS_CSWY_manova)
+
+effectsize::eta_squared(GTS_CSWY_manova)
+
+GTS_CSWY_posthoc_1 = lda(F2_GTS_CSWY_data$Morph ~ GTS_CSWY_traits, 
+                    CV=F)
+
+## tells us how well the analysis did without a cross validation
+table = table(F2_GTS_CSWY_data$Morph, 
+              predict(GTS_CSWY_posthoc_1)$class)
+sum(table[row(table) == col(table)])/sum(table)
+
+#leave one out cross validation
+## NEED TO ADD CV = TRUE IN THE LDFA
+CV = lda(F2_GTS_CSWY_data$Morph ~ GTS_CSWY_traits, 
+         CV=T)
+CV = table(F2_GTS_CSWY_data$Morph, 
+           CV$class)
+##Calculate the re-substitution error for the cross validation
+sum(CV[row(CV) == col(CV)])/sum(CV)
+
+GTS_CSWY_morph_lda = data.frame(F2_GTS_CSWY_data[, "Morph"], 
+                           lda = predict(GTS_CSWY_posthoc_1)$x)
+GTS_CSWY_lda_morph = ggplot(GTS_CSWY_morph_lda) + 
+  geom_density(aes(x = LD1, 
+                   colour = Morph, 
+                   fill = Morph), 
+               size = 4)+
+  # geom_hline(yintercept = 0, 
+  # col = 'black')+
+  # geom_vline(xintercept = 0, 
+  # col = 'black')+
+  scale_color_manual(values = Morph_col_pal)+
+  labs(x = 'LD1', 
+       y = 'Density')+
+  # annotate("text", 
+  #          x = -2.5, 
+  #          y = 0.4, 
+  #          label= "84.8% discrimination")+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12), 
+        legend.position = 'none')
+
+GTS_CSWY_posthoc_2 = lda(F2_GTS_CSWY_data$Full_temp ~ GTS_CSWY_traits, 
+                    CV=F)
+
+## tells us how well the analysis did without a cross validation
+table = table(F2_GTS_CSWY_data$Full_temp, 
+              predict(GTS_CSWY_posthoc_2)$class)
+sum(table[row(table) == col(table)])/sum(table)
+
+#leave one out cross validation
+## NEED TO ADD CV = TRUE IN THE LDFA
+CV = lda(F2_GTS_CSWY_data$Full_temp ~ GTS_CSWY_traits, 
+         CV=T)
+CV = table(F2_GTS_CSWY_data$Full_temp, 
+           CV$class)
+##Calculate the re-substitution error for the cross validation
+sum(CV[row(CV) == col(CV)])/sum(CV)
+
+
+
+GTS_CSWY_ld_temp = data.frame(F2_GTS_CSWY_data[, "Full_temp"], 
+                         lda = predict(GTS_CSWY_posthoc_2)$x)
+GTS_CSWY_lda_temp = ggplot(GTS_CSWY_ld_temp) + 
+  geom_point(aes(x = lda.LD1, 
+                 y = lda.LD2, 
+                 colour = Full_temp), 
+             size = 4)+
+  geom_hline(yintercept = 0, 
+             col = 'black')+
+  geom_vline(xintercept = 0, 
+             col = 'black')+
+  scale_color_manual(values = temp_col_pal)+
+  labs(x = 'LD1 (83.8%)', 
+       y = 'LD2 (10.8%)')+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12))
+
+GTS_CSWY_LDA_PLOT = GTS_CSWY_lda_morph|GTS_CSWY_lda_temp
+
+
+# LDA PLOT COMBINED -------------------------------------------------------
+
+Big_Plot_pappi = ASHN_LDA_PLOT/MYV_LDA_PLOT/SKR_LDA_PLOT/GTS_CSWY_LDA_PLOT
