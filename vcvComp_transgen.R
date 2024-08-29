@@ -11,6 +11,10 @@ setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/Updated Landmarks/')
 
 library(geomorph)
 library(vcvComp)
+library(effectsize)
+library(MASS)
+library(tidyverse)
+library(patchwork)
 
 theme_set(theme_bw())
 # Metadata ----------------------------------------------------------------
@@ -419,12 +423,11 @@ Morph_temp_manova = manova(Traits ~ Morph*Full_temp,
 
 summary(Morph_temp_manova)
 
-library(effectsize)
+
 effectsize::eta_squared(temp_manova)
 effectsize::eta_squared(full_temp_manova)
 effectsize::eta_squared(Morph_temp_manova)
 
-library(MASS)
 post_hoc_1 = lda(F2_data$Lake_morph ~ Traits, 
                  CV=F)
 post_hoc_1
@@ -635,6 +638,7 @@ sum(CV[row(CV) == col(CV)])/sum(CV)
 
 
 ASHN_ld_temp = data.frame(F2_ASHN_data[, "Full_temp"], 
+                          F2_ASHN_data[,"Morph"],
                       lda = predict(ASHN_posthoc_2)$x)
 ASHN_lda_temp = ggplot(ASHN_ld_temp) + 
   geom_point(aes(x = lda.LD1, 
