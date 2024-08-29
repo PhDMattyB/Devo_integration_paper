@@ -765,13 +765,14 @@ sum(CV[row(CV) == col(CV)])/sum(CV)
 
 
 
-MYV_ld_temp = data.frame(F2_MYV_data[, "Full_temp"], 
+MYV_ld_temp = data.frame(F2_MYV_data[, "Full_temp"],
+                         F2_MYV_data[, 'Morph'],
                           lda = predict(MYV_posthoc_2)$x)
 MYV_lda_temp = ggplot(MYV_ld_temp) + 
   geom_point(aes(x = lda.LD1, 
                  y = lda.LD2, 
                  colour = Full_temp), 
-             size = 3)+
+             size = 3,)+
   xlim(min = -5, 
        max = 5)+
   ylim(min = -5, 
@@ -891,7 +892,8 @@ sum(CV[row(CV) == col(CV)])/sum(CV)
 
 
 
-SKR_ld_temp = data.frame(F2_SKR_data[, "Full_temp"], 
+SKR_ld_temp = data.frame(F2_SKR_data[, "Full_temp"],
+                         F2_SKR_data[, 'Morph'],
                          lda = predict(SKR_posthoc_2)$x)
 SKR_lda_temp = ggplot(SKR_ld_temp) + 
   geom_point(aes(x = lda.LD1, 
@@ -1020,6 +1022,7 @@ sum(CV[row(CV) == col(CV)])/sum(CV)
 
 
 GTS_CSWY_ld_temp = data.frame(F2_GTS_CSWY_data[, "Full_temp"], 
+                              F2_GTS_CSWY_data[, 'Morph'],
                          lda = predict(GTS_CSWY_posthoc_2)$x)
 GTS_CSWY_lda_temp = ggplot(GTS_CSWY_ld_temp) + 
   geom_point(aes(x = lda.LD1, 
