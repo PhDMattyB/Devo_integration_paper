@@ -43,3 +43,10 @@ GTS_CSWY_compare = compare.ZVrel(vrel_wild_lmkdist$CSWY,
                                  vrel_wild_lmkdist$GTS)
 
 
+# F1 effect mag integration -----------------------------------------------
+
+
+
+# F2 effect mag integration -----------------------------------------------
+
+
