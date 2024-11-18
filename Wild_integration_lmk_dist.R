@@ -15,12 +15,25 @@ library(geomorph)
 wild_lmk_dist = read_csv('Wild_Univariate_traits.csv')
 
 lmk_dist = wild_lmk_dist %>% 
-  select(2:28)
+  select(2:29)
 
 # lmk_dist = geomorph.data.frame(lmk_dist)
+test_mat = as.matrix(lmk_dist)
+test_array = arrayspecs(test_mat, 14, 2)
+
+test_sub = coords.subset(test_array, 
+              wild_lmk_dist$Lake_morph)
+
+
+vrel_wild_coords = Map(function(x) integration.Vrel(x), 
+                       test_sub)
+
+ASHN_compare = compare.ZVrel(vrel_wild_coords$ASHNC, 
+                             vrel_wild_coords$ASHNW)
+
 
 ## data needs to be a 3d array to subset the data
-arrayspecs(wild_univariate_traits, 13, 2)
+test_array = arrayspecs(wild_univariate_traits, 26, 1)
 
 ## the data going in needs to be a 3d array
 coords.subset(wild_univariate_traits, 
