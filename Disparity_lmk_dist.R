@@ -36,3 +36,55 @@ wild_pval = Wild_disparity$PV.dist.Pval
 wild_disparity_dist = Wild_disparity$PV.dist
 wild_proc_var = Wild_disparity$Procrustes.var
 
+
+# F2 uncorrected data -----------------------------------------------------
+
+F2_raw_lmk_dist = read_csv('F2_Original_univariate_traits.csv')
+F2_raw_dist = F2_raw_lmk_dist %>% 
+  select(2:29)
+
+F2_raw_mat = as.matrix(F2_raw_dist)
+
+F2_raw_disparity = morphol.disparity(F2_raw_mat ~ 1,
+                                   groups = ~Lake_morph,
+                                   data = F2_raw_lmk_dist,
+                                   iter = 999)
+
+F2_raw_pval = F2_raw_disparity$PV.dist.Pval
+F2_raw_disparity_dist = F2_raw_disparity$PV.dist
+F2_raw_proc_var = F2_raw_disparity$Procrustes.var
+
+# TGP effect on disparity --------------------------------------------------
+F1_lmk_dist = read_csv('F1_Plasticity_Corrected.csv')
+F1_dist = F1_lmk_dist %>% 
+  select(2:29)
+
+TGP_mat = as.matrix(F1_dist)
+
+TGP_disparity = morphol.disparity(TGP_mat ~ 1,
+                                     groups = ~Lake_morph,
+                                     data = F2_raw_lmk_dist,
+                                     iter = 999)
+
+TGP_pval = TGP_disparity$PV.dist.Pval
+TGP_disparity_dist = TGP_disparity$PV.dist
+TGP_proc_var = TGP_disparity$Procrustes.var
+
+
+# WGP effect on disparity -------------------------------------------------
+F2_lmk_dist = read_csv('F2_Corrected_F2_temp_only.csv')
+F2_dist = F2_lmk_dist %>% 
+  select(2:29)
+
+WGP_mat = as.matrix(F2_dist)
+
+WGP_disparity = morphol.disparity(WGP_mat ~ 1,
+                                  groups = ~Lake_morph,
+                                  data = F2_raw_lmk_dist,
+                                  iter = 999)
+
+WGP_pval = WGP_disparity$PV.dist.Pval
+WGP_disparity_dist = WGP_disparity$PV.dist
+WGP_proc_var = WGP_disparity$Procrustes.var
+
+
