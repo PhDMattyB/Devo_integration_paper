@@ -17,17 +17,14 @@ wild_lmk_dist = read_csv('Wild_Univariate_traits.csv')
 lmk_dist = wild_lmk_dist %>% 
   select(2:28)
 
-test = as.matrix(lmk_dist)
+# lmk_dist = geomorph.data.frame(lmk_dist)
 
-arrayspecs(test, 27, 2)
+## data needs to be a 3d array to subset the data
+arrayspecs(wild_univariate_traits, 13, 2)
 
-plethodon$land    #original data in the form of 3D array
-
-two.d.array(plethodon$land)   
-
-x2 = matrix(rnorm(18), ncol = 2) 
-arrayspecs(x2, 3, 2)
-
+## the data going in needs to be a 3d array
+coords.subset(wild_univariate_traits, 
+              wild_lmk_dist$Lake_morph)
 
 coord_sub = coords.subset(lmk_dist, 
                           wild_lmk_dist$Lake_morph)
