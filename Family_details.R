@@ -25,5 +25,8 @@ F1_lmk_dist %>%
            Temp, 
            Exp_unit) %>% 
   summarize(n = n()) %>% 
+  arrange(Ecotype, 
+          Temp, 
+          Exp_unit) %>% 
   View()
 
