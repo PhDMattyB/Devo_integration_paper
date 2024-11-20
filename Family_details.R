@@ -14,5 +14,16 @@ library(tidyverse)
 F1_lmk_dist = read_csv('F1_Plasticity_Corrected.csv')
 
 F1_lmk_dist %>% 
-  select(individualID)
+  select(individualID) %>% 
+  separate(col = individualID, 
+           into = c('Ecotype', 
+                    'Temp', 
+                    'Exp_unit', 
+                    'Individual_num'), 
+           sep = '_') %>% 
+  group_by(Ecotype, 
+           Temp, 
+           Exp_unit) %>% 
+  summarize(n = n()) %>% 
+  View()
 
