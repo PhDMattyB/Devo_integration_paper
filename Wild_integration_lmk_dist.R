@@ -43,6 +43,19 @@ GTS_CSWY_compare_wild = compare.ZVrel(vrel_wild_lmkdist$CSWY,
                                  vrel_wild_lmkdist$GTS)
 
 
+ASHN_compare_wild$sample.Z.var
+MYV_compare_wild$sample.Z.var
+
+Wild_vrel_compare = compare.ZVrel(vrel_wild_lmkdist$ASHNC, 
+              vrel_wild_lmkdist$ASHNW, 
+              vrel_wild_lmkdist$MYVC, 
+              vrel_wild_lmkdist$MYVW, 
+              vrel_wild_lmkdist$SKRC, 
+              vrel_wild_lmkdist$SKRW, 
+              vrel_wild_lmkdist$CSWY, 
+              vrel_wild_lmkdist$GTS)
+
+
 # F2 Uncorrected integration ----------------------------------------------
 
 
