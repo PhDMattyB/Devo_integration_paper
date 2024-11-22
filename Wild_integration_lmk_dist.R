@@ -140,7 +140,8 @@ ggplot(Wild_int_data,
   scale_fill_viridis(discrete=FALSE, 
                      # direction = -1, 
                      option = 'D') +
-  labs(title = 'A) Grandpartental (wild) generation')+
+  labs(title = 'A) Grandpartental (wild) generation', 
+       fill = 'Pairwise z-score')+
   # theme_ipsum()+
   theme_bw()+
   theme(panel.grid = element_blank(), 
@@ -149,7 +150,7 @@ ggplot(Wild_int_data,
         axis.ticks = element_blank(), 
         panel.border = element_blank(), 
         # legend.justification = c('left', 'top'), 
-        legend.position = c(.05, .95),
+        legend.position = c(.05, 0.98),
         legend.justification = c("left", "top"),
         legend.box.just = "left")
 
