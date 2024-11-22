@@ -90,9 +90,21 @@ Wild_int_data = bind_cols(wild_zscore,
                     'Ecotype2'), 
            sep = '[$]') %>% 
   select(-trash, 
-         -trash2)
+         -trash2)%>% 
+  mutate(across(where(is.numeric),
+                ~ round(., 3)))
 
 
+ggplot(Wild_int_data, 
+       aes(Ecotype1, 
+           Ecotype2, 
+           fill= pvalue)) + 
+  geom_tile() +
+  geom_text(aes(label = zscore), 
+            color = "black", 
+            size = 2)+
+  scale_fill_viridis(discrete=FALSE) +
+  theme_ipsum()
 # F2 Uncorrected integration ----------------------------------------------
 
 
