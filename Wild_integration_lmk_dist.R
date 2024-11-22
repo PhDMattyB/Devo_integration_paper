@@ -73,18 +73,24 @@ Wild_pval = Wild_vrel_compare$pairwise.P %>%
   melt(id.vars = c('rowname')) %>% 
   as_tibble()
 
-bind_cols(wild_zscore,
+Wild_int_data = bind_cols(wild_zscore,
           Wild_pval) %>% 
   select(1:3, 
          6) %>% 
   rename(Ecotype1 = 1, 
-         Ecotyp2 = 2, 
+         Ecotype2 = 2, 
          zscore = 3, 
          pvalue = 4) %>% 
   separate(col = Ecotype1, 
            into = c('trash', 
                     'Ecotype1'), 
-           sep = '$')
+           sep = "[$]") %>% 
+  separate(col = Ecotype2, 
+           into = c('trash2', 
+                    'Ecotype2'), 
+           sep = '[$]') %>% 
+  select(-trash, 
+         -trash2)
 
 
 # F2 Uncorrected integration ----------------------------------------------
