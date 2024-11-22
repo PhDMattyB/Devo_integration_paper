@@ -140,13 +140,19 @@ ggplot(Wild_int_data,
   scale_fill_viridis(discrete=FALSE, 
                      # direction = -1, 
                      option = 'D') +
+  labs(title = 'A) Grandpartental (wild) generation')+
   # theme_ipsum()+
   theme_bw()+
   theme(panel.grid = element_blank(), 
         axis.title = element_blank(), 
         axis.text = element_text(size = 12), 
         axis.ticks = element_blank(), 
-        panel.border = element_blank())
+        panel.border = element_blank(), 
+        # legend.justification = c('left', 'top'), 
+        legend.position = c(.05, .95),
+        legend.justification = c("left", "top"),
+        legend.box.just = "left")
+
 
 # F2 Uncorrected integration ----------------------------------------------
 
