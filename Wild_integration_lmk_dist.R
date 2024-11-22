@@ -7,12 +7,24 @@
 ##
 ##############################
 
+
+# functions ---------------------------------------------------------------
+get_upper_tri <- function(cormat){
+  cormat[lower.tri(cormat)]<- NA
+  return(cormat)
+}
+
+
+# start -------------------------------------------------------------------
+
+
 setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/Updated Landmarks/')
 
 library(tidyverse)
 library(geomorph)
 library(reshape2)
-
+library(viridis)
+library(hrbrthemes)
 
 # wild traits mag integration ---------------------------------------------
 
@@ -43,10 +55,6 @@ SKR_compare_wild = compare.ZVrel(vrel_wild_lmkdist$SKRC,
 GTS_CSWY_compare_wild = compare.ZVrel(vrel_wild_lmkdist$CSWY, 
                                  vrel_wild_lmkdist$GTS)
 
-
-ASHN_compare_wild$sample.Z.var
-MYV_compare_wild$sample.Z.var
-
 Wild_vrel_compare = compare.ZVrel(vrel_wild_lmkdist$ASHNC, 
               vrel_wild_lmkdist$ASHNW, 
               vrel_wild_lmkdist$MYVC, 
@@ -56,7 +64,7 @@ Wild_vrel_compare = compare.ZVrel(vrel_wild_lmkdist$ASHNC,
               vrel_wild_lmkdist$CSWY, 
               vrel_wild_lmkdist$GTS)
 
-Wild_vrel_compare$pairwise.z
+# Wild_vrel_compare$pairwise.z
 
 wild_zscore = Wild_vrel_compare$pairwise.z %>% 
   as.data.frame() %>% 
@@ -92,19 +100,54 @@ Wild_int_data = bind_cols(wild_zscore,
   select(-trash, 
          -trash2)%>% 
   mutate(across(where(is.numeric),
-                ~ round(., 3)))
+                ~ round(., 3))) 
 
+# Wild_int_data %>% 
+#   write_csv('Wild_integration_metric.csv')
+
+Wild_int_data = read_csv('Wild_integration_metric.csv')
+
+Wild_int_data$Ecotype1 = factor(Wild_int_data$Ecotype1, 
+                                levels = c('ASHNC', 
+                                            'ASHNW', 
+                                            'MYVC', 
+                                            'MYVW', 
+                                            'SKRC', 
+                                            'SKRW', 
+                                            'CSWY', 
+                                            'GTS'))
+
+
+Wild_int_data$Ecotype2 = factor(Wild_int_data$Ecotype2, 
+                                levels = c('ASHNC', 
+                                           'ASHNW', 
+                                           'MYVC', 
+                                           'MYVW', 
+                                           'SKRC', 
+                                           'SKRW', 
+                                           'CSWY', 
+                                           'GTS'))
 
 ggplot(Wild_int_data, 
        aes(Ecotype1, 
            Ecotype2, 
-           fill= pvalue)) + 
-  geom_tile() +
-  geom_text(aes(label = zscore), 
+           fill= zscore)) + 
+  geom_tile(col = 'white') +
+  geom_text(aes(label = pvalue), 
             color = "black", 
-            size = 2)+
-  scale_fill_viridis(discrete=FALSE) +
-  theme_ipsum()
+            size = 2, 
+            fontface = 'bold')+
+  scale_fill_viridis(discrete=FALSE, 
+                     # direction = -1, 
+                     option = 'D') +
+  # theme_ipsum()+
+  theme_bw()+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 12), 
+        axis.ticks = element_blank(), 
+        panel.border = element_blank())
+
 # F2 Uncorrected integration ----------------------------------------------
 
 
