@@ -11,6 +11,7 @@ setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/Updated Landmarks/')
 
 library(tidyverse)
 library(geomorph)
+library(reshape2)
 
 
 # wild traits mag integration ---------------------------------------------
@@ -54,6 +55,36 @@ Wild_vrel_compare = compare.ZVrel(vrel_wild_lmkdist$ASHNC,
               vrel_wild_lmkdist$SKRW, 
               vrel_wild_lmkdist$CSWY, 
               vrel_wild_lmkdist$GTS)
+
+Wild_vrel_compare$pairwise.z
+
+wild_zscore = Wild_vrel_compare$pairwise.z %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+
+Wild_pval = Wild_vrel_compare$pairwise.P %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+bind_cols(wild_zscore,
+          Wild_pval) %>% 
+  select(1:3, 
+         6) %>% 
+  rename(Ecotype1 = 1, 
+         Ecotyp2 = 2, 
+         zscore = 3, 
+         pvalue = 4) %>% 
+  separate(col = Ecotype1, 
+           into = c('trash', 
+                    'Ecotype1'), 
+           sep = '$')
 
 
 # F2 Uncorrected integration ----------------------------------------------
