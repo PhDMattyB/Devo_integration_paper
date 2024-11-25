@@ -66,6 +66,44 @@ Wild_vrel_compare = compare.ZVrel(vrel_wild_lmkdist$ASHNC,
 
 # Wild_vrel_compare$pairwise.z
 
+wild_zscore = Wild_vrel_compare$pairwise.z %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+
+Wild_pval = Wild_vrel_compare$pairwise.P %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+Wild_int_data = bind_cols(wild_zscore,
+                          Wild_pval) %>% 
+  select(1:3, 
+         6) %>% 
+  rename(Ecotype1 = 1, 
+         Ecotype2 = 2, 
+         zscore = 3, 
+         pvalue = 4) %>% 
+  separate(col = Ecotype1, 
+           into = c('trash', 
+                    'Ecotype1'), 
+           sep = "[$]") %>% 
+  separate(col = Ecotype2, 
+           into = c('trash2', 
+                    'Ecotype2'), 
+           sep = '[$]') %>% 
+  select(-trash, 
+         -trash2)%>% 
+  mutate(across(where(is.numeric),
+                ~ round(., 3))) 
+
+# Wild_int_data %>% 
+#   write_csv('Wild_integration_metric.csv')
 
 
 # F2 Uncorrected integration ----------------------------------------------
@@ -161,44 +199,6 @@ GTS_CSWY_compare_f2 = compare.ZVrel(vrel_F2_lmkdist$CSWY,
 
 # Magnitude integration graphs --------------------------------------------
 
-wild_zscore = Wild_vrel_compare$pairwise.z %>% 
-  as.data.frame() %>% 
-  rownames_to_column() %>% 
-  # as_tibble() %>% 
-  melt(id.vars = c('rowname')) %>% 
-  as_tibble()
-
-
-Wild_pval = Wild_vrel_compare$pairwise.P %>% 
-  as.data.frame() %>% 
-  rownames_to_column() %>% 
-  # as_tibble() %>% 
-  melt(id.vars = c('rowname')) %>% 
-  as_tibble()
-
-Wild_int_data = bind_cols(wild_zscore,
-                          Wild_pval) %>% 
-  select(1:3, 
-         6) %>% 
-  rename(Ecotype1 = 1, 
-         Ecotype2 = 2, 
-         zscore = 3, 
-         pvalue = 4) %>% 
-  separate(col = Ecotype1, 
-           into = c('trash', 
-                    'Ecotype1'), 
-           sep = "[$]") %>% 
-  separate(col = Ecotype2, 
-           into = c('trash2', 
-                    'Ecotype2'), 
-           sep = '[$]') %>% 
-  select(-trash, 
-         -trash2)%>% 
-  mutate(across(where(is.numeric),
-                ~ round(., 3))) 
-
-# Wild_int_data %>% 
-#   write_csv('Wild_integration_metric.csv')
 
 Wild_int_data = read_csv('Wild_integration_metric.csv')
 
