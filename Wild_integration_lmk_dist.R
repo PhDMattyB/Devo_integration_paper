@@ -66,105 +66,6 @@ Wild_vrel_compare = compare.ZVrel(vrel_wild_lmkdist$ASHNC,
 
 # Wild_vrel_compare$pairwise.z
 
-wild_zscore = Wild_vrel_compare$pairwise.z %>% 
-  as.data.frame() %>% 
-  rownames_to_column() %>% 
-  # as_tibble() %>% 
-  melt(id.vars = c('rowname')) %>% 
-  as_tibble()
-
-
-Wild_pval = Wild_vrel_compare$pairwise.P %>% 
-  as.data.frame() %>% 
-  rownames_to_column() %>% 
-  # as_tibble() %>% 
-  melt(id.vars = c('rowname')) %>% 
-  as_tibble()
-
-Wild_int_data = bind_cols(wild_zscore,
-          Wild_pval) %>% 
-  select(1:3, 
-         6) %>% 
-  rename(Ecotype1 = 1, 
-         Ecotype2 = 2, 
-         zscore = 3, 
-         pvalue = 4) %>% 
-  separate(col = Ecotype1, 
-           into = c('trash', 
-                    'Ecotype1'), 
-           sep = "[$]") %>% 
-  separate(col = Ecotype2, 
-           into = c('trash2', 
-                    'Ecotype2'), 
-           sep = '[$]') %>% 
-  select(-trash, 
-         -trash2)%>% 
-  mutate(across(where(is.numeric),
-                ~ round(., 3))) 
-
-# Wild_int_data %>% 
-#   write_csv('Wild_integration_metric.csv')
-
-Wild_int_data = read_csv('Wild_integration_metric.csv')
-
-Wild_int_data$Ecotype1 = factor(Wild_int_data$Ecotype1, 
-                                levels = c('ASHNC', 
-                                            'ASHNW', 
-                                            'MYVC', 
-                                            'MYVW', 
-                                            'SKRC', 
-                                            'SKRW', 
-                                            'CSWY', 
-                                            'GTS'))
-
-
-Wild_int_data$Ecotype2 = factor(Wild_int_data$Ecotype2, 
-                                levels = c('ASHNC', 
-                                           'ASHNW', 
-                                           'MYVC', 
-                                           'MYVW', 
-                                           'SKRC', 
-                                           'SKRW', 
-                                           'CSWY', 
-                                           'GTS'))
-
-
-Wild_int_data$stars = cut(Wild_int_data$pvalue, 
-                    breaks = c(-Inf, 
-                               0.001, 
-                               0.01,
-                               0.05, 
-                               Inf), 
-                    label=c("***", "**", "*", ""))
-
-ggplot(Wild_int_data, 
-       aes(Ecotype1, 
-           Ecotype2, 
-           fill= zscore)) + 
-  geom_tile(col = 'white') +
-  # geom_text(aes(label = zscore),
-  #           color = "black",
-  #           size = 2,
-  #           fontface = 'bold')+
-  geom_text(aes(label=stars), 
-            color="black", 
-            size=5) + 
-  scale_fill_viridis(discrete=FALSE, 
-                     # direction = -1, 
-                     option = 'D') +
-  labs(title = 'A) Grandpartental (wild) generation', 
-       fill = 'Pairwise z-score')+
-  # theme_ipsum()+
-  theme_bw()+
-  theme(panel.grid = element_blank(), 
-        axis.title = element_blank(), 
-        axis.text = element_text(size = 12), 
-        axis.ticks = element_blank(), 
-        panel.border = element_blank(), 
-        # legend.justification = c('left', 'top'), 
-        legend.position = c(.05, 0.98),
-        legend.justification = c("left", "top"),
-        legend.box.just = "left")
 
 
 # F2 Uncorrected integration ----------------------------------------------
@@ -256,4 +157,107 @@ GTS_CSWY_compare_f2 = compare.ZVrel(vrel_F2_lmkdist$CSWY,
 
 
 
+
+
+# Magnitude integration graphs --------------------------------------------
+
+wild_zscore = Wild_vrel_compare$pairwise.z %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+
+Wild_pval = Wild_vrel_compare$pairwise.P %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+Wild_int_data = bind_cols(wild_zscore,
+                          Wild_pval) %>% 
+  select(1:3, 
+         6) %>% 
+  rename(Ecotype1 = 1, 
+         Ecotype2 = 2, 
+         zscore = 3, 
+         pvalue = 4) %>% 
+  separate(col = Ecotype1, 
+           into = c('trash', 
+                    'Ecotype1'), 
+           sep = "[$]") %>% 
+  separate(col = Ecotype2, 
+           into = c('trash2', 
+                    'Ecotype2'), 
+           sep = '[$]') %>% 
+  select(-trash, 
+         -trash2)%>% 
+  mutate(across(where(is.numeric),
+                ~ round(., 3))) 
+
+# Wild_int_data %>% 
+#   write_csv('Wild_integration_metric.csv')
+
+Wild_int_data = read_csv('Wild_integration_metric.csv')
+
+Wild_int_data$Ecotype1 = factor(Wild_int_data$Ecotype1, 
+                                levels = c('ASHNC', 
+                                           'ASHNW', 
+                                           'MYVC', 
+                                           'MYVW', 
+                                           'SKRC', 
+                                           'SKRW', 
+                                           'CSWY', 
+                                           'GTS'))
+
+
+Wild_int_data$Ecotype2 = factor(Wild_int_data$Ecotype2, 
+                                levels = c('ASHNC', 
+                                           'ASHNW', 
+                                           'MYVC', 
+                                           'MYVW', 
+                                           'SKRC', 
+                                           'SKRW', 
+                                           'CSWY', 
+                                           'GTS'))
+
+
+Wild_int_data$stars = cut(Wild_int_data$pvalue, 
+                          breaks = c(-Inf, 
+                                     0.001, 
+                                     0.01,
+                                     0.05, 
+                                     Inf), 
+                          label=c("***", "**", "*", ""))
+
+Wild_int_plot = ggplot(Wild_int_data, 
+                       aes(Ecotype1, 
+                           Ecotype2, 
+                           fill= zscore)) + 
+  geom_tile(col = 'white') +
+  # geom_text(aes(label = zscore),
+  #           color = "black",
+  #           size = 2,
+  #           fontface = 'bold')+
+  geom_text(aes(label=stars), 
+            color="black", 
+            size=5) + 
+  scale_fill_viridis(discrete=FALSE, 
+                     # direction = -1, 
+                     option = 'D') +
+  labs(title = 'A) Grandpartental (wild) generation', 
+       fill = 'Pairwise z-score')+
+  # theme_ipsum()+
+  theme_bw()+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 12), 
+        axis.ticks = element_blank(), 
+        panel.border = element_blank(), 
+        # legend.justification = c('left', 'top'), 
+        legend.position = c(.05, 0.98),
+        legend.justification = c("left", "top"),
+        legend.box.just = "left")
 
