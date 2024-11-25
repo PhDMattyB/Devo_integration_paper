@@ -440,3 +440,86 @@ ggsave('Magnitude_integration_figure.tiff',
        units = 'cm', 
        width = 30, 
        height = 15)
+
+
+
+# Temp effects ------------------------------------------------------------
+temps = F2_lmk_dist$Ecotype_Pair_Full_Temp %>% 
+  as_tibble() %>% 
+  rename(Eco_full_temp = value)
+
+
+
+F2_raw_lmk_dist = read_csv('F2_Original_univariate_traits.csv') %>% 
+  bind_cols(., temps)
+F2_raw_dist = F2_raw_lmk_dist %>% 
+  select(2:29)
+
+# lmk_dist = geomorph.data.frame(lmk_dist)
+F2_raw_lmk_matrix = as.matrix(F2_raw_dist)
+F2_raw_lmk_array = arrayspecs(F2_raw_lmk_matrix, 14, 2)
+
+F2_raw_lmk_sub = coords.subset(F2_raw_lmk_array, 
+                               F2_raw_lmk_dist$Eco_full_temp)
+
+
+vrel_F2_raw_lmkdist = Map(function(x) integration.Vrel(x), 
+                          F2_raw_lmk_sub)
+
+F2_raw_vrel_temps = compare.ZVrel(vrel_F2_raw_lmkdist$`ASHN_12@12`, 
+                                  vrel_F2_raw_lmkdist$`ASHN_12@18`,
+                                  vrel_F2_raw_lmkdist$`ASHN_18@12`, 
+                                  vrel_F2_raw_lmkdist$`ASHN_18@18`, 
+                                  vrel_F2_raw_lmkdist$`MYV_12@12`, 
+                                  vrel_F2_raw_lmkdist$`MYV_12@18`, 
+                                  vrel_F2_raw_lmkdist$`MYV_18@12`, 
+                                  vrel_F2_raw_lmkdist$`MYV_18@18`, 
+                                  vrel_F2_raw_lmkdist$`SKR_12@12`, 
+                                  vrel_F2_raw_lmkdist$`SKR_12@18`, 
+                                  vrel_F2_raw_lmkdist$`SKR_18@12`, 
+                                  vrel_F2_raw_lmkdist$`SKR_18@18`, 
+                                  vrel_F2_raw_lmkdist$`GTS_CSWY_12@12`, 
+                                  vrel_F2_raw_lmkdist$`GTS_CSWY_12@18`, 
+                                  vrel_F2_raw_lmkdist$`GTS_CSWY_18@12`, 
+                                  vrel_F2_raw_lmkdist$`GTS_CSWY_18@18`)
+
+
+temps_zscore = F2_raw_vrel_temps$pairwise.z %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+
+temps_pval = F2_raw_vrel_temps$pairwise.P %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+temps_int_data = bind_cols(temps_zscore,
+                               temps_pval) %>% 
+  select(1:3, 
+         6) %>% 
+  rename(Ecotype1 = 1, 
+         Ecotype2 = 2, 
+         zscore = 3, 
+         pvalue = 4) %>% 
+  separate(col = Ecotype1, 
+           into = c('trash', 
+                    'Ecotype1'), 
+           sep = "[$]") %>% 
+  separate(col = Ecotype2, 
+           into = c('trash2', 
+                    'Ecotype2'), 
+           sep = '[$]') %>% 
+  select(-trash, 
+         -trash2)%>% 
+  mutate(across(where(is.numeric),
+                ~ round(., 3))) 
+
+temps_int_data %>%
+  write_csv('Temp_effect_integration.csv')
+
