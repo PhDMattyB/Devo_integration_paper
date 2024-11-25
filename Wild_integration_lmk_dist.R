@@ -523,3 +523,94 @@ temps_int_data = bind_cols(temps_zscore,
 temps_int_data %>%
   write_csv('Temp_effect_integration.csv')
 
+
+temps_int_data = read_csv('Temp_effect_integration.csv')
+
+
+temps_int_data$Ecotype1 = factor(temps_int_data$Ecotype1, 
+                                levels = c('`ASHN_12@12`',
+                                           '`ASHN_12@18`', 
+                                           '`ASHN_18@12`', 
+                                           '`ASHN_18@18`', 
+                                           '`MYV_12@12`', 
+                                           '`MYV_12@18`', 
+                                           '`MYV_18@12`', 
+                                           '`MYV_18@18`', 
+                                           '`SKR_12@12`', 
+                                           '`SKR_12@18`', 
+                                           '`SKR_18@12`', 
+                                           '`SKR_18@18`', 
+                                           '`GTS_CSWY_12@12`', 
+                                           '`GTS_CSWY_12@18`', 
+                                           '`GTS_CSWY_18@12`', 
+                                           '`GTS_CSWY_18@18`'))
+temps_int_data$Ecotype2 = factor(temps_int_data$Ecotype2, 
+                                 levels = c('`ASHN_12@12`',
+                                            '`ASHN_12@18`', 
+                                            '`ASHN_18@12`', 
+                                            '`ASHN_18@18`', 
+                                            '`MYV_12@12`', 
+                                            '`MYV_12@18`', 
+                                            '`MYV_18@12`', 
+                                            '`MYV_18@18`', 
+                                            '`SKR_12@12`', 
+                                            '`SKR_12@18`', 
+                                            '`SKR_18@12`', 
+                                            '`SKR_18@18`', 
+                                            '`GTS_CSWY_12@12`', 
+                                            '`GTS_CSWY_12@18`', 
+                                            '`GTS_CSWY_18@12`', 
+                                            '`GTS_CSWY_18@18`'))
+temps_int_data$stars = cut(temps_int_data$pvalue, 
+                          breaks = c(-Inf, 
+                                     0.001, 
+                                     0.01,
+                                     0.05, 
+                                     Inf), 
+                          label=c("***", "**", "*", ""))
+
+ggplot(temps_int_data, 
+                       aes(Ecotype1, 
+                           Ecotype2, 
+                           fill= zscore)) + 
+  geom_tile(col = 'white') +
+  # geom_text(aes(label = zscore),
+  #           color = "black",
+  #           size = 2,
+  #           fontface = 'bold')+
+  geom_text(aes(label=stars), 
+            color="black", 
+            size=5) + 
+  # geom_rect(aes(fill = Eco_pair), 
+  #           colour = "#fb6f92")+
+  # facet_wrap(~Effect)+
+  scale_fill_viridis(discrete=FALSE, 
+                     # direction = -1, 
+                     option = 'D') +
+  labs(fill = 'Pairwise z-score')+
+  # theme_ipsum()+
+  theme_bw()+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_blank(), 
+        axis.text.y = element_text(size = 12), 
+        axis.text.x = element_text(size = 12, 
+                                   angle = 90),
+        axis.ticks = element_blank(), 
+        panel.border = element_blank(), 
+        # legend.justification = c('left', 'top'), 
+        legend.position = c(.05, 0.98),
+        legend.justification = c("left", "top"),
+        legend.box.just = "left", 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold', 
+                                  size = 14))
+
+
+ggsave('Magnitude_integration_figure.tiff', 
+       plot = Full_int_plot, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 30, 
+       height = 15)
+
+
