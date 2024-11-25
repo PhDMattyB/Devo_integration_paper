@@ -345,9 +345,8 @@ F2_effect_int_data %>%
 
 # Magnitude integration graphs --------------------------------------------
 
-
+## Wild integration plots
 Wild_int_data = read_csv('Wild_integration_metric.csv')
-
 Wild_int_data$Ecotype1 = factor(Wild_int_data$Ecotype1, 
                                 levels = c('ASHNC', 
                                            'ASHNW', 
@@ -357,8 +356,6 @@ Wild_int_data$Ecotype1 = factor(Wild_int_data$Ecotype1,
                                            'SKRW', 
                                            'CSWY', 
                                            'GTS'))
-
-
 Wild_int_data$Ecotype2 = factor(Wild_int_data$Ecotype2, 
                                 levels = c('ASHNC', 
                                            'ASHNW', 
@@ -368,8 +365,6 @@ Wild_int_data$Ecotype2 = factor(Wild_int_data$Ecotype2,
                                            'SKRW', 
                                            'CSWY', 
                                            'GTS'))
-
-
 Wild_int_data$stars = cut(Wild_int_data$pvalue, 
                           breaks = c(-Inf, 
                                      0.001, 
@@ -407,3 +402,174 @@ Wild_int_plot = ggplot(Wild_int_data,
         legend.justification = c("left", "top"),
         legend.box.just = "left")
 
+## F2 uncorrected integration plots
+F2_raw_int_data = read_csv('F2_uncorrected_integration_metric.csv')
+F2_raw_int_data$Ecotype1 = factor(F2_raw_int_data$Ecotype1, 
+                                levels = c('ASHNC', 
+                                           'ASHNW', 
+                                           'MYVC', 
+                                           'MYVW', 
+                                           'SKRC', 
+                                           'SKRW', 
+                                           'CSWY', 
+                                           'GTS'))
+F2_raw_int_data$Ecotype2 = factor(F2_raw_int_data$Ecotype2, 
+                                levels = c('ASHNC', 
+                                           'ASHNW', 
+                                           'MYVC', 
+                                           'MYVW', 
+                                           'SKRC', 
+                                           'SKRW', 
+                                           'CSWY', 
+                                           'GTS'))
+F2_raw_int_data$stars = cut(F2_raw_int_data$pvalue, 
+                          breaks = c(-Inf, 
+                                     0.001, 
+                                     0.01,
+                                     0.05, 
+                                     Inf), 
+                          label=c("***", "**", "*", ""))
+
+F2_raw_int_plot = ggplot(F2_raw_int_data, 
+                       aes(Ecotype1, 
+                           Ecotype2, 
+                           fill= zscore)) + 
+  geom_tile(col = 'white') +
+  # geom_text(aes(label = zscore),
+  #           color = "black",
+  #           size = 2,
+  #           fontface = 'bold')+
+  geom_text(aes(label=stars), 
+            color="black", 
+            size=5) + 
+  scale_fill_viridis(discrete=FALSE, 
+                     # direction = -1, 
+                     option = 'D') +
+  labs(title = 'B) F2 generation (uncorrected)', 
+       fill = 'Pairwise z-score')+
+  # theme_ipsum()+
+  theme_bw()+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 12), 
+        axis.ticks = element_blank(), 
+        panel.border = element_blank(), 
+        # legend.justification = c('left', 'top'), 
+        legend.position = c(.05, 0.98),
+        legend.justification = c("left", "top"),
+        legend.box.just = "left")
+
+
+## F1 effect magnitude integration plot
+F1_effect_int_data = read_csv('F1_Effect_integration_metric.csv')
+F1_effect_int_data$Ecotype1 = factor(F1_effect_int_data$Ecotype1, 
+                                  levels = c('ASHNC', 
+                                             'ASHNW', 
+                                             'MYVC', 
+                                             'MYVW', 
+                                             'SKRC', 
+                                             'SKRW', 
+                                             'CSWY', 
+                                             'GTS'))
+F1_effect_int_data$Ecotype2 = factor(F1_effect_int_data$Ecotype2, 
+                                  levels = c('ASHNC', 
+                                             'ASHNW', 
+                                             'MYVC', 
+                                             'MYVW', 
+                                             'SKRC', 
+                                             'SKRW', 
+                                             'CSWY', 
+                                             'GTS'))
+F1_effect_int_data$stars = cut(F1_effect_int_data$pvalue, 
+                            breaks = c(-Inf, 
+                                       0.001, 
+                                       0.01,
+                                       0.05, 
+                                       Inf), 
+                            label=c("***", "**", "*", ""))
+
+F1_effect_int_plot = ggplot(F1_effect_int_data, 
+                         aes(Ecotype1, 
+                             Ecotype2, 
+                             fill= zscore)) + 
+  geom_tile(col = 'white') +
+  # geom_text(aes(label = zscore),
+  #           color = "black",
+  #           size = 2,
+  #           fontface = 'bold')+
+  geom_text(aes(label=stars), 
+            color="black", 
+            size=5) + 
+  scale_fill_viridis(discrete=FALSE, 
+                     # direction = -1, 
+                     option = 'D') +
+  labs(title = 'B) F2 generation (uncorrected)', 
+       fill = 'Pairwise z-score')+
+  # theme_ipsum()+
+  theme_bw()+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 12), 
+        axis.ticks = element_blank(), 
+        panel.border = element_blank(), 
+        # legend.justification = c('left', 'top'), 
+        legend.position = c(.05, 0.98),
+        legend.justification = c("left", "top"),
+        legend.box.just = "left")
+
+## F2 effect magnitude integration plot
+F2_effect_int_data = read_csv('F2_effect_integration_metric.csv')
+F2_effect_int_data$Ecotype1 = factor(F2_effect_int_data$Ecotype1, 
+                                     levels = c('ASHNC', 
+                                                'ASHNW', 
+                                                'MYVC', 
+                                                'MYVW', 
+                                                'SKRC', 
+                                                'SKRW', 
+                                                'CSWY', 
+                                                'GTS'))
+F2_effect_int_data$Ecotype2 = factor(F2_effect_int_data$Ecotype2, 
+                                     levels = c('ASHNC', 
+                                                'ASHNW', 
+                                                'MYVC', 
+                                                'MYVW', 
+                                                'SKRC', 
+                                                'SKRW', 
+                                                'CSWY', 
+                                                'GTS'))
+F2_effect_int_data$stars = cut(F2_effect_int_data$pvalue, 
+                               breaks = c(-Inf, 
+                                          0.001, 
+                                          0.01,
+                                          0.05, 
+                                          Inf), 
+                               label=c("***", "**", "*", ""))
+
+F2_effect_int_plot = ggplot(F2_effect_int_data, 
+                            aes(Ecotype1, 
+                                Ecotype2, 
+                                fill= zscore)) + 
+  geom_tile(col = 'white') +
+  # geom_text(aes(label = zscore),
+  #           color = "black",
+  #           size = 2,
+  #           fontface = 'bold')+
+  geom_text(aes(label=stars), 
+            color="black", 
+            size=5) + 
+  scale_fill_viridis(discrete=FALSE, 
+                     # direction = -1, 
+                     option = 'D') +
+  labs(title = 'B) F2 generation (uncorrected)', 
+       fill = 'Pairwise z-score')+
+  # theme_ipsum()+
+  theme_bw()+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 12), 
+        axis.ticks = element_blank(), 
+        panel.border = element_blank(), 
+        # legend.justification = c('left', 'top'), 
+        legend.position = c(.05, 0.98),
+        legend.justification = c("left", "top"),
+        legend.box.just = "left")
