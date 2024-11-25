@@ -124,17 +124,65 @@ F2_raw_lmk_sub = coords.subset(F2_raw_lmk_array,
 vrel_F2_raw_lmkdist = Map(function(x) integration.Vrel(x), 
                       F2_raw_lmk_sub)
 
-ASHN_compare_raw = compare.ZVrel(vrel_F2_raw_lmkdist$ASHNC, 
-                             vrel_F2_raw_lmkdist$ASHNW)
-MYV_compare_raw = compare.ZVrel(vrel_F2_raw_lmkdist$MYVC, 
-                            vrel_F2_raw_lmkdist$MYVW)
+# ASHN_compare_raw = compare.ZVrel(vrel_F2_raw_lmkdist$ASHNC, 
+#                              vrel_F2_raw_lmkdist$ASHNW)
+# MYV_compare_raw = compare.ZVrel(vrel_F2_raw_lmkdist$MYVC, 
+#                             vrel_F2_raw_lmkdist$MYVW)
+# 
+# SKR_compare_raw = compare.ZVrel(vrel_F2_raw_lmkdist$SKRC, 
+#                             vrel_F2_raw_lmkdist$SKRW)
+# 
+# GTS_CSWY_compare_raw = compare.ZVrel(vrel_F2_raw_lmkdist$CSWY, 
+#                                  vrel_F2_raw_lmkdist$GTS)
 
-SKR_compare_raw = compare.ZVrel(vrel_F2_raw_lmkdist$SKRC, 
-                            vrel_F2_raw_lmkdist$SKRW)
+F2_raw_vrel_compare = compare.ZVrel(vrel_F2_raw_lmkdist$ASHNC, 
+                                    vrel_F2_raw_lmkdist$ASHNW, 
+                                    vrel_F2_raw_lmkdist$MYVC, 
+                                    vrel_F2_raw_lmkdist$MYVW, 
+                                    vrel_F2_raw_lmkdist$SKRC, 
+                                    vrel_F2_raw_lmkdist$SKRW, 
+                                    vrel_F2_raw_lmkdist$CSWY, 
+                                    vrel_F2_raw_lmkdist$GTS)
 
-GTS_CSWY_compare_raw = compare.ZVrel(vrel_F2_raw_lmkdist$CSWY, 
-                                 vrel_F2_raw_lmkdist$GTS)
 
+F2_raw_zscore = F2_raw_vrel_compare$pairwise.z %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+
+F2_raw_pval = F2_raw_vrel_compare$pairwise.P %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+F2_raw_int_data = bind_cols(F2_raw_zscore,
+                          F2_raw_pval) %>% 
+  select(1:3, 
+         6) %>% 
+  rename(Ecotype1 = 1, 
+         Ecotype2 = 2, 
+         zscore = 3, 
+         pvalue = 4) %>% 
+  separate(col = Ecotype1, 
+           into = c('trash', 
+                    'Ecotype1'), 
+           sep = "[$]") %>% 
+  separate(col = Ecotype2, 
+           into = c('trash2', 
+                    'Ecotype2'), 
+           sep = '[$]') %>% 
+  select(-trash, 
+         -trash2)%>% 
+  mutate(across(where(is.numeric),
+                ~ round(., 3))) 
+
+F2_raw_int_data %>%
+  write_csv('F2_uncorrected_integration_metric.csv')
 
 ##
 # F1 effect mag integration -----------------------------------------------
