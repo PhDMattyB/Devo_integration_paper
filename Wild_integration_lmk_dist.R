@@ -347,11 +347,11 @@ F2_effect_int_data %>%
 
 ## Wild integration plots
 Wild_int_data = read_csv('Wild_integration_metric.csv') %>% 
- mutate(Effect = 'Wild')
+ mutate(Effect = 'Grandparental (wild) generation')
 
 ## F2 uncorrected integration plots
 F2_raw_int_data = read_csv('F2_uncorrected_integration_metric.csv') %>% 
-  mutate(Effect = 'F2')
+  mutate(Effect = 'F2 generation')
 
 ## F1 effect magnitude integration plot
 F1_effect_int_data = read_csv('F1_Effect_integration_metric.csv') %>% 
@@ -388,8 +388,8 @@ Full_int_data$Ecotype2 = factor(Full_int_data$Ecotype2,
                                                 'CSWY', 
                                                 'GTS'))
 Full_int_data$Effect = factor(Full_int_data$Effect, 
-                                levels = c('Wild', 
-                                           'F2', 
+                                levels = c('Grandparental (wild) generation', 
+                                           'F2 generation', 
                                            'Trans-generational plasticity', 
                                            'Within-generational plasticity'))
 Full_int_data$stars = cut(Full_int_data$pvalue, 
@@ -431,3 +431,11 @@ Full_int_plot = ggplot(Full_int_data,
         strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(face = 'bold', 
                                   size = 14))
+
+
+ggsave('Magnitude_integration_figure.tiff', 
+       plot = Full_int_plot, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 30, 
+       height = 15)
