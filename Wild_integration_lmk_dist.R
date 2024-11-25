@@ -201,16 +201,65 @@ F1_lmk_sub = coords.subset(F1_lmk_array,
 vrel_F1_lmkdist = Map(function(x) integration.Vrel(x), 
                         F1_lmk_sub)
 
-ASHN_compare_f1 = compare.ZVrel(vrel_F1_lmkdist$ASHNC, 
-                             vrel_F1_lmkdist$ASHNW)
-MYV_compare_f1 = compare.ZVrel(vrel_F1_lmkdist$MYVC, 
-                            vrel_F1_lmkdist$MYVW)
+# ASHN_compare_f1 = compare.ZVrel(vrel_F1_lmkdist$ASHNC, 
+#                              vrel_F1_lmkdist$ASHNW)
+# MYV_compare_f1 = compare.ZVrel(vrel_F1_lmkdist$MYVC, 
+#                             vrel_F1_lmkdist$MYVW)
+# 
+# SKR_compare_f1 = compare.ZVrel(vrel_F1_lmkdist$SKRC, 
+#                             vrel_F1_lmkdist$SKRW)
+# 
+# GTS_CSWY_compare_f1 = compare.ZVrel(vrel_F1_lmkdist$CSWY, 
+#                                  vrel_F1_lmkdist$GTS)
 
-SKR_compare_f1 = compare.ZVrel(vrel_F1_lmkdist$SKRC, 
-                            vrel_F1_lmkdist$SKRW)
+F1_effect_vrel_compare = compare.ZVrel(vrel_F1_lmkdist$ASHNC, 
+                                       vrel_F1_lmkdist$ASHNW, 
+                                       vrel_F1_lmkdist$MYVC, 
+                                       vrel_F1_lmkdist$MYVW, 
+                                       vrel_F1_lmkdist$SKRC, 
+                                       vrel_F1_lmkdist$SKRW, 
+                                       vrel_F1_lmkdist$CSWY, 
+                                       vrel_F1_lmkdist$GTS)
 
-GTS_CSWY_compare_f1 = compare.ZVrel(vrel_F1_lmkdist$CSWY, 
-                                 vrel_F1_lmkdist$GTS)
+
+F1_effect_zscore = F1_effect_vrel_compare$pairwise.z %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+
+F1_effect_pval = F1_effect_vrel_compare$pairwise.P %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+F1_effect_int_data = bind_cols(F1_effect_zscore,
+                            F1_effect_pval) %>% 
+  select(1:3, 
+         6) %>% 
+  rename(Ecotype1 = 1, 
+         Ecotype2 = 2, 
+         zscore = 3, 
+         pvalue = 4) %>% 
+  separate(col = Ecotype1, 
+           into = c('trash', 
+                    'Ecotype1'), 
+           sep = "[$]") %>% 
+  separate(col = Ecotype2, 
+           into = c('trash2', 
+                    'Ecotype2'), 
+           sep = '[$]') %>% 
+  select(-trash, 
+         -trash2)%>% 
+  mutate(across(where(is.numeric),
+                ~ round(., 3))) 
+
+F1_effect_int_data %>%
+  write_csv('F1_Effect_integration_metric.csv')
 
 
 # F2 effect mag integration -----------------------------------------------
@@ -230,17 +279,66 @@ F2_lmk_sub = coords.subset(F2_lmk_array,
 vrel_F2_lmkdist = Map(function(x) integration.Vrel(x), 
                       F2_lmk_sub)
 
-ASHN_compare_f2 = compare.ZVrel(vrel_F2_lmkdist$ASHNC, 
-                             vrel_F2_lmkdist$ASHNW)
-MYV_compare_f2 = compare.ZVrel(vrel_F2_lmkdist$MYVC, 
-                            vrel_F2_lmkdist$MYVW)
+# ASHN_compare_f2 = compare.ZVrel(vrel_F2_lmkdist$ASHNC, 
+#                              vrel_F2_lmkdist$ASHNW)
+# MYV_compare_f2 = compare.ZVrel(vrel_F2_lmkdist$MYVC, 
+#                             vrel_F2_lmkdist$MYVW)
+# 
+# SKR_compare_f2 = compare.ZVrel(vrel_F2_lmkdist$SKRC, 
+#                             vrel_F2_lmkdist$SKRW)
+# 
+# GTS_CSWY_compare_f2 = compare.ZVrel(vrel_F2_lmkdist$CSWY, 
+#                                  vrel_F2_lmkdist$GTS)
+# 
 
-SKR_compare_f2 = compare.ZVrel(vrel_F2_lmkdist$SKRC, 
-                            vrel_F2_lmkdist$SKRW)
+F2_effect_vrel_compare = compare.ZVrel(vrel_F2_lmkdist$ASHNC, 
+                                       vrel_F2_lmkdist$ASHNW, 
+                                       vrel_F2_lmkdist$MYVC, 
+                                       vrel_F2_lmkdist$MYVW, 
+                                       vrel_F2_lmkdist$SKRC, 
+                                       vrel_F2_lmkdist$SKRW, 
+                                       vrel_F2_lmkdist$CSWY, 
+                                       vrel_F2_lmkdist$GTS)
 
-GTS_CSWY_compare_f2 = compare.ZVrel(vrel_F2_lmkdist$CSWY, 
-                                 vrel_F2_lmkdist$GTS)
 
+F2_effect_zscore = F2_effect_vrel_compare$pairwise.z %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+
+F2_effect_pval = F2_effect_vrel_compare$pairwise.P %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+F2_effect_int_data = bind_cols(F2_effect_zscore,
+                               F2_effect_pval) %>% 
+  select(1:3, 
+         6) %>% 
+  rename(Ecotype1 = 1, 
+         Ecotype2 = 2, 
+         zscore = 3, 
+         pvalue = 4) %>% 
+  separate(col = Ecotype1, 
+           into = c('trash', 
+                    'Ecotype1'), 
+           sep = "[$]") %>% 
+  separate(col = Ecotype2, 
+           into = c('trash2', 
+                    'Ecotype2'), 
+           sep = '[$]') %>% 
+  select(-trash, 
+         -trash2)%>% 
+  mutate(across(where(is.numeric),
+                ~ round(., 3))) 
+
+F2_effect_int_data %>%
+  write_csv('F2_Effect_integration_metric.csv')
 
 
 
