@@ -569,7 +569,7 @@ temps_int_data$stars = cut(temps_int_data$pvalue,
                                      Inf), 
                           label=c("***", "**", "*", ""))
 
-ggplot(temps_int_data, 
+temp_diff_plot = ggplot(temps_int_data, 
                        aes(Ecotype1, 
                            Ecotype2, 
                            fill= zscore)) + 
@@ -606,8 +606,8 @@ ggplot(temps_int_data,
                                   size = 14))
 
 
-ggsave('Magnitude_integration_figure.tiff', 
-       plot = Full_int_plot, 
+ggsave('Magnitude_integration_Full_temperatures_figure.tiff', 
+       plot = temp_diff_plot, 
        dpi = 'retina', 
        units = 'cm', 
        width = 30, 
