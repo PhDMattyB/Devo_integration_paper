@@ -346,180 +346,30 @@ F2_effect_int_data %>%
 # Magnitude integration graphs --------------------------------------------
 
 ## Wild integration plots
-Wild_int_data = read_csv('Wild_integration_metric.csv')
-Wild_int_data$Ecotype1 = factor(Wild_int_data$Ecotype1, 
-                                levels = c('ASHNC', 
-                                           'ASHNW', 
-                                           'MYVC', 
-                                           'MYVW', 
-                                           'SKRC', 
-                                           'SKRW', 
-                                           'CSWY', 
-                                           'GTS'))
-Wild_int_data$Ecotype2 = factor(Wild_int_data$Ecotype2, 
-                                levels = c('ASHNC', 
-                                           'ASHNW', 
-                                           'MYVC', 
-                                           'MYVW', 
-                                           'SKRC', 
-                                           'SKRW', 
-                                           'CSWY', 
-                                           'GTS'))
-Wild_int_data$stars = cut(Wild_int_data$pvalue, 
-                          breaks = c(-Inf, 
-                                     0.001, 
-                                     0.01,
-                                     0.05, 
-                                     Inf), 
-                          label=c("***", "**", "*", ""))
-
-Wild_int_plot = ggplot(Wild_int_data, 
-                       aes(Ecotype1, 
-                           Ecotype2, 
-                           fill= zscore)) + 
-  geom_tile(col = 'white') +
-  # geom_text(aes(label = zscore),
-  #           color = "black",
-  #           size = 2,
-  #           fontface = 'bold')+
-  geom_text(aes(label=stars), 
-            color="black", 
-            size=5) + 
-  scale_fill_viridis(discrete=FALSE, 
-                     # direction = -1, 
-                     option = 'D') +
-  labs(title = 'A) Grandpartental (wild) generation', 
-       fill = 'Pairwise z-score')+
-  # theme_ipsum()+
-  theme_bw()+
-  theme(panel.grid = element_blank(), 
-        axis.title = element_blank(), 
-        axis.text = element_text(size = 12), 
-        axis.ticks = element_blank(), 
-        panel.border = element_blank(), 
-        # legend.justification = c('left', 'top'), 
-        legend.position = c(.05, 0.98),
-        legend.justification = c("left", "top"),
-        legend.box.just = "left")
+Wild_int_data = read_csv('Wild_integration_metric.csv') %>% 
+ mutate(Effect = 'Wild')
 
 ## F2 uncorrected integration plots
-F2_raw_int_data = read_csv('F2_uncorrected_integration_metric.csv')
-F2_raw_int_data$Ecotype1 = factor(F2_raw_int_data$Ecotype1, 
-                                levels = c('ASHNC', 
-                                           'ASHNW', 
-                                           'MYVC', 
-                                           'MYVW', 
-                                           'SKRC', 
-                                           'SKRW', 
-                                           'CSWY', 
-                                           'GTS'))
-F2_raw_int_data$Ecotype2 = factor(F2_raw_int_data$Ecotype2, 
-                                levels = c('ASHNC', 
-                                           'ASHNW', 
-                                           'MYVC', 
-                                           'MYVW', 
-                                           'SKRC', 
-                                           'SKRW', 
-                                           'CSWY', 
-                                           'GTS'))
-F2_raw_int_data$stars = cut(F2_raw_int_data$pvalue, 
-                          breaks = c(-Inf, 
-                                     0.001, 
-                                     0.01,
-                                     0.05, 
-                                     Inf), 
-                          label=c("***", "**", "*", ""))
-
-F2_raw_int_plot = ggplot(F2_raw_int_data, 
-                       aes(Ecotype1, 
-                           Ecotype2, 
-                           fill= zscore)) + 
-  geom_tile(col = 'white') +
-  # geom_text(aes(label = zscore),
-  #           color = "black",
-  #           size = 2,
-  #           fontface = 'bold')+
-  geom_text(aes(label=stars), 
-            color="black", 
-            size=5) + 
-  scale_fill_viridis(discrete=FALSE, 
-                     # direction = -1, 
-                     option = 'D') +
-  labs(title = 'B) F2 generation (uncorrected)', 
-       fill = 'Pairwise z-score')+
-  # theme_ipsum()+
-  theme_bw()+
-  theme(panel.grid = element_blank(), 
-        axis.title = element_blank(), 
-        axis.text = element_text(size = 12), 
-        axis.ticks = element_blank(), 
-        panel.border = element_blank(), 
-        # legend.justification = c('left', 'top'), 
-        legend.position = c(.05, 0.98),
-        legend.justification = c("left", "top"),
-        legend.box.just = "left")
-
+F2_raw_int_data = read_csv('F2_uncorrected_integration_metric.csv') %>% 
+  mutate(Effect = 'F2')
 
 ## F1 effect magnitude integration plot
-F1_effect_int_data = read_csv('F1_Effect_integration_metric.csv')
-F1_effect_int_data$Ecotype1 = factor(F1_effect_int_data$Ecotype1, 
-                                  levels = c('ASHNC', 
-                                             'ASHNW', 
-                                             'MYVC', 
-                                             'MYVW', 
-                                             'SKRC', 
-                                             'SKRW', 
-                                             'CSWY', 
-                                             'GTS'))
-F1_effect_int_data$Ecotype2 = factor(F1_effect_int_data$Ecotype2, 
-                                  levels = c('ASHNC', 
-                                             'ASHNW', 
-                                             'MYVC', 
-                                             'MYVW', 
-                                             'SKRC', 
-                                             'SKRW', 
-                                             'CSWY', 
-                                             'GTS'))
-F1_effect_int_data$stars = cut(F1_effect_int_data$pvalue, 
-                            breaks = c(-Inf, 
-                                       0.001, 
-                                       0.01,
-                                       0.05, 
-                                       Inf), 
-                            label=c("***", "**", "*", ""))
-
-F1_effect_int_plot = ggplot(F1_effect_int_data, 
-                         aes(Ecotype1, 
-                             Ecotype2, 
-                             fill= zscore)) + 
-  geom_tile(col = 'white') +
-  # geom_text(aes(label = zscore),
-  #           color = "black",
-  #           size = 2,
-  #           fontface = 'bold')+
-  geom_text(aes(label=stars), 
-            color="black", 
-            size=5) + 
-  scale_fill_viridis(discrete=FALSE, 
-                     # direction = -1, 
-                     option = 'D') +
-  labs(title = 'C) Trans-generational plasticity', 
-       fill = 'Pairwise z-score')+
-  # theme_ipsum()+
-  theme_bw()+
-  theme(panel.grid = element_blank(), 
-        axis.title = element_blank(), 
-        axis.text = element_text(size = 12), 
-        axis.ticks = element_blank(), 
-        panel.border = element_blank(), 
-        # legend.justification = c('left', 'top'), 
-        legend.position = c(.05, 0.98),
-        legend.justification = c("left", "top"),
-        legend.box.just = "left")
+F1_effect_int_data = read_csv('F1_Effect_integration_metric.csv') %>% 
+  mutate(Effect = 'Trans-generational plasticity')
 
 ## F2 effect magnitude integration plot
-F2_effect_int_data = read_csv('F2_effect_integration_metric.csv')
-F2_effect_int_data$Ecotype1 = factor(F2_effect_int_data$Ecotype1, 
+F2_effect_int_data = read_csv('F2_effect_integration_metric.csv') %>% 
+  mutate(Effect = 'Within-generational plasticity')
+
+## Combine all of the graphs
+
+Full_int_data = bind_rows(Wild_int_data, 
+                          F2_raw_int_data, 
+                          F1_effect_int_data, 
+                          F2_effect_int_data)
+
+
+Full_int_data$Ecotype1 = factor(Full_int_data$Ecotype1, 
                                      levels = c('ASHNC', 
                                                 'ASHNW', 
                                                 'MYVC', 
@@ -528,7 +378,7 @@ F2_effect_int_data$Ecotype1 = factor(F2_effect_int_data$Ecotype1,
                                                 'SKRW', 
                                                 'CSWY', 
                                                 'GTS'))
-F2_effect_int_data$Ecotype2 = factor(F2_effect_int_data$Ecotype2, 
+Full_int_data$Ecotype2 = factor(Full_int_data$Ecotype2, 
                                      levels = c('ASHNC', 
                                                 'ASHNW', 
                                                 'MYVC', 
@@ -537,7 +387,12 @@ F2_effect_int_data$Ecotype2 = factor(F2_effect_int_data$Ecotype2,
                                                 'SKRW', 
                                                 'CSWY', 
                                                 'GTS'))
-F2_effect_int_data$stars = cut(F2_effect_int_data$pvalue, 
+Full_int_data$Effect = factor(Full_int_data$Effect, 
+                                levels = c('Wild', 
+                                           'F2', 
+                                           'Trans-generational plasticity', 
+                                           'Within-generational plasticity'))
+Full_int_data$stars = cut(Full_int_data$pvalue, 
                                breaks = c(-Inf, 
                                           0.001, 
                                           0.01,
@@ -545,7 +400,7 @@ F2_effect_int_data$stars = cut(F2_effect_int_data$pvalue,
                                           Inf), 
                                label=c("***", "**", "*", ""))
 
-F2_effect_int_plot = ggplot(F2_effect_int_data, 
+Full_int_plot = ggplot(Full_int_data, 
                             aes(Ecotype1, 
                                 Ecotype2, 
                                 fill= zscore)) + 
@@ -557,11 +412,11 @@ F2_effect_int_plot = ggplot(F2_effect_int_data,
   geom_text(aes(label=stars), 
             color="black", 
             size=5) + 
+  facet_wrap(~Effect)+
   scale_fill_viridis(discrete=FALSE, 
                      # direction = -1, 
                      option = 'D') +
-  labs(title = 'D) Within-generational plasticity', 
-       fill = 'Pairwise z-score')+
+  labs(fill = 'Pairwise z-score')+
   # theme_ipsum()+
   theme_bw()+
   theme(panel.grid = element_blank(), 
@@ -572,4 +427,7 @@ F2_effect_int_plot = ggplot(F2_effect_int_data,
         # legend.justification = c('left', 'top'), 
         legend.position = c(.05, 0.98),
         legend.justification = c("left", "top"),
-        legend.box.just = "left")
+        legend.box.just = "left", 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold', 
+                                  size = 14))
