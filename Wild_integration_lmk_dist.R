@@ -503,7 +503,7 @@ F1_effect_int_plot = ggplot(F1_effect_int_data,
   scale_fill_viridis(discrete=FALSE, 
                      # direction = -1, 
                      option = 'D') +
-  labs(title = 'B) F2 generation (uncorrected)', 
+  labs(title = 'C) Trans-generational plasticity', 
        fill = 'Pairwise z-score')+
   # theme_ipsum()+
   theme_bw()+
@@ -560,7 +560,7 @@ F2_effect_int_plot = ggplot(F2_effect_int_data,
   scale_fill_viridis(discrete=FALSE, 
                      # direction = -1, 
                      option = 'D') +
-  labs(title = 'B) F2 generation (uncorrected)', 
+  labs(title = 'D) Within-generational plasticity', 
        fill = 'Pairwise z-score')+
   # theme_ipsum()+
   theme_bw()+
