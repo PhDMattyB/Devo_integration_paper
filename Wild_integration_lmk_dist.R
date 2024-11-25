@@ -368,7 +368,6 @@ Full_int_data = bind_rows(Wild_int_data,
                           F1_effect_int_data, 
                           F2_effect_int_data)
 
-
 Full_int_data$Ecotype1 = factor(Full_int_data$Ecotype1, 
                                      levels = c('ASHNC', 
                                                 'ASHNW', 
@@ -412,6 +411,8 @@ Full_int_plot = ggplot(Full_int_data,
   geom_text(aes(label=stars), 
             color="black", 
             size=5) + 
+  # geom_rect(aes(fill = Eco_pair), 
+  #           colour = "#fb6f92")+
   facet_wrap(~Effect)+
   scale_fill_viridis(discrete=FALSE, 
                      # direction = -1, 
