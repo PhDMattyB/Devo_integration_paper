@@ -128,15 +128,27 @@ Wild_int_data$Ecotype2 = factor(Wild_int_data$Ecotype2,
                                            'CSWY', 
                                            'GTS'))
 
+
+Wild_int_data$stars = cut(Wild_int_data$pvalue, 
+                    breaks = c(-Inf, 
+                               0.001, 
+                               0.01,
+                               0.05, 
+                               Inf), 
+                    label=c("***", "**", "*", ""))
+
 ggplot(Wild_int_data, 
        aes(Ecotype1, 
            Ecotype2, 
            fill= zscore)) + 
   geom_tile(col = 'white') +
-  geom_text(aes(label = pvalue), 
-            color = "black", 
-            size = 2, 
-            fontface = 'bold')+
+  # geom_text(aes(label = zscore),
+  #           color = "black",
+  #           size = 2,
+  #           fontface = 'bold')+
+  geom_text(aes(label=stars), 
+            color="black", 
+            size=5) + 
   scale_fill_viridis(discrete=FALSE, 
                      # direction = -1, 
                      option = 'D') +
