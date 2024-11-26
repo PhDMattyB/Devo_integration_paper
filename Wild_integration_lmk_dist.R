@@ -44,15 +44,15 @@ wild_lmk_sub = coords.subset(wild_lmk_array,
 vrel_wild_lmkdist = Map(function(x) integration.Vrel(x), 
                        wild_lmk_sub)
 
-ASHN_compare_wild = compare.ZVrel(vrel_wild_lmkdist$ASHNC, 
-                             vrel_wild_lmkdist$ASHNW)
-MYV_compare_wild = compare.ZVrel(vrel_wild_lmkdist$MYVC, 
-                            vrel_wild_lmkdist$MYVW)
-
-SKR_compare_wild = compare.ZVrel(vrel_wild_lmkdist$SKRC, 
-                            vrel_wild_lmkdist$SKRW)
-
-GTS_CSWY_compare_wild = compare.ZVrel(vrel_wild_lmkdist$CSWY, 
+# ASHN_compare_wild = compare.ZVrel(vrel_wild_lmkdist$ASHNC, 
+#                              vrel_wild_lmkdist$ASHNW)
+# MYV_compare_wild = compare.ZVrel(vrel_wild_lmkdist$MYVC, 
+#                             vrel_wild_lmkdist$MYVW)
+# 
+# SKR_compare_wild = compare.ZVrel(vrel_wild_lmkdist$SKRC, 
+#                             vrel_wild_lmkdist$SKRW)
+# 
+GTS_CSWY_compare_wild = compare.ZVrel(vrel_wild_lmkdist$CSWY,
                                  vrel_wild_lmkdist$GTS)
 
 Wild_vrel_compare = compare.ZVrel(vrel_wild_lmkdist$ASHNC, 
@@ -124,13 +124,13 @@ F2_raw_lmk_sub = coords.subset(F2_raw_lmk_array,
 vrel_F2_raw_lmkdist = Map(function(x) integration.Vrel(x), 
                       F2_raw_lmk_sub)
 
-# ASHN_compare_raw = compare.ZVrel(vrel_F2_raw_lmkdist$ASHNC, 
-#                              vrel_F2_raw_lmkdist$ASHNW)
+ASHN_compare_raw = compare.ZVrel(vrel_F2_raw_lmkdist$ASHNC,
+                             vrel_F2_raw_lmkdist$ASHNW)
 # MYV_compare_raw = compare.ZVrel(vrel_F2_raw_lmkdist$MYVC, 
 #                             vrel_F2_raw_lmkdist$MYVW)
 # 
-# SKR_compare_raw = compare.ZVrel(vrel_F2_raw_lmkdist$SKRC, 
-#                             vrel_F2_raw_lmkdist$SKRW)
+SKR_compare_raw = compare.ZVrel(vrel_F2_raw_lmkdist$SKRC,
+                            vrel_F2_raw_lmkdist$SKRW)
 # 
 # GTS_CSWY_compare_raw = compare.ZVrel(vrel_F2_raw_lmkdist$CSWY, 
 #                                  vrel_F2_raw_lmkdist$GTS)
@@ -201,13 +201,13 @@ F1_lmk_sub = coords.subset(F1_lmk_array,
 vrel_F1_lmkdist = Map(function(x) integration.Vrel(x), 
                         F1_lmk_sub)
 
-# ASHN_compare_f1 = compare.ZVrel(vrel_F1_lmkdist$ASHNC, 
-#                              vrel_F1_lmkdist$ASHNW)
+ASHN_compare_f1 = compare.ZVrel(vrel_F1_lmkdist$ASHNC,
+                             vrel_F1_lmkdist$ASHNW)
 # MYV_compare_f1 = compare.ZVrel(vrel_F1_lmkdist$MYVC, 
 #                             vrel_F1_lmkdist$MYVW)
 # 
-# SKR_compare_f1 = compare.ZVrel(vrel_F1_lmkdist$SKRC, 
-#                             vrel_F1_lmkdist$SKRW)
+SKR_compare_f1 = compare.ZVrel(vrel_F1_lmkdist$SKRC,
+                            vrel_F1_lmkdist$SKRW)
 # 
 # GTS_CSWY_compare_f1 = compare.ZVrel(vrel_F1_lmkdist$CSWY, 
 #                                  vrel_F1_lmkdist$GTS)
@@ -279,8 +279,8 @@ F2_lmk_sub = coords.subset(F2_lmk_array,
 vrel_F2_lmkdist = Map(function(x) integration.Vrel(x), 
                       F2_lmk_sub)
 
-# ASHN_compare_f2 = compare.ZVrel(vrel_F2_lmkdist$ASHNC, 
-#                              vrel_F2_lmkdist$ASHNW)
+ASHN_compare_f2 = compare.ZVrel(vrel_F2_lmkdist$ASHNC,
+                             vrel_F2_lmkdist$ASHNW)
 # MYV_compare_f2 = compare.ZVrel(vrel_F2_lmkdist$MYVC, 
 #                             vrel_F2_lmkdist$MYVW)
 # 
