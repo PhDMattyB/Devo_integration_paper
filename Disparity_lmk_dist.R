@@ -63,7 +63,8 @@ wild_disp_data = bind_cols(wild_disp_dist,
                 ~ round(., 3))) %>% 
   mutate(label = 'Grandparental (wild) generation')
 
-
+wild_disp_data %>% 
+  write_csv('Wild_disparity_data.csv')
 
 # F2 uncorrected data -----------------------------------------------------
 
@@ -82,6 +83,36 @@ F2_raw_pval = F2_raw_disparity$PV.dist.Pval
 F2_raw_disparity_dist = F2_raw_disparity$PV.dist
 F2_raw_proc_var = F2_raw_disparity$Procrustes.var
 
+F2_raw_disp_pval = F2_raw_pval %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+
+F2_raw_disp_dist = F2_raw_disparity_dist %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+F2_raw_disp_data = bind_cols(F2_raw_disp_dist,
+                           F2_raw_disp_pval) %>% 
+  dplyr::select(1:3, 
+                6) %>% 
+  rename(Ecotype1 = 1, 
+         Ecotype2 = 2, 
+         zscore = 3, 
+         pvalue = 4) %>% 
+  mutate(across(where(is.numeric),
+                ~ round(., 3))) %>% 
+  mutate(label = 'F2 generation')
+
+F2_raw_disp_data %>% 
+  write_csv('F2_raw_disparity_data.csv')
+
 # TGP effect on disparity --------------------------------------------------
 F1_lmk_dist = read_csv('F1_Plasticity_Corrected.csv')
 F1_dist = F1_lmk_dist %>% 
@@ -98,6 +129,35 @@ TGP_pval = TGP_disparity$PV.dist.Pval
 TGP_disparity_dist = TGP_disparity$PV.dist
 TGP_proc_var = TGP_disparity$Procrustes.var
 
+TGP_disp_pval = TGP_pval %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+
+TGP_disp_dist = TGP_disparity_dist %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+TGP_disp_data = bind_cols(TGP_disp_dist,
+                           TGP_disp_pval) %>% 
+  dplyr::select(1:3, 
+                6) %>% 
+  rename(Ecotype1 = 1, 
+         Ecotype2 = 2, 
+         zscore = 3, 
+         pvalue = 4) %>% 
+  mutate(across(where(is.numeric),
+                ~ round(., 3))) %>% 
+  mutate(label = 'Trans-generational plasticity')
+
+TGP_disp_data %>% 
+  write_csv('TGP_disparity_data.csv')
 
 # WGP effect on disparity -------------------------------------------------
 F2_lmk_dist = read_csv('F2_Corrected_F2_temp_only.csv')
@@ -114,6 +174,39 @@ WGP_disparity = morphol.disparity(WGP_mat ~ 1,
 WGP_pval = WGP_disparity$PV.dist.Pval
 WGP_disparity_dist = WGP_disparity$PV.dist
 WGP_proc_var = WGP_disparity$Procrustes.var
+
+WGP_disp_pval = WGP_pval %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+
+WGP_disp_dist = WGP_disparity_dist %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  # as_tibble() %>% 
+  melt(id.vars = c('rowname')) %>% 
+  as_tibble()
+
+WGP_disp_data = bind_cols(WGP_disp_dist,
+                           WGP_disp_pval) %>% 
+  dplyr::select(1:3, 
+                6) %>% 
+  rename(Ecotype1 = 1, 
+         Ecotype2 = 2, 
+         zscore = 3, 
+         pvalue = 4) %>% 
+  mutate(across(where(is.numeric),
+                ~ round(., 3))) %>% 
+  mutate(label = 'Within-generational plasticity')
+
+WGP_disp_data %>% 
+  write_csv('WGP_disparity_data.csv')
+
+
+# Graph combined disparity data -------------------------------------------
 
 
 
