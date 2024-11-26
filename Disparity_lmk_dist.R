@@ -20,7 +20,16 @@ wild_lmk_dist = read_csv('Wild_Univariate_traits.csv') %>%
                      'MYV', 
                      'SKR', 
                      'GTS', 
-                     'CSWY')) 
+                     'CSWY')) %>% 
+  mutate(Lake_morph= as.factor(case_when(
+    Lake_morph == 'GTS' ~ 'GTSW',
+    Lake_morph == 'CSWY' ~ 'CSWYC',
+    Lake_morph == 'ASHNW' ~ 'ASHNW',
+    Lake_morph == 'ASHNC' ~ 'ASHNC',
+    Lake_morph == 'MYVW' ~ 'MYVW',
+    Lake_morph == 'MYVC' ~ 'MYVC',
+    Lake_morph == 'SKRW' ~ 'SKRW',
+    Lake_morph == 'SKRC' ~ 'SKRC')))
 
 wild_dist = wild_lmk_dist %>% 
   dplyr::select(2:29)
@@ -208,6 +217,69 @@ WGP_disp_data %>%
 
 # Graph combined disparity data -------------------------------------------
 
+wild_disp_data = read_csv('Wild_disparity_data.csv')
+F2_disp_data = read_csv('F2_raw_disparity_data.csv')
+TGP_disp_data = read_csv('TGP_disparity_data.csv')
+WGP_disp_data = read_csv('WGP_disparity_data.csv')
 
 
+full_disp_data = bind_rows(wild_disp_data, 
+                           F2_disp_data, 
+                           TGP_disp_data, 
+                           WGP_disp_data)
 
+full_disp_data$label = factor(full_disp_data$label, 
+                              levels = c('Grandparental (wild) generation', 
+                                         'F2 generation', 
+                                         'Trans-generational plasticity', 
+                                         'Within-generational plasticity'))
+full_disp_data$stars = cut(full_disp_data$pvalue, 
+                          breaks = c(-Inf, 
+                                     0.001, 
+                                     0.01,
+                                     0.05, 
+                                     Inf), 
+                          label=c("***", "**", "*", ""))
+
+
+Disparity_plot = ggplot(full_disp_data, 
+       aes(Ecotype1, 
+           Ecotype2, 
+           fill= zscore)) + 
+  geom_tile(col = 'white') +
+  # geom_text(aes(label = zscore),
+  #           color = "black",
+  #           size = 2,
+  #           fontface = 'bold')+
+  geom_text(aes(label=stars), 
+            color="black", 
+            size=5) + 
+  # geom_rect(aes(fill = Eco_pair), 
+  #           colour = "#fb6f92")+
+  facet_wrap(~label)+
+  scale_fill_viridis(discrete=FALSE, 
+                     # direction = -1, 
+                     option = 'D') +
+  labs(fill = 'Disparity distance')+
+  # theme_ipsum()+
+  theme_bw()+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 12), 
+        axis.ticks = element_blank(), 
+        panel.border = element_blank(), 
+        # legend.justification = c('left', 'top'), 
+        legend.position = c(.05, 0.98),
+        legend.justification = c("left", "top"),
+        legend.box.just = "left", 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold', 
+                                  size = 14))
+
+
+ggsave('Full_disparity_figure.tiff', 
+       plot = Disparity_plot, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 30, 
+       height = 15)
