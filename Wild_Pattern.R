@@ -23,7 +23,8 @@ library(candisc)
 # read multiple tps files -------------------------------------------------
 
 wild_f2_data = readmulti.tps(c('Wild_Final.TPS', 
-                       'F2_No_GT.TPS'))
+                       'F2_No_GT.TPS'), 
+                       specID = 'imageID')
 
 writeland.tps(A = wild_f2_data, 
               file = 'wild_F2_combo.tps')
