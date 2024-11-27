@@ -272,10 +272,12 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
                                       y = PCo2, 
                                       col = Lake_morph, 
                                       group = Lake_morph))+
-  stat_ellipse(aes(group = Effect))+
-  geom_line(col = 'black')+
   geom_point(size = 3,
-             aes(shape = Effect))+
+             aes(shape = Effect, 
+                 col = Lake_morph))+
+  stat_ellipse(aes(group = Effect), 
+               col = 'black')+
+  geom_line(col = 'black')+
   scale_color_manual(values = WC_colour_palette)+
   guides(col=guide_legend(title = 'Population'))+
   labs(x = 'PCoA1 (36.6%)',
