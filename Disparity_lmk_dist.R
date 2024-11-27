@@ -34,7 +34,12 @@ wild_lmk_dist = read_csv('Wild_Univariate_traits.csv') %>%
 wild_dist = wild_lmk_dist %>% 
   dplyr::select(2:29)
 
-wild_mat = as.matrix(wild_dist)
+wild_scaled_dist = scale(wild_dist, 
+                         center = T, 
+                         scale = T) %>% 
+  as_tibble() 
+
+wild_mat = as.matrix(wild_scaled_dist)
 
 Wild_disparity = morphol.disparity(wild_mat ~ 1,
                                        groups = ~Lake_morph,
@@ -81,7 +86,13 @@ F2_raw_lmk_dist = read_csv('F2_Original_univariate_traits.csv')
 F2_raw_dist = F2_raw_lmk_dist %>% 
   dplyr::select(2:29)
 
-F2_raw_mat = as.matrix(F2_raw_dist)
+F2_raw_scaled_dist = scale(F2_raw_dist, 
+                         center = T, 
+                         scale = T) %>% 
+  as_tibble() 
+
+
+F2_raw_mat = as.matrix(F2_raw_scaled_dist)
 
 F2_raw_disparity = morphol.disparity(F2_raw_mat ~ 1,
                                    groups = ~Lake_morph,
@@ -127,7 +138,12 @@ F1_lmk_dist = read_csv('F1_Plasticity_Corrected.csv')
 F1_dist = F1_lmk_dist %>% 
   dplyr::select(2:29)
 
-TGP_mat = as.matrix(F1_dist)
+F1_scaled_dist = scale(F1_dist, 
+                         center = T, 
+                         scale = T) %>% 
+  as_tibble() 
+
+TGP_mat = as.matrix(F1_scaled_dist)
 
 TGP_disparity = morphol.disparity(TGP_mat ~ 1,
                                      groups = ~Lake_morph,
@@ -173,7 +189,12 @@ F2_lmk_dist = read_csv('F2_Corrected_F2_temp_only.csv')
 F2_dist = F2_lmk_dist %>% 
   dplyr::select(2:29)
 
-WGP_mat = as.matrix(F2_dist)
+F2_scaled_dist = scale(F2_dist, 
+                         center = T, 
+                         scale = T) %>% 
+  as_tibble() 
+
+WGP_mat = as.matrix(F2_scaled_dist)
 
 WGP_disparity = morphol.disparity(WGP_mat ~ 1,
                                   groups = ~Lake_morph,
@@ -283,3 +304,4 @@ ggsave('Full_disparity_figure.tiff',
        units = 'cm', 
        width = 30, 
        height = 15)
+

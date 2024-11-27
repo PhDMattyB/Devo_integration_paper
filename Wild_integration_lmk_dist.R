@@ -28,13 +28,27 @@ library(hrbrthemes)
 
 # wild traits mag integration ---------------------------------------------
 
-wild_lmk_dist = read_csv('Wild_Univariate_traits.csv')
+wild_lmk_dist = read_csv('Wild_Univariate_traits.csv') %>% 
+  filter(Lake_morph %in% c('ASHNC', 
+                           'ASHNW', 
+                           'MYVC', 
+                           'MYVW', 
+                           'SKRC', 
+                           'SKRW', 
+                           'CSWY', 
+                           'GTS'))
 
 wild_dist = wild_lmk_dist %>% 
   select(2:29)
 
+wild_scaled_dist = scale(wild_dist, 
+      center = T, 
+      scale = T) %>% 
+  as_tibble() 
+
+
 # lmk_dist = geomorph.data.frame(lmk_dist)
-wild_lmk_matrix = as.matrix(wild_dist)
+wild_lmk_matrix = as.matrix(wild_scaled_dist)
 wild_lmk_array = arrayspecs(wild_lmk_matrix, 14, 2)
 
 wild_lmk_sub = coords.subset(wild_lmk_array, 
@@ -83,7 +97,7 @@ Wild_pval = Wild_vrel_compare$pairwise.P %>%
 
 Wild_int_data = bind_cols(wild_zscore,
                           Wild_pval) %>% 
-  select(1:3, 
+  dplyr::select(1:3, 
          6) %>% 
   rename(Ecotype1 = 1, 
          Ecotype2 = 2, 
@@ -97,13 +111,13 @@ Wild_int_data = bind_cols(wild_zscore,
            into = c('trash2', 
                     'Ecotype2'), 
            sep = '[$]') %>% 
-  select(-trash, 
+  dplyr::select(-trash, 
          -trash2)%>% 
   mutate(across(where(is.numeric),
                 ~ round(., 3))) 
 
-# Wild_int_data %>% 
-#   write_csv('Wild_integration_metric.csv')
+Wild_int_data %>%
+  write_csv('Wild_integration_metric.csv')
 
 
 # F2 Uncorrected integration ----------------------------------------------
@@ -113,8 +127,13 @@ F2_raw_lmk_dist = read_csv('F2_Original_univariate_traits.csv')
 F2_raw_dist = F2_raw_lmk_dist %>% 
   select(2:29)
 
+F2_raw_scaled_dist = scale(F2_raw_dist, 
+                         center = T, 
+                         scale = T) %>% 
+  as_tibble() 
+
 # lmk_dist = geomorph.data.frame(lmk_dist)
-F2_raw_lmk_matrix = as.matrix(F2_raw_dist)
+F2_raw_lmk_matrix = as.matrix(F2_raw_scaled_dist)
 F2_raw_lmk_array = arrayspecs(F2_raw_lmk_matrix, 14, 2)
 
 F2_raw_lmk_sub = coords.subset(F2_raw_lmk_array, 
@@ -162,7 +181,7 @@ F2_raw_pval = F2_raw_vrel_compare$pairwise.P %>%
 
 F2_raw_int_data = bind_cols(F2_raw_zscore,
                           F2_raw_pval) %>% 
-  select(1:3, 
+  dplyr::select(1:3, 
          6) %>% 
   rename(Ecotype1 = 1, 
          Ecotype2 = 2, 
@@ -176,7 +195,7 @@ F2_raw_int_data = bind_cols(F2_raw_zscore,
            into = c('trash2', 
                     'Ecotype2'), 
            sep = '[$]') %>% 
-  select(-trash, 
+  dplyr::select(-trash, 
          -trash2)%>% 
   mutate(across(where(is.numeric),
                 ~ round(., 3))) 
@@ -190,8 +209,12 @@ F1_lmk_dist = read_csv('F1_Plasticity_Corrected.csv')
 F1_dist = F1_lmk_dist %>% 
   dplyr::select(2:29)
 
+F1_scaled_dist = scale(F1_dist, 
+                         center = T, 
+                         scale = T) %>% 
+  as_tibble() 
 # lmk_dist = geomorph.data.frame(lmk_dist)
-F1_lmk_matrix = as.matrix(F1_dist)
+F1_lmk_matrix = as.matrix(F1_scaled_dist)
 F1_lmk_array = arrayspecs(F1_lmk_matrix, 14, 2)
 
 F1_lmk_sub = coords.subset(F1_lmk_array, 
@@ -239,7 +262,7 @@ F1_effect_pval = F1_effect_vrel_compare$pairwise.P %>%
 
 F1_effect_int_data = bind_cols(F1_effect_zscore,
                             F1_effect_pval) %>% 
-  select(1:3, 
+  dplyr::select(1:3, 
          6) %>% 
   rename(Ecotype1 = 1, 
          Ecotype2 = 2, 
@@ -253,7 +276,7 @@ F1_effect_int_data = bind_cols(F1_effect_zscore,
            into = c('trash2', 
                     'Ecotype2'), 
            sep = '[$]') %>% 
-  select(-trash, 
+  dplyr::select(-trash, 
          -trash2)%>% 
   mutate(across(where(is.numeric),
                 ~ round(., 3))) 
@@ -268,8 +291,13 @@ F2_lmk_dist = read_csv('F2_Corrected_F2_temp_only.csv')
 F2_dist = F2_lmk_dist %>% 
   select(2:29)
 
+F2_scaled_dist = scale(F2_dist, 
+                         center = T, 
+                         scale = T) %>% 
+  as_tibble() 
+
 # lmk_dist = geomorph.data.frame(lmk_dist)
-F2_lmk_matrix = as.matrix(F2_dist)
+F2_lmk_matrix = as.matrix(F2_scaled_dist)
 F2_lmk_array = arrayspecs(F2_lmk_matrix, 14, 2)
 
 F2_lmk_sub = coords.subset(F2_lmk_array, 
@@ -318,7 +346,7 @@ F2_effect_pval = F2_effect_vrel_compare$pairwise.P %>%
 
 F2_effect_int_data = bind_cols(F2_effect_zscore,
                                F2_effect_pval) %>% 
-  select(1:3, 
+  dplyr::select(1:3, 
          6) %>% 
   rename(Ecotype1 = 1, 
          Ecotype2 = 2, 
@@ -332,7 +360,7 @@ F2_effect_int_data = bind_cols(F2_effect_zscore,
            into = c('trash2', 
                     'Ecotype2'), 
            sep = '[$]') %>% 
-  select(-trash, 
+  dplyr::select(-trash, 
          -trash2)%>% 
   mutate(across(where(is.numeric),
                 ~ round(., 3))) 
@@ -434,7 +462,7 @@ Full_int_plot = ggplot(Full_int_data,
                                   size = 14))
 
 
-ggsave('Magnitude_integration_figure.tiff', 
+ggsave('Scaled_Magnitude_integration_figure.tiff', 
        plot = Full_int_plot, 
        dpi = 'retina', 
        units = 'cm', 
