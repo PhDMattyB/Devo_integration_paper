@@ -188,7 +188,7 @@ F2_raw_int_data %>%
 # F1 effect mag integration -----------------------------------------------
 F1_lmk_dist = read_csv('F1_Plasticity_Corrected.csv')
 F1_dist = F1_lmk_dist %>% 
-  select(2:29)
+  dplyr::select(2:29)
 
 # lmk_dist = geomorph.data.frame(lmk_dist)
 F1_lmk_matrix = as.matrix(F1_dist)

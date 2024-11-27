@@ -39,6 +39,22 @@ identifiers = read_csv('F2_metadata.csv') %>%
   arrange(individualID)
 
 
+exp_unit_info = identifiers %>% 
+  separate(col = individualID, 
+           into = c('Ecotype', 
+                    'temps', 
+                    'Exp_unit', 
+                    'fish_num'), 
+           sep = '_') %>% 
+  group_by(Lake_morph,
+           Exp_unit) %>% 
+  summarize(n = n()) 
+
+exp_unit_info %>% 
+  ungroup() %>% 
+  summarize(mean_num = mean(n))
+
+
 # Body shape data ---------------------------------------------------------
 
 F2_tps = readland.tps('F2_No_GT.TPS', 
