@@ -49,44 +49,20 @@ F2_lmk_coords = test$F2
 
 wild_identifiers = read_csv('TPS_Wild_metadata.csv') 
 
-wild_tps = readland.tps('Wild_Final.TPS', 
-                        specID = 'imageID')
-
-## superimposition on the entire dataset
-wild_gpa = gpagen(wild_tps, 
-                  print.progress = F)
-
+# wild_tps = readland.tps('Wild_Final.TPS', 
+#                         specID = 'imageID')
+# 
+# ## superimposition on the entire dataset
+# wild_gpa = gpagen(wild_tps, 
+#                   print.progress = F)
+# 
 
 # wild disparity ----------------------------------------------------------
-wild_df = geomorph.data.frame(coords = two.d.array(wild_gpa$coords), 
-                                 Lake = wild_identifiers$Lake, 
-                                 Morph = wild_identifiers$Morph, 
-                                 Ecotypes = wild_identifiers$Lake_morph)
-
-
-
-wild_disp_mod = morphol.disparity(coords ~ 1,
-                                      groups = ~Ecotypes,
-                                      data = wild_df,
-                                      iter = 999)
-
-wild_disp_pval = wild_disp_mod$PV.dist.Pval
-wild_disp_vals = wild_disp_mod$PV.dist
-wild_disp_proc_var = wild_disp_mod$Procrustes.var
-
-eye_disp_pval %>% 
-  as.data.frame() %>% 
-  rownames_to_column() %>% 
-  as_tibble() %>% 
-  write_csv('Eye_disparity_pvals.csv')
-
-eye_disp_vals %>% 
-  as.data.frame() %>% 
-  rownames_to_column() %>% 
-  as_tibble() %>% 
-  write_csv('Eye_disparity_estimates.csv')
-
-
+# wild_df = geomorph.data.frame(coords = two.d.array(wild_gpa$coords), 
+#                                  Lake = wild_identifiers$Lake, 
+#                                  Morph = wild_identifiers$Morph, 
+#                                  Ecotypes = wild_identifiers$Lake_morph)
+# 
 
 
 # wild univariate traits --------------------------------------------------
@@ -135,7 +111,7 @@ lmks = data.frame(jaw_length = c(1, 2),
 # 
 #   write_csv('univariate_traits_common_gpa_wild_F2.csv')
 
-wild_coords = wild_gpa$coords
+# wild_coords = wild_gpa$coords
 # A = F2_whole_body_gpa$coords
 wild_univariate_traits = interlmkdist(wild_coords, 
                                     lmks)
