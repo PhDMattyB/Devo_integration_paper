@@ -26,10 +26,26 @@ wild_f2_data = readmulti.tps(c('Wild_Final.TPS',
                        'F2_No_GT.TPS'), 
                        specID = 'imageID')
 
-writeland.tps(A = wild_f2_data, 
-              file = 'wild_F2_combo.tps')
+# writeland.tps(A = wild_f2_data, 
+#               file = 'wild_F2_combo.tps')
 
- # wild fish data  -----------------------------------------------------------
+## common gpa
+common_gpa = gpagen(wild_f2_data, 
+                    print.progress = T)
+
+id = read_csv('wild_F2_id.csv')
+common_df = geomorph.data.frame(coords = two.d.array(common_gpa$coords),
+                                split = id$generation, 
+                                id = id$rowname)
+
+test = coords.subset(common_gpa$coords, 
+                                   id$generation)
+
+wild_lmk_coords = test$wild
+F2_lmk_coords = test$F2
+ 
+
+# wild fish data  -----------------------------------------------------------
 
 wild_identifiers = read_csv('TPS_Wild_metadata.csv') 
 
@@ -104,6 +120,21 @@ lmks = data.frame(jaw_length = c(1, 2),
                   # lm_1_23 = c(1, 13),
                   row.names = c('start', 
                                 'end'))
+common_coords = common_gpa$coords
+common_traits = interlmkdist(common_coords, 
+                             lmks) %>%
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  mutate(ratio1 = lm_1_23/fbar_23_27, 
+         ratio2 = lm_1_23/lm_23_2) %>% 
+  dplyr::select(rowname, 
+         jaw_length:lm_23_2, 
+         ratio1:ratio2, 
+         everything()) 
+
+
+  write_csv('univariate_traits_common_gpa_wild_F2.csv')
 
 wild_coords = wild_gpa$coords
 # A = F2_whole_body_gpa$coords
