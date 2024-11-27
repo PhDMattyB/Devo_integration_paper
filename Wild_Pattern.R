@@ -113,7 +113,7 @@ lmks = data.frame(jaw_length = c(1, 2),
 
 # wild_coords = wild_gpa$coords
 # A = F2_whole_body_gpa$coords
-wild_univariate_traits = interlmkdist(wild_coords, 
+wild_univariate_traits = interlmkdist(wild_lmk_coords, 
                                     lmks)
 
 # arrayspecs(F2_univariate_traits, 
@@ -130,7 +130,7 @@ wild_univariate_traits = bind_cols(wild_univariate_traits,
           wild_identifiers)%>% 
   mutate(ratio1 = lm_1_23/fbar_23_27, 
          ratio2 = lm_1_23/lm_23_2) %>% 
-  select(rowname, 
+  dplyr::select(rowname, 
          jaw_length:lm_23_2, 
          ratio1:ratio2, 
          everything())
@@ -141,7 +141,7 @@ wild_univariate_traits = bind_cols(wild_univariate_traits,
 wild_uni_traits = wild_univariate_traits %>%
   as_tibble() %>%
   group_by(Lake_morph) %>%
-  select(jaw_length:ratio2)
+  dplyr::select(jaw_length:ratio2)
 
 vars_keep = names(wild_uni_traits)[c(2,3,4,5,6,7,8,9,10,11, 
                                      12,13,14,15,16,17,18, 
@@ -152,7 +152,7 @@ wild_uni_trait_cor = wild_uni_traits %>%
   # split(.$lake_morph_Pair_Full_Temp) %>%
   split(.$Lake_morph) %>% 
   # ungroup() %>%
-  map(select, vars_keep) %>%
+  map(dplyr::select, vars_keep) %>%
   map(cor)
 
 wild_uni_graph = wild_uni_trait_cor %>%
