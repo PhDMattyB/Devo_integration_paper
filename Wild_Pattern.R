@@ -120,21 +120,20 @@ lmks = data.frame(jaw_length = c(1, 2),
                   # lm_1_23 = c(1, 13),
                   row.names = c('start', 
                                 'end'))
-common_coords = common_gpa$coords
-common_traits = interlmkdist(common_coords, 
-                             lmks) %>%
-  as.data.frame() %>% 
-  rownames_to_column() %>% 
-  as_tibble() %>% 
-  mutate(ratio1 = lm_1_23/fbar_23_27, 
-         ratio2 = lm_1_23/lm_23_2) %>% 
-  dplyr::select(rowname, 
-         jaw_length:lm_23_2, 
-         ratio1:ratio2, 
-         everything()) 
-
-
-  write_csv('univariate_traits_common_gpa_wild_F2.csv')
+# common_traits = interlmkdist(common_coords, 
+#                              lmks) %>%
+#   as.data.frame() %>% 
+#   rownames_to_column() %>% 
+#   as_tibble() %>% 
+#   mutate(ratio1 = lm_1_23/fbar_23_27, 
+#          ratio2 = lm_1_23/lm_23_2) %>% 
+#   dplyr::select(rowname, 
+#          jaw_length:lm_23_2, 
+#          ratio1:ratio2, 
+#          everything()) 
+# 
+# 
+#   write_csv('univariate_traits_common_gpa_wild_F2.csv')
 
 wild_coords = wild_gpa$coords
 # A = F2_whole_body_gpa$coords
