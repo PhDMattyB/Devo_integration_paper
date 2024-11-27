@@ -20,8 +20,15 @@ library(reshape2)
 library(candisc)
 
 
+# read multiple tps files -------------------------------------------------
 
-# wild fish data  -----------------------------------------------------------
+wild_f2_data = readmulti.tps(c('Wild_Final.TPS', 
+                       'F2_No_GT.TPS'))
+
+writeland.tps(A = wild_f2_data, 
+              file = 'wild_F2_combo.tps')
+
+ # wild fish data  -----------------------------------------------------------
 
 wild_identifiers = read_csv('TPS_Wild_metadata.csv') 
 
