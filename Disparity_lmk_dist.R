@@ -298,7 +298,7 @@ Disparity_plot = ggplot(full_disp_data,
                                   size = 14))
 
 
-ggsave('Full_disparity_figure.tiff', 
+ggsave('Scaled_Full_disparity_figure.tiff', 
        plot = Disparity_plot, 
        dpi = 'retina', 
        units = 'cm', 

@@ -42,9 +42,9 @@ F2_identifiers = read_csv('F2_metadata.csv') %>%
 
 wild_univariate = read_csv('Wild_Univariate_traits.csv') %>% 
   mutate(Group = 'Wild') %>%
-  select(-Order, 
+  dplyr::select(-Order, 
          -rowname) %>% 
-  select(Group, 
+  dplyr::select(Group, 
          ImageID, 
          Lake, 
          Morph, 
@@ -60,7 +60,7 @@ wild_univariate = read_csv('Wild_Univariate_traits.csv') %>%
 
 F2_parental_effects = read_csv('F1_Plasticity_Corrected.csv') %>% 
   mutate(Group = 'Transgen') %>% 
-  select(-Order, 
+  dplyr::select(-Order, 
          -rowname, 
          -Lake, 
          -Ecotype_Pair_Full_Temp, 
@@ -70,7 +70,7 @@ F2_parental_effects = read_csv('F1_Plasticity_Corrected.csv') %>%
          -Offspring_temp, 
          -Full_temp,
          -Ecotype_off_temp) %>% 
-  select(Group, 
+  dplyr::select(Group, 
          individualID, 
          Ecotype_pair, 
          Morph, 
@@ -83,7 +83,7 @@ F2_parental_effects = read_csv('F1_Plasticity_Corrected.csv') %>%
 
 F2_offspring_effects = read_csv('F2_Corrected_F2_temp_only.csv')%>%
   mutate(Group = 'Withingen') %>% 
-  select(-Order, 
+  dplyr::select(-Order, 
          -rowname, 
          -Lake, 
          -Ecotype_Pair_Full_Temp, 
@@ -93,7 +93,7 @@ F2_offspring_effects = read_csv('F2_Corrected_F2_temp_only.csv')%>%
          -Offspring_temp, 
          -Full_temp, 
          -Ecotype_off_temp) %>% 
-  select(Group, 
+  dplyr::select(Group, 
          individualID, 
          Ecotype_pair, 
          Morph, 
@@ -111,14 +111,19 @@ Full_data = bind_rows(wild_univariate,
 # vcvComp analysis --------------------------------------------------------
 
 Traits = Full_data %>% 
-  select(-Group, 
+  dplyr::select(-Group, 
          -individualID, 
          -Lake, 
          -Morph, 
          -Lake_morph)
 
+scaled_traits = scale(Traits, 
+                      center = T, 
+                      scale = T) %>% 
+  as_tibble() 
+
 Trait_ID = Full_data %>% 
-  select(Group, 
+  dplyr::select(Group, 
          individualID, 
          Lake, 
          Morph, 
@@ -129,7 +134,7 @@ Trait_ID = Full_data %>%
         sep = '_')
 
 
-PCA = prcomp(Traits, 
+PCA = prcomp(scaled_traits, 
                        rank. = 5, 
                        tol = sqrt(.Machine$double.eps))
 pca_scores = PCA$x
@@ -162,7 +167,8 @@ var_dim = 1:nrow(prcoa$Variance) %>%
 
 var_plot_data = bind_cols(var_dim,
                           var_exp) %>%
-  mutate_if(is.integer, as.character)
+  mutate_if(is.integer, as.character) %>% 
+  na.omit()
 var_plot_data$dimensions = factor(var_plot_data$dimensions,
                                   levels=c('1',
                                            '2',
@@ -188,7 +194,7 @@ Variance_explained = ggplot(data = var_plot_data,
         axis.title = element_text(size = 14),
         axis.text = element_text(size = 12))
 
-ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/PCoA_Variance_axes_Euclidean.tiff', 
+ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/scaled_PCoA_Variance_axes_Euclidean.tiff', 
        plot = Variance_explained, 
        dpi = 'retina',
        units = 'cm',
@@ -217,12 +223,12 @@ pooled_pc_coords = mutate(.data = pooled_pc_coords,
                             Lake_morph == 'SKRW' ~ 'SKR')))
 
 
-# pooled_pc_coords %>%
-#   write_csv('vcvComp_generation_effect_Euclidean.csv')
+pooled_pc_coords %>%
+  write_csv('scaled_vcvComp_generation_effect_Euclidean.csv')
 
-pooled_pc_coords = read_csv('vcvComp_generation_effect.csv')
+# pooled_pc_coords = read_csv('scaled_vcvComp_generation_effect.csv')
 # pooled_pc_coords = read_csv('vcvComp_generation_effect_F2orig.csv')
-# pooled_pc_coords = read_csv('vcvComp_generation_effect_Euclidean.csv')
+pooled_pc_coords = read_csv('scaled_vcvComp_generation_effect_Euclidean.csv')
 
 pooled_pc_coords = mutate(.data = pooled_pc_coords, 
                           Effect = as.factor(case_when(
@@ -272,8 +278,8 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
              aes(shape = Effect))+
   scale_color_manual(values = WC_colour_palette)+
   guides(col=guide_legend(title = 'Population'))+
-  labs(x = 'PCoA1 (57.2%)',
-       y = 'PCoA2 (9.78%)')+
+  labs(x = 'PCoA1 (36.6%)',
+       y = 'PCoA2 (15.7%)')+
   # labs(x = 'PCoA1 (81.0%)', 
   #      y = 'PCoA2 (12.6%)')+
   theme_bw()+
@@ -281,7 +287,7 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12))
 
-ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/Principal_coord_analysis_pooled_covariance_FINAL.tiff', 
+ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/Scaled_Principal_coord_analysis_pooled_covariance_FINAL.tiff', 
        plot = principal_coord_analysis, 
        dpi = 'retina',
        units = 'cm',
