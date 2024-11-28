@@ -128,10 +128,10 @@ Traits = Full_data %>%
          -Morph, 
          -Lake_morph)
 
-scaled_traits = scale(Traits, 
-                      center = T, 
-                      scale = T) %>% 
-  as_tibble() 
+# scaled_traits = scale(Traits, 
+#                       center = T, 
+#                       scale = T) %>% 
+#   as_tibble() 
 
 Trait_ID = Full_data %>% 
   dplyr::select(Group, 
@@ -300,7 +300,7 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12))
 
-ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/Scaled_Principal_coord_analysis_pooled_covariance_FINAL.tiff', 
+ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/NEW_Scaled_Principal_coord_analysis_pooled_covariance_FINAL.tiff', 
        plot = principal_coord_analysis, 
        dpi = 'retina',
        units = 'cm',
