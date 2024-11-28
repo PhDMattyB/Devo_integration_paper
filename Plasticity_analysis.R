@@ -170,19 +170,43 @@ F2_univariate_traits = bind_cols(F2_univariate_traits,
 # F2_univariate_traits %>% 
 #   write_csv('F2_Original_univar_no_kinetics.csv')
 
+F2_univariate_traits = read_csv('F2_Original_univar_no_kinetics.csv')
+F2_kinetic = read_csv('F2_uncorrected_Jaw_kinetic_traits.csv')
+
+lake_morph = F2_univariate_traits %>% 
+  dplyr::select(Lake_morph)
+
 orig_uni_traits = F2_univariate_traits %>%
   as_tibble() %>%
   group_by(Lake_morph) %>%
   select(jaw_length:ratio2)
 
+F2_orig_traits = bind_cols(orig_uni_traits, 
+                           F2_kinetic)
+
+F2_traits_scaled = F2_orig_traits %>% 
+  ungroup() %>% 
+  select(-Lake_morph) %>% 
+  scale(., 
+        center = T, 
+        scale = T) %>% 
+  as_tibble() %>% 
+  bind_cols(lake_morph, 
+            .)
+
 # orig_uni_traits %>%
 #   write_csv('F2_Original_univariate_traits.csv')
 
-vars_keep = names(orig_uni_traits)[c(2,3,4,5,6,7,8,9,10,11, 
-                                           12,13,14,15,16,17,18, 
-                                           19,20,21,22,23,24,25,26,
-                                           27,28,29)]
-orig_uni_trait_cor = orig_uni_traits %>%
+# vars_keep = names(orig_uni_traits)[c(2,3,4,5,6,7,8,9,10,11, 
+#                                            12,13,14,15,16,17,18, 
+#                                            19,20,21,22,23,24,25,26,
+#                                            27,28,29)]
+vars_keep = names(wild_uni_traits)[c(2,3,4,5,6,7,8,9,10,11, 
+                                     12,13,14,15,16,17,18, 
+                                     19,20,21,22,23,24,25,26,
+                                     27,28,29, 30, 31, 32, 
+                                     33, 34, 35, 36)]
+orig_uni_trait_cor = F2_traits_scaled %>%
   ungroup() %>%
   # split(.$lake_morph_Pair_Full_Temp) %>%
   split(.$Lake_morph) %>% 
@@ -346,16 +370,45 @@ F2_off_plasticity_traits = bind_cols(F2_off_plasticity_traits,
 # F2_off_plasticity_traits %>%
 #   write_csv('F2_Corrected_WGP_no_kinetics.csv')
 
-off_plasticity_traits = F2_off_plasticity_traits %>%
+F2_WGP_traits = read_csv('F2_Corrected_WGP_no_kinetics.csv')
+F2_WGP_kinetic = read_csv('WGP_Jaw_kinetic_traits.csv')
+
+lake_morph = F2_WGP_traits %>% 
+  dplyr::select(Lake_morph)
+
+WGP_traits = F2_WGP_traits %>%
   as_tibble() %>%
   group_by(Lake_morph) %>%
   select(jaw_length:ratio2)
 
-vars_keep = names(off_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11, 
-                                           12,13,14,15,16,17,18, 
-                                           19,20,21,22,23,24,25,26,
-                                           27,28,29)]
-off_plasticity_trait_cor = off_plasticity_traits %>%
+WGP_traits = bind_cols(WGP_traits, 
+                           F2_WGP_kinetic)
+
+WGP_traits_scaled = WGP_traits %>% 
+  ungroup() %>% 
+  select(-Lake_morph) %>% 
+  scale(., 
+        center = T, 
+        scale = T) %>% 
+  as_tibble() %>% 
+  bind_cols(lake_morph, 
+            .)
+
+# off_plasticity_traits = F2_off_plasticity_traits %>%
+#   as_tibble() %>%
+#   group_by(Lake_morph) %>%
+#   select(jaw_length:ratio2)
+
+# vars_keep = names(off_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11, 
+#                                            12,13,14,15,16,17,18, 
+#                                            19,20,21,22,23,24,25,26,
+#                                            27,28,29)]
+vars_keep = names(WGP_traits_scaled)[c(2,3,4,5,6,7,8,9,10,11, 
+                                     12,13,14,15,16,17,18, 
+                                     19,20,21,22,23,24,25,26,
+                                     27,28,29, 30, 31, 32, 
+                                     33, 34, 35, 36)]
+off_plasticity_trait_cor = WGP_traits_scaled %>%
   ungroup() %>%
   # split(.$lake_morph_Pair_Full_Temp) %>%
   split(.$Lake_morph) %>% 
@@ -922,17 +975,54 @@ F2_parent_plasticity_traits = bind_cols(F2_parent_plasticity_traits,
 # F2_parent_plasticity_traits %>%
 #   write_csv('F1_TGP_Plasticity_Corrected_no_kinetics.csv')
 
+TGP_traits = read_csv('F1_TGP_Plasticity_Corrected_no_kinetics.csv')
+TGP_kinetics = read_csv("TGP_Jaw_kinetic_traits.csv")
 
-parent_plasticity_traits = F2_parent_plasticity_traits %>%
+lake_morph = TGP_traits %>% 
+  dplyr::select(Lake_morph)
+
+TGP_traits = TGP_traits %>%
   as_tibble() %>%
   group_by(Lake_morph) %>%
   select(jaw_length:ratio2)
 
-vars_keep = names(off_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11, 
-                                           12,13,14,15,16,17,18, 
-                                           19,20,21,22,23,24,25,26,
-                                           27,28,29)]
-parent_plasticity_trait_cor = parent_plasticity_traits %>%
+TGP_traits = bind_cols(TGP_traits, 
+                       TGP_kinetics)
+
+TGP_traits_scaled = TGP_traits %>% 
+  ungroup() %>% 
+  select(-Lake_morph) %>% 
+  scale(., 
+        center = T, 
+        scale = T) %>% 
+  as_tibble() %>% 
+  bind_cols(lake_morph, 
+            .)
+
+# off_plasticity_traits = F2_off_plasticity_traits %>%
+#   as_tibble() %>%
+#   group_by(Lake_morph) %>%
+#   select(jaw_length:ratio2)
+
+# vars_keep = names(off_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11, 
+#                                            12,13,14,15,16,17,18, 
+#                                            19,20,21,22,23,24,25,26,
+#                                            27,28,29)]
+vars_keep = names(WGP_traits_scaled)[c(2,3,4,5,6,7,8,9,10,11, 
+                                       12,13,14,15,16,17,18, 
+                                       19,20,21,22,23,24,25,26,
+                                       27,28,29, 30, 31, 32, 
+                                       33, 34, 35, 36)]
+# parent_plasticity_traits = TGP_traits_scaled %>%
+#   as_tibble() %>%
+#   group_by(Lake_morph) %>%
+#   select(jaw_length:ratio2)
+
+# vars_keep = names(off_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11, 
+#                                            12,13,14,15,16,17,18, 
+#                                            19,20,21,22,23,24,25,26,
+#                                            27,28,29)]
+parent_plasticity_trait_cor = TGP_traits_scaled %>%
   ungroup() %>%
   split(.$Lake_morph) %>%
   # ungroup() %>%
