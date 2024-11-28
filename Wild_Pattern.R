@@ -15,15 +15,15 @@ library(RRPP)
 library(MASS)
 library(ppcor)
 library(igraph)
-library(tidyverse)
 library(reshape2)
 library(candisc)
+library(tidyverse)
 
 
 # read multiple tps files -------------------------------------------------
 
-wild_f2_data = readmulti.tps(c('Wild_Final.TPS', 
-                       'F2_No_GT.TPS'), 
+wild_f2_data = readmulti.tps(c('Wild_28LM_Final.tps', 
+                       'F2_No_GT_ALL_LMs.TPS'), 
                        specID = 'imageID')
 
 # writeland.tps(A = wild_f2_data, 
@@ -38,11 +38,11 @@ common_df = geomorph.data.frame(coords = two.d.array(common_gpa$coords),
                                 split = id$generation, 
                                 id = id$rowname)
 
-test = coords.subset(common_gpa$coords, 
+coord_sub = coords.subset(common_gpa$coords, 
                                    id$generation)
 
-wild_lmk_coords = test$wild
-F2_lmk_coords = test$F2
+wild_lmk_coords = coord_sub$wild
+F2_lmk_coords = coord_sub$F2
  
 
 # wild fish data  -----------------------------------------------------------
