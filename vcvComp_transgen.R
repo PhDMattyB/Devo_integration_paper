@@ -36,14 +36,19 @@ F2_identifiers = read_csv('F2_metadata.csv') %>%
                   'Grand_temp'),
                 factor))
 
+wild_identifiers = read_csv('TPS_Wild_metadata.csv') 
 
 # Univariate trait data ---------------------------------------------------
 
 
-wild_univariate = read_csv('Wild_Univariate_traits.csv') %>% 
+wild_univariate = read_csv('Wild_scaled_kinetic_traits.csv') %>% 
   mutate(Group = 'Wild') %>%
+  bind_cols(wild_identifiers, 
+            .) %>% 
   dplyr::select(-Order, 
-         -rowname) %>% 
+         # -rowname, 
+         -Lake_morph...6) %>%
+  rename(Lake_morph = Lake_morph...5) %>% 
   dplyr::select(Group, 
          ImageID, 
          Lake, 
@@ -58,33 +63,12 @@ wild_univariate = read_csv('Wild_Univariate_traits.csv') %>%
                      'CSWY'))
 
 
-F2_parental_effects = read_csv('F1_Plasticity_Corrected.csv') %>% 
+F2_parental_effects = read_csv('TGP_traits_scaled_kinetic.csv') %>% 
   mutate(Group = 'Transgen') %>% 
+  bind_cols(F2_identifiers, 
+            .) %>% 
   dplyr::select(-Order, 
-         -rowname, 
-         -Lake, 
-         -Ecotype_Pair_Full_Temp, 
-         -lake_morph_Pair_Full_Temp, 
-         -Grand_temp, 
-         -Parent_temp, 
-         -Offspring_temp, 
-         -Full_temp,
-         -Ecotype_off_temp) %>% 
-  dplyr::select(Group, 
-         individualID, 
-         Ecotype_pair, 
-         Morph, 
-         Lake_morph,
-         everything()) %>% 
-  rename(Lake = Ecotype_pair)
-
-# F2_parental_effects = bind_cols(F2_identifiers, 
-#                                 F2_parental_effects)
-
-F2_offspring_effects = read_csv('F2_Corrected_F2_temp_only.csv')%>%
-  mutate(Group = 'Withingen') %>% 
-  dplyr::select(-Order, 
-         -rowname, 
+         # -rowname, 
          -Lake, 
          -Ecotype_Pair_Full_Temp, 
          -lake_morph_Pair_Full_Temp, 
@@ -92,14 +76,41 @@ F2_offspring_effects = read_csv('F2_Corrected_F2_temp_only.csv')%>%
          -Parent_temp, 
          -Offspring_temp, 
          -Full_temp, 
-         -Ecotype_off_temp) %>% 
+         -Lake_morph...13) %>% 
   dplyr::select(Group, 
          individualID, 
          Ecotype_pair, 
          Morph, 
-         Lake_morph,
+         Lake_morph...8,
          everything()) %>% 
-  rename(Lake = Ecotype_pair)
+  rename(Lake = Ecotype_pair, 
+         Lake_morph = Lake_morph...8)
+
+# F2_parental_effects = bind_cols(F2_identifiers, 
+#                                 F2_parental_effects)
+
+F2_offspring_effects = read_csv('WGP_traits_scaled_kinetic.csv')%>%
+  mutate(Group = 'Withingen') %>% 
+  bind_cols(F2_identifiers, 
+            .) %>% 
+  dplyr::select(-Order, 
+         # -rowname, 
+         -Lake, 
+         -Ecotype_Pair_Full_Temp, 
+         -lake_morph_Pair_Full_Temp, 
+         -Grand_temp, 
+         -Parent_temp, 
+         -Offspring_temp, 
+         -Full_temp, 
+         -Lake_morph...13) %>% 
+  dplyr::select(Group, 
+         individualID, 
+         Ecotype_pair, 
+         Morph, 
+         Lake_morph...8,
+         everything()) %>% 
+  rename(Lake = Ecotype_pair, 
+         Lake_morph = Lake_morph...8)
 
 
 Full_data = bind_rows(wild_univariate, 
