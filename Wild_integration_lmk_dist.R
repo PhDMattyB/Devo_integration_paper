@@ -20,7 +20,22 @@ library(hrbrthemes)
 
 # wild traits mag integration ---------------------------------------------
 
-wild_lmk_dist = read_csv('Wild_Univariate_traits.csv') %>% 
+wild_meta = read_csv('Wild_Univariate_traits.csv') %>% 
+  filter(Lake_morph %in% c('ASHNC', 
+                           'ASHNW', 
+                           'MYVC', 
+                           'MYVW', 
+                           'SKRC', 
+                           'SKRW', 
+                           'CSWY', 
+                           'GTS')) %>% 
+  select(rowname, 
+         Order, 
+         ImageID, 
+         Lake, 
+         Morph)
+
+wild_lmk_dist = read_csv('Wild_scaled_kinetic_traits.csv')%>% 
   filter(Lake_morph %in% c('ASHNC', 
                            'ASHNW', 
                            'MYVC', 
@@ -30,18 +45,21 @@ wild_lmk_dist = read_csv('Wild_Univariate_traits.csv') %>%
                            'CSWY', 
                            'GTS'))
 
+wild_lmk_dist = bind_cols(wild_meta, 
+                          wild_lmk_dist)
+
 wild_dist = wild_lmk_dist %>% 
-  select(2:29)
+  select(7:41)
 
-wild_scaled_dist = scale(wild_dist, 
-      center = T, 
-      scale = T) %>% 
-  as_tibble() 
-
+# wild_scaled_dist = scale(wild_dist, 
+#       center = T, 
+#       scale = T) %>% 
+#   as_tibble() 
+# 
 
 # lmk_dist = geomorph.data.frame(lmk_dist)
-wild_lmk_matrix = as.matrix(wild_scaled_dist)
-wild_lmk_array = arrayspecs(wild_lmk_matrix, 14, 2)
+wild_lmk_matrix = as.matrix(wild_dist)
+wild_lmk_array = arrayspecs(wild_lmk_matrix, 17.5, 2)
 
 wild_lmk_sub = coords.subset(wild_lmk_array, 
               wild_lmk_dist$Lake_morph)
@@ -58,8 +76,8 @@ vrel_wild_lmkdist = Map(function(x) integration.Vrel(x),
 # SKR_compare_wild = compare.ZVrel(vrel_wild_lmkdist$SKRC, 
 #                             vrel_wild_lmkdist$SKRW)
 # 
-GTS_CSWY_compare_wild = compare.ZVrel(vrel_wild_lmkdist$CSWY,
-                                 vrel_wild_lmkdist$GTS)
+# GTS_CSWY_compare_wild = compare.ZVrel(vrel_wild_lmkdist$CSWY,
+#                                  vrel_wild_lmkdist$GTS)
 
 Wild_vrel_compare = compare.ZVrel(vrel_wild_lmkdist$ASHNC, 
               vrel_wild_lmkdist$ASHNW, 
@@ -109,24 +127,28 @@ Wild_int_data = bind_cols(wild_zscore,
                 ~ round(., 3))) 
 
 Wild_int_data %>%
-  write_csv('Wild_integration_metric.csv')
+  write_csv('NEW_Wild_integration_metric.csv')
 
 
 # F2 Uncorrected integration ----------------------------------------------
 
 
-F2_raw_lmk_dist = read_csv('F2_Original_univariate_traits.csv')
-F2_raw_dist = F2_raw_lmk_dist %>% 
-  select(2:29)
+# F2_raw_lmk_dist = read_csv('F2_Original_univariate_traits.csv')
+# F2_raw_dist = F2_raw_lmk_dist %>% 
+#   select(2:29)
 
-F2_raw_scaled_dist = scale(F2_raw_dist, 
-                         center = T, 
-                         scale = T) %>% 
-  as_tibble() 
+F2_raw_lmk_dist = read_csv('F2_traits_scaled_kinetic.csv')
+F2_raw_dist = F2_raw_lmk_dist %>% 
+  select(2:36)
+
+# F2_raw_scaled_dist = scale(F2_raw_dist, 
+#                          center = T, 
+#                          scale = T) %>% 
+#   as_tibble() 
 
 # lmk_dist = geomorph.data.frame(lmk_dist)
-F2_raw_lmk_matrix = as.matrix(F2_raw_scaled_dist)
-F2_raw_lmk_array = arrayspecs(F2_raw_lmk_matrix, 14, 2)
+F2_raw_lmk_matrix = as.matrix(F2_raw_dist)
+F2_raw_lmk_array = arrayspecs(F2_raw_lmk_matrix, 17.5, 2)
 
 F2_raw_lmk_sub = coords.subset(F2_raw_lmk_array, 
                            F2_raw_lmk_dist$Lake_morph)
@@ -197,17 +219,23 @@ F2_raw_int_data %>%
 
 ##
 # F1 effect mag integration -----------------------------------------------
-F1_lmk_dist = read_csv('F1_Plasticity_Corrected.csv')
-F1_dist = F1_lmk_dist %>% 
-  dplyr::select(2:29)
 
-F1_scaled_dist = scale(F1_dist, 
-                         center = T, 
-                         scale = T) %>% 
-  as_tibble() 
+TGP_lmk_dist = read_csv('TGP_traits_scaled_kinetic.csv')
+
+TGP_dist = TGP_lmk_dist %>% 
+  select(2:36)
+
+# F1_lmk_dist = read_csv('F1_Plasticity_Corrected.csv')
+# F1_dist = F1_lmk_dist %>% 
+#   dplyr::select(2:29)
+# 
+# F1_scaled_dist = scale(F1_dist, 
+#                          center = T, 
+#                          scale = T) %>% 
+#   as_tibble() 
 # lmk_dist = geomorph.data.frame(lmk_dist)
-F1_lmk_matrix = as.matrix(F1_scaled_dist)
-F1_lmk_array = arrayspecs(F1_lmk_matrix, 14, 2)
+F1_lmk_matrix = as.matrix(TGP_dist)
+F1_lmk_array = arrayspecs(F1_lmk_matrix, 17.5, 2)
 
 F1_lmk_sub = coords.subset(F1_lmk_array, 
                              F1_lmk_dist$Lake_morph)
@@ -278,19 +306,22 @@ F1_effect_int_data %>%
 
 
 # F2 effect mag integration -----------------------------------------------
+WGP_lmk_dist = read_csv('WGP_traits_scaled_kinetic.csv')
+WGP_dist = WGP_lmk_dist %>% 
+  select(2:36)
 
-F2_lmk_dist = read_csv('F2_Corrected_F2_temp_only.csv')
-F2_dist = F2_lmk_dist %>% 
-  select(2:29)
-
-F2_scaled_dist = scale(F2_dist, 
-                         center = T, 
-                         scale = T) %>% 
-  as_tibble() 
+# F2_lmk_dist = read_csv('F2_Corrected_F2_temp_only.csv')
+# F2_dist = F2_lmk_dist %>% 
+#   select(2:29)
+# 
+# F2_scaled_dist = scale(F2_dist, 
+#                          center = T, 
+#                          scale = T) %>% 
+#   as_tibble() 
 
 # lmk_dist = geomorph.data.frame(lmk_dist)
-F2_lmk_matrix = as.matrix(F2_scaled_dist)
-F2_lmk_array = arrayspecs(F2_lmk_matrix, 14, 2)
+F2_lmk_matrix = as.matrix(WGP_dist)
+F2_lmk_array = arrayspecs(F2_lmk_matrix, 17.5, 2)
 
 F2_lmk_sub = coords.subset(F2_lmk_array, 
                            F2_lmk_dist$Lake_morph)
@@ -454,7 +485,7 @@ Full_int_plot = ggplot(Full_int_data,
                                   size = 14))
 
 
-ggsave('Scaled_Magnitude_integration_figure.tiff', 
+ggsave('NEW_Scaled_Magnitude_integration_figure.tiff', 
        plot = Full_int_plot, 
        dpi = 'retina', 
        units = 'cm', 
