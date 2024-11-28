@@ -154,7 +154,7 @@ wild_uni_traits = wild_univariate_traits %>%
 
 wild_uni_traits = bind_cols(wild_uni_traits, 
                              wild_kinetics) 
-wild_traits_scaled = wild_unit_traits %>% 
+wild_traits_scaled = wild_uni_traits %>% 
   ungroup() %>% 
   dplyr::select(-Lake_morph) %>% 
   scale(., center = T, scale = T) %>% 
