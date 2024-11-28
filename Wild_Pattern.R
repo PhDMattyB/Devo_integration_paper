@@ -141,16 +141,37 @@ wild_univariate_traits = bind_cols(wild_univariate_traits,
 # wild_univariate_traits %>%
 #   write_csv('Wild_univar_traits_nokinetics.csv')
 
+wild_univariate_traits = read_csv("Wild_univar_traits_nokinetics.csv")
+wild_kinetics = read_csv('Wild_Jaw_kinetic_traits.csv')
+
+lake_morph = wild_univariate_traits %>% 
+  dplyr::select(Lake_morph)
+
 wild_uni_traits = wild_univariate_traits %>%
   as_tibble() %>%
   group_by(Lake_morph) %>%
   dplyr::select(jaw_length:ratio2)
 
+wild_uni_traits = bind_cols(wild_uni_traits, 
+                             wild_kinetics) 
+wild_traits_scaled = wild_unit_traits %>% 
+  ungroup() %>% 
+  dplyr::select(-Lake_morph) %>% 
+  scale(., center = T, scale = T) %>% 
+  as_tibble() %>% 
+  bind_cols(lake_morph, 
+           .)
+
+# vars_keep = names(wild_uni_traits)[c(2,3,4,5,6,7,8,9,10,11, 
+#                                      12,13,14,15,16,17,18, 
+#                                      19,20,21,22,23,24,25,26,
+#                                      27,28,29)]
 vars_keep = names(wild_uni_traits)[c(2,3,4,5,6,7,8,9,10,11, 
                                      12,13,14,15,16,17,18, 
                                      19,20,21,22,23,24,25,26,
-                                     27,28,29)]
-wild_uni_trait_cor = wild_uni_traits %>%
+                                     27,28,29, 30, 31, 32, 
+                                     33, 34, 35, 36)]
+wild_uni_trait_cor = wild_traits_scaled %>%
   ungroup() %>%
   # split(.$lake_morph_Pair_Full_Temp) %>%
   split(.$Lake_morph) %>% 
