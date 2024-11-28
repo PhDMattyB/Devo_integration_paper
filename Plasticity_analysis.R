@@ -44,31 +44,52 @@ identifiers = read_csv('F2_metadata.csv') %>%
 
 # Body shape data ---------------------------------------------------------
 
-F2_tps = readland.tps('F2_No_GT.TPS', 
+F2_tps = readland.tps('F2_No_GT_ALL_LMs.TPS',
                       specID = 'imageID')
-
-## superimposition on the entire dataset
-F2_gpa = gpagen(F2_tps, 
+# 
+# ## superimposition on the entire dataset
+F2_gpa = gpagen(F2_tps,
                 print.progress = F)
+wild_f2_data = readmulti.tps(c('Wild_28LM_Final.tps', 
+                               'F2_No_GT_ALL_LMs.TPS'), 
+                             specID = 'imageID')
 
-allometry_model1 = procD.lm(F2_gpa$coords ~ log(F2_gpa$Csize), 
-                            iter = 999, 
-                            RRPP = T)
-summary(allometry_model1)
+# writeland.tps(A = wild_f2_data, 
+#               file = 'wild_F2_combo.tps')
 
+## common gpa
+common_gpa = gpagen(wild_f2_data, 
+                    print.progress = T)
 
-F2_shape_resid = arrayspecs(allometry_model1$residuals, 
-                            p = dim(F2_gpa$coords)[1], 
-                            k = dim(F2_gpa$coords)[2])
-F2_allometry_adj_shape = F2_shape_resid + array(F2_gpa$consensus, 
-                                                dim(F2_shape_resid))
+id = read_csv('wild_F2_id.csv')
+common_df = geomorph.data.frame(coords = two.d.array(common_gpa$coords),
+                                split = id$generation, 
+                                id = id$rowname)
 
-mean_shape = mshape(F2_gpa$coords)
+coord_sub = coords.subset(common_gpa$coords, 
+                          id$generation)
+
+wild_lmk_coords = coord_sub$wild
+F2_lmk_coords = coord_sub$F2
+
+# allometry_model1 = procD.lm(F2_lmk_coords ~ log(F2_gpa$Csize), 
+#                             iter = 999, 
+#                             RRPP = T)
+# summary(allometry_model1)
+# 
+# 
+# F2_shape_resid = arrayspecs(allometry_model1$residuals, 
+#                             p = dim(F2_gpa$coords)[1], 
+#                             k = dim(F2_gpa$coords)[2])
+# F2_allometry_adj_shape = F2_shape_resid + array(F2_gpa$consensus, 
+#                                                 dim(F2_shape_resid))
+
+mean_shape = mshape(F2_lmk_coords)
 matrix_mean_shape = as.matrix(mean_shape)
 mean_shape_array = array(matrix_mean_shape, 
-                         dim = c(27, 2, 1))
+                         dim = c(28, 2, 1))
 
-
+##
 # PCA original dataset ----------------------------------------------------
 
 shape_pca = gm.prcomp(F2_gpa$coords)
@@ -90,6 +111,9 @@ lmks = data.frame(jaw_length = c(1, 2),
                   fbar_8_27 = c(8, 27), 
                   fbar_23_27 = c(23, 27), 
                   fbar_25_26 = c(25, 26), 
+                  max_27_3 = c(27, 3), 
+                  max_3_28 = c(3, 28), 
+                  max_28_27 = c(28, 17),
                   body_width = c(12, 21), 
                   caudal1_14_18 = c(14, 18), 
                   caudal2_15_17 = c(15, 17), 
@@ -114,9 +138,8 @@ lmks = data.frame(jaw_length = c(1, 2),
                   row.names = c('start', 
                                 'end'))
 
-A = F2_gpa$coords
 # A = F2_whole_body_gpa$coords
-F2_univariate_traits = interlmkdist(A, 
+F2_univariate_traits = interlmkdist(F2_lmk_coords, 
                                     lmks)
 
 # arrayspecs(F2_univariate_traits, 
@@ -143,6 +166,9 @@ F2_univariate_traits = bind_cols(F2_univariate_traits,
          jaw_length:lm_23_2, 
          ratio1:ratio2, 
          everything())
+
+# F2_univariate_traits %>% 
+#   write_csv('F2_Original_univar_no_kinetics.csv')
 
 orig_uni_traits = F2_univariate_traits %>%
   as_tibble() %>%
@@ -196,18 +222,18 @@ ggsave('Univariate_original_plasticity_trait_ecotype_integration.tiff',
 
 # Plasticity  shape --------------------------------------------------------------
 
-F2_temp_mod = procD.lm(F2_gpa$coords ~ identifiers$Offspring_temp, 
+F2_temp_mod = procD.lm(F2_lmk_coords ~ identifiers$Offspring_temp, 
                        iter = 999)
 
 ## All individuals have the same fitted values.
 ## pull individual from offspring temp of 12 degrees
 F2_temp_fitted = F2_temp_mod$GM$fitted[,,1]
 F2_temp_matrix_12deg = as.matrix(F2_temp_fitted)
-F2_temp_12deg_array = array(F2_temp_matrix_12deg, dim = c(27, 2, 1))
+F2_temp_12deg_array = array(F2_temp_matrix_12deg, dim = c(28, 2, 1))
 
 F2_temp_fitted_18deg = F2_temp_mod$GM$fitted[,,31]
 F2_temp_matrix_18deg = as.matrix(F2_temp_fitted_18deg)
-F2_temp_18deg_array = array(F2_temp_matrix_18deg, dim = c(27,2, 1))
+F2_temp_18deg_array = array(F2_temp_matrix_18deg, dim = c(28,2, 1))
 
 # identifiers %>% 
 #   filter(Offspring_temp == '18') %>% 
@@ -221,7 +247,7 @@ F2_18deg_range = c(31:60, 92:121, 152:181, 212:243, 274:303,
                    624:654, 684:713, 744:773, 804:833, 858:870, 
                    901:931)
 
-F2_array = array(0, dim = c(27, 2, 931))
+F2_array = array(0, dim = c(28, 2, 931))
 for(i in F2_12deg_range){
   F2_array[,,i] = F2_gpa$coords[,,i] - F2_temp_12deg_array[,,1]
 }
@@ -232,16 +258,19 @@ for(i in F2_18deg_range){
 
 ## This is the array to use too pull out the linear traits due
 ## to plasticity
-F2_array_consensus = array(0, dim = c(27, 2, 931))
+F2_array_consensus = array(0, dim = c(28, 2, 931))
 for(i in 1:931){
   F2_array_consensus[,,i] = F2_array[,,i] + mean_shape_array[,,1]
 }
 
+writeland.tps(F2_array_consensus, 
+              'F2_WGP_Corrected_landmarks.tps')
 
-plasticity_gpa = gpagen(F2_array_consensus)
+
+# plasticity_gpa = gpagen(F2_array_consensus)
 # test_lm = geomorph.data.frame(plasticity_gpa)
 
-F2_plasticity_data = geomorph.data.frame(plasticity_gpa, 
+F2_plasticity_data = geomorph.data.frame(coords = F2_array_consensus, 
                               Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
                               parent_temp = identifiers$Parent_temp, 
                               offspring_temp = identifiers$Offspring_temp,
@@ -258,6 +287,9 @@ lmks = data.frame(jaw_length = c(1, 2),
                   fbar_8_27 = c(8, 27), 
                   fbar_23_27 = c(23, 27), 
                   fbar_25_26 = c(25, 26), 
+                  max_27_3 = c(27, 3), 
+                  max_3_28 = c(3, 28), 
+                  max_28_27 = c(28, 17),
                   body_width = c(12, 21), 
                   caudal1_14_18 = c(14, 18), 
                   caudal2_15_17 = c(15, 17), 
@@ -311,8 +343,8 @@ F2_off_plasticity_traits = bind_cols(F2_off_plasticity_traits,
          ratio1:ratio2, 
          everything())
 
-# F2_off_plasticity_traits %>% 
-#   write_csv('F2_Corrected_F2_temp_only.csv')
+# F2_off_plasticity_traits %>%
+#   write_csv('F2_Corrected_WGP_no_kinetics.csv')
 
 off_plasticity_traits = F2_off_plasticity_traits %>%
   as_tibble() %>%
@@ -766,18 +798,20 @@ GTSCSWY_F2_plasticity = ggplot(GTSCSWY_F2_temp_cor,
 
 # parental temp effects ---------------------------------------------------
 
-F2_parent_temp_mod = procD.lm(F2_gpa$coords ~ identifiers$Parent_temp, 
+F2_parent_temp_mod = procD.lm(F2_lmk_coords ~ identifiers$Parent_temp, 
                        iter = 999)
 
 ## All individuals have the same fitted values.
 ## pull individual from offspring temp of 12 degrees
 F2_parent_temp_fitted = F2_parent_temp_mod$GM$fitted[,,1]
 F2_parent_temp_matrix_12deg = as.matrix(F2_parent_temp_fitted)
-F2_parent_temp_12deg_array = array(F2_parent_temp_matrix_12deg, dim = c(27, 2, 1))
+F2_parent_temp_12deg_array = array(F2_parent_temp_matrix_12deg, 
+                                   dim = c(28, 2, 1))
 
 F2_parent_temp_fitted_18deg = F2_parent_temp_mod$GM$fitted[,,61]
 F2_parent_temp_matrix_18deg = as.matrix(F2_parent_temp_fitted_18deg)
-F2_parent_temp_18deg_array = array(F2_parent_temp_matrix_18deg, dim = c(27,2, 1))
+F2_parent_temp_18deg_array = array(F2_parent_temp_matrix_18deg, 
+                                   dim = c(28,2, 1))
 
 # identifiers %>%
 #   filter(Parent_temp == '12') %>%
@@ -788,7 +822,7 @@ F2_parent_12deg_range = c(1:60, 122:181, 244:303, 364:442, 474:533, 594:654,
 F2_parent_18deg_range = c(61:121, 182:243, 304:363, 443:473, 534:593, 
                           655:713, 774:833, 871:931)
 
-F2_parent_array = array(0, dim = c(27, 2, 931))
+F2_parent_array = array(0, dim = c(28, 2, 931))
 for(i in F2_parent_12deg_range){
   F2_parent_array[,,i] = F2_gpa$coords[,,i] - F2_parent_temp_12deg_array[,,1]
 }
@@ -799,20 +833,20 @@ for(i in F2_parent_18deg_range){
 
 ## This is the array to use too pull out the linear traits due
 ## to plasticity
-F2_parent_array_consensus = array(0, dim = c(27, 2, 931))
+F2_parent_array_consensus = array(0, dim = c(28, 2, 931))
 for(i in 1:931){
   F2_parent_array_consensus[,,i] = F2_parent_array[,,i] + mean_shape_array[,,1]
 }
 
 
-parent_effect_gpa = gpagen(F2_parent_array_consensus)
+# parent_effect_gpa = gpagen(F2_parent_array_consensus)
 # test_lm = geomorph.data.frame(plasticity_gpa)
 
 
-writeland.tps(parent_effect_gpa$coords, 
-              'F1_Corrected_landmarks.tps')
+# writeland.tps(F2_parent_array_consensus, 
+#               'F1_TGP_Corrected_landmarks.tps')
 
-F2_parent_effect_data = geomorph.data.frame(parent_effect_gpa, 
+F2_parent_effect_data = geomorph.data.frame(coords = F2_parent_array_consensus, 
                                          Full_factor = identifiers$Ecotype_Pair_Full_Temp, 
                                          parent_temp = identifiers$Parent_temp, 
                                          offspring_temp = identifiers$Offspring_temp,
@@ -829,6 +863,9 @@ lmks = data.frame(jaw_length = c(1, 2),
                   fbar_8_27 = c(8, 27), 
                   fbar_23_27 = c(23, 27), 
                   fbar_25_26 = c(25, 26), 
+                  max_27_3 = c(27, 3), 
+                  max_3_28 = c(3, 28), 
+                  max_28_27 = c(28, 17),
                   body_width = c(12, 21), 
                   caudal1_14_18 = c(14, 18), 
                   caudal2_15_17 = c(15, 17), 
@@ -882,8 +919,8 @@ F2_parent_plasticity_traits = bind_cols(F2_parent_plasticity_traits,
          ratio1:ratio2, 
          everything())
 
-# F2_parent_plasticity_traits %>% 
-#   write_csv('F1_Plasticity_Corrected.csv')
+# F2_parent_plasticity_traits %>%
+#   write_csv('F1_TGP_Plasticity_Corrected_no_kinetics.csv')
 
 
 parent_plasticity_traits = F2_parent_plasticity_traits %>%

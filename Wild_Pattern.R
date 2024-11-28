@@ -72,7 +72,10 @@ lmks = data.frame(jaw_length = c(1, 2),
                   fbar_8_24 = c(8, 24), 
                   fbar_8_27 = c(8, 27), 
                   fbar_23_27 = c(23, 27), 
-                  fbar_25_26 = c(25, 26), 
+                  fbar_25_26 = c(25, 26),
+                  max_27_3 = c(27, 3), 
+                  max_3_28 = c(3, 28), 
+                  max_28_27 = c(28, 17),
                   body_width = c(12, 21), 
                   caudal1_14_18 = c(14, 18), 
                   caudal2_15_17 = c(15, 17), 
@@ -135,8 +138,8 @@ wild_univariate_traits = bind_cols(wild_univariate_traits,
          ratio1:ratio2, 
          everything())
 
-# wild_univariate_traits %>% 
-#   write_csv('Wild_Univariate_traits.csv')
+# wild_univariate_traits %>%
+#   write_csv('Wild_univar_traits_nokinetics.csv')
 
 wild_uni_traits = wild_univariate_traits %>%
   as_tibble() %>%
