@@ -12,10 +12,25 @@ setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/Updated Landmarks/')
 library(tidyverse)
 library(geomorph)
 
-
+wild_meta = read_csv('Wild_Univariate_traits.csv') %>% 
+  # filter(Lake_morph %in% c('ASHNC', 
+  #                          'ASHNW', 
+  #                          'MYVC', 
+  #                          'MYVW', 
+  #                          'SKRC', 
+  #                          'SKRW', 
+  #                          'CSWY', 
+  #                          'GTS')) %>% 
+  select(rowname, 
+         Order, 
+         ImageID, 
+         Lake, 
+         Morph)
 # wild disparity ----------------------------------------------------------
 
-wild_lmk_dist = read_csv('Wild_Univariate_traits.csv') %>% 
+wild_lmk_dist = read_csv('Wild_scaled_kinetic_traits.csv') %>% 
+  bind_cols(wild_meta, 
+            .) %>% 
   filter(Lake %in% c('ASHN', 
                      'MYV', 
                      'SKR', 
@@ -32,14 +47,14 @@ wild_lmk_dist = read_csv('Wild_Univariate_traits.csv') %>%
     Lake_morph == 'SKRC' ~ 'SKRC')))
 
 wild_dist = wild_lmk_dist %>% 
-  dplyr::select(2:29)
+  dplyr::select(7:41)
 
-wild_scaled_dist = scale(wild_dist, 
-                         center = T, 
-                         scale = T) %>% 
-  as_tibble() 
+# wild_scaled_dist = scale(wild_dist, 
+#                          center = T, 
+#                          scale = T) %>% 
+#   as_tibble() 
 
-wild_mat = as.matrix(wild_scaled_dist)
+wild_mat = as.matrix(wild_dist)
 
 Wild_disparity = morphol.disparity(wild_mat ~ 1,
                                        groups = ~Lake_morph,
@@ -82,17 +97,17 @@ wild_disp_data %>%
 
 # F2 uncorrected data -----------------------------------------------------
 
-F2_raw_lmk_dist = read_csv('F2_Original_univariate_traits.csv')
+F2_raw_lmk_dist = read_csv('F2_traits_scaled_kinetic.csv')
 F2_raw_dist = F2_raw_lmk_dist %>% 
-  dplyr::select(2:29)
+  dplyr::select(2:36)
 
-F2_raw_scaled_dist = scale(F2_raw_dist, 
-                         center = T, 
-                         scale = T) %>% 
-  as_tibble() 
-
-
-F2_raw_mat = as.matrix(F2_raw_scaled_dist)
+# F2_raw_scaled_dist = scale(F2_raw_dist, 
+#                          center = T, 
+#                          scale = T) %>% 
+#   as_tibble() 
+# 
+# 
+F2_raw_mat = as.matrix(F2_raw_dist)
 
 F2_raw_disparity = morphol.disparity(F2_raw_mat ~ 1,
                                    groups = ~Lake_morph,
@@ -134,16 +149,16 @@ F2_raw_disp_data %>%
   write_csv('F2_raw_disparity_data.csv')
 
 # TGP effect on disparity --------------------------------------------------
-F1_lmk_dist = read_csv('F1_Plasticity_Corrected.csv')
+F1_lmk_dist = read_csv('TGP_traits_scaled_kinetic.csv')
 F1_dist = F1_lmk_dist %>% 
-  dplyr::select(2:29)
+  dplyr::select(2:36)
 
-F1_scaled_dist = scale(F1_dist, 
-                         center = T, 
-                         scale = T) %>% 
-  as_tibble() 
+# F1_scaled_dist = scale(F1_dist, 
+#                          center = T, 
+#                          scale = T) %>% 
+#   as_tibble() 
 
-TGP_mat = as.matrix(F1_scaled_dist)
+TGP_mat = as.matrix(F1_dist)
 
 TGP_disparity = morphol.disparity(TGP_mat ~ 1,
                                      groups = ~Lake_morph,
@@ -185,16 +200,16 @@ TGP_disp_data %>%
   write_csv('TGP_disparity_data.csv')
 
 # WGP effect on disparity -------------------------------------------------
-F2_lmk_dist = read_csv('F2_Corrected_F2_temp_only.csv')
+F2_lmk_dist = read_csv('WGP_traits_scaled_kinetic.csv')
 F2_dist = F2_lmk_dist %>% 
-  dplyr::select(2:29)
+  dplyr::select(2:36)
 
-F2_scaled_dist = scale(F2_dist, 
-                         center = T, 
-                         scale = T) %>% 
-  as_tibble() 
+# F2_scaled_dist = scale(F2_dist, 
+#                          center = T, 
+#                          scale = T) %>% 
+#   as_tibble() 
 
-WGP_mat = as.matrix(F2_scaled_dist)
+WGP_mat = as.matrix(F2_dist)
 
 WGP_disparity = morphol.disparity(WGP_mat ~ 1,
                                   groups = ~Lake_morph,
@@ -298,7 +313,7 @@ Disparity_plot = ggplot(full_disp_data,
                                   size = 14))
 
 
-ggsave('Scaled_Full_disparity_figure.tiff', 
+ggsave('NEW_Scaled_Full_disparity_figure.tiff', 
        plot = Disparity_plot, 
        dpi = 'retina', 
        units = 'cm', 
