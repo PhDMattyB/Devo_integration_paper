@@ -11,6 +11,7 @@
 setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/Updated Landmarks/')
 
 # install.packages('MatrixCorrelation')
+library(tidyverse)
 library(MatrixCorrelation)
 
 
@@ -155,6 +156,54 @@ allCorrelations(X1 = wild_GTSW,
                 ncomp2 = 28, 
                 method = 'RVadj', 
                 plot = F)
+
+
+# F2 orig matrix correlations ---------------------------------------------
+
+orig_uni_trait_cor
+
+orig_ASHNW = orig_uni_trait_cor$ASHNW
+orig_ASHNC = orig_uni_trait_cor$ASHNC
+
+allCorrelations(X1 = orig_ASHNW, 
+                X2 = orig_ASHNC, 
+                ncomp1 = 28,
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+orig_MYVW = orig_uni_trait_cor$MYVW
+orig_MYVC = orig_uni_trait_cor$MYVC
+
+
+allCorrelations(X1 = orig_MYVW, 
+                X2 = orig_MYVC, 
+                ncomp1 = 28,
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+orig_SKRW = orig_uni_trait_cor$SKRW
+orig_SKRC = orig_uni_trait_cor$SKRC
+
+allCorrelations(X1 = orig_SKRW, 
+                X2 = orig_SKRC, 
+                ncomp1 = 28,
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+orig_GTSW = orig_uni_trait_cor$GTS
+orig_CSWYC = orig_uni_trait_cor$CSWY
+
+allCorrelations(X1 = orig_GTSW, 
+                X2 = orig_CSWYC, 
+                ncomp1 = 28,
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+
 
 
 # within vs tran plasticity -----------------------------------------------
