@@ -480,7 +480,8 @@ Full_int_plot = ggplot(Full_int_data,
         legend.position = c(.05, 0.98),
         legend.justification = c("left", "top"),
         legend.box.just = "left", 
-        strip.background = element_rect(fill = 'white'), 
+        # strip.background = element_rect(fill = 'white'),
+        strip.background = element_blank(),
         strip.text = element_text(face = 'bold', 
                                   size = 14))
 

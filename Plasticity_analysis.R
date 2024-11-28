@@ -525,7 +525,7 @@ ASHN_F2_plast = ggplot(ASHN_F2_effect,
   scale_fill_gradient2(low = "#219ebc",
                        mid = "#ff006e",
                        high = "#ade8f4") +
-  labs(title = 'Within generational effect')+
+  labs(title = 'Within-generational plasticity')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -1142,7 +1142,7 @@ ASHN_F1_plast = ggplot(ASHN_F1_effect,
   scale_fill_gradient2(low = "#219ebc",
                        mid = "#ff006e",
                        high = "#ade8f4") +
-  labs(title = 'Transgenerational effect')+
+  labs(title = 'Trans-generational plasticity')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
