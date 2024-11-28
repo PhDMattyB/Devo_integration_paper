@@ -392,7 +392,9 @@ WGP_traits_scaled = WGP_traits %>%
         scale = T) %>% 
   as_tibble() %>% 
   bind_cols(lake_morph, 
-            .)
+            .) %>% 
+  rename(OMA = ratio1, 
+         CMA = ratio2)
 
 # off_plasticity_traits = F2_off_plasticity_traits %>%
 #   as_tibble() %>%
@@ -523,7 +525,7 @@ ASHN_F2_plast = ggplot(ASHN_F2_effect,
   scale_fill_gradient2(low = "#219ebc",
                        mid = "#ff006e",
                        high = "#ade8f4") +
-  labs(title = 'Within generation effect')+
+  labs(title = 'Within generational effect')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -539,7 +541,8 @@ ASHN_F2_plast = ggplot(ASHN_F2_effect,
         axis.text.x = element_blank(), 
         axis.ticks.x = element_blank(), 
         axis.text.y = element_blank(), 
-        axis.ticks.y = element_blank())
+        axis.ticks.y = element_blank(), 
+        legend.position = 'none')
 
 # MYV F2 effect matrix compare -------------------------------------------
 off_plasticity_trait_cor$MYVC
@@ -642,7 +645,8 @@ MYV_F2_plasticity = ggplot(MYV_F2_temp_cor,
         axis.text.x = element_blank(), 
         axis.ticks.x = element_blank(), 
         axis.text.y = element_blank(), 
-        axis.ticks.y = element_blank())
+        axis.ticks.y = element_blank(), 
+        legend.position = 'none')
 
 # SKR F2 effect matrix compare -------------------------------------------
 off_plasticity_trait_cor$SKRC
@@ -745,7 +749,8 @@ SKR_F2_plasticity = ggplot(SKR_F2_temp_cor,
         axis.text.x = element_blank(), 
         axis.ticks.x = element_blank(), 
         axis.text.y = element_blank(), 
-        axis.ticks.y = element_blank())
+        axis.ticks.y = element_blank(), 
+        legend.position = 'none')
 
 
 # GTSCSWY F2 effect matrix compare -------------------------------------------
@@ -847,7 +852,8 @@ GTSCSWY_F2_plasticity = ggplot(GTSCSWY_F2_temp_cor,
                                    vjust = 0.5,
                                    hjust=1), 
         axis.text.y = element_blank(), 
-        axis.ticks.y = element_blank())
+        axis.ticks.y = element_blank(), 
+        legend.position = 'none')
 
 # parental temp effects ---------------------------------------------------
 
@@ -997,7 +1003,9 @@ TGP_traits_scaled = TGP_traits %>%
         scale = T) %>% 
   as_tibble() %>% 
   bind_cols(lake_morph, 
-            .)
+            .) %>% 
+  rename(OMA = ratio1, 
+         CMA = ratio2)
 
 # off_plasticity_traits = F2_off_plasticity_traits %>%
 #   as_tibble() %>%
@@ -1008,7 +1016,7 @@ TGP_traits_scaled = TGP_traits %>%
 #                                            12,13,14,15,16,17,18, 
 #                                            19,20,21,22,23,24,25,26,
 #                                            27,28,29)]
-vars_keep = names(WGP_traits_scaled)[c(2,3,4,5,6,7,8,9,10,11, 
+vars_keep = names(TGP_traits_scaled)[c(2,3,4,5,6,7,8,9,10,11, 
                                        12,13,14,15,16,17,18, 
                                        19,20,21,22,23,24,25,26,
                                        27,28,29, 30, 31, 32, 

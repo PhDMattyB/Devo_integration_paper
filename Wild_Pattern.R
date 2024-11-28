@@ -138,8 +138,8 @@ wild_univariate_traits = bind_cols(wild_univariate_traits,
          ratio1:ratio2, 
          everything())
 
-# wild_univariate_traits %>%
-#   write_csv('Wild_univar_traits_nokinetics.csv')
+wild_univariate_traits %>%
+  write_csv('Wild_univar_traits_nokinetics.csv')
 
 wild_univariate_traits = read_csv("Wild_univar_traits_nokinetics.csv")
 wild_kinetics = read_csv('Wild_Jaw_kinetic_traits.csv')
@@ -160,13 +160,15 @@ wild_traits_scaled = wild_unit_traits %>%
   scale(., center = T, scale = T) %>% 
   as_tibble() %>% 
   bind_cols(lake_morph, 
-           .)
+           .) %>% 
+  rename(OMA = ratio1, 
+         CMA = ratio2)
 
 # vars_keep = names(wild_uni_traits)[c(2,3,4,5,6,7,8,9,10,11, 
 #                                      12,13,14,15,16,17,18, 
 #                                      19,20,21,22,23,24,25,26,
 #                                      27,28,29)]
-vars_keep = names(wild_uni_traits)[c(2,3,4,5,6,7,8,9,10,11, 
+vars_keep = names(wild_traits_scaled)[c(2,3,4,5,6,7,8,9,10,11, 
                                      12,13,14,15,16,17,18, 
                                      19,20,21,22,23,24,25,26,
                                      27,28,29, 30, 31, 32, 
@@ -230,7 +232,7 @@ ASHN_wild_cor_graph = ggplot(ASHN_wild_cor,
   scale_fill_gradient2(low = "#219ebc",
                        mid = "#ff006e",
                        high = "#ade8f4") +
-  labs(title = 'A) ASHN Wild')+
+  labs(title = 'A) ASHN')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -452,7 +454,7 @@ GTSCSWY_combo_graphs = GTS_CSWY_wild_cor_graph| GTSCSWY_F2_plasticity|GTSCSWY_F1
 
 Big_graph = ASHN_combo_graphs/MYV_combo_graphs/SKR_combo_graphs/GTSCSWY_combo_graphs
 
-ggsave('Figure1_Effects_wild_F1_F2_on_Integration_version2.tiff',
+ggsave('SCALED_Figure1_Effects_wild_F1_F2_on_Integration_version2.tiff',
        plot = Big_graph,
        dpi = 'retina',
        units = 'cm',
