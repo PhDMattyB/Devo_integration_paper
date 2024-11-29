@@ -185,7 +185,7 @@ for (i in 1:931) {
   
   #Animate linkage, calculate transmission coefficients, add to table
   drawLinkage(linkage2)
-  animate <- animateLinkage(linkage2, input.param=c(0,pi/12, length = 15), input.joint=1)
+  animate <- animateLinkage(linkage2, input.param=seq(0,pi/12, length = 15), input.joint=1)
   kine <- linkageKinematics(animate)
   KT <- abs(kine$links.rdis.d['Link1',] / kine$links.rdis.d['Link3',])
   KT_Opercular[i] <- KT[2]
@@ -328,7 +328,7 @@ for (i in 1:931) {
   
   #Animate linkage, calculate transmission coefficients, add to table
   drawLinkage(linkage2, animate=FALSE)
-  animate <- animateLinkage(linkage2, input.param=c(0,pi/12,length=15), input.joint=1)
+  animate <- animateLinkage(linkage2, input.param=seq(0,pi/12,length=15), input.joint=1)
   kine <- linkageKinematics(animate)
   KT <- abs(kine$links.rdis.d['Link2',] / kine$links.rdis.d['Link1',])
   KT_PreMax[i] <- KT[2]
@@ -372,7 +372,7 @@ for (i in 1:931) {
   
   #Animate linkage, calculate transmission coefficients, add to table
   drawLinkage(linkage2)
-  animate <- animateLinkage(linkage2, input.param=c(0,pi/12,length=15), input.joint=1)
+  animate <- animateLinkage(linkage2, input.param=seq(0,pi/12,length=15), input.joint=1)
   kine <- linkageKinematics(animate)
   KT <- abs(kine$links.rdis.d['Link1',] / kine$links.rdis.d['Link3',])
   KT_Opercular[i] <- KT[2]
