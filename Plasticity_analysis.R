@@ -275,11 +275,11 @@ F2_18deg_range = c(31:60, 92:121, 152:181, 212:243, 274:303,
 
 F2_array = array(0, dim = c(28, 2, 931))
 for(i in F2_12deg_range){
-  F2_array[,,i] = F2_gpa$coords[,,i] - F2_temp_12deg_array[,,1]
+  F2_array[,,i] = F2_lmk_coords[,,i] - F2_temp_12deg_array[,,1]
 }
 
 for(i in F2_18deg_range){
-  F2_array[,,i] = F2_gpa$coords[,,i] - F2_temp_18deg_array[,,1]
+  F2_array[,,i] = F2_lmk_coords[,,i] - F2_temp_18deg_array[,,1]
 }
 
 ## This is the array to use too pull out the linear traits due
@@ -398,6 +398,13 @@ WGP_traits_scaled = WGP_traits %>%
   rename(OMA = ratio1, 
          CMA = ratio2)
 
+WGP_traits %>% 
+  ungroup() %>% 
+  dplyr::select(-Lake_morph) %>% 
+  scale(., 
+        center = T, 
+        scale = T) %>% 
+  as_tibble() %>% View()
 # off_plasticity_traits = F2_off_plasticity_traits %>%
 #   as_tibble() %>%
 #   group_by(Lake_morph) %>%
@@ -885,11 +892,11 @@ F2_parent_18deg_range = c(61:121, 182:243, 304:363, 443:473, 534:593,
 
 F2_parent_array = array(0, dim = c(28, 2, 931))
 for(i in F2_parent_12deg_range){
-  F2_parent_array[,,i] = F2_gpa$coords[,,i] - F2_parent_temp_12deg_array[,,1]
+  F2_parent_array[,,i] = F2_lmk_coords[,,i] - F2_parent_temp_12deg_array[,,1]
 }
 
 for(i in F2_parent_18deg_range){
-  F2_parent_array[,,i] = F2_gpa$coords[,,i] - F2_parent_temp_18deg_array[,,1]
+  F2_parent_array[,,i] = F2_lmk_coords[,,i] - F2_parent_temp_18deg_array[,,1]
 }
 
 ## This is the array to use too pull out the linear traits due
