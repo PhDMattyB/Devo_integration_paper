@@ -238,7 +238,7 @@ F1_lmk_matrix = as.matrix(TGP_dist)
 F1_lmk_array = arrayspecs(F1_lmk_matrix, 17.5, 2)
 
 F1_lmk_sub = coords.subset(F1_lmk_array, 
-                             F1_lmk_dist$Lake_morph)
+                             TGP_lmk_dist$Lake_morph)
 
 
 vrel_F1_lmkdist = Map(function(x) integration.Vrel(x), 
@@ -324,7 +324,7 @@ F2_lmk_matrix = as.matrix(WGP_dist)
 F2_lmk_array = arrayspecs(F2_lmk_matrix, 17.5, 2)
 
 F2_lmk_sub = coords.subset(F2_lmk_array, 
-                           F2_lmk_dist$Lake_morph)
+                           WGP_lmk_dist$Lake_morph)
 
 
 vrel_F2_lmkdist = Map(function(x) integration.Vrel(x), 

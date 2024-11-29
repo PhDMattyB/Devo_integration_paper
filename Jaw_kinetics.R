@@ -23,13 +23,13 @@ library(linkR)
 # Wild kinetics -----------------------------------------------------------
 
 ###Calculate transmission coefficients for Anterior/Pre-Maxillary linkage (23,27,37,3)
-PM_LMs <- c(23,27,28,3)
+wild_PM_LMs <- c(23,27,28,3)
 wild_coords = wild_lmk_coords[PM_LMs,,]
 
 
 #Create empty table for data
-KT_PreMax <- numeric(length=331)
-PreMax_Rotation <- numeric(length=331)
+wild_KT_PreMax <- numeric(length=331)
+wild_PreMax_Rotation <- numeric(length=331)
 for (i in 1:331) {
   #Define linkages, joints etc.
   PM_ind <- wild_coords[,,i]
@@ -46,7 +46,7 @@ for (i in 1:331) {
   
   #Animate linkage, calculate transmission coefficients, add to table
   drawLinkage(linkage2, animate=FALSE)
-  animate <- animateLinkage(linkage2, input.param=c(0,pi/1800), input.joint=4)
+  animate <- animateLinkage(linkage2, input.param=c(0,pi/12, length = 15), input.joint=1)
   kine <- linkageKinematics(animate)
   KT <- abs(kine$links.rdis.d['Link2',] / kine$links.rdis.d['Link1',])
   KT_PreMax[i] <- KT[2]
@@ -71,8 +71,8 @@ OP_coords <- wild_lmk_coords[OP_LMs,,]
 ##Calculate transmission coefficients, create dataframe
 
 #Create empty table for data
-KT_Opercular <- numeric(length=331)
-KT_Output_Rotation <- numeric(length=331)
+wild_KT_Opercular <- numeric(length=331)
+wild_KT_Output_Rotation <- numeric(length=331)
 for (i in 1:331) {
   #Define linkages, joints etc.
   OP_ind <- OP_coords[,,i]
@@ -90,7 +90,7 @@ for (i in 1:331) {
   
   #Animate linkage, calculate transmission coefficients, add to table
   drawLinkage(linkage2)
-  animate <- animateLinkage(linkage2, input.param=c(0,pi/900), input.joint=4)
+  animate <- animateLinkage(linkage2, input.param=c(0,pi/12, length = 15), input.joint=1)
   kine <- linkageKinematics(animate)
   KT <- abs(kine$links.rdis.d['Link1',] / kine$links.rdis.d['Link3',])
   KT_Opercular[i] <- KT[2]
@@ -102,11 +102,14 @@ for (i in 1:331) {
   OP_Rotation_DF <- as.data.frame(KT_Output_Rotation)
 }
 
-Pheno_4Bar <- cbind(Pheno_4Bar, KT_df, OP_Rotation_DF)
-colnames(Pheno_4Bar) <- c("PreMax_KT", "PreMax_Rotation",
+operculum_df = cbind(KT_df, OP_Rotation_DF)
+
+
+wild_Pheno_4Bar <- cbind(Pheno_4Bar, operculum_df)
+colnames(wild_Pheno_4Bar) <- c("PreMax_KT", "PreMax_Rotation",
                           "Opercular_KT", "Opercular_Rotation")
 
-Pheno_4Bar %>% 
+wild_Pheno_4Bar %>% 
   as_tibble() %>% 
   write_csv('Wild_Jaw_kinetic_traits.csv')
 
@@ -138,7 +141,7 @@ for (i in 1:931) {
   
   #Animate linkage, calculate transmission coefficients, add to table
   drawLinkage(linkage2, animate=FALSE)
-  animate <- animateLinkage(linkage2, input.param=c(0,pi/1800), input.joint=4)
+  animate <- animateLinkage(linkage2, input.param=c(0,pi/12, length = 15), input.joint=1)
   kine <- linkageKinematics(animate)
   KT <- abs(kine$links.rdis.d['Link2',] / kine$links.rdis.d['Link1',])
   KT_PreMax[i] <- KT[2]
@@ -182,7 +185,7 @@ for (i in 1:931) {
   
   #Animate linkage, calculate transmission coefficients, add to table
   drawLinkage(linkage2)
-  animate <- animateLinkage(linkage2, input.param=c(0,pi/900), input.joint=4)
+  animate <- animateLinkage(linkage2, input.param=c(0,pi/12, length = 15), input.joint=1)
   kine <- linkageKinematics(animate)
   KT <- abs(kine$links.rdis.d['Link1',] / kine$links.rdis.d['Link3',])
   KT_Opercular[i] <- KT[2]
@@ -194,11 +197,14 @@ for (i in 1:931) {
   OP_Rotation_DF <- as.data.frame(KT_Output_Rotation)
 }
 
-F2_Pheno_4Bar <- cbind(F2_Pheno_4Bar, KT_df, OP_Rotation_DF)
-colnames(F2_Pheno_4Bar) <- c("PreMax_KT", "PreMax_Rotation",
+F2_operculum_4bar = cbind(KT_df, OP_Rotation_DF)
+
+
+F2_Pheno_4Bar_full <- cbind(F2_Pheno_4Bar, F2_operculum_4bar)
+colnames(F2_Pheno_4Bar_full) <- c("PreMax_KT", "PreMax_Rotation",
                           "Opercular_KT", "Opercular_Rotation")
 
-F2_Pheno_4Bar %>% 
+F2_Pheno_4Bar_full %>% 
   as_tibble() %>% 
   write_csv('F2_uncorrected_Jaw_kinetic_traits.csv')
 
@@ -229,7 +235,7 @@ for (i in 1:931) {
   
   #Animate linkage, calculate transmission coefficients, add to table
   drawLinkage(linkage2, animate=FALSE)
-  animate <- animateLinkage(linkage2, input.param=c(0,pi/1800), input.joint=4)
+  animate <- animateLinkage(linkage2, input.param=c(0,pi/12, length = 15), input.joint=1)
   kine <- linkageKinematics(animate)
   KT <- abs(kine$links.rdis.d['Link2',] / kine$links.rdis.d['Link1',])
   KT_PreMax[i] <- KT[2]
@@ -273,7 +279,7 @@ for (i in 1:931) {
   
   #Animate linkage, calculate transmission coefficients, add to table
   drawLinkage(linkage2)
-  animate <- animateLinkage(linkage2, input.param=c(0,pi/900), input.joint=4)
+  animate <- animateLinkage(linkage2, input.param=c(0,pi/12,length = 15), input.joint=1)
   kine <- linkageKinematics(animate)
   KT <- abs(kine$links.rdis.d['Link1',] / kine$links.rdis.d['Link3',])
   KT_Opercular[i] <- KT[2]
@@ -285,11 +291,13 @@ for (i in 1:931) {
   OP_Rotation_DF <- as.data.frame(KT_Output_Rotation)
 }
 
-TGP_Pheno_4Bar <- cbind(TGP_Pheno_4Bar, KT_df, OP_Rotation_DF)
-colnames(TGP_Pheno_4Bar) <- c("PreMax_KT", "PreMax_Rotation",
+TGP_operculum = cbind(KT_df, OP_Rotation_DF)
+
+TGP_Pheno_4Bar_full <- cbind(TGP_Pheno_4Bar,TGP_operculum)
+colnames(TGP_Pheno_4Bar_full) <- c("PreMax_KT", "PreMax_Rotation",
                              "Opercular_KT", "Opercular_Rotation")
 
-TGP_Pheno_4Bar %>% 
+TGP_Pheno_4Bar_full %>% 
   as_tibble() %>% 
   write_csv('TGP_Jaw_kinetic_traits.csv')
 
@@ -320,7 +328,7 @@ for (i in 1:931) {
   
   #Animate linkage, calculate transmission coefficients, add to table
   drawLinkage(linkage2, animate=FALSE)
-  animate <- animateLinkage(linkage2, input.param=c(0,pi/1800), input.joint=4)
+  animate <- animateLinkage(linkage2, input.param=c(0,pi/12,length=15), input.joint=1)
   kine <- linkageKinematics(animate)
   KT <- abs(kine$links.rdis.d['Link2',] / kine$links.rdis.d['Link1',])
   KT_PreMax[i] <- KT[2]
@@ -364,7 +372,7 @@ for (i in 1:931) {
   
   #Animate linkage, calculate transmission coefficients, add to table
   drawLinkage(linkage2)
-  animate <- animateLinkage(linkage2, input.param=c(0,pi/900), input.joint=4)
+  animate <- animateLinkage(linkage2, input.param=c(0,pi/12,length=15), input.joint=1)
   kine <- linkageKinematics(animate)
   KT <- abs(kine$links.rdis.d['Link1',] / kine$links.rdis.d['Link3',])
   KT_Opercular[i] <- KT[2]
@@ -376,7 +384,9 @@ for (i in 1:931) {
   OP_Rotation_DF <- as.data.frame(KT_Output_Rotation)
 }
 
-WGP_Pheno_4Bar <- cbind(WGP_Pheno_4Bar, KT_df, OP_Rotation_DF)
+WGP_operculum = cbind(KT_df, OP_Rotation_DF)
+
+WGP_Pheno_4Bar <- cbind(WGP_Pheno_4Bar, WGP_operculum)
 colnames(WGP_Pheno_4Bar) <- c("PreMax_KT", "PreMax_Rotation",
                               "Opercular_KT", "Opercular_Rotation")
 
