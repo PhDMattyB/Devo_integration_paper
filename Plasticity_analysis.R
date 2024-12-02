@@ -398,13 +398,7 @@ WGP_traits_scaled = WGP_traits %>%
   rename(OMA = ratio1, 
          CMA = ratio2)
 
-WGP_traits %>% 
-  ungroup() %>% 
-  dplyr::select(-Lake_morph) %>% 
-  scale(., 
-        center = T, 
-        scale = T) %>% 
-  as_tibble() %>% View()
+ 
 # off_plasticity_traits = F2_off_plasticity_traits %>%
 #   as_tibble() %>%
 #   group_by(Lake_morph) %>%
