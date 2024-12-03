@@ -332,8 +332,8 @@ ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/NEWNEW_Scaled_Principal_
        plot = principal_coord_analysis, 
        dpi = 'retina',
        units = 'cm',
-       height = 10, 
-       width = 15)
+       height = 15, 
+       width = 20)
 
 
 # Plotting shape for each ecotype -----------------------------------------
