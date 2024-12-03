@@ -24,12 +24,12 @@ library(linkR)
 
 ###Calculate transmission coefficients for Anterior/Pre-Maxillary linkage (23,27,37,3)
 wild_PM_LMs <- c(23,27,28,3)
-wild_coords = wild_lmk_coords[PM_LMs,,]
+wild_coords = wild_lmk_coords[wild_PM_LMs,,]
 
 
 #Create empty table for data
-wild_KT_PreMax <- numeric(length=331)
-wild_PreMax_Rotation <- numeric(length=331)
+KT_PreMax <- numeric(length=331)
+PreMax_Rotation <- numeric(length=331)
 for (i in 1:331) {
   #Define linkages, joints etc.
   PM_ind <- wild_coords[,,i]
@@ -58,7 +58,7 @@ for (i in 1:331) {
   PM_Rotation_DF <- as.data.frame(PreMax_Rotation)
 }
 
-Pheno_4Bar = cbind(KT_PM_df, PM_Rotation_DF)
+wild_Pheno_4Bar = cbind(KT_PM_df, PM_Rotation_DF)
 
 
 
@@ -71,8 +71,8 @@ OP_coords <- wild_lmk_coords[OP_LMs,,]
 ##Calculate transmission coefficients, create dataframe
 
 #Create empty table for data
-wild_KT_Opercular <- numeric(length=331)
-wild_KT_Output_Rotation <- numeric(length=331)
+KT_Opercular <- numeric(length=331)
+KT_Output_Rotation <- numeric(length=331)
 for (i in 1:331) {
   #Define linkages, joints etc.
   OP_ind <- OP_coords[,,i]
@@ -102,10 +102,10 @@ for (i in 1:331) {
   OP_Rotation_DF <- as.data.frame(KT_Output_Rotation)
 }
 
-operculum_df = cbind(KT_df, OP_Rotation_DF)
+wild_operculum_df = cbind(KT_df, OP_Rotation_DF)
 
 
-wild_Pheno_4Bar <- cbind(Pheno_4Bar, operculum_df)
+wild_Pheno_4Bar <- cbind(wild_Pheno_4Bar, wild_operculum_df)
 colnames(wild_Pheno_4Bar) <- c("PreMax_KT", "PreMax_Rotation",
                           "Opercular_KT", "Opercular_Rotation")
 

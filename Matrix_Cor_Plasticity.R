@@ -262,3 +262,124 @@ allCorrelations(X1 = off_plasticity_trait_cor$CSWYC,
                 ncomp2 = 28, 
                 method = 'RVadj', 
                 plot = F)
+
+
+
+# F2 generation vs TGP matrix ---------------------------------------------
+
+
+allCorrelations(X1 = orig_uni_trait_cor$ASHNW, 
+                X2 = parent_plasticity_trait_cor$ASHNW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = orig_uni_trait_cor$ASHNC, 
+                X2 = parent_plasticity_trait_cor$ASHNC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = orig_uni_trait_cor$MYVW, 
+                X2 = parent_plasticity_trait_cor$MYVW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = orig_uni_trait_cor$MYVC, 
+                X2 = parent_plasticity_trait_cor$MYVC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = orig_uni_trait_cor$SKRW, 
+                X2 = parent_plasticity_trait_cor$SKRW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = orig_uni_trait_cor$SKRC, 
+                X2 = parent_plasticity_trait_cor$SKRC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = orig_uni_trait_cor$GTSW, 
+                X2 = parent_plasticity_trait_cor$GTSW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = orig_uni_trait_cor$CSWYC, 
+                X2 = parent_plasticity_trait_cor$CSWYC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+
+
+# F2 generation vs WGP matrix ---------------------------------------------
+
+allCorrelations(X1 = off_plasticity_trait_cor$ASHNW, 
+                X2 = orig_uni_trait_cor$ASHNW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = off_plasticity_trait_cor$ASHNC, 
+                X2 = orig_uni_trait_cor$ASHNC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = off_plasticity_trait_cor$MYVW, 
+                X2 = orig_uni_trait_cor$MYVW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = off_plasticity_trait_cor$MYVC, 
+                X2 = orig_uni_trait_cor$MYVC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = off_plasticity_trait_cor$SKRW, 
+                X2 = orig_uni_trait_cor$SKRW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+allCorrelations(X1 = off_plasticity_trait_cor$SKRC, 
+                X2 = orig_uni_trait_cor$SKRC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = off_plasticity_trait_cor$GTSW, 
+                X2 = orig_uni_trait_cor$GTSW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = off_plasticity_trait_cor$CSWYC, 
+                X2 = orig_uni_trait_cor$CSWYC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
