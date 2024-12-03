@@ -62,6 +62,32 @@ wild_univariate = read_csv('Wild_scaled_kinetic_traits.csv') %>%
                      'GTS',  
                      'CSWY'))
 
+F2_orig = read_csv('F2_traits_scaled_kinetic.csv') %>% 
+  mutate(Group = 'F2 generation') %>% 
+  bind_cols(F2_identifiers, 
+            .) %>% 
+  dplyr::select(-Order, 
+                # -rowname, 
+                -Lake, 
+                -Ecotype_Pair_Full_Temp, 
+                -lake_morph_Pair_Full_Temp, 
+                -Grand_temp, 
+                -Parent_temp, 
+                -Offspring_temp, 
+                -Full_temp, 
+                -Lake_morph...13) %>% 
+  dplyr::select(Group, 
+                individualID, 
+                Ecotype_pair, 
+                Morph, 
+                Lake_morph...8,
+                everything()) %>% 
+  rename(Lake = Ecotype_pair, 
+         Lake_morph = Lake_morph...8, 
+         OMA = ratio1, 
+         CMA = ratio2)
+
+
 
 F2_parental_effects = read_csv('TGP_traits_scaled_kinetic.csv') %>% 
   mutate(Group = 'Transgen') %>% 
@@ -114,7 +140,7 @@ F2_offspring_effects = read_csv('WGP_traits_scaled_kinetic.csv')%>%
 
 
 Full_data = bind_rows(wild_univariate, 
-                      # F2_original,
+                      F2_orig,
                       F2_parental_effects, 
                       F2_offspring_effects)
 
@@ -145,7 +171,7 @@ Trait_ID = Full_data %>%
         sep = '_')
 
 
-PCA = prcomp(scaled_traits, 
+PCA = prcomp(Traits, 
                        rank. = 5, 
                        tol = sqrt(.Machine$double.eps))
 pca_scores = PCA$x
@@ -244,6 +270,7 @@ pooled_pc_coords = read_csv('scaled_vcvComp_generation_effect_Euclidean.csv')
 pooled_pc_coords = mutate(.data = pooled_pc_coords, 
                           Effect = as.factor(case_when(
                             Effect == 'Wild' ~ 'Wild',
+                            Effect == 'F2 generation' ~ 'F2 generation',
                             Effect == 'Transgen' ~ 'Trans-generational',
                             Effect == 'Withingen' ~ 'Within-generational')))
 
@@ -275,6 +302,7 @@ pooled_pc_coords %>%
 
 pooled_pc_coords$Effect = factor(pooled_pc_coords$Effect, 
                                  levels = c('Wild',
+                                            'F2 generation',
                                             'Within-generational',
                                             'Trans-generational'))
 
@@ -291,8 +319,8 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
   geom_line(col = 'black')+
   scale_color_manual(values = WC_colour_palette)+
   guides(col=guide_legend(title = 'Population'))+
-  labs(x = 'PCoA1 (36.6%)',
-       y = 'PCoA2 (15.7%)')+
+  labs(x = 'PCoA1 (28.0%)',
+       y = 'PCoA2 (19.9%)')+
   # labs(x = 'PCoA1 (81.0%)', 
   #      y = 'PCoA2 (12.6%)')+
   theme_bw()+
@@ -300,7 +328,7 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12))
 
-ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/NEW_Scaled_Principal_coord_analysis_pooled_covariance_FINAL.tiff', 
+ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/NEWNEW_Scaled_Principal_coord_analysis_pooled_covariance_FINAL.tiff', 
        plot = principal_coord_analysis, 
        dpi = 'retina',
        units = 'cm',
