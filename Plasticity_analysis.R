@@ -171,7 +171,9 @@ F2_univariate_traits = bind_cols(F2_univariate_traits,
 #   write_csv('F2_Original_univar_no_kinetics.csv')
 
 F2_univariate_traits = read_csv('F2_Original_univar_no_kinetics.csv')
-F2_kinetic = read_csv('F2_uncorrected_Jaw_kinetic_traits.csv')
+F2_kinetic = read_csv('F2_uncorrected_Jaw_kinetic_traits.csv') %>% 
+  dplyr::select(-PreMax_Rotation, 
+                -Opercular_Rotation)
 
 lake_morph = F2_univariate_traits %>% 
   dplyr::select(Lake_morph)
@@ -196,7 +198,7 @@ F2_traits_scaled = F2_orig_traits %>%
   dplyr::rename(OMA = ratio1, 
                 CMA = ratio2)
 
-# orig_uni_traits %>%
+# F2_traits_scaled %>%
 #   write_csv('F2_Original_univariate_traits.csv')
 
 # vars_keep = names(orig_uni_traits)[c(2,3,4,5,6,7,8,9,10,11, 
@@ -207,7 +209,7 @@ vars_keep = names(F2_traits_scaled)[c(2,3,4,5,6,7,8,9,10,11,
                                      12,13,14,15,16,17,18, 
                                      19,20,21,22,23,24,25,26,
                                      27,28,29, 30, 31, 32, 
-                                     33, 34, 35, 36)]
+                                     33, 34)]
 orig_uni_trait_cor = F2_traits_scaled %>%
   ungroup() %>%
   # split(.$lake_morph_Pair_Full_Temp) %>%
@@ -252,7 +254,7 @@ orig_uni_trait_cor$ASHNW
 ASHNC_orig = orig_uni_trait_cor$ASHNC %>%
   reshape2::melt() 
 
-ggplot(test_ASHNC,
+ASHNC_orig_plot = ggplot(ASHNC_orig,
        aes(x = Var1,
            y = Var2,
            fill = value))+
@@ -766,7 +768,9 @@ F2_off_plasticity_traits = bind_cols(F2_off_plasticity_traits,
 #   write_csv('F2_Corrected_WGP_no_kinetics.csv')
 
 F2_WGP_traits = read_csv('F2_Corrected_WGP_no_kinetics.csv')
-F2_WGP_kinetic = read_csv('WGP_Jaw_kinetic_traits.csv')
+F2_WGP_kinetic = read_csv('WGP_Jaw_kinetic_traits.csv') %>% 
+  dplyr::select(-PreMax_Rotation, 
+                -Opercular_Rotation)
 
 lake_morph = F2_WGP_traits %>% 
   dplyr::select(Lake_morph)
@@ -805,7 +809,7 @@ vars_keep = names(WGP_traits_scaled)[c(2,3,4,5,6,7,8,9,10,11,
                                      12,13,14,15,16,17,18, 
                                      19,20,21,22,23,24,25,26,
                                      27,28,29, 30, 31, 32, 
-                                     33, 34, 35, 36)]
+                                     33, 34)]
 off_plasticity_trait_cor = WGP_traits_scaled %>%
   ungroup() %>%
   # split(.$lake_morph_Pair_Full_Temp) %>%
@@ -1378,7 +1382,9 @@ F2_parent_plasticity_traits = bind_cols(F2_parent_plasticity_traits,
 #   write_csv('F1_TGP_Plasticity_Corrected_no_kinetics.csv')
 
 TGP_traits = read_csv('F1_TGP_Plasticity_Corrected_no_kinetics.csv')
-TGP_kinetics = read_csv("TGP_Jaw_kinetic_traits.csv")
+TGP_kinetics = read_csv("TGP_Jaw_kinetic_traits.csv") %>% 
+  dplyr::select(-PreMax_Rotation, 
+                -Opercular_Rotation)
 
 lake_morph = TGP_traits %>% 
   dplyr::select(Lake_morph)
@@ -1416,7 +1422,7 @@ vars_keep = names(TGP_traits_scaled)[c(2,3,4,5,6,7,8,9,10,11,
                                        12,13,14,15,16,17,18, 
                                        19,20,21,22,23,24,25,26,
                                        27,28,29, 30, 31, 32, 
-                                       33, 34, 35, 36)]
+                                       33, 34)]
 # parent_plasticity_traits = TGP_traits_scaled %>%
 #   as_tibble() %>%
 #   group_by(Lake_morph) %>%
