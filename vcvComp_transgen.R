@@ -41,7 +41,7 @@ wild_identifiers = read_csv('TPS_Wild_metadata.csv')
 # Univariate trait data ---------------------------------------------------
 
 
-wild_univariate = read_csv('Wild_scaled_kinetic_traits.csv') %>% 
+wild_univariate = read_csv('10.12.2024_Wild_traits_scaled.csv') %>% 
   mutate(Group = 'Wild') %>%
   bind_cols(wild_identifiers, 
             .) %>% 
@@ -62,7 +62,7 @@ wild_univariate = read_csv('Wild_scaled_kinetic_traits.csv') %>%
                      'GTS',  
                      'CSWY'))
 
-F2_orig = read_csv('F2_traits_scaled_kinetic.csv') %>% 
+F2_orig = read_csv('F2_Original_univariate_traits.csv') %>% 
   mutate(Group = 'F2 generation') %>% 
   bind_cols(F2_identifiers, 
             .) %>% 
@@ -83,13 +83,11 @@ F2_orig = read_csv('F2_traits_scaled_kinetic.csv') %>%
                 Lake_morph...8,
                 everything()) %>% 
   rename(Lake = Ecotype_pair, 
-         Lake_morph = Lake_morph...8, 
-         OMA = ratio1, 
-         CMA = ratio2)
+         Lake_morph = Lake_morph...8)
 
 
 
-F2_parental_effects = read_csv('TGP_traits_scaled_kinetic.csv') %>% 
+F2_parental_effects = read_csv('10.12.2024_TGP_traits_scaled.csv') %>% 
   mutate(Group = 'Transgen') %>% 
   bind_cols(F2_identifiers, 
             .) %>% 
@@ -115,7 +113,7 @@ F2_parental_effects = read_csv('TGP_traits_scaled_kinetic.csv') %>%
 # F2_parental_effects = bind_cols(F2_identifiers, 
 #                                 F2_parental_effects)
 
-F2_offspring_effects = read_csv('WGP_traits_scaled_kinetic.csv')%>%
+F2_offspring_effects = read_csv('12.10.2024_WGP_traits_scaled.csv')%>%
   mutate(Group = 'Withingen') %>% 
   bind_cols(F2_identifiers, 
             .) %>% 
@@ -328,12 +326,12 @@ principal_coord_analysis = ggplot(data = pooled_pc_coords,
         axis.title = element_text(size = 14), 
         axis.text = element_text(size = 12))
 
-ggsave('~/Parsons_Postdoc/Stickleback_Morphometric_data/NEWNEW_Scaled_Principal_coord_analysis_pooled_covariance_FINAL.tiff', 
+ggsave('scale_NEWNEW_Scaled_Principal_coord_analysis_pooled_covariance_FINAL.tiff', 
        plot = principal_coord_analysis, 
        dpi = 'retina',
        units = 'cm',
-       height = 15, 
-       width = 20)
+       height = 10, 
+       width = 15)
 
 
 # Plotting shape for each ecotype -----------------------------------------
