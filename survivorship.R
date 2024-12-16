@@ -196,3 +196,24 @@ ggsave('Survival_plots.tiff',
        width = 20, 
        height = 15)
 
+
+# Investigate GTS shit survival -------------------------------------------
+
+EU_data %>% 
+  filter(group == 'GTS') %>% 
+  ggplot(aes(x = adjustedSurvWholeExp, 
+             # y = treatment2, 
+             fill = EU_survival_grouping))+
+  geom_histogram()+
+  facet_grid(~treatment2)+
+  # geom_density_ridges()+
+  scale_fill_viridis(discrete = T)+
+  labs(x = 'Survival per experimental unit')+
+  theme(axis.title.y = element_blank(), 
+        axis.title.x = element_text(size = 14), 
+        axis.text = element_text(size = 12),
+        axis.text.x = element_text(angle = 90),
+        panel.grid = element_blank(), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(size = 12, 
+                                  face = 'bold'))
