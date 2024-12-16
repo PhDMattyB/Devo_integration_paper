@@ -186,7 +186,7 @@ EU_survival_plot = EU_data %>%
 
 
 # Combine and save the plot -----------------------------------------------
-combo_survial_plot = survive_whole_exp_plot/EU_survival_plot
+combo_survial_plot = EU_survival_plot/survive_whole_exp_plot
 
 
 ggsave('Survival_plots.tiff', 
