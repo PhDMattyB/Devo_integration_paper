@@ -77,8 +77,7 @@ data_clean$group2 = factor(data_clean$group2,
   facet_grid(~treatment2)+
   geom_density_ridges()+
   scale_fill_viridis(discrete = T)+
-  labs(x = 'Survival over whole experiment', 
-       title = 'Treatment')+
+  labs(x = 'Survival over experiment')+
   theme(axis.title.y = element_blank(), 
         axis.title.x = element_text(size = 14), 
         axis.text = element_text(size = 12),
@@ -87,24 +86,12 @@ data_clean$group2 = factor(data_clean$group2,
         strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(size = 12, 
                                   face = 'bold'),
-        plot.title = element_text(hjust = 0.5, 
-                                  face = 'bold', 
-                                  size = 14),
+        # plot.title = element_text(hjust = 0.5, 
+        #                           face = 'bold', 
+        #                           size = 14),
         legend.position = 'none')
 
 
-  
-  
-  
-  
-  ggsave('~/Parsons_Postdoc/Written_things/Stickle_genomic_paper/Fat_Phenotype.tiff', 
-         plot = lipid_plot, 
-         dpi = 'retina', 
-         units = 'cm', 
-         width = 15, 
-         height = 10)
-  
-  
 # 12@12 treatments --------------------------------------------------------
 
 T1212 = data %>% 
@@ -156,11 +143,19 @@ TukeyHSD(whole_exp_1818_aov)
 
 # EU survival -------------------------------------------------------------
 
-EU_data = data %>% 
-  rename(EU_survival = longdata...8)
+EU_data = data_clean %>% 
+  rename(EU_survival = longdata...8) %>% 
+  mutate(.data = data, 
+         EU_survival_grouping = as.factor(case_when(
+           EU_survival == 'eu1surv' ~ 'Experimental unit 1', 
+           EU_survival == 'eu2surv' ~ 'Experimental unit 2', 
+           EU_survival == 'eu3surv' ~ 'Experimental unit 3', 
+           EU_survival == 'eu4surv' ~ 'Experimental unit 4', 
+           EU_survival == 'eu5surv' ~ 'Experimental unit 5'
+         )))
 
 
-eu_survive_aov = aov(Eusurvivalafter6weeks ~ EU_survival*treatment,
+eu_survive_aov = aov(Eusurvivalafter6weeks ~ EU_survival_grouping*treatment,
                     data = EU_data)
 summary(eu_survive_aov)
 
@@ -170,7 +165,34 @@ car::Anova(eu_survive_aov,
 TukeyHSD(eu_survive_aov)
 
 
+EU_survival_plot = EU_data %>% 
+  ggplot(aes(x = Eusurvivalafter6weeks, 
+             y = EU_survival_grouping, 
+             fill = EU_survival_grouping))+
+  facet_grid(~treatment2)+
+  geom_density_ridges()+
+  scale_fill_viridis(discrete = T)+
+  labs(x = 'Survival per experimental unit')+
+  theme(axis.title.y = element_blank(), 
+        axis.title.x = element_text(size = 14), 
+        axis.text = element_text(size = 12),
+        axis.text.x = element_text(angle = 90),
+        panel.grid = element_blank(), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(size = 12, 
+                                  face = 'bold'),
+        legend.position = 'none')
 
-# 6 week survival ---------------------------------------------------------
 
+
+# Combine and save the plot -----------------------------------------------
+combo_survial_plot = survive_whole_exp_plot/EU_survival_plot
+
+
+ggsave('Survival_plots.tiff', 
+       plot = combo_survial_plot, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 20, 
+       height = 15)
 
