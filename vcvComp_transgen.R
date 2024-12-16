@@ -300,9 +300,9 @@ pooled_pc_coords %>%
 
 pooled_pc_coords$Effect = factor(pooled_pc_coords$Effect, 
                                  levels = c('Wild',
-                                            'F2 generation',
                                             'Within-generational',
-                                            'Trans-generational'))
+                                            'Trans-generational',
+                                            'F2 generation'))
 
 principal_coord_analysis = ggplot(data = pooled_pc_coords, 
                                   aes(x = PCo1, 
@@ -330,7 +330,7 @@ ggsave('scale_NEWNEW_Scaled_Principal_coord_analysis_pooled_covariance_FINAL.tif
        plot = principal_coord_analysis, 
        dpi = 'retina',
        units = 'cm',
-       height = 10, 
+       height = 11, 
        width = 15)
 
 
