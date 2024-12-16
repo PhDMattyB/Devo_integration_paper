@@ -11,6 +11,7 @@ setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/Updated Landmarks/')
 
 library(tidyverse)
 library(ggridges)
+library(viridis)
 
 theme_set(theme_bw())
 
@@ -18,34 +19,20 @@ data = read_csv('convertedeusurvdata.csv') %>%
   na.omit()%>% 
   mutate(group_treatment = paste(group, 
                                  treatment, sep = "_"))
-
-data %>% 
-  ggplot(aes(x = Eusurvivalafter6weeks))+
-  geom_histogram()
-
-data %>% 
-  ggplot(aes(x = early6weeksurvivalrate))+
-  geom_histogram()
-
-data %>% 
-  ggplot(aes(x = adjustedSurvWholeExp))+
-  geom_histogram()
-
 data$treatment = as.factor(data$treatment)
 
-whole_exp_aov = aov(adjustedSurvWholeExp ~ group_treatment, 
-                    data = data)
-summary(whole_exp_aov)
+# whole_exp_aov = aov(adjustedSurvWholeExp ~ group_treatment, 
+#                     data = data)
+# summary(whole_exp_aov)
 
 # whole_exp_aov2 = aov(adjustedSurvWholeExp ~ treatment*ecotype*pair, 
 #                     data = data)
 # summary(whole_exp_aov2)
 
-Anova(whole_exp_aov)
+# Anova(whole_exp_aov)
 # Anova(whole_exp_aov2)
 
-TukeyHSD(whole_exp_aov)
-
+# TukeyHSD(whole_exp_aov)
 
 data %>% 
   ggplot(aes(x = adjustedSurvWholeExp, 
@@ -53,6 +40,9 @@ data %>%
              fill = group))+
   facet_grid(~treatment)+
   geom_density_ridges()
+# +
+#   scale_fill_viridis_b(discrete=TRUE)
+
 # 12@12 treatments --------------------------------------------------------
 
 T1212 = data %>% 
