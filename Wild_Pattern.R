@@ -138,8 +138,8 @@ wild_univariate_traits = bind_cols(wild_univariate_traits,
          ratio1:ratio2, 
          everything())
 
-wild_univariate_traits %>%
-  write_csv('Wild_univar_traits_nokinetics.csv')
+# wild_univariate_traits %>%
+#   write_csv('Wild_univar_traits_nokinetics.csv')
 
 wild_univariate_traits = read_csv("Wild_univar_traits_nokinetics.csv")
 wild_kinetics = read_csv('Wild_Jaw_kinetic_traits.csv') %>% 

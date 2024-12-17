@@ -197,6 +197,41 @@ ggsave('Survival_plots.tiff',
        height = 15)
 
 
+
+# six week survival -------------------------------------------------------
+
+
+eu_survive_aov = aov(Eusurvivalafter6weeks ~ EU_survival_grouping*treatment,
+                     data = EU_data)
+summary(eu_survive_aov)
+
+car::Anova(eu_survive_aov, 
+           type = 'II')
+
+TukeyHSD(eu_survive_aov)
+
+
+EU_survival_plot = EU_data %>% 
+  ggplot(aes(x = Eusurvivalafter6weeks, 
+             y = EU_survival_grouping, 
+             fill = EU_survival_grouping))+
+  facet_grid(~treatment2)+
+  geom_density_ridges()+
+  scale_fill_viridis(discrete = T)+
+  labs(x = 'Survival per experimental unit')+
+  theme(axis.title.y = element_blank(), 
+        axis.title.x = element_text(size = 14), 
+        axis.text = element_text(size = 12),
+        axis.text.x = element_text(angle = 90),
+        panel.grid = element_blank(), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(size = 12, 
+                                  face = 'bold'),
+        legend.position = 'none')
+
+
+
+
 # Investigate GTS shit survival -------------------------------------------
 
 EU_data %>% 
@@ -217,3 +252,4 @@ EU_data %>%
         strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(size = 12, 
                                   face = 'bold'))
+
