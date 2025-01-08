@@ -18,6 +18,7 @@ library(igraph)
 library(reshape2)
 library(candisc)
 library(tidyverse)
+library(lineup)
 
 
 # read multiple tps files -------------------------------------------------
@@ -164,7 +165,41 @@ wild_traits_scaled = wild_uni_traits %>%
   bind_cols(lake_morph, 
            .) %>% 
   rename(OMA = ratio1, 
-         CMA = ratio2)
+         CMA = ratio2) %>% 
+  dplyr::select('Lake_morph',
+                'jaw_length', 
+                'head_depth', 
+                'Opercular_KT', 
+                'PreMax_KT', 
+                'CMA',
+                'OMA', 
+                'jaw_2_6', 
+                'fbar_23_24', 
+                'fbar_8_24', 
+                'fbar_8_27', 
+                'fbar_23_27', 
+                'fbar_25_26', 
+                'max_27_3', 
+                'max_3_28', 
+                'max_28_27', 
+                'body_length', 
+                'body_width', 
+                'lm_6_12', 
+                'lm_12_13', 
+                'lm_13_14',
+                'lm_14_15', 
+                'lm_6_21', 
+                'lm_20_21', 
+                'lm_21_13', 
+                'lm_20_13', 
+                'lm_12_19', 
+                'lm_13_19', 
+                'lm_19_18', 
+                'lm_18_17', 
+                'lm_1_23', 
+                'lm_23_2', 
+                'caudal1_14_18', 
+                'caudal2_15_17')
 
 # vars_keep = names(wild_uni_traits)[c(2,3,4,5,6,7,8,9,10,11, 
 #                                      12,13,14,15,16,17,18, 
@@ -220,8 +255,8 @@ ASHN_wild_cor = corbetw2mat(wild_uni_trait_cor$ASHNC,
                                what = 'all', 
                                corthresh = 0.5)
 
-ASHN_wild_cor = ASHN_wild_cor %>%
-  reshape2::melt() 
+ASHN_wild_cor = ASHN_wild_cor %>% 
+  reshape2::melt()
 
 ASHN_wild_cor_graph = ggplot(ASHN_wild_cor,
                        aes(x = Var1,
@@ -367,7 +402,7 @@ GTS_CSWY_wild_cor_graph = ggplot(GTS_CSWY_wild_cor,
         # axis.ticks.x = element_blank())
 
 
-
+##
 # RKLT trait correlations -------------------------------------------------
 
 RKLT_wild_cor = corbetw2mat(wild_uni_trait_cor$RKLTC, 
