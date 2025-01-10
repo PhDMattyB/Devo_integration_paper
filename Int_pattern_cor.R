@@ -280,16 +280,21 @@ F2_traits_scaled = F2_orig_traits %>%
 ASHN_F2 = F2_traits_scaled %>% 
   filter(Lake_morph %in% c('ASHNC', 
                            'ASHNW'))
-# positive correlation wild ----------------------------------------
+# F2 - what pink color means ----------------------------------------
+
+
+test = lm(PreMax_KT ~ max_28_27*Lake_morph, 
+   data = ASHN_F2)
+summary(test)
 
 ggplot(data = ASHN_F2)+
-  geom_point(aes(x = jaw_length, 
-                 y = lm_12_13, 
+  geom_point(aes(x = PreMax_KT, 
+                 y = max_28_27, 
                  group = Lake_morph, 
                  col = Lake_morph), 
              size = 2)+
-  geom_smooth(aes(x = jaw_length, 
-                  y = lm_12_13, 
+  geom_smooth(aes(x = PreMax_KT, 
+                  y = max_28_27,
                   group = Lake_morph, 
                   col = Lake_morph), 
               method = 'lm', 
@@ -304,3 +309,11 @@ ggplot(data = ASHN_F2)+
         axis.text = element_text(size = 12), 
         title = element_text(size = 14), 
         legend.position = 'none')
+
+ASHN_orig_cor %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>%
+  # select(2:34) %>% 
+  filter_all(any_vars(. < 0.01)) %>% 
+  View()
