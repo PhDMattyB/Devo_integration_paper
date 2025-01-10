@@ -491,8 +491,16 @@ GTSCSWY_combo_graphs = GTS_CSWY_wild_cor_graph|GTSCSWY_orig_cor_plot|GTSCSWY_F2_
 
 Big_graph = ASHN_combo_graphs/MYV_combo_graphs/SKR_combo_graphs/GTSCSWY_combo_graphs
 
-ggsave('08.01.2025_SCALED_Figure1_Effects_wild_F1_F2_on_Integration_version2.tiff',
+# Big_graph2 = Big_graph+
+#   theme(panel.background = element_rect(fill='transparent'), 
+#   plot.background = element_rect(fill = 'transparent', 
+#                                        color = NA))
+
+# ggsave <- function(..., bg = 'transparent') ggplot2::ggsave(..., bg = bg)
+
+ggsave('transback_08.01.2025_SCALED_Figure1_Effects_wild_F1_F2_on_Integration_version2.tiff',
        plot = Big_graph,
+       bg = 'transparent',
        dpi = 'retina',
        units = 'cm',
        width = 60,
