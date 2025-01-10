@@ -282,7 +282,6 @@ ASHN_F2 = F2_traits_scaled %>%
                            'ASHNW'))
 # F2 - what pink color means ----------------------------------------
 
-
 test = lm(PreMax_KT ~ max_28_27*Lake_morph, 
    data = ASHN_F2)
 summary(test)
@@ -317,3 +316,132 @@ ASHN_orig_cor %>%
   # select(2:34) %>% 
   filter_all(any_vars(. < 0.01)) %>% 
   View()
+
+# F2 - what light blue color means ----------------------------------------
+ASHN_orig_cor %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>%
+  # select(2:34) %>% 
+  filter_all(any_vars(. < 0.01)) %>% 
+  View()
+
+test = lm(jaw_length ~ max_27_3*Lake_morph, 
+          data = ASHN_F2)
+summary(test)
+
+ggplot(data = ASHN_F2)+
+  geom_point(aes(x = jaw_length, 
+                 y = max_27_3, 
+                 group = Lake_morph, 
+                 col = Lake_morph), 
+             size = 2)+
+  geom_smooth(aes(x = jaw_length, 
+                  y = max_27_3,
+                  group = Lake_morph, 
+                  col = Lake_morph), 
+              method = 'lm', 
+              position = 'identity', 
+              se = F)+
+  # labs(x = 'OMA',
+  #      y = 'Opercular kinetics',
+  #      title = 'Positive correlation')+
+  scale_color_manual(values = wc_cols)+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12), 
+        title = element_text(size = 14), 
+        legend.position = 'none')
+
+
+
+# F2 - what Dark blue color means ----------------------------------------
+ASHN_orig_cor %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>%
+  # select(2:34) %>% 
+  filter_all(any_vars(. < 0.01)) %>% 
+  View()
+
+test = lm(PreMax_KT ~ OMA*Lake_morph, 
+          data = ASHN_F2)
+summary(test)
+
+ggplot(data = ASHN_F2)+
+  geom_point(aes(x = PreMax_KT, 
+                 y = OMA, 
+                 group = Lake_morph, 
+                 col = Lake_morph), 
+             size = 2)+
+  geom_smooth(aes(x = PreMax_KT, 
+                  y = OMA,
+                  group = Lake_morph, 
+                  col = Lake_morph), 
+              method = 'lm', 
+              position = 'identity', 
+              se = F)+
+  # labs(x = 'OMA',
+  #      y = 'Opercular kinetics',
+  #      title = 'Positive correlation')+
+  scale_color_manual(values = wc_cols)+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12), 
+        title = element_text(size = 14), 
+        legend.position = 'none')
+
+
+test = lm(fbar_23_27 ~ lm_20_21*Lake_morph, 
+          data = ASHN_F2)
+summary(test)
+
+ggplot(data = ASHN_F2)+
+  geom_point(aes(x = fbar_23_27, 
+                 y = lm_20_21, 
+                 group = Lake_morph, 
+                 col = Lake_morph), 
+             size = 2)+
+  geom_smooth(aes(x = fbar_23_27, 
+                  y = lm_20_21,
+                  group = Lake_morph, 
+                  col = Lake_morph), 
+              method = 'lm', 
+              position = 'identity', 
+              se = F)+
+  # labs(x = 'OMA',
+  #      y = 'Opercular kinetics',
+  #      title = 'Positive correlation')+
+  scale_color_manual(values = wc_cols)+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12), 
+        title = element_text(size = 14), 
+        legend.position = 'none')
+
+test = lm(OMA ~ fbar_8_27*Lake_morph, 
+          data = ASHN_F2)
+summary(test)
+
+ggplot(data = ASHN_F2)+
+  geom_point(aes(x = OMA, 
+                 y = fbar_8_27, 
+                 group = Lake_morph, 
+                 col = Lake_morph), 
+             size = 2)+
+  geom_smooth(aes(x = OMA, 
+                  y = fbar_8_27,
+                  group = Lake_morph, 
+                  col = Lake_morph), 
+              method = 'lm', 
+              position = 'identity', 
+              se = F)+
+  # labs(x = 'OMA',
+  #      y = 'Opercular kinetics',
+  #      title = 'Positive correlation')+
+  scale_color_manual(values = wc_cols)+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12), 
+        title = element_text(size = 14), 
+        legend.position = 'none')
