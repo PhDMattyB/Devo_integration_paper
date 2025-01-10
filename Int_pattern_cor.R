@@ -21,6 +21,10 @@ library(candisc)
 library(tidyverse)
 library(lineup)
 
+theme_set(theme_bw())
+
+wc_cols = c('#003566', 
+            '#ff006e')
 
 # Wild data ---------------------------------------------------------------
 
@@ -103,18 +107,200 @@ wild_traits_scaled = wild_uni_traits %>%
 # 
 
 ASHN_cor_traits = wild_traits_scaled %>% 
-  dplyr::select(Lake_morph, 
-                Opercular_KT, 
-                PreMax_KT, 
-                CMA, 
-                OMA) %>% 
+  # dplyr::select(Lake_morph, 
+  #               Opercular_KT, 
+  #               PreMax_KT, 
+  #               CMA, 
+  #               OMA) %>% 
   filter(Lake_morph %in% c('ASHNC', 
                            'ASHNW'))
 
+# MYV_cor_traits = wild_traits_scaled %>% 
+#   dplyr::select(Lake_morph, 
+#                 Opercular_KT, 
+#                 PreMax_KT, 
+#                 CMA, 
+#                 OMA) %>% 
+#   filter(Lake_morph %in% c('MYVC', 
+#                            'MYVW'))
 
-ggplot(data = ASHN_cor_traits)+
+
+# positive correlation wild ----------------------------------------
+
+
+positive_correlation_wild = ggplot(data = ASHN_cor_traits)+
   geom_point(aes(x = Opercular_KT, 
                  y = OMA, 
                  group = Lake_morph, 
                  col = Lake_morph), 
-             size = 2)
+             size = 2)+
+  geom_smooth(aes(x = Opercular_KT, 
+                  y = OMA, 
+                  group = Lake_morph, 
+                  col = Lake_morph), 
+              method = 'lm', 
+              position = 'identity', 
+              se = F)+
+  labs(x = 'Opercular kinetics', 
+       y = 'OMA', 
+       title = 'Positive correlation')+
+  scale_color_manual(values = wc_cols)+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12), 
+        title = element_text(size = 14), 
+        legend.position = 'none')
+
+
+ggplot(data = ASHN_cor_traits)+
+  geom_point(aes(x = lm_12_13, 
+                 y = lm_21_13, 
+                 group = Lake_morph, 
+                 col = Lake_morph), 
+             size = 2)+
+  geom_smooth(aes(x = lm_12_13, 
+                  y = lm_21_13, 
+                  group = Lake_morph, 
+                  col = Lake_morph), 
+              method = 'lm', 
+              position = 'identity', 
+              se = F)+
+  labs(x = 'lm 12 13',
+       y = 'lm 21 13',
+       title = 'Positive correlation')+
+  scale_color_manual(values = wc_cols)+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12), 
+        title = element_text(size = 14), 
+        legend.position = 'none')
+
+# Negative correlation wild ----------------------------------------
+
+
+negative_correlation_wild = ggplot(data = ASHN_cor_traits)+
+  geom_point(aes(x = Opercular_KT, 
+                 y = PreMax_KT, 
+                 group = Lake_morph, 
+                 col = Lake_morph), 
+             size = 2)+
+  geom_smooth(aes(x = Opercular_KT, 
+                  y = PreMax_KT, 
+                  group = Lake_morph, 
+                  col = Lake_morph), 
+              method = 'lm', 
+              position = 'identity', 
+              se = F)+
+  labs(x = 'Opercular kinetics', 
+       y = 'Pre-maxilla kinetics', 
+       title = 'Negative correlation')+
+  scale_color_manual(values = wc_cols)+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12), 
+        title = element_text(size = 14), 
+        legend.position = 'none')
+
+
+# Neutral correlation wild -----------------------------------------------------
+
+neutral_correlation_wild = ggplot(data = ASHN_cor_traits)+
+  geom_point(aes(x = Opercular_KT, 
+                 y = CMA, 
+                 group = Lake_morph, 
+                 col = Lake_morph), 
+             size = 2)+
+  geom_smooth(aes(x = Opercular_KT, 
+                  y = CMA, 
+                  group = Lake_morph, 
+                  col = Lake_morph), 
+              method = 'lm', 
+              position = 'identity', 
+              se = F)+
+  labs(x = 'Opercular kinetics', 
+       y = 'CMA', 
+       title = 'Neutral correlation')+
+  scale_color_manual(values = wc_cols)+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12), 
+        title = element_text(size = 14), 
+        legend.position = 'none')
+
+
+
+# F2_data -----------------------------------------------------------------
+
+F2_traits_scaled = F2_orig_traits %>% 
+  ungroup() %>% 
+  dplyr::select(-Lake_morph) %>% 
+  scale(., 
+        center = T, 
+        scale = T) %>% 
+  as_tibble() %>% 
+  bind_cols(lake_morph, 
+            .) %>% 
+  dplyr::rename(OMA = ratio1, 
+                CMA = ratio2)%>% 
+  dplyr::select('Lake_morph',
+                'jaw_length', 
+                'head_depth', 
+                'Opercular_KT', 
+                'PreMax_KT', 
+                'CMA',
+                'OMA', 
+                'jaw_2_6', 
+                'fbar_23_24', 
+                'fbar_8_24', 
+                'fbar_8_27', 
+                'fbar_23_27', 
+                'fbar_25_26', 
+                'max_27_3', 
+                'max_3_28', 
+                'max_28_27', 
+                'body_length', 
+                'body_width', 
+                'lm_6_12', 
+                'lm_12_13', 
+                'lm_13_14',
+                'lm_14_15', 
+                'lm_6_21', 
+                'lm_20_21', 
+                'lm_21_13', 
+                'lm_20_13', 
+                'lm_12_19', 
+                'lm_13_19', 
+                'lm_19_18', 
+                'lm_18_17', 
+                'lm_1_23', 
+                'lm_23_2', 
+                'caudal1_14_18', 
+                'caudal2_15_17')
+
+ASHN_F2 = F2_traits_scaled %>% 
+  filter(Lake_morph %in% c('ASHNC', 
+                           'ASHNW'))
+# positive correlation wild ----------------------------------------
+
+ggplot(data = ASHN_F2)+
+  geom_point(aes(x = jaw_length, 
+                 y = lm_12_13, 
+                 group = Lake_morph, 
+                 col = Lake_morph), 
+             size = 2)+
+  geom_smooth(aes(x = jaw_length, 
+                  y = lm_12_13, 
+                  group = Lake_morph, 
+                  col = Lake_morph), 
+              method = 'lm', 
+              position = 'identity', 
+              se = F)+
+  # labs(x = 'OMA',
+  #      y = 'Opercular kinetics',
+  #      title = 'Positive correlation')+
+  scale_color_manual(values = wc_cols)+
+  theme(panel.grid = element_blank(), 
+        axis.title = element_text(size = 14), 
+        axis.text = element_text(size = 12), 
+        title = element_text(size = 14), 
+        legend.position = 'none')
