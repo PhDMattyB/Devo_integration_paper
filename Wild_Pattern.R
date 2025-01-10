@@ -284,7 +284,10 @@ ASHN_wild_cor_graph = ggplot(ASHN_wild_cor,
         #                            hjust=1),
         legend.position = 'none', 
         axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank())
+        axis.ticks.x = element_blank(),
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
 
 
 # MYV trait correlations -------------------------------------------------
@@ -323,7 +326,10 @@ MYV_wild_cor_graph = ggplot(MYV_wild_cor,
         #                            hjust=1),
         legend.position = 'none', 
         axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank())
+        axis.ticks.x = element_blank(), 
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
 
 
 # SKR trait correlations -------------------------------------------------
@@ -362,7 +368,10 @@ SKR_wild_cor_graph = ggplot(SKR_wild_cor,
         #                            hjust=1),
         legend.position = 'none', 
         axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank())
+        axis.ticks.x = element_blank(), 
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
 # GTS_CSWY trait correlations -------------------------------------------------
 
 GTS_CSWY_wild_cor = corbetw2mat(wild_uni_trait_cor$CSWY, 
@@ -397,7 +406,10 @@ GTS_CSWY_wild_cor_graph = ggplot(GTS_CSWY_wild_cor,
         axis.text.x = element_text(angle = 90,
                                    vjust = 0.5,
                                    hjust=1),
-        legend.position = 'none') 
+        legend.position = 'none', 
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA)) 
         # axis.text.x = element_blank(), 
         # axis.ticks.x = element_blank())
 
@@ -491,16 +503,17 @@ GTSCSWY_combo_graphs = GTS_CSWY_wild_cor_graph|GTSCSWY_orig_cor_plot|GTSCSWY_F2_
 
 Big_graph = ASHN_combo_graphs/MYV_combo_graphs/SKR_combo_graphs/GTSCSWY_combo_graphs
 
-# Big_graph2 = Big_graph+
-#   theme(panel.background = element_rect(fill='transparent'), 
-#   plot.background = element_rect(fill = 'transparent', 
-#                                        color = NA))
+Big_graph2 = Big_graph &
+  plot_annotation(theme = theme(panel.background = element_rect(color  = NA, 
+                                                               fill = 'transparent'), 
+                                plot.background = element_rect(color = NA, 
+                                                               fill = 'transparent')))
 
 # ggsave <- function(..., bg = 'transparent') ggplot2::ggsave(..., bg = bg)
 
 ggsave('transback_08.01.2025_SCALED_Figure1_Effects_wild_F1_F2_on_Integration_version2.tiff',
-       plot = Big_graph,
-       bg = 'transparent',
+       plot = Big_graph2,
+       # bg = 'transparent',
        dpi = 'retina',
        units = 'cm',
        width = 60,

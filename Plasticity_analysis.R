@@ -375,7 +375,10 @@ ASHN_orig_cor = ggplot(ASHN_orig,
         axis.ticks.x = element_blank(), 
         axis.text.y = element_blank(), 
         axis.ticks.y = element_blank(), 
-        legend.position = 'none')
+        legend.position = 'none', 
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
 
 orig_uni_trait_cor$MYVC
 orig_uni_trait_cor$MYVW
@@ -478,7 +481,10 @@ MYV_orig_cor_plot = ggplot(MYV_orig_cor,
         axis.ticks.x = element_blank(), 
         axis.text.y = element_blank(), 
         axis.ticks.y = element_blank(), 
-        legend.position = 'none')
+        legend.position = 'none', 
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
 
 orig_uni_trait_cor$SKRC
 orig_uni_trait_cor$SKRW
@@ -576,7 +582,10 @@ SKR_orig_cor_plot = ggplot(SKR_orig_cor,
         axis.ticks.x = element_blank(), 
         axis.text.y = element_blank(), 
         axis.ticks.y = element_blank(), 
-        legend.position = 'none')
+        legend.position = 'none', 
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
 
 
 orig_uni_trait_cor$CSWYC
@@ -673,7 +682,10 @@ GTSCSWY_orig_cor_plot = ggplot(GTSCSWY_orig_cor,
                                    hjust=1), 
         axis.text.y = element_blank(), 
         axis.ticks.y = element_blank(), 
-        legend.position = 'none')
+        legend.position = 'none', 
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
 
 # Plasticity  shape --------------------------------------------------------------
 
@@ -1010,7 +1022,10 @@ ASHN_F2_plast = ggplot(ASHN_F2_effect,
         axis.ticks.x = element_blank(), 
         axis.text.y = element_blank(), 
         axis.ticks.y = element_blank(), 
-        legend.position = 'none')
+        legend.position = 'none', 
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
 
 # MYV F2 effect matrix compare -------------------------------------------
 off_plasticity_trait_cor$MYVC
@@ -1114,7 +1129,10 @@ MYV_F2_plasticity = ggplot(MYV_F2_temp_cor,
         axis.ticks.x = element_blank(), 
         axis.text.y = element_blank(), 
         axis.ticks.y = element_blank(), 
-        legend.position = 'none')
+        legend.position = 'none', 
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
 
 # SKR F2 effect matrix compare -------------------------------------------
 off_plasticity_trait_cor$SKRC
@@ -1218,7 +1236,10 @@ SKR_F2_plasticity = ggplot(SKR_F2_temp_cor,
         axis.ticks.x = element_blank(), 
         axis.text.y = element_blank(), 
         axis.ticks.y = element_blank(), 
-        legend.position = 'none')
+        legend.position = 'none', 
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
 
 
 # GTSCSWY F2 effect matrix compare -------------------------------------------
@@ -1321,7 +1342,10 @@ GTSCSWY_F2_plasticity = ggplot(GTSCSWY_F2_temp_cor,
                                    hjust=1), 
         axis.text.y = element_blank(), 
         axis.ticks.y = element_blank(), 
-        legend.position = 'none')
+        legend.position = 'none', 
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
 
 # parental temp effects ---------------------------------------------------
 
@@ -1661,7 +1685,10 @@ ASHN_F1_plast = ggplot(ASHN_F1_effect,
         #                            hjust=1),
         legend.position = 'none', 
         axis.text = element_blank(), 
-        axis.ticks = element_blank())
+        axis.ticks = element_blank(), 
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
 
 # MYV F2 effect matrix compare -------------------------------------------
 corbetw2mat(parent_plasticity_trait_cor$MYVC, 
@@ -1761,7 +1788,10 @@ MYV_F1_plasticity = ggplot(MYV_F1_temp_cor,
         #                            hjust=1), 
         legend.position = 'none', 
         axis.text = element_blank(),
-        axis.ticks = element_blank())
+        axis.ticks = element_blank(), 
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
 
 # SKR F2 effect matrix compare -------------------------------------------
 
@@ -1862,7 +1892,10 @@ SKR_F1_plasticity = ggplot(SKR_F1_temp_cor,
         #                            hjust=1), 
         legend.position = 'none', 
         axis.text = element_blank(),
-        axis.ticks = element_blank())
+        axis.ticks = element_blank(), 
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
 
 
 # GTSCSWY F2 effect matrix compare -------------------------------------------
@@ -1963,7 +1996,10 @@ GTSCSWY_F1_plasticity = ggplot(GTSCSWY_F1_temp_cor,
         axis.text.x = element_text(angle = 90,
                                    vjust = 0.5,
                                    hjust=1), 
-        legend.position = 'none')
+        legend.position = 'none', 
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
 
 
 
