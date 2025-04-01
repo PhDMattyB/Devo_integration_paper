@@ -305,6 +305,9 @@ pop_only_pal = c('#277da1',
                  '#43aa8b',
                  '#90e0ef')
 
+
+pooled_pc_coords = read_csv('Pooled_PC_Coords.csv')
+
 ## Good enough for now
 principal_coord_analysis = ggplot(data = pooled_pc_coords, 
        aes(x = PCo1, 

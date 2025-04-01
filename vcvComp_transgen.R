@@ -145,6 +145,8 @@ Full_data = bind_rows(wild_univariate,
 
 # vcvComp analysis --------------------------------------------------------
 
+
+
 Traits = Full_data %>% 
   dplyr::select(-Group, 
          -individualID, 
@@ -292,6 +294,8 @@ WC_colour_palette = c('#22577a',
                       '#f8961e', 
                       '#80ed99', 
                       '#f9c74f')
+
+pooled_pc_coords = read_csv('VCVComp_plot_data.csv')
 
 pooled_pc_coords %>% 
   group_by(Effect) %>% 
