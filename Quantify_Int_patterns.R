@@ -73,6 +73,7 @@ inner_join(ASHN_wild_cor_0.3,
              by = 'Integrated_traits') %>% 
   arrange(Integrated_traits) %>% 
   write_csv('WILD_Parallel_Pattern_Integration_cor0.3.csv')
+  
 
 
 # F2 Unaltered traits -----------------------------------------------------
@@ -312,7 +313,7 @@ inner_join(Wild_parallel,
              TGP_parallel, 
              by = 'Integrated_traits') %>% 
   arrange(Integrated_traits) %>% 
-  View()
+  write_csv('Super_parallel_Integrated_traits.csv')
 
 
 inner_join(F2_parallel, 
@@ -322,4 +323,34 @@ inner_join(F2_parallel,
              TGP_parallel, 
              by = 'Integrated_traits') %>% 
   arrange(Integrated_traits) 
+
+
+
+# Summarize the data ------------------------------------------------------
+
+Wild_mean_parallel = Wild_parallel%>% 
+  mutate(mean_cor_value = rowMeans(across(2:4))) %>%
+  dplyr::select(Integrated_traits, 
+                mean_cor_value)
+
+F2_mean_parallel = F2_parallel%>% 
+  mutate(mean_cor_value = rowMeans(across(2:4))) %>%
+  dplyr::select(Integrated_traits, 
+                mean_cor_value)
+
+WGP_mean_parallel = WGP_parallel%>% 
+  mutate(mean_cor_value = rowMeans(across(2:4))) %>%
+  dplyr::select(Integrated_traits, 
+                mean_cor_value)
+
+TGP_mean_parallel = TGP_parallel%>% 
+  mutate(mean_cor_value = rowMeans(across(2:4))) %>%
+  dplyr::select(Integrated_traits, 
+                mean_cor_value)
+
+super_mean_parallel = read_csv('Super_parallel_Integrated_traits.csv') %>% 
+mutate(mean_cor_value = rowMeans(across(2:13))) %>%
+  dplyr::select(Integrated_traits, 
+                mean_cor_value)
+
 
