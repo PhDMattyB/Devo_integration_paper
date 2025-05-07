@@ -288,6 +288,9 @@ orig_uni_trait_cor$ASHNW
 ASHNC_orig = orig_uni_trait_cor$ASHNC %>%
   reshape2::melt() 
 
+
+
+
 ASHNC_orig_plot = ggplot(ASHNC_orig,
        aes(x = Var1,
            y = Var2,
@@ -347,6 +350,15 @@ ASHN_orig_cor = corbetw2mat(orig_uni_trait_cor$ASHNC,
 ASHN_orig = ASHN_orig_cor %>%
   reshape2::melt() 
 
+ASHN_F2_orig_cor_0.03 = ASHN_orig %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('ASHN_F2Orig_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
+
+
 ASHN_orig_cor = ggplot(ASHN_orig,
                        aes(x = Var1,
                            y = Var2,
@@ -395,6 +407,8 @@ MYV_orig_cor = corbetw2mat(orig_uni_trait_cor$MYVC,
 
 MYVC_orig_cor = orig_uni_trait_cor$MYVC %>%
   reshape2::melt() 
+
+
 
 MYVC_cor_plot = ggplot(MYVC_F2_temp,
                        aes(x = Var1,
@@ -454,6 +468,14 @@ MYV_orig_cor = corbetw2mat(orig_uni_trait_cor$MYVC,
 
 MYV_orig_cor = MYV_orig_cor %>%
   reshape2::melt() 
+
+MYV_F2_orig_cor_0.03 = MYV_orig_cor %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('MYV_F2Orig_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
 
 MYV_orig_cor_plot = ggplot(MYV_orig_cor,
                            aes(x = Var1,
@@ -556,6 +578,15 @@ SKR_orig_cor = corbetw2mat(orig_uni_trait_cor$SKRC,
 SKR_orig_cor = SKR_orig_cor %>%
   reshape2::melt() 
 
+SKR_F2_orig_cor_0.03 = SKR_orig_cor %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('SKR_F2Orig_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
+
+
 SKR_orig_cor_plot = ggplot(SKR_orig_cor,
                            aes(x = Var1,
                                y = Var2,
@@ -657,6 +688,14 @@ GTSCSWY_orig_cor = corbetw2mat(orig_uni_trait_cor$CSWYC,
 
 GTSCSWY_orig_cor = GTSCSWY_orig_cor %>%
   reshape2::melt() 
+
+GTS_CSWY_F2_orig_cor_0.03 = GTSCSWY_orig_cor %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('GTS_CSWY_F2Orig_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
 
 GTSCSWY_orig_cor_plot = ggplot(GTSCSWY_orig_cor,
                                aes(x = Var1,
