@@ -9,6 +9,8 @@
 
 setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/Updated Landmarks/')
 
+library(tidyverse)
+library(patchwork)
 
 # WILD --------------------------------------------------------------------
 
@@ -453,7 +455,7 @@ wild_parallel_graph = ggplot(wild_parallel_graph_data,
   scale_fill_gradient2(low = "#ffe5d9",
                        mid = "#ff006e",
                        high = "#ffe5d9") +
-  labs(title = 'A) Wild parallel traits')+
+  labs(title = 'A) Wild parallel integration')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -493,7 +495,7 @@ F2_parallel_graph = ggplot(F2_parallel_graph_data,
   scale_fill_gradient2(low = "#ffe5d9",
                        mid = "#ff006e",
                        high = "#ffe5d9") +
-  labs(title = 'B) F2 parallel traits')+
+  labs(title = 'B) F2 parallel integration')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -532,7 +534,7 @@ WGP_parallel_graph = ggplot(WGP_parallel_graph_data,
   scale_fill_gradient2(low = "#ffe5d9",
                        mid = "#ff006e",
                        high = "#ffe5d9") +
-  labs(title = 'C) WGP parallel traits')+
+  labs(title = 'C) WGP parallel integration')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -570,7 +572,7 @@ TGP_parallel_graph = ggplot(TGP_parallel_graph_data,
   scale_fill_gradient2(low = "#ffe5d9",
                        mid = "#ff006e",
                        high = "#ffe5d9") +
-  labs(title = 'D) TGP parallel traits')+
+  labs(title = 'D) TGP parallel integration')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -609,7 +611,7 @@ Super_parallel_graph = ggplot(Super_parallel_graph_data,
   scale_fill_gradient2(low = "#ffe5d9",
                        mid = "#ff006e",
                        high = "#ffe5d9") +
-  labs(title = 'D) TGP parallel traits')+
+  labs(title = 'E) Fully parallel integration')+
   # facet_wrap(~lake_morph_full,
   #            ncol = 4)+
   # facet_wrap(~lake_morph,
@@ -629,3 +631,5 @@ Super_parallel_graph = ggplot(Super_parallel_graph_data,
         panel.background = element_rect(fill='transparent'), 
         plot.background = element_rect(fill = 'transparent', 
                                        color = NA))
+
+
