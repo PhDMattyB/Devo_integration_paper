@@ -315,3 +315,11 @@ inner_join(Wild_parallel,
   View()
 
 
+inner_join(F2_parallel, 
+           WGP_parallel, 
+           by = 'Integrated_traits') %>% 
+  inner_join(.,
+             TGP_parallel, 
+             by = 'Integrated_traits') %>% 
+  arrange(Integrated_traits) 
+
