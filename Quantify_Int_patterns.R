@@ -139,6 +139,74 @@ inner_join(ASHN_F2_cor_0.3,
   write_csv('F2_Parallel_Pattern_Integration_cor0.3.csv')
 
 
+
+# WGP ---------------------------------------------------------------------
+
+ASHN_WGP_cor_0.3 = read_csv("ASHN_WGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv") %>% 
+  unite(col = 'Integrated_traits', 
+        c('Var1', 
+          'Var2'), 
+        sep = '_')
+
+MYV_WGP_cor_0.3 = read_csv('MYV_WGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
+  unite(col = 'Integrated_traits', 
+        c('Var1', 
+          'Var2'), 
+        sep = '_')
+
+SKR_WGP_cor_0.3 = read_csv('SKR_WGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
+  unite(col = 'Integrated_traits', 
+        c('Var1', 
+          'Var2'), 
+        sep = '_')
+
+GTS_CSWY_WGP_cor_0.3 = read_csv('GTS_CSWY_WGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
+  unite(col = 'Integrated_traits', 
+        c('Var1', 
+          'Var2'), 
+        sep = '_')
+
+inner_join(ASHN_WGP_cor_0.3, 
+           MYV_WGP_cor_0.3, 
+           by = 'Integrated_traits') 
+
+inner_join(ASHN_WGP_cor_0.3, 
+           SKR_WGP_cor_0.3, 
+           by = 'Integrated_traits')
+
+inner_join(ASHN_WGP_cor_0.3, 
+           GTS_CSWY_WGP_cor_0.3, 
+           by = 'Integrated_traits')
+
+inner_join(MYV_WGP_cor_0.3, 
+           SKR_WGP_cor_0.3, 
+           by = 'Integrated_traits')
+
+inner_join(MYV_WGP_cor_0.3, 
+           GTS_CSWY_WGP_cor_0.3, 
+           by = 'Integrated_traits')
+
+inner_join(SKR_WGP_cor_0.3, 
+           GTS_CSWY_WGP_cor_0.3, 
+           by = 'Integrated_traits')
+
+
+inner_join(ASHN_WGP_cor_0.3, 
+           MYV_WGP_cor_0.3, 
+           by = 'Integrated_traits') %>% 
+  inner_join(., 
+             SKR_WGP_cor_0.3, 
+             by = 'Integrated_traits') %>% 
+  inner_join(., 
+             GTS_CSWY_WGP_cor_0.3, 
+             by = 'Integrated_traits') %>% 
+  arrange(Integrated_traits) %>% 
+  write_csv('WGP_Parallel_Pattern_Integration_cor0.3.csv')
+
+
+
+
+
 # WILD VS F2 original -----------------------------------------------------
 
 Wild_parallel = read_csv('WILD_Parallel_Pattern_Integration_cor0.3.csv')
