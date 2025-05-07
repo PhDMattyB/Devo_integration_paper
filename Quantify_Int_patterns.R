@@ -392,10 +392,27 @@ background_traits = read_csv('ASHN_wild_cor_mat.csv') %>%
         sep = '_', 
         remove = F) %>% 
   arrange(Var1) %>% 
-  mutate(Background_value = 0) %>% 
+  mutate(mean_cor_value = 1) %>% 
   dplyr::select(-value) %>% 
-  mutate(Parallel_value = 'Not Parallel')
+  mutate(Parallel_value = 'Not Parallel') %>% 
+  rename(Var1.x = Var1, 
+         Var2.x = Var2)
 
+
+super_background_traits = read_csv('ASHN_wild_cor_mat.csv') %>% 
+  unite(col = 'Integrated_traits', 
+        c('Var1', 
+          'Var2'), 
+        sep = '_', 
+        remove = F) %>% 
+  arrange(Var1) %>% 
+  mutate(mean_cor_value = 1) %>% 
+  dplyr::select(-value) %>% 
+  mutate(Parallel_value = 'Not Parallel') %>% 
+  rename(Var1.x.x.x = Var1, 
+         Var2.x.x.x = Var2)
+
+## Need the background traits that are not parallel
 
 wild_background_traits = anti_join(background_traits, 
           Wild_mean_parallel, 
@@ -413,8 +430,202 @@ TGP_background_traits = anti_join(background_traits,
                                   TGP_mean_parallel, 
                                   by = 'Integrated_traits')
 
-super_background_traits = anti_join(background_traits, 
+super_background_traits = anti_join(super_background_traits, 
                                   super_mean_parallel, 
                                   by = 'Integrated_traits')
 
 
+## Graph time
+## Wild parallel traits
+
+wild_parallel_graph_data = bind_rows(Wild_mean_parallel, 
+          wild_background_traits)
+
+
+wild_parallel_graph = ggplot(wild_parallel_graph_data,
+       aes(x = Var1.x,
+           y = Var2.x,
+           fill = mean_cor_value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffe5d9",
+                       mid = "#ff006e",
+                       high = "#ffe5d9") +
+  labs(title = 'A) Wild parallel traits')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        plot.title = element_text(size = 22),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none',
+        # axis.text.x = element_blank(), 
+        axis.text.x = element_text(angle = 90),
+        axis.ticks.x = element_blank(),
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
+
+
+
+### F2 parallel graph
+
+F2_parallel_graph_data = bind_rows(F2_mean_parallel, 
+                                     F2_background_traits)
+
+
+F2_parallel_graph = ggplot(F2_parallel_graph_data,
+                             aes(x = Var1.x,
+                                 y = Var2.x,
+                                 fill = mean_cor_value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffe5d9",
+                       mid = "#ff006e",
+                       high = "#ffe5d9") +
+  labs(title = 'B) F2 parallel traits')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        plot.title = element_text(size = 22),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none',
+        # axis.text.x = element_blank(), 
+        axis.text.x = element_text(angle = 90),
+        axis.ticks.x = element_blank(),
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
+
+
+### WGP parallel graph
+
+WGP_parallel_graph_data = bind_rows(WGP_mean_parallel, 
+                                   WGP_background_traits)
+
+
+WGP_parallel_graph = ggplot(WGP_parallel_graph_data,
+                           aes(x = Var1.x,
+                               y = Var2.x,
+                               fill = mean_cor_value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffe5d9",
+                       mid = "#ff006e",
+                       high = "#ffe5d9") +
+  labs(title = 'C) WGP parallel traits')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        plot.title = element_text(size = 22),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none',
+        # axis.text.x = element_blank(), 
+        axis.text.x = element_text(angle = 90),
+        axis.ticks.x = element_blank(),
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
+
+### TGP parallel graph
+
+TGP_parallel_graph_data = bind_rows(TGP_mean_parallel, 
+                                    TGP_background_traits)
+
+
+TGP_parallel_graph = ggplot(TGP_parallel_graph_data,
+                            aes(x = Var1.x,
+                                y = Var2.x,
+                                fill = mean_cor_value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffe5d9",
+                       mid = "#ff006e",
+                       high = "#ffe5d9") +
+  labs(title = 'D) TGP parallel traits')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        plot.title = element_text(size = 22),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none',
+        # axis.text.x = element_blank(), 
+        axis.text.x = element_text(angle = 90),
+        axis.ticks.x = element_blank(),
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
+
+
+### SUPER parallel graph
+
+Super_parallel_graph_data = bind_rows(super_mean_parallel, 
+                                    super_background_traits)
+
+
+Super_parallel_graph = ggplot(Super_parallel_graph_data,
+                            aes(x = Var1.x.x.x,
+                                y = Var2.x.x.x,
+                                fill = mean_cor_value))+
+  geom_tile(col = 'black')+
+  # scale_fill_gradient2(low = "#003049",
+  #                      mid = "#eae2b7",
+  #                      high = "#d62828") +
+  scale_fill_gradient2(low = "#ffe5d9",
+                       mid = "#ff006e",
+                       high = "#ffe5d9") +
+  labs(title = 'D) TGP parallel traits')+
+  # facet_wrap(~lake_morph_full,
+  #            ncol = 4)+
+  # facet_wrap(~lake_morph,
+  #            ncol = 4)+
+  theme_bw()+
+  theme(strip.background = element_rect(fill = 'white'),
+        strip.text = element_text(face = 'bold'),
+        axis.title = element_blank(),
+        plot.title = element_text(size = 22),
+        # axis.text.x = element_text(angle = 90,
+        #                            vjust = 0.5,
+        #                            hjust=1),
+        legend.position = 'none',
+        # axis.text.x = element_blank(), 
+        axis.text.x = element_text(angle = 90),
+        axis.ticks.x = element_blank(),
+        panel.background = element_rect(fill='transparent'), 
+        plot.background = element_rect(fill = 'transparent', 
+                                       color = NA))
