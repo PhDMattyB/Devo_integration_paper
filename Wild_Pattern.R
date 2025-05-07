@@ -272,6 +272,14 @@ ASHN_wild_cor = corbetw2mat(wild_uni_trait_cor$ASHNC,
 ASHN_wild_cor = ASHN_wild_cor %>% 
   reshape2::melt()
 
+ASHN_wild_cor_0.03 = ASHN_wild_cor %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('ASHN_wild_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
+
 ASHN_wild_cor_graph = ggplot(ASHN_wild_cor,
                        aes(x = Var1,
                            y = Var2,
@@ -296,7 +304,7 @@ ASHN_wild_cor_graph = ggplot(ASHN_wild_cor,
         # axis.text.x = element_text(angle = 90,
         #                            vjust = 0.5,
         #                            hjust=1),
-        legend.position = 'none', 
+        legend.position = 'none',
         axis.text.x = element_blank(), 
         axis.ticks.x = element_blank(),
         panel.background = element_rect(fill='transparent'), 
@@ -313,6 +321,15 @@ MYV_wild_cor = corbetw2mat(wild_uni_trait_cor$MYVC,
 
 MYV_wild_cor = MYV_wild_cor %>%
   reshape2::melt() 
+
+MYV_wild_cor_0.03 = MYV_wild_cor %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('MYV_wild_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
+
 
 MYV_wild_cor_graph = ggplot(MYV_wild_cor,
                              aes(x = Var1,
@@ -356,6 +373,16 @@ SKR_wild_cor = corbetw2mat(wild_uni_trait_cor$SKRC,
 SKR_wild_cor = SKR_wild_cor %>%
   reshape2::melt() 
 
+
+SKR_wild_cor_0.03 = SKR_wild_cor %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('SKR_wild_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
+
+
 SKR_wild_cor_graph = ggplot(SKR_wild_cor,
                             aes(x = Var1,
                                 y = Var2,
@@ -395,6 +422,16 @@ GTS_CSWY_wild_cor = corbetw2mat(wild_uni_trait_cor$CSWY,
 
 GTS_CSWY_wild_cor = GTS_CSWY_wild_cor %>%
   reshape2::melt() 
+
+
+GTS_CSWY_wild_cor_0.03 = GTS_CSWY_wild_cor %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('GTS_CSWY_wild_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
+
 
 GTS_CSWY_wild_cor_graph = ggplot(GTS_CSWY_wild_cor,
                                  aes(x = Var1,
