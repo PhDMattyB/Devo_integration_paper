@@ -347,26 +347,74 @@ inner_join(F2_parallel,
 Wild_mean_parallel = Wild_parallel%>% 
   mutate(mean_cor_value = rowMeans(across(starts_with('value')))) %>%
   dplyr::select(Integrated_traits, 
-                mean_cor_value)
+                Var1.x, 
+                Var2.x,
+                mean_cor_value) %>% 
+  mutate(Parallel_value = 'Wild parallel')
 
 F2_mean_parallel = F2_parallel%>% 
   mutate(mean_cor_value = rowMeans(across(starts_with('value')))) %>%
-  dplyr::select(Integrated_traits, 
-                mean_cor_value)
+  dplyr::select(Integrated_traits,
+                Var1.x, 
+                Var2.x,
+                mean_cor_value)%>% 
+  mutate(Parallel_value = 'F2 parallel')
 
 WGP_mean_parallel = WGP_parallel%>% 
   mutate(mean_cor_value = rowMeans(across(starts_with('value')))) %>%
   dplyr::select(Integrated_traits, 
-                mean_cor_value)
+                Var1.x, 
+                Var2.x,
+                mean_cor_value) %>% 
+  mutate(Parallel_value = 'WGP parallel')
 
 TGP_mean_parallel = TGP_parallel%>% 
   mutate(mean_cor_value = rowMeans(across(starts_with('value')))) %>%
   dplyr::select(Integrated_traits, 
-                mean_cor_value)
+                Var1.x, 
+                Var2.x,
+                mean_cor_value) %>% 
+  mutate(Parallel_value = 'TGP parallel')
 
 super_mean_parallel = read_csv('Super_parallel_Integrated_traits.csv') %>% 
   mutate(mean_cor_value = rowMeans(across(starts_with('value')))) %>%
-  dplyr::select(Integrated_traits, 
-                mean_cor_value)
+  dplyr::select(Integrated_traits,
+                Var1.x.x.x, 
+                Var2.x.x.x,
+                mean_cor_value) %>% 
+  mutate(Parallel_value = 'Super parallel')
+
+
+background_traits = read_csv('ASHN_wild_cor_mat.csv') %>% 
+  unite(col = 'Integrated_traits', 
+        c('Var1', 
+          'Var2'), 
+        sep = '_', 
+        remove = F) %>% 
+  arrange(Var1) %>% 
+  mutate(Background_value = 0) %>% 
+  dplyr::select(-value) %>% 
+  mutate(Parallel_value = 'Not Parallel')
+
+
+wild_background_traits = anti_join(background_traits, 
+          Wild_mean_parallel, 
+          by = 'Integrated_traits')
+
+F2_background_traits = anti_join(background_traits, 
+                                   F2_mean_parallel, 
+                                   by = 'Integrated_traits')
+
+WGP_background_traits = anti_join(background_traits, 
+                                  WGP_mean_parallel, 
+                                  by = 'Integrated_traits')
+
+TGP_background_traits = anti_join(background_traits, 
+                                  TGP_mean_parallel, 
+                                  by = 'Integrated_traits')
+
+super_background_traits = anti_join(background_traits, 
+                                  super_mean_parallel, 
+                                  by = 'Integrated_traits')
 
 
