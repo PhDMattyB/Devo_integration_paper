@@ -204,6 +204,70 @@ inner_join(ASHN_WGP_cor_0.3,
   write_csv('WGP_Parallel_Pattern_Integration_cor0.3.csv')
 
 
+# TGP ---------------------------------------------------------------------
+
+ASHN_TGP_cor_0.3 = read_csv("ASHN_TGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv") %>% 
+  unite(col = 'Integrated_traits', 
+        c('Var1', 
+          'Var2'), 
+        sep = '_')
+
+MYV_TGP_cor_0.3 = read_csv('MYV_TGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
+  unite(col = 'Integrated_traits', 
+        c('Var1', 
+          'Var2'), 
+        sep = '_')
+
+SKR_TGP_cor_0.3 = read_csv('SKR_TGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
+  unite(col = 'Integrated_traits', 
+        c('Var1', 
+          'Var2'), 
+        sep = '_')
+
+GTS_CSWY_TGP_cor_0.3 = read_csv('GTS_CSWY_TGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
+  unite(col = 'Integrated_traits', 
+        c('Var1', 
+          'Var2'), 
+        sep = '_')
+
+inner_join(ASHN_TGP_cor_0.3, 
+           MYV_TGP_cor_0.3, 
+           by = 'Integrated_traits') 
+
+inner_join(ASHN_TGP_cor_0.3, 
+           SKR_TGP_cor_0.3, 
+           by = 'Integrated_traits')
+
+inner_join(ASHN_TGP_cor_0.3, 
+           GTS_CSWY_TGP_cor_0.3, 
+           by = 'Integrated_traits')
+
+inner_join(MYV_TGP_cor_0.3, 
+           SKR_TGP_cor_0.3, 
+           by = 'Integrated_traits')
+
+inner_join(MYV_TGP_cor_0.3, 
+           GTS_CSWY_TGP_cor_0.3, 
+           by = 'Integrated_traits')
+
+inner_join(SKR_TGP_cor_0.3, 
+           GTS_CSWY_TGP_cor_0.3, 
+           by = 'Integrated_traits')
+
+
+inner_join(ASHN_TGP_cor_0.3, 
+           MYV_TGP_cor_0.3, 
+           by = 'Integrated_traits') %>% 
+  inner_join(., 
+             SKR_TGP_cor_0.3, 
+             by = 'Integrated_traits') %>% 
+  inner_join(., 
+             GTS_CSWY_TGP_cor_0.3, 
+             by = 'Integrated_traits') %>% 
+  arrange(Integrated_traits) %>% 
+  write_csv('TGP_Parallel_Pattern_Integration_cor0.3.csv')
+
+
 
 
 
