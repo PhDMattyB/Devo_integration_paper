@@ -345,7 +345,7 @@ ASHNW_cor_plot = ggplot(ASHNW_orig,
 ASHN_orig_cor = corbetw2mat(orig_uni_trait_cor$ASHNC, 
                                orig_uni_trait_cor$ASHNW, 
                                what = 'all', 
-                               corthresh = 0.7)
+                               corthresh = 0.5)
 
 ASHN_orig = ASHN_orig_cor %>%
   reshape2::melt() 
@@ -464,7 +464,7 @@ MYVW_cor_plot = ggplot(MYVW_F2_temp,
 MYV_orig_cor = corbetw2mat(orig_uni_trait_cor$MYVC, 
                               orig_uni_trait_cor$MYVW, 
                               what = 'all', 
-                              corthresh = 0.7)
+                              corthresh = 0.5)
 
 MYV_orig_cor = MYV_orig_cor %>%
   reshape2::melt() 
@@ -573,7 +573,7 @@ SKRW_orig_cor_plot = ggplot(SKRW_orig,
 SKR_orig_cor = corbetw2mat(orig_uni_trait_cor$SKRC, 
                               orig_uni_trait_cor$SKRW, 
                               what = 'all', 
-                              corthresh = 0.7)
+                              corthresh = 0.5)
 
 SKR_orig_cor = SKR_orig_cor %>%
   reshape2::melt() 
@@ -684,7 +684,7 @@ GTS_orig_cor_plot = ggplot(GTSW_F2_temp,
 GTSCSWY_orig_cor = corbetw2mat(orig_uni_trait_cor$CSWYC, 
                                   orig_uni_trait_cor$GTSW, 
                                   what = 'all', 
-                                  corthresh = 0.7)
+                                  corthresh = 0.5)
 
 GTSCSWY_orig_cor = GTSCSWY_orig_cor %>%
   reshape2::melt() 
@@ -1028,10 +1028,19 @@ ASHNC_cor_plot = ggplot(test_ASHNW,
 ASHN_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$ASHNC, 
             off_plasticity_trait_cor$ASHNW, 
             what = 'all', 
-            corthresh = 0.7)
+            corthresh = 0.5)
 
 ASHN_F2_effect = ASHN_F2_temp_cor %>%
   reshape2::melt() 
+
+ASHN_WGP_cor_0.03 = ASHN_F2_effect %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('ASHN_WGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
+
 
 ASHN_F2_plast = ggplot(ASHN_F2_effect,
        aes(x = Var1,
@@ -1137,10 +1146,19 @@ MYVW_cor_plot = ggplot(MYVW_F2_temp,
 MYV_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$MYVC, 
                                off_plasticity_trait_cor$MYVW, 
                                what = 'all', 
-                               corthresh = 0.7)
+                               corthresh = 0.5)
 
 MYV_F2_temp_cor = MYV_F2_temp_cor %>%
   reshape2::melt() 
+
+MYV_WGP_cor_0.03 = MYV_F2_temp_cor %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('MYV_WGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
+
 
 MYV_F2_plasticity = ggplot(MYV_F2_temp_cor,
        aes(x = Var1,
@@ -1244,10 +1262,20 @@ SKRW_cor_plot = ggplot(SKRW_F2_temp,
 SKR_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$SKRC, 
                               off_plasticity_trait_cor$SKRW, 
                               what = 'all', 
-                              corthresh = 0.7)
+                              corthresh = 0.5)
 
 SKR_F2_temp_cor = SKR_F2_temp_cor %>%
   reshape2::melt() 
+
+SKR_WGP_cor_0.03 = SKR_F2_temp_cor %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('SKR_WGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
+
+
 
 SKR_F2_plasticity = ggplot(SKR_F2_temp_cor,
        aes(x = Var1,
@@ -1352,10 +1380,19 @@ GTS_cor_plot = ggplot(GTSW_F2_temp,
 GTSCSWY_F2_temp_cor = corbetw2mat(off_plasticity_trait_cor$CSWYC, 
                               off_plasticity_trait_cor$GTSW, 
                               what = 'all', 
-                              corthresh = 0.7)
+                              corthresh = 0.5)
 
 GTSCSWY_F2_temp_cor = GTSCSWY_F2_temp_cor %>%
   reshape2::melt() 
+
+GTS_CSWY_WGP_cor_0.03 = GTSCSWY_F2_temp_cor %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('GTS_CSWY_WGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
+
 
 GTSCSWY_F2_plasticity = ggplot(GTSCSWY_F2_temp_cor,
        aes(x = Var1,
@@ -1693,10 +1730,19 @@ ASHNW_cor_plot = ggplot(ASHNW_F1_cor,
 ASHN_F1_temp_cor = corbetw2mat(parent_plasticity_trait_cor$ASHNC, 
                                                 parent_plasticity_trait_cor$ASHNW, 
                                                 what = 'all', 
-                                                corthresh = 0.7)
+                                                corthresh = 0.5)
 
 ASHN_F1_effect = ASHN_F1_temp_cor %>%
   reshape2::melt() 
+
+ASHN_TGP_cor_0.03 = ASHN_F1_effect %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('ASHN_TGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
+
 
 ASHN_F1_plast = ggplot(ASHN_F1_effect,
                        aes(x = Var1,
@@ -1797,10 +1843,19 @@ MYVW_cor_plot = ggplot(MYVW_F1_temp,
 MYV_F1_temp_cor = corbetw2mat(parent_plasticity_trait_cor$MYVC, 
                               parent_plasticity_trait_cor$MYVW, 
                               what = 'all', 
-                              corthresh = 0.7)
+                              corthresh = 0.5)
 
 MYV_F1_temp_cor = MYV_F1_temp_cor %>%
   reshape2::melt() 
+
+MYV_TGP_cor_0.03 = MYV_F1_temp_cor %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('MYV_TGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
+
 
 MYV_F1_plasticity = ggplot(MYV_F1_temp_cor,
                            aes(x = Var1,
@@ -1901,10 +1956,19 @@ SKRW_cor_plot = ggplot(SKRW_F1_temp,
 SKR_F1_temp_cor = corbetw2mat(parent_plasticity_trait_cor$SKRC, 
                               parent_plasticity_trait_cor$SKRW, 
                               what = 'all', 
-                              corthresh = 0.7)
+                              corthresh = 0.5)
 
 SKR_F1_temp_cor = SKR_F1_temp_cor %>%
   reshape2::melt() 
+
+SKR_TGP_cor_0.03 = SKR_F1_temp_cor %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('SKR_TGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
+
 
 SKR_F1_plasticity = ggplot(SKR_F1_temp_cor,
                            aes(x = Var1,
@@ -2005,10 +2069,19 @@ GTS_cor_plot = ggplot(GTSW_F1_temp,
 GTSCSWY_F1_temp_cor = corbetw2mat(parent_plasticity_trait_cor$CSWYC, 
                                   parent_plasticity_trait_cor$GTSW, 
                                   what = 'all', 
-                                  corthresh = 0.7)
+                                  corthresh = 0.5)
 
 GTSCSWY_F1_temp_cor = GTSCSWY_F1_temp_cor %>%
   reshape2::melt() 
+
+GTS_CSWY_TGP_cor_0.03 = GTSCSWY_F1_temp_cor %>% 
+  as_tibble() %>% 
+  arrange(value) %>% 
+  filter(value <= 0.3, 
+         value >= -0.3) %>%
+  arrange(Var1) %>% 
+  write_csv('GTS_CSWY_TGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv')
+
 
 GTSCSWY_F1_plasticity = ggplot(GTSCSWY_F1_temp_cor,
                                aes(x = Var1,
