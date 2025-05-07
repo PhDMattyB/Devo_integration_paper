@@ -16,30 +16,34 @@ ASHN_wild_cor_0.3 = read_csv("ASHN_wild_Pattern_integration_Ecotype_diffs_0.3cut
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 MYV_wild_cor_0.3 = read_csv('MYV_wild_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 SKR_wild_cor_0.3 = read_csv('SKR_wild_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 GTS_CSWY_wild_cor_0.3 = read_csv('GTS_CSWY_wild_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 inner_join(ASHN_wild_cor_0.3, 
            MYV_wild_cor_0.3, 
            by = 'Integrated_traits') %>% 
-  arrange(Integrated_traits) %>% View()
+  arrange(Integrated_traits) 
 
 inner_join(ASHN_wild_cor_0.3, 
            SKR_wild_cor_0.3, 
@@ -82,25 +86,29 @@ ASHN_F2_cor_0.3 = read_csv("ASHN_F2Orig_Pattern_integration_Ecotype_diffs_0.3cut
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 MYV_F2_cor_0.3 = read_csv('MYV_F2Orig_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 SKR_F2_cor_0.3 = read_csv('SKR_F2Orig_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 GTS_CSWY_F2_cor_0.3 = read_csv('GTS_CSWY_F2Orig_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 inner_join(ASHN_F2_cor_0.3, 
            MYV_F2_cor_0.3, 
@@ -147,25 +155,29 @@ ASHN_WGP_cor_0.3 = read_csv("ASHN_WGP_Pattern_integration_Ecotype_diffs_0.3cutof
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 MYV_WGP_cor_0.3 = read_csv('MYV_WGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 SKR_WGP_cor_0.3 = read_csv('SKR_WGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 GTS_CSWY_WGP_cor_0.3 = read_csv('GTS_CSWY_WGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 inner_join(ASHN_WGP_cor_0.3, 
            MYV_WGP_cor_0.3, 
@@ -211,25 +223,29 @@ ASHN_TGP_cor_0.3 = read_csv("ASHN_TGP_Pattern_integration_Ecotype_diffs_0.3cutof
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 MYV_TGP_cor_0.3 = read_csv('MYV_TGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 SKR_TGP_cor_0.3 = read_csv('SKR_TGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 GTS_CSWY_TGP_cor_0.3 = read_csv('GTS_CSWY_TGP_Pattern_integration_Ecotype_diffs_0.3cutoff.csv') %>% 
   unite(col = 'Integrated_traits', 
         c('Var1', 
           'Var2'), 
-        sep = '_')
+        sep = '_', 
+        remove = F)
 
 inner_join(ASHN_TGP_cor_0.3, 
            MYV_TGP_cor_0.3, 
@@ -329,27 +345,27 @@ inner_join(F2_parallel,
 # Summarize the data ------------------------------------------------------
 
 Wild_mean_parallel = Wild_parallel%>% 
-  mutate(mean_cor_value = rowMeans(across(2:4))) %>%
+  mutate(mean_cor_value = rowMeans(across(starts_with('value')))) %>%
   dplyr::select(Integrated_traits, 
                 mean_cor_value)
 
 F2_mean_parallel = F2_parallel%>% 
-  mutate(mean_cor_value = rowMeans(across(2:4))) %>%
+  mutate(mean_cor_value = rowMeans(across(starts_with('value')))) %>%
   dplyr::select(Integrated_traits, 
                 mean_cor_value)
 
 WGP_mean_parallel = WGP_parallel%>% 
-  mutate(mean_cor_value = rowMeans(across(2:4))) %>%
+  mutate(mean_cor_value = rowMeans(across(starts_with('value')))) %>%
   dplyr::select(Integrated_traits, 
                 mean_cor_value)
 
 TGP_mean_parallel = TGP_parallel%>% 
-  mutate(mean_cor_value = rowMeans(across(2:4))) %>%
+  mutate(mean_cor_value = rowMeans(across(starts_with('value')))) %>%
   dplyr::select(Integrated_traits, 
                 mean_cor_value)
 
 super_mean_parallel = read_csv('Super_parallel_Integrated_traits.csv') %>% 
-mutate(mean_cor_value = rowMeans(across(2:13))) %>%
+  mutate(mean_cor_value = rowMeans(across(starts_with('value')))) %>%
   dplyr::select(Integrated_traits, 
                 mean_cor_value)
 
