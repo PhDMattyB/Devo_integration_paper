@@ -440,6 +440,8 @@ super_background_traits = anti_join(super_background_traits,
 ## Graph time
 ## Wild parallel traits
 
+## Need to reorder both of the axes
+
 wild_parallel_graph_data = bind_rows(Wild_mean_parallel, 
           wild_background_traits)
 
@@ -632,4 +634,13 @@ Super_parallel_graph = ggplot(Super_parallel_graph_data,
         plot.background = element_rect(fill = 'transparent', 
                                        color = NA))
 
+
+parallel_integration_graph = (wild_parallel_graph|F2_parallel_graph|WGP_parallel_graph|TGP_parallel_graph)/Super_parallel_graph
+
+ggsave('Parallel_trait_integration.tiff',
+       plot = parallel_integration_graph, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 50, 
+       height = 35)
 
