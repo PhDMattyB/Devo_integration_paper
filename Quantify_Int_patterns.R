@@ -275,10 +275,43 @@ inner_join(ASHN_TGP_cor_0.3,
 
 Wild_parallel = read_csv('WILD_Parallel_Pattern_Integration_cor0.3.csv')
 F2_parallel = read_csv("F2_Parallel_Pattern_Integration_cor0.3.csv")
+WGP_parallel = read_csv('WGP_Parallel_Pattern_Integration_cor0.3.csv')
+TGP_parallel = read_csv("TGP_Parallel_Pattern_Integration_cor0.3.csv")
+
+inner_join(Wild_parallel, 
+           F2_parallel, 
+           by = 'Integrated_traits') 
+
+inner_join(Wild_parallel, 
+          WGP_parallel, 
+          by = 'Integrated_traits')
+
+inner_join(Wild_parallel, 
+           TGP_parallel, 
+           by = 'Integrated_traits')
+
+inner_join(F2_parallel, 
+           WGP_parallel, 
+           by = 'Integrated_traits')
+
+inner_join(F2_parallel, 
+           TGP_parallel, 
+           by = 'Integrated_traits')
+
+inner_join(WGP_parallel, 
+           TGP_parallel, 
+           by = 'Integrated_traits')
 
 inner_join(Wild_parallel, 
            F2_parallel, 
            by = 'Integrated_traits') %>% 
+  inner_join(.,
+             WGP_parallel, 
+             by = 'Integrated_traits') %>% 
+  inner_join(., 
+             TGP_parallel, 
+             by = 'Integrated_traits') %>% 
   arrange(Integrated_traits) %>% 
   View()
+
 
