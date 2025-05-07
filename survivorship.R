@@ -53,6 +53,12 @@ data_clean$group2 = factor(data_clean$group2,
                                       'GAR - Cold'))
   
 
+# Family details ----------------------------------------------------------
+
+data_clean %>% 
+  group_by(group_treatment) %>% View()
+
+
 # whole experiment survival -----------------------------------------------
 
 

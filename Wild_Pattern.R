@@ -201,6 +201,20 @@ wild_traits_scaled = wild_uni_traits %>%
                 'caudal1_14_18', 
                 'caudal2_15_17')
 
+wild_traits_scaled %>% 
+  dplyr::select(Lake_morph, 
+                CMA, 
+                OMA, 
+                PreMax_KT, 
+                Opercular_KT) %>% 
+  group_by(Lake_morph) %>% 
+  filter(Lake_morph %in% c('ASHNC', 'ASHNW', 'CSWY', 'GTS', 'MYVC',
+                           'MYVW', 'SKRC', 'SKRW')) %>% 
+  summarize(mean_CMA = mean(CMA), 
+            mean_OMA = mean(OMA), 
+            mean_preKT = mean(PreMax_KT), 
+            mean_opercKT = mean(Opercular_KT))
+
 # vars_keep = names(wild_uni_traits)[c(2,3,4,5,6,7,8,9,10,11, 
 #                                      12,13,14,15,16,17,18, 
 #                                      19,20,21,22,23,24,25,26,
