@@ -987,3 +987,57 @@ ggsave('Parallel_trait_integration.tiff',
        width = 50, 
        height = 35)
 
+
+
+# chi square tests --------------------------------------------------------
+
+## WILD
+Wild_Fisher = matrix(c(119, 327, 970, 762), 
+                  nrow = 2, 
+                  dimnames = list(c('Observed', 
+                                              'Expected'), 
+                                  c('Parallel', 
+                                    'Non-parallel')))
+
+Wild_Fisher_test = fisher.test(Wild_Fisher)
+
+## F2
+
+F2_Fisher = matrix(c(120, 327, 969, 762), 
+                   nrow = 2, 
+                   dimnames = list(c('Observed', 
+                                     'Expected'), 
+                                   c('Parallel', 
+                                     'Non-parallel')))
+F2_Fisher_test = fisher.test(F2_Fisher)
+
+## WGP
+
+WGP_Fisher = matrix(c(173, 327, 916, 762), 
+                   nrow = 2, 
+                   dimnames = list(c('Observed', 
+                                     'Expected'), 
+                                   c('Parallel', 
+                                     'Non-parallel')))
+WGP_Fisher_test = fisher.test(WGP_Fisher)
+
+## TGP
+
+TGP_Fisher = matrix(c(117, 327, 972, 762), 
+                   nrow = 2, 
+                   dimnames = list(c('Observed', 
+                                     'Expected'), 
+                                   c('Parallel', 
+                                     'Non-parallel')))
+TGP_Fisher_test = fisher.test(TGP_Fisher)
+
+## super
+
+super_Fisher = matrix(c(15, 327, 1074, 762), 
+                   nrow = 2, 
+                   dimnames = list(c('Observed', 
+                                     'Expected'), 
+                                   c('Parallel', 
+                                     'Non-parallel')))
+super_Fisher_test = fisher.test(super_Fisher)
+
