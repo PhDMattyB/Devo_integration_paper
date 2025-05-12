@@ -437,6 +437,9 @@ super_background_traits = anti_join(super_background_traits,
                                   by = 'Integrated_traits')
 
 
+# Visualizing mean parallelism --------------------------------------------
+
+
 ## Graph time
 ## Wild parallel traits
 
@@ -1054,3 +1057,35 @@ super_Fisher_test = fisher.test(super_Fisher)
 p.adjust(p = super_Fisher_test$p.value, 
          method = 'bonferroni', 
          n = 4)
+
+
+
+# wild vs F2 --------------------------------------------------------------
+
+Wild_mean_parallel
+
+F2_mean_parallel
+
+
+inner_join(Wild_mean_parallel, 
+           F2_mean_parallel, 
+           by = 'Integrated_traits')
+inner_join(Wild_mean_parallel, 
+           WGP_mean_parallel, 
+           by = 'Integrated_traits')
+
+inner_join(Wild_mean_parallel, 
+           TGP_mean_parallel, 
+           by = 'Integrated_traits')
+
+
+anti_join(F2_mean_parallel, 
+          TGP_mean_parallel, 
+          by = 'Integrated_traits') %>% 
+  anti_join(., 
+            WGP_mean_parallel, 
+            by = 'Integrated_traits')
+
+anti_join(F2_mean_parallel, 
+          WGP_mean_parallel, 
+          by = 'Integrated_traits')
