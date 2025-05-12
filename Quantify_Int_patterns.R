@@ -1001,6 +1001,11 @@ Wild_Fisher = matrix(c(119, 327, 970, 762),
 
 Wild_Fisher_test = fisher.test(Wild_Fisher)
 
+p.adjust(p = Wild_Fisher_test$p.value, 
+         method = 'bonferroni', 
+         n = 4)
+
+
 ## F2
 
 F2_Fisher = matrix(c(120, 327, 969, 762), 
@@ -1010,7 +1015,9 @@ F2_Fisher = matrix(c(120, 327, 969, 762),
                                    c('Parallel', 
                                      'Non-parallel')))
 F2_Fisher_test = fisher.test(F2_Fisher)
-
+p.adjust(p = F2_Fisher_test$p.value, 
+         method = 'bonferroni', 
+         n = 4)
 ## WGP
 
 WGP_Fisher = matrix(c(173, 327, 916, 762), 
@@ -1020,7 +1027,9 @@ WGP_Fisher = matrix(c(173, 327, 916, 762),
                                    c('Parallel', 
                                      'Non-parallel')))
 WGP_Fisher_test = fisher.test(WGP_Fisher)
-
+p.adjust(p = WGP_Fisher_test$p.value, 
+         method = 'bonferroni', 
+         n = 4)
 ## TGP
 
 TGP_Fisher = matrix(c(117, 327, 972, 762), 
@@ -1030,7 +1039,9 @@ TGP_Fisher = matrix(c(117, 327, 972, 762),
                                    c('Parallel', 
                                      'Non-parallel')))
 TGP_Fisher_test = fisher.test(TGP_Fisher)
-
+p.adjust(p = TGP_Fisher_test$p.value, 
+         method = 'bonferroni', 
+         n = 4)
 ## super
 
 super_Fisher = matrix(c(15, 327, 1074, 762), 
@@ -1040,4 +1051,6 @@ super_Fisher = matrix(c(15, 327, 1074, 762),
                                    c('Parallel', 
                                      'Non-parallel')))
 super_Fisher_test = fisher.test(super_Fisher)
-
+p.adjust(p = super_Fisher_test$p.value, 
+         method = 'bonferroni', 
+         n = 4)
