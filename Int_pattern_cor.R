@@ -50,8 +50,8 @@ wild_traits_scaled = wild_uni_traits %>%
   as_tibble() %>% 
   bind_cols(lake_morph, 
             .) %>% 
-  rename(OMA = ratio1, 
-         CMA = ratio2) %>% 
+  rename(CMA = ratio1, 
+         OMA = ratio2) %>% 
   dplyr::select('Lake_morph',
                 'jaw_length', 
                 'head_depth', 

@@ -156,12 +156,12 @@ F2_univariate_traits = F2_univariate_traits %>%
 F2_univariate_traits = bind_cols(F2_univariate_traits, 
                                  identifiers) %>% 
   unite('Ecotype_off_temp', 
-        Lake_morph, 
-        Offspring_temp, 
+        Lake_morph...53, 
+        Offspring_temp...56, 
         sep = '_', 
         remove = F) %>% 
-  mutate(ratio1 = lm_1_23/fbar_23_27, 
-         ratio2 = lm_1_23/lm_23_2) %>% 
+  mutate(ratio1 = fbar_23_27/lm_1_23, 
+         ratio2 = lm_23_2/lm_1_23) %>% 
   select(rowname, 
          jaw_length:lm_23_2, 
          ratio1:ratio2, 
@@ -195,8 +195,8 @@ F2_traits_scaled = F2_orig_traits %>%
   as_tibble() %>% 
   bind_cols(lake_morph, 
             .) %>% 
-  dplyr::rename(OMA = ratio1, 
-                CMA = ratio2)%>% 
+  dplyr::rename(CMA = ratio1, 
+                OMA = ratio2)%>% 
   dplyr::select('Lake_morph',
                 'jaw_length', 
                 'head_depth', 
@@ -877,8 +877,8 @@ WGP_traits_scaled = WGP_traits %>%
   as_tibble() %>% 
   bind_cols(lake_morph, 
             .) %>% 
-  rename(OMA = ratio1, 
-         CMA = ratio2)%>% 
+  rename(CMA = ratio1, 
+         OMA = ratio2)%>% 
   dplyr::select('Lake_morph',
                 'jaw_length', 
                 'head_depth', 
@@ -1574,8 +1574,8 @@ TGP_traits_scaled = TGP_traits %>%
   as_tibble() %>% 
   bind_cols(lake_morph, 
             .) %>% 
-  rename(OMA = ratio1, 
-         CMA = ratio2)%>% 
+  rename(CMA = ratio1, 
+         OMA = ratio2)%>% 
   dplyr::select('Lake_morph',
                 'jaw_length', 
                 'head_depth', 

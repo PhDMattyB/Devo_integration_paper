@@ -132,8 +132,8 @@ wild_univariate_traits = wild_univariate_traits %>%
 
 wild_univariate_traits = bind_cols(wild_univariate_traits, 
           wild_identifiers)%>% 
-  mutate(ratio1 = lm_1_23/fbar_23_27, 
-         ratio2 = lm_1_23/lm_23_2) %>% 
+  mutate(ratio1 = fbar_23_27/lm_1_23, 
+         ratio2 = lm_23_2/lm_1_23) %>% 
   dplyr::select(rowname, 
          jaw_length:lm_23_2, 
          ratio1:ratio2, 
@@ -164,8 +164,8 @@ wild_traits_scaled = wild_uni_traits %>%
   as_tibble() %>% 
   bind_cols(lake_morph, 
            .) %>% 
-  rename(OMA = ratio1, 
-         CMA = ratio2) %>% 
+  rename(CMA = ratio1, 
+         OMA = ratio2) %>% 
   dplyr::select('Lake_morph',
                 'jaw_length', 
                 'head_depth', 
@@ -562,9 +562,9 @@ Big_graph2 = Big_graph &
 
 # ggsave <- function(..., bg = 'transparent') ggplot2::ggsave(..., bg = bg)
 
-ggsave('transback_08.01.2025_SCALED_Figure1_Effects_wild_F1_F2_on_Integration_version2.tiff',
+ggsave('transback_26.06.2025_SCALED_Figure1_Effects_wild_F1_F2_on_Integration_version2.tiff',
        plot = Big_graph2,
-       # bg = 'transparent',
+       bg = 'transparent',
        dpi = 'retina',
        units = 'cm',
        width = 60,
