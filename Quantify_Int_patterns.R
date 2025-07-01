@@ -11,6 +11,7 @@ setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/Updated Landmarks/')
 
 library(tidyverse)
 library(patchwork)
+library(svglite)
 
 # WILD --------------------------------------------------------------------
 
@@ -628,8 +629,8 @@ wild_parallel_graph = ggplot(wild_parallel_graph_data,
 #                                      F2_background_traits)
 
 
-F2_parallel_graph_data = bind_rows(Wild_mean_parallel, 
-                                     wild_background_traits) %>% 
+F2_parallel_graph_data = bind_rows(F2_mean_parallel, 
+                                     F2_background_traits) %>% 
   mutate(Var1.x_new = case_when(
     Var1.x == 'jaw_length' ~ 'LM 1-2', 
     Var1.x == 'head_depth' ~ 'LM 22-6', 
@@ -1351,7 +1352,7 @@ Super_parallel_graph_data$Var2.x.x.x_new = factor(Super_parallel_graph_data$Var2
 
 parallel_integration_graph = (wild_parallel_graph|F2_parallel_graph|WGP_parallel_graph|TGP_parallel_graph)/Super_parallel_graph
 
-ggsave('Parallel_trait_integration_Renamed_FIXED.tiff',
+ggsave('Parallel_trait_integration_Renamed_FIXED.svg',
        plot = parallel_integration_graph, 
        dpi = 'retina', 
        units = 'cm', 
