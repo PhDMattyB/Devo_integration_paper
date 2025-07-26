@@ -19,6 +19,7 @@ library(igraph)
 library(tidyverse)
 library(reshape2)
 library(candisc)
+library(lineup)
 
 # Metadata ----------------------------------------------------------------
 identifiers = read_csv('F2_metadata.csv') %>% 
