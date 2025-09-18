@@ -615,3 +615,176 @@ allCorrelations(X1 = off_plasticity_trait_cor$CSWYC,
                 method = 'RVadj', 
                 plot = F)
 
+
+# Wild to orig F2 generation ----------------------------------------------
+
+allCorrelations(X1 = wild_uni_trait_cor$ASHNW, 
+                X2 = orig_uni_trait_cor$ASHNW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$ASHNC, 
+                X2 = orig_uni_trait_cor$ASHNC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$MYVW, 
+                X2 = orig_uni_trait_cor$MYVW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$MYVC, 
+                X2 = orig_uni_trait_cor$MYVC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$SKRW, 
+                X2 = orig_uni_trait_cor$SKRW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+allCorrelations(X1 = wild_uni_trait_cor$SKRC, 
+                X2 = orig_uni_trait_cor$SKRC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$GTS, 
+                X2 = orig_uni_trait_cor$GTSW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$CSWY, 
+                X2 = orig_uni_trait_cor$CSWYC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+# RV wild to F1 effects ---------------------------------------------------
+
+allCorrelations(X1 = wild_uni_trait_cor$ASHNW, 
+                X2 = parent_plasticity_trait_cor$ASHNW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$ASHNC, 
+                X2 = parent_plasticity_trait_cor$ASHNC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$MYVW, 
+                X2 = parent_plasticity_trait_cor$MYVW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$MYVC, 
+                X2 = parent_plasticity_trait_cor$MYVC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$SKRW, 
+                X2 = parent_plasticity_trait_cor$SKRW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+allCorrelations(X1 = wild_uni_trait_cor$SKRC, 
+                X2 = parent_plasticity_trait_cor$SKRC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$GTS, 
+                X2 = parent_plasticity_trait_cor$GTSW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$CSWY, 
+                X2 = parent_plasticity_trait_cor$CSWYC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+
+# RV wild to F2 effects ---------------------------------------------------
+
+allCorrelations(X1 = wild_uni_trait_cor$ASHNW, 
+                X2 = off_plasticity_trait_cor$ASHNW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$ASHNC, 
+                X2 = off_plasticity_trait_cor$ASHNC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$MYVW, 
+                X2 = off_plasticity_trait_cor$MYVW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$MYVC, 
+                X2 = off_plasticity_trait_cor$MYVC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$SKRW, 
+                X2 = off_plasticity_trait_cor$SKRW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+allCorrelations(X1 = wild_uni_trait_cor$SKRC, 
+                X2 = off_plasticity_trait_cor$SKRC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$GTS, 
+                X2 = off_plasticity_trait_cor$GTSW, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+
+allCorrelations(X1 = wild_uni_trait_cor$CSWY, 
+                X2 = off_plasticity_trait_cor$CSWYC, 
+                ncomp1 = 28, 
+                ncomp2 = 28, 
+                method = 'RVadj', 
+                plot = F)
+

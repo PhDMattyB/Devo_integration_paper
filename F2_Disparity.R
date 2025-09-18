@@ -133,7 +133,6 @@ F2_whole_body = geomorph.data.frame(coords = two.d.array(F2_whole_body$coords),
 # whole body ecotype Disparity analysis ------------------------------------------------------
 
 F2_whole_body
-
 # lake_ecotype_disparity = morphol.disparity(coords ~ 1,
 #                                            groups = ~lake_morph,
 #                                            data = F2_cranio_geo_df,
