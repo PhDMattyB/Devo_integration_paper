@@ -157,8 +157,8 @@ F2_univariate_traits = F2_univariate_traits %>%
 F2_univariate_traits = bind_cols(F2_univariate_traits, 
                                  identifiers) %>% 
   unite('Ecotype_off_temp', 
-        Lake_morph...53, 
-        Offspring_temp...56, 
+        Lake_morph, 
+        Offspring_temp, 
         sep = '_', 
         remove = F) %>% 
   mutate(ratio1 = fbar_23_27/lm_1_23, 
@@ -173,23 +173,23 @@ F2_univariate_traits = bind_cols(F2_univariate_traits,
 
 F2_univariate_traits = read_csv('F2_Original_univar_no_kinetics.csv')
 F2_kinetic = read_csv('F2_uncorrected_Jaw_kinetic_traits.csv') %>% 
-  dplyr::dplyr::select(-PreMax_Rotation, 
+  dplyr::select(-PreMax_Rotation, 
                 -Opercular_Rotation)
 
 lake_morph = F2_univariate_traits %>% 
-  dplyr::dplyr::select(Lake_morph)
+  dplyr::select(Lake_morph)
 
 orig_uni_traits = F2_univariate_traits %>%
   as_tibble() %>%
   group_by(Lake_morph) %>%
-  dplyr::dplyr::select(jaw_length:ratio2)
+  dplyr::select(jaw_length:ratio2)
 
 F2_orig_traits = bind_cols(orig_uni_traits, 
                            F2_kinetic)
 
 F2_traits_scaled = F2_orig_traits %>% 
   ungroup() %>% 
-  dplyr::dplyr::select(-Lake_morph) %>% 
+  dplyr::select(-Lake_morph) %>% 
   scale(., 
         center = T, 
         scale = T) %>% 
@@ -198,7 +198,7 @@ F2_traits_scaled = F2_orig_traits %>%
             .) %>% 
   dplyr::rename(CMA = ratio1, 
                 OMA = ratio2)%>% 
-  dplyr::dplyr::select('Lake_morph',
+  dplyr::select('Lake_morph',
                 'jaw_length', 
                 'head_depth', 
                 'Opercular_KT', 
@@ -250,7 +250,7 @@ orig_uni_trait_cor = F2_traits_scaled %>%
   # split(.$lake_morph_Pair_Full_Temp) %>%
   split(.$Lake_morph) %>% 
   # ungroup() %>%
-  map(dplyr::dplyr::select, vars_keep) %>%
+  map(dplyr::select, vars_keep) %>%
   map(cor)
 
 orig_uni_graph = orig_uni_trait_cor %>%
@@ -855,23 +855,23 @@ F2_off_plasticity_traits = bind_cols(F2_off_plasticity_traits,
 
 F2_WGP_traits = read_csv('F2_Corrected_WGP_no_kinetics.csv')
 F2_WGP_kinetic = read_csv('WGP_Jaw_kinetic_traits.csv') %>% 
-  dplyr::dplyr::select(-PreMax_Rotation, 
+  dplyr::select(-PreMax_Rotation, 
                 -Opercular_Rotation)
 
 lake_morph = F2_WGP_traits %>% 
-  dplyr::dplyr::select(Lake_morph)
+  dplyr::select(Lake_morph)
 
 WGP_traits = F2_WGP_traits %>%
   as_tibble() %>%
   group_by(Lake_morph) %>%
-  dplyr::dplyr::select(jaw_length:ratio2)
+  dplyr::select(jaw_length:ratio2)
 
 WGP_traits = bind_cols(WGP_traits, 
                            F2_WGP_kinetic)
 
 WGP_traits_scaled = WGP_traits %>% 
   ungroup() %>% 
-  dplyr::dplyr::select(-Lake_morph) %>% 
+  dplyr::select(-Lake_morph) %>% 
   scale(., 
         center = T, 
         scale = T) %>% 
@@ -880,7 +880,7 @@ WGP_traits_scaled = WGP_traits %>%
             .) %>% 
   rename(CMA = ratio1, 
          OMA = ratio2)%>% 
-  dplyr::dplyr::select('Lake_morph',
+  dplyr::select('Lake_morph',
                 'jaw_length', 
                 'head_depth', 
                 'Opercular_KT', 
@@ -935,7 +935,7 @@ off_plasticity_trait_cor = WGP_traits_scaled %>%
   # split(.$lake_morph_Pair_Full_Temp) %>%
   split(.$Lake_morph) %>% 
   # ungroup() %>%
-  map(dplyr::dplyr::select, vars_keep) %>%
+  map(dplyr::select, vars_keep) %>%
   map(cor)
 
 off_plasticity_graph = off_plasticity_trait_cor %>%
@@ -1552,23 +1552,23 @@ F2_parent_plasticity_traits = bind_cols(F2_parent_plasticity_traits,
 
 TGP_traits = read_csv('F1_TGP_Plasticity_Corrected_no_kinetics.csv')
 TGP_kinetics = read_csv("TGP_Jaw_kinetic_traits.csv") %>% 
-  dplyr::dplyr::select(-PreMax_Rotation, 
+  dplyr::select(-PreMax_Rotation, 
                 -Opercular_Rotation)
 
 lake_morph = TGP_traits %>% 
-  dplyr::dplyr::select(Lake_morph)
+  dplyr::select(Lake_morph)
 
 TGP_traits = TGP_traits %>%
   as_tibble() %>%
   group_by(Lake_morph) %>%
-  dplyr::dplyr::select(jaw_length:ratio2)
+  dplyr::select(jaw_length:ratio2)
 
 TGP_traits = bind_cols(TGP_traits, 
                        TGP_kinetics)
 
 TGP_traits_scaled = TGP_traits %>% 
   ungroup() %>% 
-  dplyr::dplyr::select(-Lake_morph) %>% 
+  dplyr::select(-Lake_morph) %>% 
   scale(., 
         center = T, 
         scale = T) %>% 
@@ -1577,7 +1577,7 @@ TGP_traits_scaled = TGP_traits %>%
             .) %>% 
   rename(CMA = ratio1, 
          OMA = ratio2)%>% 
-  dplyr::dplyr::select('Lake_morph',
+  dplyr::select('Lake_morph',
                 'jaw_length', 
                 'head_depth', 
                 'Opercular_KT', 
@@ -1639,7 +1639,7 @@ parent_plasticity_trait_cor = TGP_traits_scaled %>%
   ungroup() %>%
   split(.$Lake_morph) %>%
   # ungroup() %>%
-  map(dplyr::dplyr::select, vars_keep) %>%
+  map(dplyr::select, vars_keep) %>%
   map(cor)
 
 parent_plasticity_graph = parent_plasticity_trait_cor %>%
