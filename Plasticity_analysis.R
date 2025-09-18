@@ -274,12 +274,12 @@ orig_uni_trait_cor_graph = ggplot(orig_uni_graph,
                                    vjust = 0.5,
                                    hjust=1))
 
-ggsave('Univariate_original_plasticity_trait_ecotype_integration.tiff',
-       plot = orig_uni_trait_cor_graph,
-       dpi = 'retina',
-       units = 'cm',
-       width = 35,
-       height = 20)
+# ggsave('Univariate_original_plasticity_trait_ecotype_integration.tiff',
+#        plot = orig_uni_trait_cor_graph,
+#        dpi = 'retina',
+#        units = 'cm',
+#        width = 35,
+#        height = 20)
 
 
 ## ASHN
@@ -631,7 +631,7 @@ GTS_CSWY_orig_cor = corbetw2mat(orig_uni_trait_cor$CSWYC,
 CSWYC_orig = orig_uni_trait_cor$CSWYC %>%
   reshape2::melt() 
 
-CSWY_orig_cor_plot = ggplot(CSWYC_F2_temp,
+CSWY_orig_cor_plot = ggplot(CSWYC_orig,
                        aes(x = Var1,
                            y = Var2,
                            fill = value))+
@@ -657,7 +657,7 @@ CSWY_orig_cor_plot = ggplot(CSWYC_F2_temp,
 GTSW_orig = orig_uni_trait_cor$GTSW %>%
   reshape2::melt() 
 
-GTS_orig_cor_plot = ggplot(GTSW_F2_temp,
+GTS_orig_cor_plot = ggplot(GTSW_orig,
                       aes(x = Var1,
                           y = Var2,
                           fill = value))+

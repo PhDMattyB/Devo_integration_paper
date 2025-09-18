@@ -119,43 +119,103 @@ wild_uni_trait_cor
 wild_ASHNW = wild_uni_trait_cor$ASHNW
 wild_ASHNC = wild_uni_trait_cor$ASHNC
 
-allCorrelations(X1 = wild_ASHNW, 
-                X2 = wild_ASHNC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+Wild_ASHN_RV = mrv(y = wild_ASHNW, 
+                   x = wild_ASHNC)
+
+n_perm = 999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_ASHNW <- wild_ASHNW[sample(nrow(wild_ASHNW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = wild_ASHNC, y = permuted_ASHNW)
+}
+Wild_ASHN_RV_sig = (sum(perm_rv_vals >= Wild_ASHN_RV) + 1) / (n_perm + 1)
+
+
+# 
+# allCorrelations(X1 = wild_ASHNW, 
+#                 X2 = wild_ASHNC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 wild_MYVW = wild_uni_trait_cor$MYVW
 wild_MYVC = wild_uni_trait_cor$MYVC
 
+Wild_MYV_RV = mrv(y = wild_MYVW, 
+                   x = wild_MYVC)
 
-allCorrelations(X1 = wild_MYVW, 
-                X2 = wild_MYVC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+n_perm = 999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_MYVW <- wild_MYVW[sample(nrow(wild_MYVW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = wild_MYVC, y = permuted_MYVW)
+}
+Wild_MYV_RV_sig = (sum(perm_rv_vals >= Wild_MYV_RV) + 1) / (n_perm + 1)
+
+# 
+# allCorrelations(X1 = wild_MYVW, 
+#                 X2 = wild_MYVC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 wild_SKRW = wild_uni_trait_cor$SKRW
 wild_SKRC = wild_uni_trait_cor$SKRC
 
-allCorrelations(X1 = wild_SKRW, 
-                X2 = wild_SKRC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+Wild_SKR_RV = mrv(y = wild_SKRW, 
+                   x = wild_SKRC)
+
+n_perm = 999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_SKRW <- wild_SKRW[sample(nrow(wild_SKRW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = wild_SKRC, y = permuted_SKRW)
+}
+Wild_SKR_RV_sig = (sum(perm_rv_vals >= Wild_SKR_RV) + 1) / (n_perm + 1)
+
+
+# allCorrelations(X1 = wild_SKRW, 
+#                 X2 = wild_SKRC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 wild_GTSW = wild_uni_trait_cor$GTS
 wild_CSWYC = wild_uni_trait_cor$CSWY
 
-allCorrelations(X1 = wild_GTSW, 
-                X2 = wild_CSWYC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+Wild_GTS_CSWY_RV = mrv(y = wild_GTSW, 
+                   x = wild_CSWYC)
+
+n_perm = 999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_GTS_CSWY <- wild_GTSW[sample(nrow(wild_GTSW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = wild_CSWYC, y = permuted_GTS_CSWY)
+}
+Wild_GTS_CSWY_RV_sig = (sum(perm_rv_vals >= Wild_GTS_CSWY_RV) + 1) / (n_perm + 1)
+
+
+# allCorrelations(X1 = wild_GTSW, 
+#                 X2 = wild_CSWYC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 
 # F2 orig matrix correlations ---------------------------------------------
@@ -165,43 +225,101 @@ orig_uni_trait_cor
 orig_ASHNW = orig_uni_trait_cor$ASHNW
 orig_ASHNC = orig_uni_trait_cor$ASHNC
 
-allCorrelations(X1 = orig_ASHNW, 
-                X2 = orig_ASHNC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+orig_ASHN_RV = mrv(y = orig_ASHNW, 
+                   x = orig_ASHNC)
+
+n_perm = 999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_ASHNW <- orig_ASHNW[sample(nrow(orig_ASHNW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = orig_ASHNC, y = permuted_ASHNW)
+}
+orig_ASHN_RV_sig = (sum(perm_rv_vals >= orig_ASHN_RV) + 1) / (n_perm + 1)
+
+
+# allCorrelations(X1 = orig_ASHNW, 
+#                 X2 = orig_ASHNC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 orig_MYVW = orig_uni_trait_cor$MYVW
 orig_MYVC = orig_uni_trait_cor$MYVC
 
+orig_MYV_RV = mrv(y = orig_MYVW, 
+                   x = orig_MYVC)
 
-allCorrelations(X1 = orig_MYVW, 
-                X2 = orig_MYVC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+n_perm = 999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_MYVW <- orig_MYVW[sample(nrow(orig_MYVW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = orig_MYVC, y = permuted_MYVW)
+}
+orig_MYV_RV_sig = (sum(perm_rv_vals >= orig_MYV_RV) + 1) / (n_perm + 1)
+
+
+# allCorrelations(X1 = orig_MYVW, 
+#                 X2 = orig_MYVC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 orig_SKRW = orig_uni_trait_cor$SKRW
 orig_SKRC = orig_uni_trait_cor$SKRC
 
-allCorrelations(X1 = orig_SKRW, 
-                X2 = orig_SKRC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+orig_SKR_RV = mrv(y = orig_SKRW, 
+                   x = orig_SKRC)
+
+n_perm = 999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_SKRW <- orig_SKRW[sample(nrow(orig_SKRW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = orig_SKRC, y = permuted_SKRW)
+}
+orig_SKR_RV_sig = (sum(perm_rv_vals >= orig_SKR_RV) + 1) / (n_perm + 1)
+
+# allCorrelations(X1 = orig_SKRW, 
+#                 X2 = orig_SKRC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 orig_GTSW = orig_uni_trait_cor$GTS
 orig_CSWYC = orig_uni_trait_cor$CSWY
 
-allCorrelations(X1 = orig_GTSW, 
-                X2 = orig_CSWYC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+orig_GTS_CSWY_RV = mrv(y = orig_GTSW, 
+                   x = orig_CSWYC)
+
+n_perm = 999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_GTSW <- orig_GTSW[sample(nrow(orig_GTSW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = orig_CSWYC, y = permuted_GTSW)
+}
+orig_GTS_CSWY_RV_sig = (sum(perm_rv_vals >= orig_GTS_CSWY_RV) + 1) / (n_perm + 1)
+
+
+# allCorrelations(X1 = orig_GTSW, 
+#                 X2 = orig_CSWYC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 
 
