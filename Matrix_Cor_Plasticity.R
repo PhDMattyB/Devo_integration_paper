@@ -26,43 +26,101 @@ off_plasticity_trait_cor
 off_plast_ASHNW = off_plasticity_trait_cor$ASHNW
 off_plast_ASHNC = off_plasticity_trait_cor$ASHNC
 
-allCorrelations(X1 = off_plast_ASHNW, 
-                X2 = off_plast_ASHNC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+off_plast_ASHN_RV = mrv(y = off_plast_ASHNW, 
+                   x = off_plast_ASHNC)
+
+n_perm = 9999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_ASHNW <- off_plast_ASHNW[sample(nrow(off_plast_ASHNW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = off_plast_ASHNC, y = permuted_ASHNW)
+}
+off_plast_ASHN_RV_sig = (sum(perm_rv_vals >= off_plast_ASHN_RV) + 1) / (n_perm + 1)
+
+# allCorrelations(X1 = off_plast_ASHNW, 
+#                 X2 = off_plast_ASHNC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 off_plast_MYVW = off_plasticity_trait_cor$MYVW
 off_plast_MYVC = off_plasticity_trait_cor$MYVC
 
+off_plast_MYV_RV = mrv(y = off_plast_MYVW, 
+                        x = off_plast_MYVC)
 
-allCorrelations(X1 = off_plast_MYVW, 
-                X2 = off_plast_MYVC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+n_perm = 9999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_MYVW <- off_plast_MYVW[sample(nrow(off_plast_MYVW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = off_plast_MYVC, y = permuted_MYVW)
+}
+off_plast_MYV_RV_sig = (sum(perm_rv_vals >= off_plast_MYV_RV) + 1) / (n_perm + 1)
+
+
+# allCorrelations(X1 = off_plast_MYVW, 
+#                 X2 = off_plast_MYVC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 off_plast_SKRW = off_plasticity_trait_cor$SKRW
 off_plast_SKRC = off_plasticity_trait_cor$SKRC
 
-allCorrelations(X1 = off_plast_SKRW, 
-                X2 = off_plast_SKRC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+off_plast_SKR_RV = mrv(y = off_plast_SKRW, 
+                        x = off_plast_SKRC)
+
+n_perm = 9999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_SKRW <- off_plast_SKRW[sample(nrow(off_plast_SKRW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = off_plast_SKRC, y = permuted_SKRW)
+}
+off_plast_SKR_RV_sig = (sum(perm_rv_vals >= off_plast_SKR_RV) + 1) / (n_perm + 1)
+
+
+# allCorrelations(X1 = off_plast_SKRW, 
+#                 X2 = off_plast_SKRC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 off_plast_GTSW = off_plasticity_trait_cor$GTSW
 off_plast_CSWYC = off_plasticity_trait_cor$CSWYC
 
-allCorrelations(X1 = off_plast_GTSW, 
-                X2 = off_plast_CSWYC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+off_plast_GTS_CSWY_RV = mrv(y = off_plast_GTSW, 
+                        x = off_plast_CSWYC)
+
+n_perm = 9999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_GTSW <- off_plast_GTSW[sample(nrow(off_plast_GTSW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = off_plast_CSWYC, y = permuted_GTSW)
+}
+off_plast_GTS_CSWY_RV_sig = (sum(perm_rv_vals >= off_plast_GTS_CSWY_RV) + 1) / (n_perm + 1)
+
+
+# allCorrelations(X1 = off_plast_GTSW, 
+#                 X2 = off_plast_CSWYC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 
 # Mat cor F1 parental effect -------------------------------------------------
@@ -72,43 +130,99 @@ parent_plasticity_trait_cor
 parent_plast_ASHNW = parent_plasticity_trait_cor$ASHNW
 parent_plast_ASHNC = parent_plasticity_trait_cor$ASHNC
 
-allCorrelations(X1 = parent_plast_ASHNW, 
-                X2 = parent_plast_ASHNC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+parent_plast_ASHN_RV = mrv(y = parent_plast_ASHNW, 
+                        x = parent_plast_ASHNC)
+
+n_perm = 9999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_ASHNW <- parent_plast_ASHNW[sample(nrow(parent_plast_ASHNW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = parent_plast_ASHNC, y = permuted_ASHNW)
+}
+parent_plast_ASHN_RV_sig = (sum(perm_rv_vals >= parent_plast_ASHN_RV) + 1) / (n_perm + 1)
+
+# allCorrelations(X1 = parent_plast_ASHNW, 
+#                 X2 = parent_plast_ASHNC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 parent_plast_MYVW = parent_plasticity_trait_cor$MYVW
 parent_plast_MYVC = parent_plasticity_trait_cor$MYVC
 
+parent_plast_MYV_RV = mrv(y = parent_plast_MYVW, 
+                           x = parent_plast_MYVC)
 
-allCorrelations(X1 = parent_plast_MYVW, 
-                X2 = parent_plast_MYVC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+n_perm = 9999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_MYVW <- parent_plast_MYVW[sample(nrow(parent_plast_MYVW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = parent_plast_MYVC, y = permuted_MYVW)
+}
+parent_plast_MYV_RV_sig = (sum(perm_rv_vals >= parent_plast_MYV_RV) + 1) / (n_perm + 1)
+
+# allCorrelations(X1 = parent_plast_MYVW, 
+#                 X2 = parent_plast_MYVC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 parent_plast_SKRW = parent_plasticity_trait_cor$SKRW
 parent_plast_SKRC = parent_plasticity_trait_cor$SKRC
 
-allCorrelations(X1 = parent_plast_SKRW, 
-                X2 = parent_plast_SKRC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+parent_plast_SKR_RV = mrv(y = parent_plast_SKRW, 
+                           x = parent_plast_SKRC)
+
+n_perm = 9999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_SKRW <- parent_plast_SKRW[sample(nrow(parent_plast_SKRW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = parent_plast_SKRC, y = permuted_SKRW)
+}
+parent_plast_SKR_RV_sig = (sum(perm_rv_vals >= parent_plast_SKR_RV) + 1) / (n_perm + 1)
+
+# allCorrelations(X1 = parent_plast_SKRW, 
+#                 X2 = parent_plast_SKRC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 parent_plast_GTSW = parent_plasticity_trait_cor$GTSW
 parent_plast_CSWYC = parent_plasticity_trait_cor$CSWYC
 
-allCorrelations(X1 = parent_plast_GTSW, 
-                X2 = parent_plast_CSWYC, 
-                ncomp1 = 28,
-                ncomp2 = 28, 
-                method = 'RVadj', 
-                plot = F)
+parent_plast_GTS_CSWY_RV = mrv(y = parent_plast_GTSW, 
+                           x = parent_plast_CSWYC)
+
+n_perm = 9999
+perm_rv_vals = numeric(n_perm)
+for (i in 1:n_perm) {
+  # Shuffle the rows of Y
+  permuted_GTSW <- parent_plast_GTSW[sample(nrow(parent_plast_GTSW)), ]
+  
+  # Calculate the mRV for the permuted data and store it
+  perm_rv_vals[i] <- mrv(x = parent_plast_CSWYC, y = permuted_GTSW)
+}
+parent_plast_GTS_CSWY_RV_sig = (sum(perm_rv_vals >= parent_plast_GTS_CSWY_RV) + 1) / (n_perm + 1)
+
+
+# allCorrelations(X1 = parent_plast_GTSW, 
+#                 X2 = parent_plast_CSWYC, 
+#                 ncomp1 = 28,
+#                 ncomp2 = 28, 
+#                 method = 'RVadj', 
+#                 plot = F)
 
 
 
@@ -122,7 +236,7 @@ wild_ASHNC = wild_uni_trait_cor$ASHNC
 Wild_ASHN_RV = mrv(y = wild_ASHNW, 
                    x = wild_ASHNC)
 
-n_perm = 999
+n_perm = 9999
 perm_rv_vals = numeric(n_perm)
 for (i in 1:n_perm) {
   # Shuffle the rows of Y
@@ -148,7 +262,7 @@ wild_MYVC = wild_uni_trait_cor$MYVC
 Wild_MYV_RV = mrv(y = wild_MYVW, 
                    x = wild_MYVC)
 
-n_perm = 999
+n_perm = 9999
 perm_rv_vals = numeric(n_perm)
 for (i in 1:n_perm) {
   # Shuffle the rows of Y
@@ -173,7 +287,7 @@ wild_SKRC = wild_uni_trait_cor$SKRC
 Wild_SKR_RV = mrv(y = wild_SKRW, 
                    x = wild_SKRC)
 
-n_perm = 999
+n_perm = 9999
 perm_rv_vals = numeric(n_perm)
 for (i in 1:n_perm) {
   # Shuffle the rows of Y
@@ -198,7 +312,7 @@ wild_CSWYC = wild_uni_trait_cor$CSWY
 Wild_GTS_CSWY_RV = mrv(y = wild_GTSW, 
                    x = wild_CSWYC)
 
-n_perm = 999
+n_perm = 9999
 perm_rv_vals = numeric(n_perm)
 for (i in 1:n_perm) {
   # Shuffle the rows of Y
@@ -228,7 +342,7 @@ orig_ASHNC = orig_uni_trait_cor$ASHNC
 orig_ASHN_RV = mrv(y = orig_ASHNW, 
                    x = orig_ASHNC)
 
-n_perm = 999
+n_perm = 9999
 perm_rv_vals = numeric(n_perm)
 for (i in 1:n_perm) {
   # Shuffle the rows of Y
@@ -253,7 +367,7 @@ orig_MYVC = orig_uni_trait_cor$MYVC
 orig_MYV_RV = mrv(y = orig_MYVW, 
                    x = orig_MYVC)
 
-n_perm = 999
+n_perm = 9999
 perm_rv_vals = numeric(n_perm)
 for (i in 1:n_perm) {
   # Shuffle the rows of Y
@@ -278,7 +392,7 @@ orig_SKRC = orig_uni_trait_cor$SKRC
 orig_SKR_RV = mrv(y = orig_SKRW, 
                    x = orig_SKRC)
 
-n_perm = 999
+n_perm = 9999
 perm_rv_vals = numeric(n_perm)
 for (i in 1:n_perm) {
   # Shuffle the rows of Y
@@ -302,7 +416,7 @@ orig_CSWYC = orig_uni_trait_cor$CSWY
 orig_GTS_CSWY_RV = mrv(y = orig_GTSW, 
                    x = orig_CSWYC)
 
-n_perm = 999
+n_perm = 9999
 perm_rv_vals = numeric(n_perm)
 for (i in 1:n_perm) {
   # Shuffle the rows of Y
