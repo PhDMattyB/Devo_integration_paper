@@ -98,7 +98,7 @@ plot(shape_pca)
 plot.gm.prcomp(F2_gps$coords)
 
 # univar_test = F2_univariate_traits %>% 
-#   select(jaw_length:ratio2)
+#   dplyr::select(jaw_length:ratio2)
 
 pca_test = gm.prcomp(univar_test)
 
@@ -163,7 +163,7 @@ F2_univariate_traits = bind_cols(F2_univariate_traits,
         remove = F) %>% 
   mutate(ratio1 = fbar_23_27/lm_1_23, 
          ratio2 = lm_23_2/lm_1_23) %>% 
-  select(rowname, 
+  dplyr::select(rowname, 
          jaw_length:lm_23_2, 
          ratio1:ratio2, 
          everything())
@@ -173,23 +173,23 @@ F2_univariate_traits = bind_cols(F2_univariate_traits,
 
 F2_univariate_traits = read_csv('F2_Original_univar_no_kinetics.csv')
 F2_kinetic = read_csv('F2_uncorrected_Jaw_kinetic_traits.csv') %>% 
-  dplyr::select(-PreMax_Rotation, 
+  dplyr::dplyr::select(-PreMax_Rotation, 
                 -Opercular_Rotation)
 
 lake_morph = F2_univariate_traits %>% 
-  dplyr::select(Lake_morph)
+  dplyr::dplyr::select(Lake_morph)
 
 orig_uni_traits = F2_univariate_traits %>%
   as_tibble() %>%
   group_by(Lake_morph) %>%
-  dplyr::select(jaw_length:ratio2)
+  dplyr::dplyr::select(jaw_length:ratio2)
 
 F2_orig_traits = bind_cols(orig_uni_traits, 
                            F2_kinetic)
 
 F2_traits_scaled = F2_orig_traits %>% 
   ungroup() %>% 
-  dplyr::select(-Lake_morph) %>% 
+  dplyr::dplyr::select(-Lake_morph) %>% 
   scale(., 
         center = T, 
         scale = T) %>% 
@@ -198,7 +198,7 @@ F2_traits_scaled = F2_orig_traits %>%
             .) %>% 
   dplyr::rename(CMA = ratio1, 
                 OMA = ratio2)%>% 
-  dplyr::select('Lake_morph',
+  dplyr::dplyr::select('Lake_morph',
                 'jaw_length', 
                 'head_depth', 
                 'Opercular_KT', 
@@ -250,7 +250,7 @@ orig_uni_trait_cor = F2_traits_scaled %>%
   # split(.$lake_morph_Pair_Full_Temp) %>%
   split(.$Lake_morph) %>% 
   # ungroup() %>%
-  map(dplyr::select, vars_keep) %>%
+  map(dplyr::dplyr::select, vars_keep) %>%
   map(cor)
 
 orig_uni_graph = orig_uni_trait_cor %>%
@@ -845,7 +845,7 @@ F2_off_plasticity_traits = bind_cols(F2_off_plasticity_traits,
         remove = F) %>% 
   mutate(ratio1 = lm_1_23/fbar_23_27, 
          ratio2 = lm_1_23/lm_23_2) %>% 
-  select(rowname, 
+  dplyr::select(rowname, 
          jaw_length:lm_23_2, 
          ratio1:ratio2, 
          everything())
@@ -855,23 +855,23 @@ F2_off_plasticity_traits = bind_cols(F2_off_plasticity_traits,
 
 F2_WGP_traits = read_csv('F2_Corrected_WGP_no_kinetics.csv')
 F2_WGP_kinetic = read_csv('WGP_Jaw_kinetic_traits.csv') %>% 
-  dplyr::select(-PreMax_Rotation, 
+  dplyr::dplyr::select(-PreMax_Rotation, 
                 -Opercular_Rotation)
 
 lake_morph = F2_WGP_traits %>% 
-  dplyr::select(Lake_morph)
+  dplyr::dplyr::select(Lake_morph)
 
 WGP_traits = F2_WGP_traits %>%
   as_tibble() %>%
   group_by(Lake_morph) %>%
-  dplyr::select(jaw_length:ratio2)
+  dplyr::dplyr::select(jaw_length:ratio2)
 
 WGP_traits = bind_cols(WGP_traits, 
                            F2_WGP_kinetic)
 
 WGP_traits_scaled = WGP_traits %>% 
   ungroup() %>% 
-  dplyr::select(-Lake_morph) %>% 
+  dplyr::dplyr::select(-Lake_morph) %>% 
   scale(., 
         center = T, 
         scale = T) %>% 
@@ -880,7 +880,7 @@ WGP_traits_scaled = WGP_traits %>%
             .) %>% 
   rename(CMA = ratio1, 
          OMA = ratio2)%>% 
-  dplyr::select('Lake_morph',
+  dplyr::dplyr::select('Lake_morph',
                 'jaw_length', 
                 'head_depth', 
                 'Opercular_KT', 
@@ -919,7 +919,7 @@ WGP_traits_scaled = WGP_traits %>%
 # off_plasticity_traits = F2_off_plasticity_traits %>%
 #   as_tibble() %>%
 #   group_by(Lake_morph) %>%
-#   select(jaw_length:ratio2)
+#   dplyr::select(jaw_length:ratio2)
 
 # vars_keep = names(off_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11, 
 #                                            12,13,14,15,16,17,18, 
@@ -935,7 +935,7 @@ off_plasticity_trait_cor = WGP_traits_scaled %>%
   # split(.$lake_morph_Pair_Full_Temp) %>%
   split(.$Lake_morph) %>% 
   # ungroup() %>%
-  map(dplyr::select, vars_keep) %>%
+  map(dplyr::dplyr::select, vars_keep) %>%
   map(cor)
 
 off_plasticity_graph = off_plasticity_trait_cor %>%
@@ -1542,7 +1542,7 @@ F2_parent_plasticity_traits = bind_cols(F2_parent_plasticity_traits,
         remove = F) %>% 
   mutate(ratio1 = lm_1_23/fbar_23_27, 
          ratio2 = lm_1_23/lm_23_2) %>% 
-  select(rowname, 
+  dplyr::select(rowname, 
          jaw_length:lm_23_2, 
          ratio1:ratio2, 
          everything())
@@ -1552,23 +1552,23 @@ F2_parent_plasticity_traits = bind_cols(F2_parent_plasticity_traits,
 
 TGP_traits = read_csv('F1_TGP_Plasticity_Corrected_no_kinetics.csv')
 TGP_kinetics = read_csv("TGP_Jaw_kinetic_traits.csv") %>% 
-  dplyr::select(-PreMax_Rotation, 
+  dplyr::dplyr::select(-PreMax_Rotation, 
                 -Opercular_Rotation)
 
 lake_morph = TGP_traits %>% 
-  dplyr::select(Lake_morph)
+  dplyr::dplyr::select(Lake_morph)
 
 TGP_traits = TGP_traits %>%
   as_tibble() %>%
   group_by(Lake_morph) %>%
-  dplyr::select(jaw_length:ratio2)
+  dplyr::dplyr::select(jaw_length:ratio2)
 
 TGP_traits = bind_cols(TGP_traits, 
                        TGP_kinetics)
 
 TGP_traits_scaled = TGP_traits %>% 
   ungroup() %>% 
-  dplyr::select(-Lake_morph) %>% 
+  dplyr::dplyr::select(-Lake_morph) %>% 
   scale(., 
         center = T, 
         scale = T) %>% 
@@ -1577,7 +1577,7 @@ TGP_traits_scaled = TGP_traits %>%
             .) %>% 
   rename(CMA = ratio1, 
          OMA = ratio2)%>% 
-  dplyr::select('Lake_morph',
+  dplyr::dplyr::select('Lake_morph',
                 'jaw_length', 
                 'head_depth', 
                 'Opercular_KT', 
@@ -1615,7 +1615,7 @@ TGP_traits_scaled = TGP_traits %>%
 # off_plasticity_traits = F2_off_plasticity_traits %>%
 #   as_tibble() %>%
 #   group_by(Lake_morph) %>%
-#   select(jaw_length:ratio2)
+#   dplyr::select(jaw_length:ratio2)
 
 # vars_keep = names(off_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11, 
 #                                            12,13,14,15,16,17,18, 
@@ -1629,7 +1629,7 @@ vars_keep = names(TGP_traits_scaled)[c(2,3,4,5,6,7,8,9,10,11,
 # parent_plasticity_traits = TGP_traits_scaled %>%
 #   as_tibble() %>%
 #   group_by(Lake_morph) %>%
-#   select(jaw_length:ratio2)
+#   dplyr::select(jaw_length:ratio2)
 
 # vars_keep = names(off_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11, 
 #                                            12,13,14,15,16,17,18, 
@@ -1639,7 +1639,7 @@ parent_plasticity_trait_cor = TGP_traits_scaled %>%
   ungroup() %>%
   split(.$Lake_morph) %>%
   # ungroup() %>%
-  map(dplyr::select, vars_keep) %>%
+  map(dplyr::dplyr::select, vars_keep) %>%
   map(cor)
 
 parent_plasticity_graph = parent_plasticity_trait_cor %>%
@@ -3013,14 +3013,14 @@ F2_ecotype_plasticity_traits = bind_cols(F2_ecotype_plasticity_traits,
 ecotype_plasticity_traits = F2_ecotype_plasticity_traits %>% 
   as_tibble() %>% 
   group_by(lake_morph_Pair_Full_Temp) %>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 
 vars_keep = names(ecotype_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11)]
 ecotype_plasticity_trait_cor = ecotype_plasticity_traits %>% 
   ungroup() %>% 
   split(.$lake_morph_Pair_Full_Temp) %>% 
   # ungroup() %>% 
-  map(select, vars_keep) %>% 
+  map(dplyr::select, vars_keep) %>% 
   map(cor)
 
 ecotype_plasticity_graph = ecotype_plasticity_trait_cor %>% 
@@ -3060,19 +3060,19 @@ library(lineup)
 ## Or maybe just for each ecotype? 
 
 F2_univariate_traits = F2_univariate_traits %>% 
-  select(-rowname)
+  dplyr::select(-rowname)
 F2_off_plasticity_traits = F2_off_plasticity_traits %>% 
-  select(-rowname)
+  dplyr::select(-rowname)
 F2_parent_plasticity_traits = F2_parent_plasticity_traits %>% 
-  select(-rowname)
+  dplyr::select(-rowname)
 F2_ecotype_plasticity_traits = F2_ecotype_plasticity_traits %>% 
-  select(-rowname)
+  dplyr::select(-rowname)
 
 
 # ASHN ecotype comparisons F2 temp effect ---------------------------------
 ASHNC_F2_temp_effects = F2_off_plasticity_traits %>% 
   filter(Lake_morph == 'ASHNC')  %>% 
-  select(jaw_length:ratio2)
+  dplyr::select(jaw_length:ratio2)
   # View()
   # distinct(jaw_length)
 # slice(1)
@@ -3080,7 +3080,7 @@ ASHNC_F2_temp_effects = F2_off_plasticity_traits %>%
 ASHNW_F2_temp_effects = F2_off_plasticity_traits %>% 
   filter(Lake_morph == 'ASHNW') %>% 
   slice(-122) %>% 
-  select(jaw_length:ratio2)
+  dplyr::select(jaw_length:ratio2)
 
 
 corbetw2mat(ASHNC_F2_temp_effects, 
@@ -3099,21 +3099,21 @@ corbetw2mat(ASHNC_F2_temp_effects,
 
 
 ASHNC_original = F2_univariate_traits %>% 
-  # select(-rowname) %>% 
+  # dplyr::select(-rowname) %>% 
   filter(Lake_morph == 'ASHNC') %>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 ASHNC_F2_temp = F2_off_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'ASHNC')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 ASHNC_parent_temp = F2_parent_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'ASHNC')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 ASHNC_ecotype = F2_ecotype_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'ASHNC')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 
 corbetw2mat(ASHNC_original, 
             ASHNC_F2_temp, 
@@ -3167,21 +3167,21 @@ ASHNC_df = bind_rows(ASHNC_F2_temp,
 # ASHNW matrix compare ----------------------------------------------------
 
 ASHNW_original = F2_univariate_traits %>% 
-  # select(-rowname) %>% 
+  # dplyr::select(-rowname) %>% 
   filter(Lake_morph == 'ASHNW') %>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 ASHNW_F2_temp = F2_off_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'ASHNW')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 ASHNW_parent_temp = F2_parent_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'ASHNW')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 ASHNW_ecotype = F2_ecotype_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'ASHNW')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 
 corbetw2mat(ASHNW_original, 
             ASHNW_F2_temp, 
@@ -3234,21 +3234,21 @@ ASHNW_df = bind_rows(ASHNW_F2_temp,
 # MYVC matrix compare ----------------------------------------------------
 
 MYVC_original = F2_univariate_traits %>% 
-  # select(-rowname) %>% 
+  # dplyr::select(-rowname) %>% 
   filter(Lake_morph == 'MYVC') %>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 MYVC_F2_temp = F2_off_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'MYVC')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 MYVC_parent_temp = F2_parent_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'MYVC')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 MYVC_ecotype = F2_ecotype_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'MYVC')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 
 corbetw2mat(MYVC_original, 
             MYVC_F2_temp, 
@@ -3301,21 +3301,21 @@ MYVC_df = bind_rows(MYVC_F2_temp,
 # MYVW matrix compare ----------------------------------------------------
 
 MYVW_original = F2_univariate_traits %>% 
-  # select(-rowname) %>% 
+  # dplyr::select(-rowname) %>% 
   filter(Lake_morph == 'MYVW') %>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 MYVW_F2_temp = F2_off_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'MYVW')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 MYVW_parent_temp = F2_parent_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'MYVW')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 MYVW_ecotype = F2_ecotype_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'MYVW')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 
 corbetw2mat(MYVW_original, 
             MYVW_F2_temp, 
@@ -3368,21 +3368,21 @@ MYVW_df = bind_rows(MYVW_F2_temp,
 # SKRC matrix compare ----------------------------------------------------
 
 SKRC_original = F2_univariate_traits %>% 
-  # select(-rowname) %>% 
+  # dplyr::select(-rowname) %>% 
   filter(Lake_morph == 'SKRC') %>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 SKRC_F2_temp = F2_off_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'SKRC')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 SKRC_parent_temp = F2_parent_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'SKRC')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 SKRC_ecotype = F2_ecotype_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'SKRC')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 
 corbetw2mat(SKRC_original, 
             SKRC_F2_temp, 
@@ -3435,21 +3435,21 @@ SKRC_df = bind_rows(SKRC_F2_temp,
 # SKRW matrix compare ----------------------------------------------------
 
 SKRW_original = F2_univariate_traits %>% 
-  # select(-rowname) %>% 
+  # dplyr::select(-rowname) %>% 
   filter(Lake_morph == 'SKRW') %>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 SKRW_F2_temp = F2_off_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'SKRW')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 SKRW_parent_temp = F2_parent_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'SKRW')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 SKRW_ecotype = F2_ecotype_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'SKRW')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 
 corbetw2mat(SKRW_original, 
             SKRW_F2_temp, 
@@ -3502,21 +3502,21 @@ SKRW_df = bind_rows(SKRW_F2_temp,
 # CSWYC matrix compare ----------------------------------------------------
 
 CSWYC_original = F2_univariate_traits %>% 
-  # select(-rowname) %>% 
+  # dplyr::select(-rowname) %>% 
   filter(Lake_morph == 'CSWYC') %>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 CSWYC_F2_temp = F2_off_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'CSWYC')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 CSWYC_parent_temp = F2_parent_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'CSWYC')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 CSWYC_ecotype = F2_ecotype_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'CSWYC')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 
 corbetw2mat(CSWYC_original, 
             CSWYC_F2_temp, 
@@ -3568,21 +3568,21 @@ CSWYC_df = bind_rows(CSWYC_F2_temp,
 # GTSW matrix compare ----------------------------------------------------
 
 GTSW_original = F2_univariate_traits %>% 
-  # select(-rowname) %>% 
+  # dplyr::select(-rowname) %>% 
   filter(Lake_morph == 'GTSW') %>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 GTSW_F2_temp = F2_off_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'GTSW')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 GTSW_parent_temp = F2_parent_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'GTSW')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 GTSW_ecotype = F2_ecotype_plasticity_traits %>% 
-  # select(-rowname)%>% 
+  # dplyr::select(-rowname)%>% 
   filter(Lake_morph == 'GTSW')%>% 
-  select(jaw_length:body_length)
+  dplyr::select(jaw_length:body_length)
 
 corbetw2mat(GTSW_original, 
             GTSW_F2_temp, 
