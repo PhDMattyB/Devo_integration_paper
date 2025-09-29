@@ -53,6 +53,25 @@ data_clean$group2 = factor(data_clean$group2,
                                       'GAR - Cold'))
   
 
+
+# log rank survival -------------------------------------------------------
+
+fit <- survfit(Surv(group, treatment) ~ early6weeksurvivalrate, 
+               data = data_clean)
+print(fit)
+summary(fit)$table
+
+surv_diff <- survdiff(Surv(early6weeksurvivalrate) ~ group + treatment, 
+                      data = data_clean)
+
+ggsurvplot(fit,
+           pval = TRUE, conf.int = TRUE,
+           risk.table = TRUE, # Add risk table
+           risk.table.col = "strata", # Change risk table color by groups
+           linetype = "strata", # Change line type by groups
+           surv.median.line = "hv", # Specify median survival
+           ggtheme = theme_bw())
+
 # Family details ----------------------------------------------------------
 
 data_clean %>% 
@@ -74,6 +93,10 @@ data_clean %>%
 # Anova(whole_exp_aov2)
 
 # TukeyHSD(whole_exp_aov)
+
+
+surv_diff <- survdiff(Surv(adjustedSurvWholeExp) ~  group2+treatment, 
+                         data = data_clean)
 
 
   survive_whole_exp_plot = data_clean %>% 
@@ -159,6 +182,10 @@ EU_data = data_clean %>%
            EU_survival == 'eu4surv' ~ 'Experimental unit 4', 
            EU_survival == 'eu5surv' ~ 'Experimental unit 5'
          )))
+
+
+EU_surv_diff <- survdiff(Surv(Eusurvivalafter6weeks) ~ EU_survival_grouping + treatment, 
+                      data = EU_data)
 
 
 eu_survive_aov = aov(Eusurvivalafter6weeks ~ EU_survival_grouping*treatment,
