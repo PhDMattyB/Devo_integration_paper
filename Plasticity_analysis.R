@@ -176,8 +176,12 @@ F2_kinetic = read_csv('F2_uncorrected_Jaw_kinetic_traits.csv') %>%
   dplyr::select(-PreMax_Rotation, 
                 -Opercular_Rotation)
 
-lake_morph = F2_univariate_traits %>% 
-  dplyr::select(Lake_morph)
+trait_metadata = F2_univariate_traits %>% 
+  dplyr::select(Ecotype_pair, 
+                Parent_temp, 
+                Offspring_temp, 
+                Morph, 
+                lake_morph_Pair_Full_Temp)
 
 orig_uni_traits = F2_univariate_traits %>%
   as_tibble() %>%
@@ -231,10 +235,12 @@ F2_traits_scaled = F2_orig_traits %>%
                 'lm_1_23', 
                 'lm_23_2', 
                 'caudal1_14_18', 
-                'caudal2_15_17')
+                'caudal2_15_17') %>% 
+  bind_cols(., 
+            trait_metadata)
 
 # F2_traits_scaled %>%
-#   write_csv('F2_Original_univariate_traits.csv')
+#   write_csv('F2_Original_univariate_traits_FIXED_11.02.2026.csv')
 
 # vars_keep = names(orig_uni_traits)[c(2,3,4,5,6,7,8,9,10,11, 
 #                                            12,13,14,15,16,17,18, 
@@ -860,6 +866,12 @@ F2_WGP_kinetic = read_csv('WGP_Jaw_kinetic_traits.csv') %>%
 
 lake_morph = F2_WGP_traits %>% 
   dplyr::select(Lake_morph)
+trait_metadata_WGP = F2_WGP_traits %>% 
+  dplyr::select(Ecotype_pair, 
+                Parent_temp, 
+                Offspring_temp, 
+                Morph, 
+                lake_morph_Pair_Full_Temp)
 
 WGP_traits = F2_WGP_traits %>%
   as_tibble() %>%
@@ -913,8 +925,12 @@ WGP_traits_scaled = WGP_traits %>%
                 'lm_1_23', 
                 'lm_23_2', 
                 'caudal1_14_18', 
-                'caudal2_15_17')
+                'caudal2_15_17') %>% 
+  bind_cols(., 
+           trait_metadata_WGP)
 
+# WGP_traits_scaled %>% 
+#   write_csv('WGP_TRAITS_SCALED_FIXED_11.02.2026.csv')
  
 # off_plasticity_traits = F2_off_plasticity_traits %>%
 #   as_tibble() %>%
@@ -1557,6 +1573,12 @@ TGP_kinetics = read_csv("TGP_Jaw_kinetic_traits.csv") %>%
 
 lake_morph = TGP_traits %>% 
   dplyr::select(Lake_morph)
+trait_metadata_TGP = TGP_traits %>% 
+  dplyr::select(Ecotype_pair, 
+                Parent_temp, 
+                Offspring_temp, 
+                Morph, 
+                lake_morph_Pair_Full_Temp)
 
 TGP_traits = TGP_traits %>%
   as_tibble() %>%
@@ -1610,8 +1632,13 @@ TGP_traits_scaled = TGP_traits %>%
                 'lm_1_23', 
                 'lm_23_2', 
                 'caudal1_14_18', 
-                'caudal2_15_17')
+                'caudal2_15_17') %>% 
+  bind_cols(., 
+            trait_metadata_TGP)
 
+
+# TGP_traits_scaled %>% 
+#   write_csv("TGP_TRAITS_SCALED_FIXED_11.02.2026")
 # off_plasticity_traits = F2_off_plasticity_traits %>%
 #   as_tibble() %>%
 #   group_by(Lake_morph) %>%
