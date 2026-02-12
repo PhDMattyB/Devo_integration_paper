@@ -425,75 +425,116 @@ F2_off_means <- F2_PCA %>%
     .groups = "drop"
   )
 
-PC1_strong_loading = pca$rotation %>% 
+# PC1_strong_loading = pca$rotation %>% 
+#   as.data.frame() %>% 
+#   rownames_to_column() %>% 
+#   rename(traits = rowname) %>% 
+#   as_tibble() %>%
+#   dplyr::select(traits, 
+#                 PC1, 
+#                 PC2)%>%
+#   mutate(strong_PC1 = abs(PC1) > 0.2,
+#          strong_PC2 = abs(PC2) > 0.2) %>%
+#   filter(strong_PC1 == 'TRUE') 
+# 
+# PC2_strong_loading = pca$rotation %>% 
+#   as.data.frame() %>% 
+#   rownames_to_column() %>% 
+#   rename(traits = rowname) %>% 
+#   as_tibble() %>%
+#   dplyr::select(traits, 
+#                 PC1, 
+#                 PC2)%>%
+#   mutate(strong_PC1 = abs(PC1) > 0.2,
+#          strong_PC2 = abs(PC2) > 0.2) %>%
+#   filter(strong_PC2 == 'TRUE')
+# 
+# 
+# PC_strong_loadings = bind_rows(PC1_strong_loading, 
+#                                PC2_strong_loading) %>% 
+#   pivot_longer(cols = c(PC1, PC2),
+#                names_to = "PC",
+#                values_to = "loading")
+
+PC_strong_loadings = pca$rotation %>% 
   as.data.frame() %>% 
   rownames_to_column() %>% 
   rename(traits = rowname) %>% 
   as_tibble() %>%
   dplyr::select(traits, 
                 PC1, 
-                PC2)%>%
-  mutate(strong_PC1 = abs(PC1) > 0.2,
-         strong_PC2 = abs(PC2) > 0.2) %>%
-  filter(strong_PC1 == 'TRUE') 
-
-PC2_strong_loading = pca$rotation %>% 
-  as.data.frame() %>% 
-  rownames_to_column() %>% 
-  rename(traits = rowname) %>% 
-  as_tibble() %>%
-  dplyr::select(traits, 
-                PC1, 
-                PC2)%>%
-  mutate(strong_PC1 = abs(PC1) > 0.2,
-         strong_PC2 = abs(PC2) > 0.2) %>%
-  filter(strong_PC2 == 'TRUE')
-
-
-PC_strong_loadings = bind_rows(PC1_strong_loading, 
-                               PC2_strong_loading) %>% 
+                PC2)%>% 
   pivot_longer(cols = c(PC1, PC2),
                names_to = "PC",
                values_to = "loading")
 
+load_cols = c('#005f73', 
+              '#ca6702')
 trait_loading_rank = ggplot(PC_strong_loadings,
        aes(x = reorder(traits, loading),
            y = loading,
            fill = PC)) +
   # xlim(-2, 2)+
   geom_col(show.legend = FALSE) +
+  scale_fill_manual(values = load_cols)+
   facet_wrap(~ PC, scales = "free_y") +
   # xlim(-2, 2)+
   # ylim(-2, 2)+
   coord_flip() +
   theme_bw() +
-  labs(x = "Trait", y = "Loading")
+  labs(x = "Trait", y = "Loading", 
+       title = 'A) PC loadings')+
+  theme(strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'))
+
+PC_trait_loadings = pca$rotation %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  rename(traits = rowname) %>% 
+  as_tibble() %>%
+  dplyr::select(traits, 
+                PC1, 
+                PC2)
+# %>% 
+#   pivot_longer(cols = c(PC1, PC2),
+#                names_to = "PC",
+#                values_to = "loading")
 
 
 
 trait_loading_gg = ggplot() +
   geom_hline(yintercept = 0, linetype = "dashed") +
   geom_vline(xintercept = 0, linetype = "dashed") +
-  geom_point(data = PC1_strong_loading,
-             aes(PC1, PC2),
-             size = 2) +
-  geom_text_repel(data = PC1_strong_loading, 
-                  aes(x = PC1, 
-                      y = PC2, 
-                      label = traits), size = 3, 
-                  max.overlaps = 50) +
-  geom_point(data = PC2_strong_loading, 
+  geom_point(data = PC_trait_loadings, 
              aes(PC1, PC2), 
-             size = 2)+
-  geom_text_repel(data = PC2_strong_loading, 
+             size = 3)+
+  geom_text_repel(data = PC_trait_loadings, 
                   aes(x = PC1, 
                       y = PC2, 
-                      label = traits), size = 3, 
-                  max.overlaps = 50) +
-  xlim(-2, 2)+
-  ylim(-2, 2)+
+                      label = traits), 
+                  size = 4, 
+                  max.overlaps = 50)+
+  # geom_point(data = PC1_strong_loading,
+  #            aes(PC1, PC2),
+  #            size = 2) +
+  # geom_text_repel(data = PC1_strong_loading, 
+  #                 aes(x = PC1, 
+  #                     y = PC2, 
+  #                     label = traits), size = 3, 
+  #                 max.overlaps = 50) +
+  # geom_point(data = PC2_strong_loading, 
+  #            aes(PC1, PC2), 
+  #            size = 2)+
+  # geom_text_repel(data = PC2_strong_loading, 
+  #                 aes(x = PC1, 
+  #                     y = PC2, 
+  #                     label = traits), size = 3, 
+  #                 max.overlaps = 50) +
+  # xlim(-2, 2)+
+  # ylim(-2, 2)+
   theme_bw() +
-  labs(x = "PC1 loading", y = "PC2 loading")
+  labs(x = "PC1 loading", y = "PC2 loading", 
+       title = 'B) Trait loadings')
 
 
 F2_off_means$Offspring_temp = as.character(F2_off_means$Offspring_temp)
@@ -601,11 +642,13 @@ multivar_reaction_norm = ggplot() +
   geom_vline(xintercept = 0, 
              linetype = 'dashed')+
   labs(x = "PC1",
-       y = "PC2",
-       color = "Ecotype") +
+       y = "PC2", 
+       title = 'C) Offspring temperature') +
   scale_color_manual(values = normy_cols)+
-  
   theme_bw() +
+  theme(legend.position = 'none')+
+  # guides(fill ='none')+
+  
 
 ggplot() +
   # geom_point(data = F2_PCA_means, 
@@ -648,10 +691,26 @@ ggplot() +
   # 
   labs(x = "PC1",
        y = "PC2",
-       color = "Ecotype") +
+       color = "Ecotype", 
+       title = 'D) Parental temperature') +
   scale_colour_manual(values = normy_cols)+
-  theme_bw() 
+  theme_bw() +
+  theme(legend.position = 'none')
 
 
-trait_loading_rank + trait_loading_gg / multivar_reaction_norm
-  
+Multivariate_reaction_plot = trait_loading_rank + trait_loading_gg / multivar_reaction_norm
+
+ggsave('Multivariate_reaction_norm_graph_12.02.2026.tiff', 
+       plot = Multivariate_reaction_plot, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 50, 
+       height = 40)  
+
+
+ggsave('Multivariate_reaction_norm_graph_12.02.2026.svg', 
+       plot = Multivariate_reaction_plot, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 50, 
+       height = 40)  
