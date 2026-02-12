@@ -1637,12 +1637,8 @@ TGP_traits_scaled = TGP_traits %>%
             trait_metadata_TGP)
 
 
-# TGP_traits_scaled %>% 
-#   write_csv("TGP_TRAITS_SCALED_FIXED_11.02.2026")
-# off_plasticity_traits = F2_off_plasticity_traits %>%
-#   as_tibble() %>%
-#   group_by(Lake_morph) %>%
-#   dplyr::select(jaw_length:ratio2)
+TGP_traits_scaled %>%
+  write_csv("TGP_TRAITS_SCALED_FIXED_11.02.2026.csv")
 
 # vars_keep = names(off_plasticity_traits)[c(2,3,4,5,6,7,8,9,10,11, 
 #                                            12,13,14,15,16,17,18, 
