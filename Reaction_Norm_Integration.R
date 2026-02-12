@@ -450,7 +450,7 @@ trait_loading_rank = ggplot(PC_strong_loadings,
   coord_flip() +
   theme_bw() +
   labs(x = "Trait", y = "Loading", 
-       title = 'A) PC loadings')+
+       title = 'PC loadings')+
   theme(strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(face = 'bold'))
 
@@ -477,7 +477,7 @@ trait_loading_gg = ggplot() +
                   max.overlaps = 50)+
   theme_bw() +
   labs(x = "PC1 loading", y = "PC2 loading", 
-       title = 'B) Trait loadings')
+       title = 'Trait loadings')
 
 
 F2_off_means$Offspring_temp = as.character(F2_off_means$Offspring_temp)
@@ -541,7 +541,7 @@ multivar_reaction_norm = ggplot() +
              linetype = 'dashed')+
   labs(x = "PC1",
        y = "PC2", 
-       title = 'C) Offspring temperature') +
+       title = 'Offspring temperature') +
   scale_color_manual(values = normy_cols)+
   theme_bw() +
   theme(legend.position = 'none')+
@@ -569,7 +569,7 @@ ggplot() +
   labs(x = "PC1",
        y = "PC2",
        color = "Ecotype", 
-       title = 'D) Parental temperature') +
+       title = 'Parental temperature') +
   scale_colour_manual(values = normy_cols)+
   theme_bw() +
   theme(legend.position = 'none')
@@ -582,7 +582,7 @@ ggsave('Multivariate_reaction_norm_graph_12.02.2026.tiff',
        dpi = 'retina', 
        units = 'cm', 
        width = 50, 
-       height = 40)  
+       height = 20)  
 
 
 ggsave('Multivariate_reaction_norm_graph_12.02.2026.svg', 
@@ -590,7 +590,7 @@ ggsave('Multivariate_reaction_norm_graph_12.02.2026.svg',
        dpi = 'retina', 
        units = 'cm', 
        width = 50, 
-       height = 40)  
+       height = 20)  
 
 
 # WGP multivariate reaction norms -----------------------------------------
@@ -653,7 +653,7 @@ WGP_trait_loading_rank = ggplot(WGP_PC_strong_loadings,
   coord_flip() +
   theme_bw() +
   labs(x = "Trait", y = "Loading", 
-       title = 'A) PC loadings')+
+       title = 'PC loadings')+
   theme(strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(face = 'bold'))
 
@@ -680,7 +680,7 @@ WGP_trait_loading_gg = ggplot() +
                   max.overlaps = 50)+
   theme_bw() +
   labs(x = "PC1 loading", y = "PC2 loading", 
-       title = 'B) Trait loadings')
+       title = 'Trait loadings')
 
 
 WGP_off_means$Offspring_temp = as.character(WGP_off_means$Offspring_temp)
@@ -744,7 +744,7 @@ WGP_multivar_reaction_norm = ggplot() +
              linetype = 'dashed')+
   labs(x = "PC1",
        y = "PC2", 
-       title = 'C) Offspring temperature') +
+       title = 'Offspring temperature') +
   scale_color_manual(values = normy_cols)+
   theme_bw() +
   theme(legend.position = 'none')+
@@ -772,7 +772,7 @@ WGP_multivar_reaction_norm = ggplot() +
   labs(x = "PC1",
        y = "PC2",
        color = "Ecotype", 
-       title = 'D) Parental temperature') +
+       title = 'Parental temperature') +
   scale_colour_manual(values = normy_cols)+
   theme_bw() +
   theme(legend.position = 'none')
@@ -785,7 +785,7 @@ ggsave('WGP_Multivariate_reaction_norm_graph_12.02.2026.tiff',
        dpi = 'retina', 
        units = 'cm', 
        width = 50, 
-       height = 40)  
+       height = 20)  
 
 
 ggsave('WGP_Multivariate_reaction_norm_graph_12.02.2026.svg', 
@@ -793,7 +793,7 @@ ggsave('WGP_Multivariate_reaction_norm_graph_12.02.2026.svg',
        dpi = 'retina', 
        units = 'cm', 
        width = 50, 
-       height = 40)  
+       height = 20)  
 
 
 # TGP multivariate reaction norms -----------------------------------------
@@ -856,7 +856,7 @@ TGP_trait_loading_rank = ggplot(TGP_PC_strong_loadings,
   coord_flip() +
   theme_bw() +
   labs(x = "Trait", y = "Loading", 
-       title = 'A) PC loadings')+
+       title = 'PC loadings')+
   theme(strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(face = 'bold'))
 
@@ -883,7 +883,7 @@ TGP_trait_loading_gg = ggplot() +
                   max.overlaps = 50)+
   theme_bw() +
   labs(x = "PC1 loading", y = "PC2 loading", 
-       title = 'B) Trait loadings')
+       title = 'Trait loadings')
 
 
 TGP_off_means$Offspring_temp = as.character(TGP_off_means$Offspring_temp)
@@ -962,7 +962,7 @@ TGP_multivar_reaction_norm = ggplot() +
              linetype = 'dashed')+
   labs(x = "PC1",
        y = "PC2", 
-       title = 'C) Offspring temperature') +
+       title = 'Offspring temperature') +
   scale_color_manual(values = normy_cols)+
   theme_bw() +
   theme(legend.position = 'none')+
@@ -990,7 +990,7 @@ TGP_multivar_reaction_norm = ggplot() +
   labs(x = "PC1",
        y = "PC2",
        color = "Ecotype", 
-       title = 'D) Parental temperature') +
+       title = 'Parental temperature') +
   scale_colour_manual(values = normy_cols)+
   theme_bw() +
   theme(legend.position = 'none')
@@ -1003,7 +1003,7 @@ ggsave('TGP_Multivariate_reaction_norm_graph_12.02.2026.tiff',
        dpi = 'retina', 
        units = 'cm', 
        width = 50, 
-       height = 40)  
+       height = 20)  
 
 
 ggsave('TGP_Multivariate_reaction_norm_graph_12.02.2026.svg', 
@@ -1011,5 +1011,5 @@ ggsave('TGP_Multivariate_reaction_norm_graph_12.02.2026.svg',
        dpi = 'retina', 
        units = 'cm', 
        width = 50, 
-       height = 40)  
+       height = 20)  
 
