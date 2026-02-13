@@ -577,20 +577,37 @@ ggplot() +
 
 Multivariate_reaction_plot = trait_loading_rank + trait_loading_gg / multivar_reaction_norm
 
-ggsave('Multivariate_reaction_norm_graph_12.02.2026.tiff', 
-       plot = Multivariate_reaction_plot, 
-       dpi = 'retina', 
-       units = 'cm', 
-       width = 50, 
-       height = 20)  
+# ggsave('Multivariate_reaction_norm_graph_12.02.2026.tiff', 
+#        plot = Multivariate_reaction_plot, 
+#        dpi = 'retina', 
+#        units = 'cm', 
+#        width = 50, 
+#        height = 20)  
+# 
+# 
+# ggsave('Multivariate_reaction_norm_graph_12.02.2026.svg', 
+#        plot = Multivariate_reaction_plot, 
+#        dpi = 'retina', 
+#        units = 'cm', 
+#        width = 50, 
+#        height = 20)  
+
+# F2 orginal plasticity model ---------------------------------------------
+library(lme4)
+library(lmerTest)
+library(brms)
+
+F2_brms_fit <- brm(
+  mvbind(PC1, PC2) ~ Morph * Offspring_temp * Parent_temp + (1 | Ecotype_pair),
+  data = F2_PCA, 
+  iter = 5000
+)
 
 
-ggsave('Multivariate_reaction_norm_graph_12.02.2026.svg', 
-       plot = Multivariate_reaction_plot, 
-       dpi = 'retina', 
-       units = 'cm', 
-       width = 50, 
-       height = 20)  
+smanova_fit <- manova(cbind(PC1, PC2) ~ Morph * Offspring_temp * Parent_temp * Ecotype_pair, 
+                     data = F2_PCA)
+summary(manova_fit, test = "Pillai")
+
 
 
 # WGP multivariate reaction norms -----------------------------------------
