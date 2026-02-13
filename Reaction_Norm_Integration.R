@@ -10,6 +10,11 @@
 setwd("~/Parsons_postdoc/Stickleback_Morphometric_data/Updated Landmarks/")
 
 library(tidyverse)
+library(lme4)
+library(lmerTest)
+library(brms)
+library(paran)
+
 
 read_csv("F2_Original_univariate_traits_FIXED_11.02.2026.csv") %>% 
   dplyr::select(Lake_morph, 
@@ -413,7 +418,9 @@ pca <- prcomp(F2_orig_trait_mat,
               center = F, 
               scale. = F)
 
-scores <- as.data.frame(pca$x[, 1:2])
+paran(F2_orig_trait_mat, iterations = 1000, graph = TRUE)
+
+scores <- as.data.frame(pca$x[, 1:7])
 F2_PCA <- bind_cols(F2_data, scores)
 
 F2_off_means <- F2_PCA %>%
@@ -593,18 +600,27 @@ Multivariate_reaction_plot = trait_loading_rank + trait_loading_gg / multivar_re
 #        height = 20)  
 
 # F2 orginal plasticity model ---------------------------------------------
-library(lme4)
-library(lmerTest)
-library(brms)
+
+F2_pc1_mod = lmer(PC1 ~ Morph * Offspring_temp * Parent_temp + (1 | Ecotype_pair),
+                  data = F2_PCA)
+
+summary(F2_pc1_mod)
+
+
+F2_pc2_mod = lmer(PC2 ~ Morph * Offspring_temp * Parent_temp + (1 | Ecotype_pair), 
+                  data = F2_PCA)
+
+summary(F2_pc2_mod)
+
 
 F2_brms_fit <- brm(
-  mvbind(PC1, PC2) ~ Morph * Offspring_temp * Parent_temp + (1 | Ecotype_pair),
+  mvbind(PC1, PC2, PC3, PC4, PC5, PC6, PC7) ~ Morph * Offspring_temp * Parent_temp + (1 | Ecotype_pair),
   data = F2_PCA, 
-  iter = 5000
+  iter = 10000
 )
 
 
-smanova_fit <- manova(cbind(PC1, PC2) ~ Morph * Offspring_temp * Parent_temp * Ecotype_pair, 
+manova_fit <- manova(cbind(PC1, PC2) ~ Morph * Offspring_temp * Parent_temp * Ecotype_pair, 
                      data = F2_PCA)
 summary(manova_fit, test = "Pillai")
 
