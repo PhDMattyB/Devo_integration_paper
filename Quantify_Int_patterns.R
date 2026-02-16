@@ -11,7 +11,7 @@ setwd('~/Parsons_Postdoc/Stickleback_Morphometric_data/Updated Landmarks/')
 
 library(tidyverse)
 library(patchwork)
-library(svglite)
+# library(svglite)
 
 # WILD --------------------------------------------------------------------
 
