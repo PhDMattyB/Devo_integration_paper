@@ -619,11 +619,9 @@ F2_brms_fit <- brm(
   iter = 10000
 )
 
-
 manova_fit <- manova(cbind(PC1, PC2) ~ Morph * Offspring_temp * Parent_temp * Ecotype_pair, 
                      data = F2_PCA)
 summary(manova_fit, test = "Pillai")
-
 
 
 # WGP multivariate reaction norms -----------------------------------------
@@ -649,7 +647,9 @@ WGP_pca <- prcomp(WGP_orig_trait_mat,
               center = F, 
               scale. = F)
 
-WGP_scores <- as.data.frame(WGP_pca$x[, 1:2])
+paran(WGP_orig_trait_mat, iterations = 1000, graph = TRUE)
+
+WGP_scores <- as.data.frame(WGP_pca$x[, 1:7])
 WGP_PCA <- bind_cols(WGP_data, WGP_scores)
 
 WGP_off_means <- WGP_PCA %>%
@@ -828,6 +828,30 @@ ggsave('WGP_Multivariate_reaction_norm_graph_12.02.2026.svg',
        width = 50, 
        height = 20)  
 
+# WGP plasticity model ---------------------------------------------
+
+WGP_pc1_mod = lmer(PC1 ~ Morph * Offspring_temp * Parent_temp + (1 | Ecotype_pair),
+                  data = WGP_PCA)
+
+summary(WGP_pc1_mod)
+
+
+WGP_pc2_mod = lmer(PC2 ~ Morph * Offspring_temp * Parent_temp + (1 | Ecotype_pair), 
+                  data = WGP_PCA)
+
+summary(WGP_pc2_mod)
+
+
+WGP_brms_fit <- brm(
+  mvbind(PC1, PC2, PC3, PC4, PC5, PC6, PC7) ~ Morph * Offspring_temp * Parent_temp + (1 | Ecotype_pair),
+  data = WGP_PCA, 
+  iter = 10000
+)
+
+manova_fit <- manova(cbind(PC1, PC2) ~ Morph * Offspring_temp * Parent_temp * Ecotype_pair, 
+                     data = WGP_PCA)
+summary(manova_fit, test = "Pillai")
+
 
 # TGP multivariate reaction norms -----------------------------------------
 
@@ -852,7 +876,9 @@ TGP_pca <- prcomp(TGP_orig_trait_mat,
               center = F, 
               scale. = F)
 
-TGP_scores <- as.data.frame(TGP_pca$x[, 1:2])
+paran(TGP_orig_trait_mat, iterations = 1000, graph = TRUE)
+
+TGP_scores <- as.data.frame(TGP_pca$x[, 1:7])
 TGP_PCA <- bind_cols(TGP_data, TGP_scores)
 
 TGP_off_means <- TGP_PCA %>%
@@ -1045,4 +1071,61 @@ ggsave('TGP_Multivariate_reaction_norm_graph_12.02.2026.svg',
        units = 'cm', 
        width = 50, 
        height = 20)  
+
+
+
+# TGP plasticity model ---------------------------------------------
+
+TGP_pc1_mod = lmer(PC1 ~ Morph * Offspring_temp * Parent_temp + (1 | Ecotype_pair),
+                   data = TGP_PCA)
+
+summary(TGP_pc1_mod)
+
+
+TGP_pc2_mod = lmer(PC2 ~ Morph * Offspring_temp * Parent_temp + (1 | Ecotype_pair), 
+                   data = TGP_PCA)
+
+summary(TGP_pc2_mod)
+
+
+TGP_brms_fit <- brm(
+  mvbind(PC1, PC2, PC3, PC4, PC5, PC6, PC7) ~ Morph * Offspring_temp * Parent_temp + (1 | Ecotype_pair),
+  data = TGP_PCA, 
+  iter = 10000
+)
+
+manova_fit <- manova(cbind(PC1, PC2) ~ Morph * Offspring_temp * Parent_temp * Ecotype_pair, 
+                     data = TGP_PCA)
+summary(manova_fit, test = "Pillai")
+
+
+# BRMS plots --------------------------------------------------------------
+library(broom.mixed)
+
+F2_brms_fit_sum = tidy(F2_brms_fit, 
+                       effects = c('fixed', 
+                                   'ran_pars', 
+                                   'ran_vals'), 
+                       conf.int = T) %>% 
+  mutate(dataset = 'F2 original')
+WGP_brms_fit_sum = tidy(WGP_brms_fit, 
+                        effects = c('fixed', 
+                                    'ran_pars', 
+                                    'ran_vals'), 
+                        conf.int = T) %>% 
+  mutate(dataset = 'Within-generational plasticity')
+TGP_brms_fit_sum = tidy(TGP_brms_fit, 
+                        effects = c('fixed', 
+                                    'ran_pars', 
+                                    'ran_vals'), 
+                        conf.int = T) %>% 
+  mutate(dataset = 'Trans-generational plasticity')
+
+brms_fits_full = bind_rows(F2_brms_fit_sum, 
+                           WGP_brms_fit_sum, 
+                           TGP_brms_fit_sum)
+
+# brms_fits_full %>% 
+#   write_csv('Multivariate_plast_BRMS_results.csv')
+
 
