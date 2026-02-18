@@ -14,6 +14,7 @@ library(lme4)
 library(lmerTest)
 library(brms)
 library(paran)
+library(broom.mixed)
 
 
 read_csv("F2_Original_univariate_traits_FIXED_11.02.2026.csv") %>% 
@@ -423,6 +424,16 @@ paran(F2_orig_trait_mat, iterations = 1000, graph = TRUE)
 scores <- as.data.frame(pca$x[, 1:7])
 F2_PCA <- bind_cols(F2_data, scores)
 
+## PC1 = offspring temp
+## PC2 = Nothing
+## PC3 = Morph, off temp, morph*parent_temp, 
+## PC4 = Morph, parent_temp, morph*offtemp, morph*parenttemp, threeway
+## PC5 = Nothing
+## PC6 = offtemp, morph*parenttemp
+## PC7 = offtemp, parenttemp, offtemp*parenttemp, 
+
+
+
 F2_off_means <- F2_PCA %>%
   group_by(Morph,
            Offspring_temp) %>%
@@ -598,6 +609,48 @@ Multivariate_reaction_plot = trait_loading_rank + trait_loading_gg / multivar_re
 #        units = 'cm', 
 #        width = 50, 
 #        height = 20)  
+
+
+
+# F2 brms results plot ----------------------------------------------------
+
+
+F2_data = read_csv("F2_Original_univariate_traits_FIXED_11.02.2026.csv") %>% 
+  dplyr::select(Lake_morph, 
+                Ecotype_pair, 
+                lake_morph_Pair_Full_Temp, 
+                Morph, 
+                Offspring_temp, 
+                Parent_temp, 
+                jaw_length:caudal2_15_17)
+
+
+F2_orig_trait_mat <- F2_data %>%
+  dplyr::select(jaw_length:caudal2_15_17) %>% 
+  # dplyr::select(starts_with('value'))
+  # dplyr::select(all_of(trait_names)) %>%
+  as.matrix()
+
+pca <- prcomp(F2_orig_trait_mat, 
+              center = F, 
+              scale. = F)
+
+paran(F2_orig_trait_mat, iterations = 1000, graph = TRUE)
+
+scores <- as.data.frame(pca$x[, 1:7])
+F2_PCA <- bind_cols(F2_data, scores)
+
+
+
+
+## PC1 = offspring temp
+## PC2 = Nothing
+## PC3 = Morph, off temp, morph*parent_temp, 
+## PC4 = Morph, parent_temp, morph*offtemp, morph*parenttemp, threeway
+## PC5 = Nothing
+## PC6 = offtemp, morph*parenttemp
+## PC7 = offtemp, parenttemp, offtemp*parenttemp, 
+
 
 # F2 orginal plasticity model ---------------------------------------------
 
