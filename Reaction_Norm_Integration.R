@@ -518,7 +518,8 @@ F2_orig_pca_plot = F2_PCA %>%
                  col = morph_full_temp), 
              size = 3)+
   scale_colour_manual(values = WC_full_temp_cols)+
-  scale_fill_manual(values = WC_full_temp_cols)
+  scale_fill_manual(values = WC_full_temp_cols)+
+  labs(title = 'A) F2 unaltered traits')
   
 
 # F2_PCA %>%
@@ -874,7 +875,8 @@ WGP_PCA_plot = WGP_PCA %>%
                  col = morph_full_temp), 
              size = 3)+
   scale_colour_manual(values = WC_full_temp_cols)+
-  scale_fill_manual(values = WC_full_temp_cols)
+  scale_fill_manual(values = WC_full_temp_cols)+
+  labs(title = 'B) WGP traits')
 
 
 
@@ -1150,7 +1152,8 @@ TGP_PCA_plot = TGP_PCA %>%
                  col = morph_full_temp), 
              size = 3)+
   scale_colour_manual(values = WC_full_temp_cols)+
-  scale_fill_manual(values = WC_full_temp_cols)
+  scale_fill_manual(values = WC_full_temp_cols)+
+  labs(title = 'C) TGP traits')
 
 
 
