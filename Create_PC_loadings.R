@@ -487,7 +487,7 @@ WGP_RV_Perm_plot = ggplot(WGP_rv_df, aes(x = WGP_null_rv)) +
   )
 
 
-# WGP data ----------------------------------------------------------------
+# TGP data ----------------------------------------------------------------
 TGP_data = read_csv("TGP_TRAITS_SCALED_FIXED_11.02.2026.csv") %>% 
   dplyr::select(Lake_morph, 
                 Ecotype_pair, 
@@ -505,7 +505,7 @@ TGP_trait_mat <- TGP_data %>%
   as.matrix()
 
 
-# WGP data - PCA ----------------------------------------------------------
+# TGP data - PCA ----------------------------------------------------------
 TGP_pca = prcomp(TGP_trait_mat, 
                  center = F, 
                  scale. = F)
@@ -516,7 +516,7 @@ TGP_scores = as.data.frame(TGP_pca$x[, 1:7])
 TGP_PCA = bind_cols(TGP_data, TGP_scores)
 
 
-# WGP data - trait/pc cor -------------------------------------------------
+# TGP data - trait/pc cor -------------------------------------------------
 TGP_trait_cols = TGP_PCA %>% 
   dplyr::select(7:39) %>% 
   names()
@@ -563,7 +563,7 @@ TGP_warm = TGP_WC_loads %>%
   dplyr::select(pc, trait, r_warm = r)
 
 
-# WGP data - matrix differences -------------------------------------------
+# TGP data - matrix differences -------------------------------------------
 TGP_cold_mat <- TGP_WC_loads %>%
   ungroup() %>% 
   filter(Morph == "Cold") %>%
@@ -612,7 +612,7 @@ TGP_Ecotype_diff_mat_plot = ggplot(TGP_diff_mat_long,
     axis.text.y = element_text(size = 6))
 
 
-# WGP data - Effect size --------------------------------------------------
+# TGP data - Effect size --------------------------------------------------
 ## Taking the difference matrix and finding per trait effect size
 TGP_trait_effect <- TGP_diff_mat %>%
   as.data.frame() %>%
@@ -632,7 +632,7 @@ TGP_trait_effect_plot = ggplot(TGP_trait_effect,
        y = 'Trait')
 
 
-# WGP data - Permutation test RV coefficient ------------------------------
+# TGP data - Permutation test RV coefficient ------------------------------
 
 TGP_perm_test_data = TGP_PCA %>% 
   dplyr::select(Morph, 
