@@ -59,6 +59,10 @@ ggplot(F2_orig_traits,
                y = value,
                color = morph,
                group = morph)) +
+  stat_summary(fun.y = mean,
+               fun.ymin = function(x) mean(x) - sd(x), 
+               fun.ymax = function(x) mean(x) + sd(x), 
+               geom = "pointrange") +
   
   stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
   stat_summary(fun = mean, geom = "point", size = 1.5) +
@@ -100,6 +104,10 @@ ggplot(F2_orig_traits,
            y = value,
            color = morph,
            group = morph)) +
+  stat_summary(fun.y = mean,
+               fun.ymin = function(x) mean(x) - sd(x), 
+               fun.ymax = function(x) mean(x) + sd(x), 
+               geom = "pointrange") +
   
   stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
   stat_summary(fun = mean, geom = "point", size = 1.5) +
@@ -125,6 +133,10 @@ ggplot(F2_orig_traits,
            y = value,
            color = morph,
            group = morph)) +
+  stat_summary(fun.y = mean,
+               fun.ymin = function(x) mean(x) - sd(x), 
+               fun.ymax = function(x) mean(x) + sd(x), 
+               geom = "pointrange") +
   
   stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
   stat_summary(fun = mean, geom = "point", size = 1.5) +
@@ -190,6 +202,10 @@ ggplot(WGP_traits,
            y = value,
            color = morph,
            group = morph)) +
+  stat_summary(fun.y = mean,
+               fun.ymin = function(x) mean(x) - sd(x), 
+               fun.ymax = function(x) mean(x) + sd(x), 
+               geom = "pointrange") +
   
   stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
   stat_summary(fun = mean, geom = "point", size = 1.5) +
@@ -218,6 +234,10 @@ ggplot(WGP_traits,
            y = value,
            color = morph,
            group = morph)) +
+  stat_summary(fun.y = mean,
+               fun.ymin = function(x) mean(x) - sd(x), 
+               fun.ymax = function(x) mean(x) + sd(x), 
+               geom = "pointrange") +
   
   stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
   stat_summary(fun = mean, geom = "point", size = 1.5) +
@@ -246,6 +266,10 @@ ggplot(WGP_traits,
            y = value,
            color = morph,
            group = morph)) +
+  stat_summary(fun.y = mean,
+               fun.ymin = function(x) mean(x) - sd(x), 
+               fun.ymax = function(x) mean(x) + sd(x), 
+               geom = "pointrange") +
   
   stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
   stat_summary(fun = mean, geom = "point", size = 1.5) +
@@ -424,24 +448,113 @@ paran(F2_orig_trait_mat, iterations = 1000, graph = TRUE)
 scores <- as.data.frame(pca$x[, 1:7])
 F2_PCA <- bind_cols(F2_data, scores)
 
-## PC1 = offspring temp
-## PC2 = Nothing
-## PC3 = Morph, off temp, morph*parent_temp, 
-## PC4 = Morph, parent_temp, morph*offtemp, morph*parenttemp, threeway
-## PC5 = Nothing
-## PC6 = offtemp, morph*parenttemp
-## PC7 = offtemp, parenttemp, offtemp*parenttemp, 
-
-
-
 F2_off_means <- F2_PCA %>%
   group_by(Morph,
-           Offspring_temp) %>%
+           Offspring_temp, 
+           Parent_temp) %>%
   summarise(
     PC1 = mean(PC1),
     PC2 = mean(PC2),
+    PC3 = mean(PC3),
+    PC4 = mean(PC4),
+    PC5 = mean(PC5),
+    PC6 = mean(PC6),
+    PC7 = mean(PC7),
     .groups = "drop"
-  )
+  ) %>% 
+  unite(col = morph_full_temp, 
+        c('Morph', 
+          'Offspring_temp', 
+          'Parent_temp'), 
+        sep = '_', 
+        remove = F)
+
+WC_temp_cols = c('#264653', 
+                 '#2a9d8f', 
+                 '#f4a261',
+                 '#e76f51')
+
+WC_full_temp_cols = c('#277da1', 
+                 '#577590', 
+                 '#4d908e',
+                 '#43aa8b', 
+                 '#f0f3bd', 
+                 '#f9c74f', 
+                 '#f9844a', 
+                 '#f94144')
+
+p.ell <- 0.95
+
+F2_orig_pca_plot = F2_PCA %>%
+  unite(col = morph_full_temp, 
+        c('Morph', 
+          'Offspring_temp', 
+          'Parent_temp'), 
+        sep = '_', 
+        remove = F) %>% 
+  ggplot(aes(x = PC1, 
+             y = PC2))+
+  # geom_point(aes(col = morph_full_temp), 
+  #            size = 3)+
+  geom_hline(yintercept = 0, 
+             col = 'black')+
+  geom_vline(xintercept = 0, 
+             col = 'black')+
+  stat_ellipse(aes(group = morph_full_temp, 
+                   fill = morph_full_temp,
+                   color = morph_full_temp), 
+               alpha = 0.25, 
+               level = p.ell,
+               type = "norm",
+               geom = "polygon")+
+  geom_point(data = F2_off_means, 
+             aes(x = PC1, 
+                 y = PC2),
+              col = 'black',
+                 size = 4)+
+  geom_point(data = F2_off_means, 
+             aes(x = PC1, 
+                 y = PC2, 
+                 col = morph_full_temp), 
+             size = 3)+
+  scale_colour_manual(values = WC_full_temp_cols)+
+  scale_fill_manual(values = WC_full_temp_cols)
+  
+
+# F2_PCA %>%
+#   unite(col = morph_full_temp, 
+#         c('Morph', 
+#           'Offspring_temp', 
+#           'Parent_temp'), 
+#         sep = '_', 
+#         remove = F) %>% 
+#   ggplot(aes(x = PC1, 
+#              y = PC3))+
+#   # geom_point(aes(col = morph_full_temp), 
+#   #            size = 3)+
+#   geom_hline(yintercept = 0, 
+#              col = 'black')+
+#   geom_vline(xintercept = 0, 
+#              col = 'black')+
+#   stat_ellipse(aes(group = morph_full_temp, 
+#                    fill = morph_full_temp,
+#                    color = morph_full_temp), 
+#                alpha = 0.25, 
+#                level = p.ell,
+#                type = "norm",
+#                geom = "polygon")+
+#   geom_point(data = F2_off_means, 
+#              aes(x = PC1, 
+#                  y = PC3),
+#              col = 'black',
+#              size = 4)+
+#   geom_point(data = F2_off_means, 
+#              aes(x = PC1, 
+#                  y = PC3, 
+#                  col = morph_full_temp), 
+#              size = 3)+
+#   scale_colour_manual(values = WC_full_temp_cols)+
+#   scale_fill_manual(values = WC_full_temp_cols)
 
 
 PC_strong_loadings = pca$rotation %>% 
@@ -450,8 +563,7 @@ PC_strong_loadings = pca$rotation %>%
   rename(traits = rowname) %>% 
   as_tibble() %>%
   dplyr::select(traits, 
-                PC1, 
-                PC2)%>% 
+                PC1:PC7)%>% 
   pivot_longer(cols = c(PC1, PC2),
                names_to = "PC",
                values_to = "loading")
@@ -472,6 +584,9 @@ trait_loading_rank = ggplot(PC_strong_loadings,
   theme(strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(face = 'bold'))
 
+F2_orig_combo = F2_orig_pca_plot+trait_loading_rank
+
+
 PC_trait_loadings = pca$rotation %>% 
   as.data.frame() %>% 
   rownames_to_column() %>% 
@@ -479,7 +594,12 @@ PC_trait_loadings = pca$rotation %>%
   as_tibble() %>%
   dplyr::select(traits, 
                 PC1, 
-                PC2)
+                PC2, 
+                PC3, 
+                PC4, 
+                PC5, 
+                PC6, 
+                PC7)
 
 trait_loading_gg = ggplot() +
   geom_hline(yintercept = 0, linetype = "dashed") +
@@ -707,12 +827,55 @@ WGP_PCA <- bind_cols(WGP_data, WGP_scores)
 
 WGP_off_means <- WGP_PCA %>%
   group_by(Morph,
-           Offspring_temp) %>%
+           Offspring_temp, 
+           Parent_temp) %>%
   summarise(
     PC1 = mean(PC1),
     PC2 = mean(PC2),
     .groups = "drop"
-  )
+  ) %>% 
+  unite(col = morph_full_temp, 
+        c('Morph', 
+          'Offspring_temp', 
+          'Parent_temp'), 
+        sep = '_', 
+        remove = F)
+
+WGP_PCA_plot = WGP_PCA %>%
+  unite(col = morph_full_temp, 
+        c('Morph', 
+          'Offspring_temp', 
+          'Parent_temp'), 
+        sep = '_', 
+        remove = F) %>% 
+  ggplot(aes(x = PC1, 
+             y = PC2))+
+  # geom_point(aes(col = morph_full_temp), 
+  #            size = 3)+
+  geom_hline(yintercept = 0, 
+             col = 'black')+
+  geom_vline(xintercept = 0, 
+             col = 'black')+
+  stat_ellipse(aes(group = morph_full_temp, 
+                   fill = morph_full_temp,
+                   color = morph_full_temp), 
+               alpha = 0.25, 
+               level = p.ell,
+               type = "norm",
+               geom = "polygon")+
+  geom_point(data = WGP_off_means, 
+             aes(x = PC1, 
+                 y = PC2),
+             col = 'black',
+             size = 4)+
+  geom_point(data = WGP_off_means, 
+             aes(x = PC1, 
+                 y = PC2, 
+                 col = morph_full_temp), 
+             size = 3)+
+  scale_colour_manual(values = WC_full_temp_cols)+
+  scale_fill_manual(values = WC_full_temp_cols)
+
 
 
 WGP_PC_strong_loadings = WGP_pca$rotation %>% 
@@ -742,6 +905,10 @@ WGP_trait_loading_rank = ggplot(WGP_PC_strong_loadings,
        title = 'PC loadings')+
   theme(strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(face = 'bold'))
+
+
+WGP_combo_plot = WGP_PCA_plot+WGP_trait_loading_rank
+
 
 WGP_PC_trait_loadings = WGP_pca$rotation %>% 
   as.data.frame() %>% 
@@ -936,12 +1103,55 @@ TGP_PCA <- bind_cols(TGP_data, TGP_scores)
 
 TGP_off_means <- TGP_PCA %>%
   group_by(Morph,
-           Offspring_temp) %>%
+           Offspring_temp, 
+           Parent_temp) %>%
   summarise(
     PC1 = mean(PC1),
     PC2 = mean(PC2),
     .groups = "drop"
-  )
+  ) %>% 
+  unite(col = morph_full_temp, 
+        c('Morph', 
+          'Offspring_temp', 
+          'Parent_temp'), 
+        sep = '_', 
+        remove = F)
+
+TGP_PCA_plot = TGP_PCA %>%
+  unite(col = morph_full_temp, 
+        c('Morph', 
+          'Offspring_temp', 
+          'Parent_temp'), 
+        sep = '_', 
+        remove = F) %>% 
+  ggplot(aes(x = PC1, 
+             y = PC2))+
+  # geom_point(aes(col = morph_full_temp), 
+  #            size = 3)+
+  geom_hline(yintercept = 0, 
+             col = 'black')+
+  geom_vline(xintercept = 0, 
+             col = 'black')+
+  stat_ellipse(aes(group = morph_full_temp, 
+                   fill = morph_full_temp,
+                   color = morph_full_temp), 
+               alpha = 0.25, 
+               level = p.ell,
+               type = "norm",
+               geom = "polygon")+
+  geom_point(data = TGP_off_means, 
+             aes(x = PC1, 
+                 y = PC2),
+             col = 'black',
+             size = 4)+
+  geom_point(data = TGP_off_means, 
+             aes(x = PC1, 
+                 y = PC2, 
+                 col = morph_full_temp), 
+             size = 3)+
+  scale_colour_manual(values = WC_full_temp_cols)+
+  scale_fill_manual(values = WC_full_temp_cols)
+
 
 
 TGP_PC_strong_loadings = TGP_pca$rotation %>% 
@@ -971,6 +1181,11 @@ TGP_trait_loading_rank = ggplot(TGP_PC_strong_loadings,
        title = 'PC loadings')+
   theme(strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(face = 'bold'))
+
+
+TGP_combo_plot = TGP_PCA_plot+TGP_trait_loading_rank
+
+
 
 TGP_PC_trait_loadings = TGP_pca$rotation %>% 
   as.data.frame() %>% 
@@ -1125,6 +1340,10 @@ ggsave('TGP_Multivariate_reaction_norm_graph_12.02.2026.svg',
        width = 50, 
        height = 20)  
 
+
+# COMBINE COMBO PLOTS -----------------------------------------------------
+
+F2_orig_combo/WGP_combo_plot/TGP_combo_plot
 
 
 # TGP plasticity model ---------------------------------------------
