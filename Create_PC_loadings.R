@@ -118,6 +118,7 @@ F2_diff_df <- F2_cold %>%
     by = c("pc", "trait")) %>%
   mutate(diff = r_warm - r_cold)
 
+
 ggplot(diff_df, 
        aes(pc,
            trait,
@@ -148,6 +149,60 @@ F2_warm_mat <- F2_WC_loads %>%
               values_from = r) %>%
   column_to_rownames("trait") %>%
   as.matrix()
+F2_diff_mat <- F2_warm_mat - F2_cold_mat
+
+pheatmap(
+  diff_mat,
+  cluster_rows = TRUE,
+  cluster_cols = TRUE
+)
+
+
+F2_trait_effect <- diff_mat %>%
+  as.data.frame() %>%
+  rownames_to_column("trait") %>%
+  mutate(
+    effect_size = rowSums(abs(across(where(is.numeric))))
+  ) %>%
+  arrange(desc(effect_size))
+
+ggplot(F2_trait_effect, 
+       aes(reorder(trait, 
+                   effect_size), 
+           effect_size)) +
+  geom_col() +
+  coord_flip()
+
+pc_effect <- diff_mat %>%
+  as.data.frame() %>%
+  summarise(across(everything(), ~ sum(abs(.)))) %>%
+  pivot_longer(
+    everything(),
+    names_to = "PC",
+    values_to = "effect"
+  )
+
+ggplot(pc_effect, aes(PC, effect)) +
+  geom_col()
+
+##how much a trait’s pattern of associations with the 7 PCs differs between ecotypes
+trait_contrib <- (F2_warm_mat - F2_cold_mat)^2 %>%
+  rowSums() %>%
+  sort(decreasing = TRUE)
+
+trait_df <- data.frame(
+  trait = names(trait_contrib),
+  contribution = as.numeric(trait_contrib)
+)
+
+ggplot(trait_df, aes(x = reorder(trait, contribution), y = contribution)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    x = "Trait",
+    y = "Contribution to ecotype difference",
+    title = "Trait-level contribution to divergence in trait–PC structure"
+  ) 
 
 
 allCorrelations(
@@ -205,4 +260,10 @@ null_rv <- replicate(1000, {
   RV(cold_perm, warm_perm)
 })
 
-mean(null_rv >= obs)
+
+delta_RV = mean(null_rv) - obs
+
+z = (obs - mean(null_rv)) / sd(null_rv)
+
+hist(null_rv)
+abline(v = obs, col = "red", lwd = 3)
