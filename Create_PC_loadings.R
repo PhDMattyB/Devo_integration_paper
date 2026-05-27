@@ -626,7 +626,7 @@ TGP_trait_effect_plot = ggplot(TGP_trait_effect,
                                            effect_size), 
                                    effect_size)) +
   geom_col(col = 'black',
-           fill = '#7785ac') +
+           fill = '#104911') +
   coord_flip()+
   labs(x = 'Effect size', 
        y = 'Trait')
@@ -700,4 +700,24 @@ TGP_RV_Perm_plot = ggplot(TGP_rv_df, aes(x = TGP_null_rv)) +
     subtitle = paste0("Observed RV = ", round(TGP_obs, 3))
   )
 
+
+
+# Combo plots -------------------------------------------------------------
+
+eco_diff_combo = F2_Ecotype_diff_mat_plot+WGP_Ecotype_diff_mat_plot+TGP_Ecotype_diff_mat_plot
+
+
+trait_effect_combo = F2_trait_effect_plot+WGP_trait_effect_plot+TGP_trait_effect_plot
+
+
+RV_perm_plot_combo = F2_RV_Perm_plot+WGP_RV_Perm_plot+TGP_RV_Perm_plot
+
+combo_of_kings = eco_diff_combo/trait_effect_combo/RV_perm_plot_combo
+
+ggsave('Patterns_Integration.svg', 
+       plot = combo_of_kings, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 40, 
+       height = 30)  
 
