@@ -569,6 +569,27 @@ PC_strong_loadings = pca$rotation %>%
                names_to = "PC",
                values_to = "loading")
 
+F2_orig_super_PC1 = pca$rotation %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  rename(traits = rowname) %>% 
+  as_tibble() %>%
+  dplyr::select(traits, 
+                PC1:PC2)%>% 
+  group_by(traits) %>% 
+  filter(abs(PC1) >0.2)
+
+F2_orig_super_PC2 = pca$rotation %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  rename(traits = rowname) %>% 
+  as_tibble() %>%
+  dplyr::select(traits, 
+                PC1:PC2)%>% 
+  group_by(traits) %>% 
+  filter(abs(PC2) >0.2)
+
+
 load_cols = c('#005f73', 
               '#ca6702')
 trait_loading_rank = ggplot(PC_strong_loadings,
@@ -577,6 +598,10 @@ trait_loading_rank = ggplot(PC_strong_loadings,
            fill = PC)) +
   geom_col(show.legend = FALSE) +
   scale_fill_manual(values = load_cols)+
+  geom_hline(yintercept = 0.2, 
+             linewidth = 2)+
+  geom_hline(yintercept = -0.2, 
+             linewidth = 2)+
   facet_wrap(~ PC, scales = "free_y") +
   coord_flip() +
   theme_bw() +
@@ -892,6 +917,28 @@ WGP_PC_strong_loadings = WGP_pca$rotation %>%
                names_to = "PC",
                values_to = "loading")
 
+
+WGP_load_super_PC1 = WGP_pca$rotation %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  rename(traits = rowname) %>% 
+  as_tibble() %>%
+  dplyr::select(traits, 
+                PC1:PC2)%>% 
+  group_by(traits) %>% 
+  filter(abs(PC1) >0.2)
+
+WGP_load_super_PC2 = WGP_pca$rotation %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  rename(traits = rowname) %>% 
+  as_tibble() %>%
+  dplyr::select(traits, 
+                PC1:PC2)%>% 
+  group_by(traits) %>% 
+  filter(abs(PC2) >0.2)
+
+
 load_cols = c('#005f73', 
               '#ca6702')
 WGP_trait_loading_rank = ggplot(WGP_PC_strong_loadings,
@@ -900,6 +947,10 @@ WGP_trait_loading_rank = ggplot(WGP_PC_strong_loadings,
                                 fill = PC)) +
   geom_col(show.legend = FALSE) +
   scale_fill_manual(values = load_cols)+
+  geom_hline(yintercept = 0.2, 
+             linewidth = 2)+
+  geom_hline(yintercept = -0.2, 
+             linewidth = 2)+
   facet_wrap(~ PC, scales = "free_y") +
   coord_flip() +
   theme_bw() +
@@ -1169,6 +1220,28 @@ TGP_PC_strong_loadings = TGP_pca$rotation %>%
                names_to = "PC",
                values_to = "loading")
 
+TGP_load_super_PC1 = TGP_pca$rotation %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  rename(traits = rowname) %>% 
+  as_tibble() %>%
+  dplyr::select(traits, 
+                PC1:PC2)%>% 
+  group_by(traits) %>% 
+  filter(abs(PC1) >0.2)
+
+TGP_load_super_PC2 = TGP_pca$rotation %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  rename(traits = rowname) %>% 
+  as_tibble() %>%
+  dplyr::select(traits, 
+                PC1:PC2)%>% 
+  group_by(traits) %>% 
+  filter(abs(PC2) >0.2)
+
+
+
 load_cols = c('#005f73', 
               '#ca6702')
 TGP_trait_loading_rank = ggplot(TGP_PC_strong_loadings,
@@ -1176,6 +1249,10 @@ TGP_trait_loading_rank = ggplot(TGP_PC_strong_loadings,
                                 y = loading,
                                 fill = PC)) +
   geom_col(show.legend = FALSE) +
+  geom_hline(yintercept = 0.2, 
+             linewidth = 2)+
+  geom_hline(yintercept = -0.2, 
+             linewidth = 2)+
   scale_fill_manual(values = load_cols)+
   facet_wrap(~ PC, scales = "free_y") +
   coord_flip() +
@@ -1346,8 +1423,97 @@ ggsave('TGP_Multivariate_reaction_norm_graph_12.02.2026.svg',
 
 # COMBINE COMBO PLOTS -----------------------------------------------------
 
-F2_orig_combo/WGP_combo_plot/TGP_combo_plot
+combo_of_combo_plots = F2_orig_combo/WGP_combo_plot/TGP_combo_plot
 
+ggsave('Multivariate_integration_PCA.tiff', 
+       plot = combo_of_combo_plots, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 30, 
+       height = 30)  
+
+
+
+# Compare high loadings PC1 PC2 -------------------------------------------
+
+F2_orig_super_PC1_traits = 
+  F2_orig_super_PC1 %>%
+  ungroup() %>% 
+  dplyr::select(traits)
+WGP_load_super_PC1_traits = WGP_load_super_PC1 %>%
+  ungroup() %>% 
+  dplyr::select(traits)
+
+TGP_load_super_PC1_traits = TGP_load_super_PC1 %>%
+  ungroup() %>% 
+  dplyr::select(traits)
+
+wild_load_super_PC1_traits = wild_load_super_PC1 %>%
+  ungroup() %>% 
+  dplyr::select(traits)
+
+setdiff(wild_load_super_PC1_traits, 
+        F2_orig_super_PC1_traits)
+
+setdiff(F2_orig_super_PC1_traits, 
+        wild_load_super_PC1_traits)
+
+setdiff(wild_load_super_PC1_traits, 
+        WGP_load_super_PC1_traits)
+setdiff(WGP_load_super_PC1_traits, 
+        wild_load_super_PC1_traits)
+
+
+setdiff(WGP_load_super_PC1_traits, 
+          F2_orig_super_PC1_traits)
+
+setdiff(F2_orig_super_PC1_traits, 
+          TGP_load_super_PC1_traits)
+
+setdiff(WGP_load_super_PC1_traits, 
+          TGP_load_super_PC1_traits)
+
+
+F2_orig_super_PC2_traits = F2_orig_super_PC2 %>%
+  ungroup() %>% 
+  dplyr::select(traits)
+WGP_load_super_PC2_traits = WGP_load_super_PC2 %>%
+  ungroup() %>% 
+  dplyr::select(traits)
+
+TGP_load_super_PC2_traits = TGP_load_super_PC2 %>%
+  ungroup() %>% 
+  dplyr::select(traits)
+
+wild_load_super_PC2_traits = wild_load_super_PC2 %>%
+  ungroup() %>% 
+  dplyr::select(traits)
+
+
+setdiff(wild_load_super_PC2_traits, 
+        F2_orig_super_PC2_traits)
+
+setdiff(F2_orig_super_PC2_traits, 
+        wild_load_super_PC2_traits)
+
+intersect(wild_load_super_PC2_traits, 
+          F2_orig_super_PC2_traits)
+
+
+setdiff(F2_orig_super_PC2_traits, 
+        WGP_load_super_PC2_traits)
+
+setdiff(WGP_load_super_PC2_traits, 
+          F2_orig_super_PC2_traits)
+
+setdiff(TGP_load_super_PC2_traits,
+        F2_orig_super_PC2_traits)
+
+setdiff(WGP_load_super_PC2_traits, 
+        TGP_load_super_PC2_traits)
+
+setdiff(TGP_load_super_PC2_traits, 
+        WGP_load_super_PC2_traits)
 
 # TGP plasticity model ---------------------------------------------
 
@@ -1402,5 +1568,152 @@ brms_fits_full = bind_rows(F2_brms_fit_sum,
 
 # brms_fits_full %>% 
 #   write_csv('Multivariate_plast_BRMS_results.csv')
+
+
+
+
+# WILD PCA ----------------------------------------------------------------
+
+wild_traits = read_csv("WILD_SCALED_FIXED_27.05.2026.csv") 
+
+view(wild_traits)
+
+
+wild_trait_mat <- wild_traits %>%
+  dplyr::select(5:39) %>% 
+  # dplyr::select(starts_with('value'))
+  # dplyr::select(all_of(trait_names)) %>%
+  as.matrix()
+
+wild_pca <- prcomp(wild_trait_mat, 
+                  center = F, 
+                  scale. = F)
+
+paran(wild_trait_mat, iterations = 1000, graph = TRUE)
+
+wild_scores <- as.data.frame(wild_pca$x[, 1:7])
+wild_PCA <- bind_cols(wild_traits, wild_scores)
+
+wild_off_means <- wild_PCA %>%
+  mutate( Lake_fixed = case_when(
+      str_detect(Lake, 'ASHN') ~ "ASHN",
+      str_detect(Lake, 'CSWY') ~ "GTS/GAR",
+      str_detect(Lake, 'GTS') ~ 'GTS/GAR',
+      str_detect(Lake, 'MYV') ~ 'MYV', 
+      str_detect(Lake, 'SKR') ~ 'SKR')) %>% 
+  group_by(Lake_morph, 
+           Lake_fixed) %>%
+  summarise(
+    PC1 = mean(PC1),
+    PC2 = mean(PC2),
+    .groups = "drop"
+  ) 
+wild_full_temp_cols = c('#277da1', 
+                        '#f94144',
+                      '#577590', 
+                      '#f9844a',
+                      '#4d908e',
+                      '#f9c74f',
+                      '#43aa8b', 
+                      '#f0f3bd')
+
+# wild_full_temp_cols = c('#277da1', 
+#                       '#f94144')
+
+wild_PCA_plot = wild_PCA  %>% 
+  ggplot(aes(x = PC1, 
+             y = PC2))+
+  # geom_point(aes(col = morph_full_temp), 
+  #            size = 3)+
+  geom_hline(yintercept = 0, 
+             col = 'black')+
+  geom_vline(xintercept = 0, 
+             col = 'black')+
+  stat_ellipse(aes(group = Lake_morph, 
+                   fill = Lake_morph,
+                   color = Lake_morph), 
+               alpha = 0.25, 
+               level = p.ell,
+               type = "norm",
+               geom = "polygon")+
+  geom_line(data = wild_off_means, 
+            aes(x = PC1, 
+                y = PC2, 
+                group = Lake_fixed), 
+            col = 'black', 
+            size = 2)+
+  geom_point(data = wild_off_means, 
+             aes(x = PC1, 
+                 y = PC2),
+             col = 'black',
+             size = 4)+
+  geom_point(data = wild_off_means, 
+             aes(x = PC1, 
+                 y = PC2, 
+                 col = Lake_morph), 
+             size = 3)+
+  scale_colour_manual(values = wild_full_temp_cols)+
+  scale_fill_manual(values = wild_full_temp_cols)+
+  labs(title = 'A) Wild (Grandparental) traits')
+
+
+
+wild_PC_strong_loadings = wild_pca$rotation %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  rename(traits = rowname) %>% 
+  as_tibble() %>%
+  dplyr::select(traits, 
+                PC1, 
+                PC2)%>% 
+  pivot_longer(cols = c(PC1, PC2),
+               names_to = "PC",
+               values_to = "loading")
+
+wild_load_super_PC1 = wild_pca$rotation %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  rename(traits = rowname) %>% 
+  as_tibble() %>%
+  dplyr::select(traits, 
+                PC1:PC2)%>% 
+  group_by(traits) %>% 
+  filter(abs(PC1) >0.2)
+
+wild_load_super_PC2 = wild_pca$rotation %>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  rename(traits = rowname) %>% 
+  as_tibble() %>%
+  dplyr::select(traits, 
+                PC1:PC2)%>% 
+  group_by(traits) %>% 
+  filter(abs(PC2) >0.2)
+
+
+
+load_cols = c('#005f73', 
+              '#ca6702')
+wild_trait_loading_rank = ggplot(wild_PC_strong_loadings,
+                                aes(x = reorder(traits, loading),
+                                    y = loading,
+                                    fill = PC)) +
+  geom_col(show.legend = FALSE) +
+  geom_hline(yintercept = 0.2, 
+             linewidth = 2)+
+  geom_hline(yintercept = -0.2, 
+             linewidth = 2)+
+  scale_fill_manual(values = load_cols)+
+  facet_wrap(~ PC, scales = "free_y") +
+  coord_flip() +
+  theme_bw() +
+  labs(x = "Trait", y = "Loading", 
+       title = 'PC loadings')+
+  theme(strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'))
+
+
+wild_combo_plot = wild_PCA_plot+wild_trait_loading_rank
+
 
 

@@ -30,7 +30,7 @@ wild_meta = read_csv('Wild_Univariate_traits.csv') %>%
                            'SKRW', 
                            'CSWY', 
                            'GTS')) %>% 
-  select(rowname, 
+  dplyr::select(rowname, 
          Order, 
          ImageID, 
          Lake, 
@@ -50,13 +50,21 @@ wild_lmk_dist = bind_cols(wild_meta,
                           wild_lmk_dist)
 
 wild_dist = wild_lmk_dist %>% 
-  select(7:41)
+  dplyr::select(7:41)
 
-# wild_scaled_dist = scale(wild_dist, 
-#       center = T, 
-#       scale = T) %>% 
-#   as_tibble() 
-# 
+wild_scaled_dist = scale(wild_dist,
+      center = T,
+      scale = T) %>%
+  as_tibble()
+
+
+wild_meta = wild_lmk_dist %>% 
+  dplyr::select(1, 4:6)
+
+bind_cols(wild_meta, 
+          wild_scaled_dist) %>% 
+  write_csv('WILD_SCALED_FIXED_27.05.2026.csv')
+
 
 # lmk_dist = geomorph.data.frame(lmk_dist)
 wild_lmk_matrix = as.matrix(wild_dist)
