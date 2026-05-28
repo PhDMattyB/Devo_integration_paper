@@ -776,9 +776,9 @@ log_rats %>%
          log_rat_WGP_vs_TGP > -0.1)
 
 
-log_rats %>%
-  # dplyr::select(trait, 
-  #               log_rat_WGP_vs_TGP) %>% 
+log_rats_plot = log_rats %>%
+  dplyr::select(trait,
+                log_rat_WGP_vs_TGP) %>%
   pivot_longer(
     -trait,
     names_to = "comparison",
@@ -786,10 +786,17 @@ log_rats %>%
   ggplot(aes(comparison, trait, fill = pct_diff)) +
   geom_tile(col = 'black') +
   scale_fill_gradient2(
-    low = "#480355",
+    low = "#47126b",
     mid = "white",
-    high = "#90fcf9"
+    high = "#ea698b"
   ) 
+
+ggsave('log_ratio_WGP_pink_TGP_purple.tiff', 
+       plot = log_rats_plot, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 10, 
+       height = 15)
 
 ## intersections between data sets
 
