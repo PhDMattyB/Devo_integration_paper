@@ -720,6 +720,100 @@ TGP_RV_Perm_plot = ggplot(TGP_rv_df, aes(x = TGP_null_rv)) +
 
 
 
+
+
+# Compare effect sizes to diff mats ---------------------------------------
+
+F2_trait_effect_0.75 = F2_trait_effect %>% 
+  as_tibble() %>% 
+  filter(effect_size >= 0.75) %>% 
+  dplyr::select(trait, 
+                effect_size)
+WGP_trait_effect_0.75 = WGP_trait_effect %>% 
+  as_tibble() %>% 
+  filter(effect_size >= 0.75) %>% 
+  dplyr::select(trait, 
+                effect_size)
+TGP_trait_effect_0.75 = TGP_trait_effect %>% 
+  as_tibble() %>% 
+  filter(effect_size >= 0.75) %>% 
+  dplyr::select(trait, 
+                effect_size)
+
+
+log_rats = inner_join(F2_trait_effect, 
+           WGP_trait_effect, 
+           by = 'trait') %>% 
+  inner_join(., 
+             TGP_trait_effect, 
+             by = 'trait') %>% 
+  dplyr::select(-starts_with('PC')) %>% 
+  rename(F2_eff_size = 2, 
+         WGP_eff_size = 3, 
+         TGP_eff_size = 4)%>%
+  mutate(
+    log_rat_WGP_vs_F2 = log2(WGP_eff_size / F2_eff_size),
+    log_rat_TGP_vs_F2 = log2(TGP_eff_size / F2_eff_size), 
+    log_rat_WGP_vs_TGP = log2(WGP_eff_size/TGP_eff_size)) %>% 
+  dplyr::select(trait, contains('log_rat'))
+
+log_rats %>% 
+  filter(log_rat_WGP_vs_TGP > 0.5)
+
+log_rats %>% 
+  filter(log_rat_WGP_vs_TGP < 0.5, 
+         log_rat_WGP_vs_TGP > 0.1)
+
+log_rats %>% 
+  filter(log_rat_WGP_vs_TGP < -0.5)
+
+log_rats %>% 
+  filter(log_rat_WGP_vs_TGP < -0.1, 
+         log_rat_WGP_vs_TGP > -0.5)
+
+log_rats %>% 
+  filter(log_rat_WGP_vs_TGP < 0.1, 
+         log_rat_WGP_vs_TGP > -0.1)
+
+
+log_rats %>%
+  # dplyr::select(trait, 
+  #               log_rat_WGP_vs_TGP) %>% 
+  pivot_longer(
+    -trait,
+    names_to = "comparison",
+    values_to = "pct_diff") %>%
+  ggplot(aes(comparison, trait, fill = pct_diff)) +
+  geom_tile(col = 'black') +
+  scale_fill_gradient2(
+    low = "#480355",
+    mid = "white",
+    high = "#90fcf9"
+  ) 
+
+## intersections between data sets
+
+inner_join(F2_trait_effect_0.75, 
+          WGP_trait_effect_0.75, 
+          by = 'trait')
+
+inner_join(F2_trait_effect_0.75, 
+           TGP_trait_effect_0.75, 
+           by = 'trait')
+
+inner_join(WGP_trait_effect_0.75, 
+           TGP_trait_effect_0.75, 
+           by = 'trait')
+
+anti_join(F2_trait_effect_0.75, 
+          WGP_trait_effect_0.75, 
+          by = 'trait')
+
+anti_join(WGP_trait_effect_0.75,
+          F2_trait_effect_0.75, 
+          by = 'trait')
+
+
 # Combo plots -------------------------------------------------------------
 
 eco_diff_combo = F2_Ecotype_diff_mat_plot+WGP_Ecotype_diff_mat_plot+TGP_Ecotype_diff_mat_plot
