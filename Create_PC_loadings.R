@@ -167,9 +167,11 @@ F2_Ecotype_diff_mat_plot = ggplot(F2_diff_mat_long,
     x = "PC axis",
     y = "Trait",
     fill = "Δ loading",
-    title = "Difference in trait–PC loadings (Warm - Cold)") +
+    title = "A) F2 phenotype") +
   theme(
-    axis.text.y = element_text(size = 6))
+    axis.text.y = element_text(size = 6), 
+    axis.title = element_blank(), 
+    legend.position = 'none')
 
 
 
@@ -189,10 +191,11 @@ F2_trait_effect_plot = ggplot(F2_trait_effect,
                    effect_size), 
            effect_size)) +
   geom_col(col = 'black',
-    fill = '#54478c') +
+    fill = '#81667a') +
+  ylim(0.0,1.2)+
+  labs(y = 'Absolute sum of r-values across axes')+
   coord_flip()+
-  labs(x = 'Effect size', 
-       y = 'Trait')
+  theme(axis.title.y = element_blank())
 
 
 # allCorrelations(
@@ -262,8 +265,12 @@ z = (obs - mean(null_rv)) / sd(null_rv)
 F2_rv_df <- data.frame(null_rv = null_rv)
 
 F2_RV_Perm_plot = ggplot(F2_rv_df, aes(x = null_rv)) +
-  geom_histogram(bins = 30, fill = "grey70", color = "white") +
-  geom_vline(aes(xintercept = obs), color = "red", linewidth = 1.2) +
+  geom_histogram(bins = 30, 
+                 fill = "#adb5bd", 
+                 color = "black") +
+  geom_vline(aes(xintercept = obs), 
+             color = "#81667a", 
+             linewidth = 1.2) +
   labs(
     x = "RV (null distribution)",
     y = "Frequency",
@@ -393,9 +400,11 @@ WGP_Ecotype_diff_mat_plot = ggplot(WGP_diff_mat_long,
     x = "PC axis",
     y = "Trait",
     fill = "Δ loading",
-    title = "Difference in trait–PC loadings (Warm - Cold)") +
+    title = "B) Within-generational plasticity") +
   theme(
-    axis.text.y = element_text(size = 6))
+    axis.text.y = element_text(size = 6),
+    axis.title = element_blank(), 
+    legend.position = 'none')
 
 
 # WGP data - Effect size --------------------------------------------------
@@ -412,10 +421,11 @@ WGP_trait_effect_plot = ggplot(WGP_trait_effect,
                                           effect_size), 
                                   effect_size)) +
   geom_col(col = 'black',
-           fill = '#7785ac') +
+           fill = '#92b4a7') +
   coord_flip()+
-  labs(x = 'Effect size', 
-       y = 'Trait')
+  ylim(0.0, 1.2)+
+  labs(y = 'Absolute sum of r-values across axes')+
+  theme(axis.title.y = element_blank())
 
 
 # WGP data - Permutation test RV coefficient ------------------------------
@@ -476,9 +486,14 @@ WGP_z = (WGP_obs - mean(WGP_null_rv)) / sd(WGP_null_rv)
 
 WGP_rv_df <- data.frame(WGP_null_rv = WGP_null_rv)
 
-WGP_RV_Perm_plot = ggplot(WGP_rv_df, aes(x = WGP_null_rv)) +
-  geom_histogram(bins = 30, fill = "grey70", color = "white") +
-  geom_vline(aes(xintercept = WGP_obs), color = "red", linewidth = 1.2) +
+WGP_RV_Perm_plot = ggplot(WGP_rv_df, 
+                          aes(x = WGP_null_rv)) +
+  geom_histogram(bins = 30, 
+                 fill = "#adb5bd", 
+                 color = "black") +
+  geom_vline(aes(xintercept = WGP_obs), 
+             color = "#92b4a7", 
+             linewidth = 1.2) +
   labs(
     x = "RV (null distribution)",
     y = "Frequency",
@@ -607,9 +622,11 @@ TGP_Ecotype_diff_mat_plot = ggplot(TGP_diff_mat_long,
     x = "PC axis",
     y = "Trait",
     fill = "Δ loading",
-    title = "Difference in trait–PC loadings (Warm - Cold)") +
+    title = "C) Trans-generational plasticity") +
   theme(
-    axis.text.y = element_text(size = 6))
+    axis.text.y = element_text(size = 6), 
+    axis.title = element_blank(), 
+    legend.position = 'none')
 
 
 # TGP data - Effect size --------------------------------------------------
@@ -626,10 +643,11 @@ TGP_trait_effect_plot = ggplot(TGP_trait_effect,
                                            effect_size), 
                                    effect_size)) +
   geom_col(col = 'black',
-           fill = '#104911') +
+           fill = '#d1f0b1') +
   coord_flip()+
-  labs(x = 'Effect size', 
-       y = 'Trait')
+  ylim(0.0, 1.2)+
+  labs(y = 'Absolute sum of r-values across axes')+
+  theme(axis.title.y = element_blank())
 
 
 # TGP data - Permutation test RV coefficient ------------------------------
@@ -691,8 +709,8 @@ TGP_z = (TGP_obs - mean(TGP_null_rv)) / sd(TGP_null_rv)
 TGP_rv_df <- data.frame(TGP_null_rv = TGP_null_rv)
 
 TGP_RV_Perm_plot = ggplot(TGP_rv_df, aes(x = TGP_null_rv)) +
-  geom_histogram(bins = 30, fill = "grey70", color = "white") +
-  geom_vline(aes(xintercept = TGP_obs), color = "red", linewidth = 1.2) +
+  geom_histogram(bins = 30, fill = "#adb5bd", color = "black") +
+  geom_vline(aes(xintercept = TGP_obs), color = "#d1f0b1", linewidth = 1.2) +
   labs(
     x = "RV (null distribution)",
     y = "Frequency",
@@ -714,7 +732,7 @@ RV_perm_plot_combo = F2_RV_Perm_plot+WGP_RV_Perm_plot+TGP_RV_Perm_plot
 
 combo_of_kings = eco_diff_combo/trait_effect_combo/RV_perm_plot_combo
 
-ggsave('Patterns_Integration.svg', 
+ggsave('Patterns_Integration_Fixed.svg', 
        plot = combo_of_kings, 
        dpi = 'retina', 
        units = 'cm', 
