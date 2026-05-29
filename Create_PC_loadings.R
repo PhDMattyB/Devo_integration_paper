@@ -247,7 +247,7 @@ wild_rv_df <- data.frame(wild_null_rv = wild_null_rv)
 
 wild_RV_Perm_plot = ggplot(wild_rv_df, aes(x = wild_null_rv)) +
   geom_histogram(bins = 30, fill = "#adb5bd", color = "black") +
-  geom_vline(aes(xintercept = wild_obs), color = "#d1f0b1", linewidth = 1.2) +
+  geom_vline(aes(xintercept = wild_obs), color = "#480355", linewidth = 1.2) +
   labs(
     x = "RV (null distribution)",
     y = "Frequency",
@@ -999,17 +999,21 @@ log_rats %>%
 log_rats_plot = log_rats %>%
   dplyr::select(trait,
                 log_rat_WGP_vs_TGP) %>%
+  rename(`Log ratio WGP vs TGP` = 2) %>% 
   pivot_longer(
     -trait,
     names_to = "comparison",
     values_to = "pct_diff") %>%
-  ggplot(aes(comparison, trait, fill = pct_diff)) +
+  ggplot(aes(comparison, 
+             trait, 
+             fill = pct_diff)) +
   geom_tile(col = 'black') +
   scale_fill_gradient2(
     low = "#47126b",
     mid = "white",
-    high = "#ea698b"
-  ) 
+    high = "#ea698b") +
+  theme(legend.position = 'none', 
+        axis.title = element_blank())
 
 ggsave('log_ratio_WGP_pink_TGP_purple.svg', 
        plot = log_rats_plot, 

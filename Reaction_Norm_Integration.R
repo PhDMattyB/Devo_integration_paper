@@ -17,406 +17,406 @@ library(paran)
 library(broom.mixed)
 
 
-read_csv("F2_Original_univariate_traits_FIXED_11.02.2026.csv") %>% 
-  dplyr::select(Lake_morph, 
-                Ecotype_pair, 
-                lake_morph_Pair_Full_Temp, 
-                Morph, 
-                Offspring_temp, 
-                Parent_temp, 
-                jaw_length:caudal2_15_17) %>% View()
-  write_csv('F2_Orig_traits_scaled_formatted.csv', 
-            col_names = F)
-F2_orig_traits = read_csv('F2_Orig_traits_scaled_formatted.csv', 
-         col_names = c('Lake_morph', 
-                       'Ecotype_pair', 
-                       'lake_morph_pair_full_temp', 
-                       'morph', 
-                       'offspring_temp', 
-                       'parent_temp', 
-                       paste0("trait_", 1:33))) %>% 
-  separate(col = lake_morph_pair_full_temp, 
-           into = c('trash', 
-                    'full_fac'), 
-           sep = '_') %>%
-  pivot_longer(
-    cols = starts_with("trait_"),
-    names_to = "trait",
-    values_to = "value"
-  ) %>%
-  mutate(
-    ecotype = factor(morph, levels = c("Cold", "Warm")),  # adjust labels
-    offspring_temp = factor(offspring_temp, levels = c(12, 18)),
-    population = factor(Ecotype_pair)
-  )
-
-F2_orig_traits$offspring_temp = as.character(F2_orig_traits$offspring_temp)
-F2_orig_traits$parent_temp = as.character(F2_orig_traits$parent_temp)
-
-## F2 plasticity
-ggplot(F2_orig_traits, 
-       aes(x = offspring_temp,
-               y = value,
-               color = morph,
-               group = morph)) +
-  stat_summary(fun.y = mean,
-               fun.ymin = function(x) mean(x) - sd(x), 
-               fun.ymax = function(x) mean(x) + sd(x), 
-               geom = "pointrange") +
-  
-  stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
-  stat_summary(fun = mean, geom = "point", size = 1.5) +
-  
-  facet_wrap(~ trait) +
-  
-  scale_color_manual(values = c("Cold" = "#1b9e77",
-                                "Warm" = "#d95f02")) +
-  
-  labs(x = "Temperature (°C)",
-       y = "Standardized trait value (z-score)",
-       color = "Ecotype") +
-  
-  theme_bw() +
-  theme(
-    strip.text = element_text(size = 8),
-    panel.grid = element_blank(),
-    legend.position = "top"
-  )
-
-# ggplot(F2_orig_traits,
+# read_csv("F2_Original_univariate_traits_FIXED_11.02.2026.csv") %>% 
+#   dplyr::select(Lake_morph, 
+#                 Ecotype_pair, 
+#                 lake_morph_Pair_Full_Temp, 
+#                 Morph, 
+#                 Offspring_temp, 
+#                 Parent_temp, 
+#                 jaw_length:caudal2_15_17) %>% View()
+#   write_csv('F2_Orig_traits_scaled_formatted.csv', 
+#             col_names = F)
+# F2_orig_traits = read_csv('F2_Orig_traits_scaled_formatted.csv', 
+#          col_names = c('Lake_morph', 
+#                        'Ecotype_pair', 
+#                        'lake_morph_pair_full_temp', 
+#                        'morph', 
+#                        'offspring_temp', 
+#                        'parent_temp', 
+#                        paste0("trait_", 1:33))) %>% 
+#   separate(col = lake_morph_pair_full_temp, 
+#            into = c('trash', 
+#                     'full_fac'), 
+#            sep = '_') %>%
+#   pivot_longer(
+#     cols = starts_with("trait_"),
+#     names_to = "trait",
+#     values_to = "value"
+#   ) %>%
+#   mutate(
+#     ecotype = factor(morph, levels = c("Cold", "Warm")),  # adjust labels
+#     offspring_temp = factor(offspring_temp, levels = c(12, 18)),
+#     population = factor(Ecotype_pair)
+#   )
+# 
+# F2_orig_traits$offspring_temp = as.character(F2_orig_traits$offspring_temp)
+# F2_orig_traits$parent_temp = as.character(F2_orig_traits$parent_temp)
+# 
+# ## F2 plasticity
+# ggplot(F2_orig_traits, 
 #        aes(x = offspring_temp,
+#                y = value,
+#                color = morph,
+#                group = morph)) +
+#   stat_summary(fun.y = mean,
+#                fun.ymin = function(x) mean(x) - sd(x), 
+#                fun.ymax = function(x) mean(x) + sd(x), 
+#                geom = "pointrange") +
+#   
+#   stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
+#   stat_summary(fun = mean, geom = "point", size = 1.5) +
+#   
+#   facet_wrap(~ trait) +
+#   
+#   scale_color_manual(values = c("Cold" = "#1b9e77",
+#                                 "Warm" = "#d95f02")) +
+#   
+#   labs(x = "Temperature (°C)",
+#        y = "Standardized trait value (z-score)",
+#        color = "Ecotype") +
+#   
+#   theme_bw() +
+#   theme(
+#     strip.text = element_text(size = 8),
+#     panel.grid = element_blank(),
+#     legend.position = "top"
+#   )
+# 
+# # ggplot(F2_orig_traits,
+# #        aes(x = offspring_temp,
+# #            y = value,
+# #            color = ecotype,
+# #            group = interaction(Lake_morph, trait))) +
+# #   
+# #   geom_line(alpha = 0.15) +   # individual plasticity
+# #   
+# #   stat_summary(aes(group = interaction(Lake_morph)),
+# #                fun = mean, geom = "line", linewidth = 0.9) +
+# #   
+# #   facet_wrap(~ trait, scales = "free_y", ncol = 6) +
+# #   theme_bw()
+# 
+# ## F1 plasticity
+# 
+# ggplot(F2_orig_traits, 
+#        aes(x = parent_temp,
 #            y = value,
-#            color = ecotype,
-#            group = interaction(Lake_morph, trait))) +
+#            color = morph,
+#            group = morph)) +
+#   stat_summary(fun.y = mean,
+#                fun.ymin = function(x) mean(x) - sd(x), 
+#                fun.ymax = function(x) mean(x) + sd(x), 
+#                geom = "pointrange") +
 #   
-#   geom_line(alpha = 0.15) +   # individual plasticity
+#   stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
+#   stat_summary(fun = mean, geom = "point", size = 1.5) +
 #   
-#   stat_summary(aes(group = interaction(Lake_morph)),
-#                fun = mean, geom = "line", linewidth = 0.9) +
+#   facet_wrap(~ trait) +
 #   
-#   facet_wrap(~ trait, scales = "free_y", ncol = 6) +
-#   theme_bw()
-
-## F1 plasticity
-
-ggplot(F2_orig_traits, 
-       aes(x = parent_temp,
-           y = value,
-           color = morph,
-           group = morph)) +
-  stat_summary(fun.y = mean,
-               fun.ymin = function(x) mean(x) - sd(x), 
-               fun.ymax = function(x) mean(x) + sd(x), 
-               geom = "pointrange") +
-  
-  stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
-  stat_summary(fun = mean, geom = "point", size = 1.5) +
-  
-  facet_wrap(~ trait) +
-  
-  scale_color_manual(values = c("Cold" = "#1b9e77",
-                                "Warm" = "#d95f02")) +
-  
-  labs(x = "Temperature (°C)",
-       y = "Standardized trait value (z-score)",
-       color = "Ecotype") +
-  
-  theme_bw() +
-  theme(
-    strip.text = element_text(size = 8),
-    panel.grid = element_blank(),
-    legend.position = "top"
-  )
-
-ggplot(F2_orig_traits,
-       aes(x = full_fac,
-           y = value,
-           color = morph,
-           group = morph)) +
-  stat_summary(fun.y = mean,
-               fun.ymin = function(x) mean(x) - sd(x), 
-               fun.ymax = function(x) mean(x) + sd(x), 
-               geom = "pointrange") +
-  
-  stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
-  stat_summary(fun = mean, geom = "point", size = 1.5) +
-  
-  facet_wrap(~ trait) +
-  
-  scale_color_manual(values = c("Cold" = "#1b9e77",
-                                "Warm" = "#d95f02")) +
-  
-  labs(x = "Temperature (°C)",
-       y = "Standardized trait value (z-score)",
-       color = "Ecotype") +
-  
-  theme_bw() +
-  theme(
-    strip.text = element_text(size = 8),
-    panel.grid = element_blank(),
-    legend.position = "top"
-  )
+#   scale_color_manual(values = c("Cold" = "#1b9e77",
+#                                 "Warm" = "#d95f02")) +
+#   
+#   labs(x = "Temperature (°C)",
+#        y = "Standardized trait value (z-score)",
+#        color = "Ecotype") +
+#   
+#   theme_bw() +
+#   theme(
+#     strip.text = element_text(size = 8),
+#     panel.grid = element_blank(),
+#     legend.position = "top"
+#   )
+# 
+# ggplot(F2_orig_traits,
+#        aes(x = full_fac,
+#            y = value,
+#            color = morph,
+#            group = morph)) +
+#   stat_summary(fun.y = mean,
+#                fun.ymin = function(x) mean(x) - sd(x), 
+#                fun.ymax = function(x) mean(x) + sd(x), 
+#                geom = "pointrange") +
+#   
+#   stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
+#   stat_summary(fun = mean, geom = "point", size = 1.5) +
+#   
+#   facet_wrap(~ trait) +
+#   
+#   scale_color_manual(values = c("Cold" = "#1b9e77",
+#                                 "Warm" = "#d95f02")) +
+#   
+#   labs(x = "Temperature (°C)",
+#        y = "Standardized trait value (z-score)",
+#        color = "Ecotype") +
+#   
+#   theme_bw() +
+#   theme(
+#     strip.text = element_text(size = 8),
+#     panel.grid = element_blank(),
+#     legend.position = "top"
+#   )
 
 # WGP reaction norm plasticity --------------------------------------------
-read_csv("WGP_TRAITS_SCALED_FIXED_11.02.2026.csv")%>% 
-  dplyr::select(Lake_morph, 
-                Ecotype_pair, 
-                lake_morph_Pair_Full_Temp, 
-                Morph, 
-                Offspring_temp, 
-                Parent_temp, 
-                jaw_length:caudal2_15_17) %>% 
-write_csv('WGP_traits_scaled_formatted.csv', 
-          col_names = F)
-
-WGP_traits = read_csv('WGP_traits_scaled_formatted.csv', 
-                          col_names = c('Lake_morph', 
-                                        'Ecotype_pair', 
-                                        'lake_morph_pair_full_temp', 
-                                        'morph', 
-                                        'offspring_temp', 
-                                        'parent_temp', 
-                                        paste0("trait_", 1:33))) %>%
-  separate(col = lake_morph_pair_full_temp, 
-           into = c('trash', 
-                    'full_fac'), 
-           sep = '_') %>%   
-    pivot_longer(
-    cols = starts_with("trait_"),
-    names_to = "trait",
-    values_to = "value"
-  ) %>%
-  mutate(
-    ecotype = factor(morph, levels = c("Cold", "Warm")),  # adjust labels
-    offspring_temp = factor(offspring_temp, levels = c(12, 18)),
-    population = factor(Ecotype_pair), 
-    full_fac = factor(full_fac)
-  )
-
-WGP_traits$offspring_temp = as.character(WGP_traits$offspring_temp)
-WGP_traits$parent_temp = as.character(WGP_traits$parent_temp)
-
-## F2 plasticity
-ggplot(WGP_traits, 
-       aes(x = offspring_temp,
-           y = value,
-           color = morph,
-           group = morph)) +
-  stat_summary(fun.y = mean,
-               fun.ymin = function(x) mean(x) - sd(x), 
-               fun.ymax = function(x) mean(x) + sd(x), 
-               geom = "pointrange") +
-  
-  stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
-  stat_summary(fun = mean, geom = "point", size = 1.5) +
-  
-  facet_wrap(~ trait) +
-  
-  scale_color_manual(values = c("Cold" = "#1b9e77",
-                                "Warm" = "#d95f02")) +
-  
-  labs(x = "Temperature (°C)",
-       y = "Standardized trait value (z-score)",
-       color = "Ecotype") +
-  
-  theme_bw() +
-  theme(
-    strip.text = element_text(size = 8),
-    panel.grid = element_blank(),
-    legend.position = "top"
-  )
-
-
-## F1 plasticity
-
-ggplot(WGP_traits, 
-       aes(x = parent_temp,
-           y = value,
-           color = morph,
-           group = morph)) +
-  stat_summary(fun.y = mean,
-               fun.ymin = function(x) mean(x) - sd(x), 
-               fun.ymax = function(x) mean(x) + sd(x), 
-               geom = "pointrange") +
-  
-  stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
-  stat_summary(fun = mean, geom = "point", size = 1.5) +
-  
-  facet_wrap(~ trait) +
-  
-  scale_color_manual(values = c("Cold" = "#1b9e77",
-                                "Warm" = "#d95f02")) +
-  
-  labs(x = "Temperature (°C)",
-       y = "Standardized trait value (z-score)",
-       color = "Ecotype") +
-  
-  theme_bw() +
-  theme(
-    strip.text = element_text(size = 8),
-    panel.grid = element_blank(),
-    legend.position = "top"
-  )
-
-
-## full fac plasticity
-
-ggplot(WGP_traits, 
-       aes(x = full_fac,
-           y = value,
-           color = morph,
-           group = morph)) +
-  stat_summary(fun.y = mean,
-               fun.ymin = function(x) mean(x) - sd(x), 
-               fun.ymax = function(x) mean(x) + sd(x), 
-               geom = "pointrange") +
-  
-  stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
-  stat_summary(fun = mean, geom = "point", size = 1.5) +
-  
-  facet_wrap(~ trait) +
-  
-  scale_color_manual(values = c("Cold" = "#1b9e77",
-                                "Warm" = "#d95f02")) +
-  
-  labs(x = "Temperature (°C)",
-       y = "Standardized trait value (z-score)",
-       color = "Ecotype") +
-  
-  theme_bw() +
-  theme(
-    strip.text = element_text(size = 8),
-    panel.grid = element_blank(),
-    legend.position = "top"
-  )
-
+# read_csv("WGP_TRAITS_SCALED_FIXED_11.02.2026.csv")%>% 
+#   dplyr::select(Lake_morph, 
+#                 Ecotype_pair, 
+#                 lake_morph_Pair_Full_Temp, 
+#                 Morph, 
+#                 Offspring_temp, 
+#                 Parent_temp, 
+#                 jaw_length:caudal2_15_17) %>% 
+# write_csv('WGP_traits_scaled_formatted.csv', 
+#           col_names = F)
+# 
+# WGP_traits = read_csv('WGP_traits_scaled_formatted.csv', 
+#                           col_names = c('Lake_morph', 
+#                                         'Ecotype_pair', 
+#                                         'lake_morph_pair_full_temp', 
+#                                         'morph', 
+#                                         'offspring_temp', 
+#                                         'parent_temp', 
+#                                         paste0("trait_", 1:33))) %>%
+#   separate(col = lake_morph_pair_full_temp, 
+#            into = c('trash', 
+#                     'full_fac'), 
+#            sep = '_') %>%   
+#     pivot_longer(
+#     cols = starts_with("trait_"),
+#     names_to = "trait",
+#     values_to = "value"
+#   ) %>%
+#   mutate(
+#     ecotype = factor(morph, levels = c("Cold", "Warm")),  # adjust labels
+#     offspring_temp = factor(offspring_temp, levels = c(12, 18)),
+#     population = factor(Ecotype_pair), 
+#     full_fac = factor(full_fac)
+#   )
+# 
+# WGP_traits$offspring_temp = as.character(WGP_traits$offspring_temp)
+# WGP_traits$parent_temp = as.character(WGP_traits$parent_temp)
+# 
+# ## F2 plasticity
+# ggplot(WGP_traits, 
+#        aes(x = offspring_temp,
+#            y = value,
+#            color = morph,
+#            group = morph)) +
+#   stat_summary(fun.y = mean,
+#                fun.ymin = function(x) mean(x) - sd(x), 
+#                fun.ymax = function(x) mean(x) + sd(x), 
+#                geom = "pointrange") +
+#   
+#   stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
+#   stat_summary(fun = mean, geom = "point", size = 1.5) +
+#   
+#   facet_wrap(~ trait) +
+#   
+#   scale_color_manual(values = c("Cold" = "#1b9e77",
+#                                 "Warm" = "#d95f02")) +
+#   
+#   labs(x = "Temperature (°C)",
+#        y = "Standardized trait value (z-score)",
+#        color = "Ecotype") +
+#   
+#   theme_bw() +
+#   theme(
+#     strip.text = element_text(size = 8),
+#     panel.grid = element_blank(),
+#     legend.position = "top"
+#   )
+# 
+# 
+# ## F1 plasticity
+# 
+# ggplot(WGP_traits, 
+#        aes(x = parent_temp,
+#            y = value,
+#            color = morph,
+#            group = morph)) +
+#   stat_summary(fun.y = mean,
+#                fun.ymin = function(x) mean(x) - sd(x), 
+#                fun.ymax = function(x) mean(x) + sd(x), 
+#                geom = "pointrange") +
+#   
+#   stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
+#   stat_summary(fun = mean, geom = "point", size = 1.5) +
+#   
+#   facet_wrap(~ trait) +
+#   
+#   scale_color_manual(values = c("Cold" = "#1b9e77",
+#                                 "Warm" = "#d95f02")) +
+#   
+#   labs(x = "Temperature (°C)",
+#        y = "Standardized trait value (z-score)",
+#        color = "Ecotype") +
+#   
+#   theme_bw() +
+#   theme(
+#     strip.text = element_text(size = 8),
+#     panel.grid = element_blank(),
+#     legend.position = "top"
+#   )
+# 
+# 
+# ## full fac plasticity
+# 
+# ggplot(WGP_traits, 
+#        aes(x = full_fac,
+#            y = value,
+#            color = morph,
+#            group = morph)) +
+#   stat_summary(fun.y = mean,
+#                fun.ymin = function(x) mean(x) - sd(x), 
+#                fun.ymax = function(x) mean(x) + sd(x), 
+#                geom = "pointrange") +
+#   
+#   stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
+#   stat_summary(fun = mean, geom = "point", size = 1.5) +
+#   
+#   facet_wrap(~ trait) +
+#   
+#   scale_color_manual(values = c("Cold" = "#1b9e77",
+#                                 "Warm" = "#d95f02")) +
+#   
+#   labs(x = "Temperature (°C)",
+#        y = "Standardized trait value (z-score)",
+#        color = "Ecotype") +
+#   
+#   theme_bw() +
+#   theme(
+#     strip.text = element_text(size = 8),
+#     panel.grid = element_blank(),
+#     legend.position = "top"
+#   )
+# 
 
 
 
 # TGP reaction norm plasticity --------------------------------------------
 
-
-read_csv('TGP_TRAITS_SCALED_FIXED_11.02.2026')%>% 
-  dplyr::select(Lake_morph, 
-                Ecotype_pair, 
-                lake_morph_Pair_Full_Temp, 
-                Morph, 
-                Offspring_temp, 
-                Parent_temp, 
-                jaw_length:caudal2_15_17) %>% 
-  write_csv('TGP_traits_scaled_formatted.csv', 
-            col_names = F)
-
-TGP_traits = read_csv('TGP_traits_scaled_formatted.csv', 
-                      col_names = c('Lake_morph', 
-                                    'Ecotype_pair', 
-                                    'lake_morph_pair_full_temp', 
-                                    'morph', 
-                                    'offspring_temp', 
-                                    'parent_temp', 
-                                    paste0("trait_", 1:33))) %>%
-  separate(col = lake_morph_pair_full_temp, 
-           into = c('trash', 
-                    'full_fac'), 
-           sep = '_') %>%   
-  pivot_longer(
-    cols = starts_with("trait_"),
-    names_to = "trait",
-    values_to = "value"
-  ) %>%
-  mutate(
-    ecotype = factor(morph, levels = c("Cold", "Warm")),  # adjust labels
-    offspring_temp = factor(offspring_temp, levels = c(12, 18)),
-    population = factor(Ecotype_pair), 
-    full_fac = factor(full_fac)
-  )
-
-TGP_traits$offspring_temp = as.character(TGP_traits$offspring_temp)
-TGP_traits$parent_temp = as.character(TGP_traits$parent_temp)
-
-## F2 plasticity
-ggplot(TGP_traits, 
-       aes(x = offspring_temp,
-           y = value,
-           color = morph,
-           group = morph)) +
-  
-  stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
-  stat_summary(fun = mean, geom = "point", size = 1.5) +
-  
-  facet_wrap(~ trait) +
-  
-  scale_color_manual(values = c("Cold" = "#1b9e77",
-                                "Warm" = "#d95f02")) +
-  
-  labs(x = "Temperature (°C)",
-       y = "Standardized trait value (z-score)",
-       color = "Ecotype") +
-  
-  theme_bw() +
-  theme(
-    strip.text = element_text(size = 8),
-    panel.grid = element_blank(),
-    legend.position = "top"
-  )
-
-
-## F1 plasticity
-
-ggplot(TGP_traits, 
-       aes(x = parent_temp,
-           y = value,
-           color = morph,
-           group = morph)) +
-  
-  stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
-  stat_summary(fun = mean, geom = "point", size = 1.5) +
-  
-  facet_wrap(~ trait) +
-  
-  scale_color_manual(values = c("Cold" = "#1b9e77",
-                                "Warm" = "#d95f02")) +
-  
-  labs(x = "Temperature (°C)",
-       y = "Standardized trait value (z-score)",
-       color = "Ecotype") +
-  
-  theme_bw() +
-  theme(
-    strip.text = element_text(size = 8),
-    panel.grid = element_blank(),
-    legend.position = "top"
-  )
-
-
-## full fac plasticity
-
-ggplot(TGP_traits, 
-       aes(x = full_fac,
-           y = value,
-           color = morph,
-           group = morph)) +
-  
-  stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
-  stat_summary(fun = mean, geom = "point", size = 1.5) +
-  
-  facet_wrap(~ trait) +
-  
-  scale_color_manual(values = c("Cold" = "#1b9e77",
-                                "Warm" = "#d95f02")) +
-  
-  labs(x = "Temperature (°C)",
-       y = "Standardized trait value (z-score)",
-       color = "Ecotype") +
-  
-  theme_bw() +
-  theme(
-    strip.text = element_text(size = 8),
-    panel.grid = element_blank(),
-    legend.position = "top"
-  )
-
-
+# 
+# read_csv('TGP_TRAITS_SCALED_FIXED_11.02.2026')%>% 
+#   dplyr::select(Lake_morph, 
+#                 Ecotype_pair, 
+#                 lake_morph_Pair_Full_Temp, 
+#                 Morph, 
+#                 Offspring_temp, 
+#                 Parent_temp, 
+#                 jaw_length:caudal2_15_17) %>% 
+#   write_csv('TGP_traits_scaled_formatted.csv', 
+#             col_names = F)
+# 
+# TGP_traits = read_csv('TGP_traits_scaled_formatted.csv', 
+#                       col_names = c('Lake_morph', 
+#                                     'Ecotype_pair', 
+#                                     'lake_morph_pair_full_temp', 
+#                                     'morph', 
+#                                     'offspring_temp', 
+#                                     'parent_temp', 
+#                                     paste0("trait_", 1:33))) %>%
+#   separate(col = lake_morph_pair_full_temp, 
+#            into = c('trash', 
+#                     'full_fac'), 
+#            sep = '_') %>%   
+#   pivot_longer(
+#     cols = starts_with("trait_"),
+#     names_to = "trait",
+#     values_to = "value"
+#   ) %>%
+#   mutate(
+#     ecotype = factor(morph, levels = c("Cold", "Warm")),  # adjust labels
+#     offspring_temp = factor(offspring_temp, levels = c(12, 18)),
+#     population = factor(Ecotype_pair), 
+#     full_fac = factor(full_fac)
+#   )
+# 
+# TGP_traits$offspring_temp = as.character(TGP_traits$offspring_temp)
+# TGP_traits$parent_temp = as.character(TGP_traits$parent_temp)
+# 
+# ## F2 plasticity
+# ggplot(TGP_traits, 
+#        aes(x = offspring_temp,
+#            y = value,
+#            color = morph,
+#            group = morph)) +
+#   
+#   stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
+#   stat_summary(fun = mean, geom = "point", size = 1.5) +
+#   
+#   facet_wrap(~ trait) +
+#   
+#   scale_color_manual(values = c("Cold" = "#1b9e77",
+#                                 "Warm" = "#d95f02")) +
+#   
+#   labs(x = "Temperature (°C)",
+#        y = "Standardized trait value (z-score)",
+#        color = "Ecotype") +
+#   
+#   theme_bw() +
+#   theme(
+#     strip.text = element_text(size = 8),
+#     panel.grid = element_blank(),
+#     legend.position = "top"
+#   )
+# 
+# 
+# ## F1 plasticity
+# 
+# ggplot(TGP_traits, 
+#        aes(x = parent_temp,
+#            y = value,
+#            color = morph,
+#            group = morph)) +
+#   
+#   stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
+#   stat_summary(fun = mean, geom = "point", size = 1.5) +
+#   
+#   facet_wrap(~ trait) +
+#   
+#   scale_color_manual(values = c("Cold" = "#1b9e77",
+#                                 "Warm" = "#d95f02")) +
+#   
+#   labs(x = "Temperature (°C)",
+#        y = "Standardized trait value (z-score)",
+#        color = "Ecotype") +
+#   
+#   theme_bw() +
+#   theme(
+#     strip.text = element_text(size = 8),
+#     panel.grid = element_blank(),
+#     legend.position = "top"
+#   )
+# 
+# 
+# ## full fac plasticity
+# 
+# ggplot(TGP_traits, 
+#        aes(x = full_fac,
+#            y = value,
+#            color = morph,
+#            group = morph)) +
+#   
+#   stat_summary(fun = mean, geom = "line", linewidth = 0.6, alpha = 0.8) +
+#   stat_summary(fun = mean, geom = "point", size = 1.5) +
+#   
+#   facet_wrap(~ trait) +
+#   
+#   scale_color_manual(values = c("Cold" = "#1b9e77",
+#                                 "Warm" = "#d95f02")) +
+#   
+#   labs(x = "Temperature (°C)",
+#        y = "Standardized trait value (z-score)",
+#        color = "Ecotype") +
+#   
+#   theme_bw() +
+#   theme(
+#     strip.text = element_text(size = 8),
+#     panel.grid = element_blank(),
+#     legend.position = "top"
+#   )
+# 
+# 
 
 # PCA approach ------------------------------------------------------------
 
@@ -449,9 +449,8 @@ scores <- as.data.frame(pca$x[, 1:7])
 F2_PCA <- bind_cols(F2_data, scores)
 
 F2_off_means <- F2_PCA %>%
-  group_by(Morph,
-           Offspring_temp, 
-           Parent_temp) %>%
+  group_by(Lake_morph, 
+           Ecotype_pair) %>%
   summarise(
     PC1 = mean(PC1),
     PC2 = mean(PC2),
@@ -461,13 +460,14 @@ F2_off_means <- F2_PCA %>%
     PC6 = mean(PC6),
     PC7 = mean(PC7),
     .groups = "drop"
-  ) %>% 
-  unite(col = morph_full_temp, 
-        c('Morph', 
-          'Offspring_temp', 
-          'Parent_temp'), 
-        sep = '_', 
-        remove = F)
+  ) 
+# %>% 
+#   unite(col = morph_full_temp, 
+#         c('Morph', 
+#           'Offspring_temp', 
+#           'Parent_temp'), 
+#         sep = '_', 
+#         remove = F)
 
 WC_temp_cols = c('#264653', 
                  '#2a9d8f', 
@@ -482,6 +482,15 @@ WC_full_temp_cols = c('#277da1',
                  '#f9c74f', 
                  '#f9844a', 
                  '#f94144')
+
+wild_full_temp_cols = c('#277da1', 
+                        '#f94144',
+                        '#577590', 
+                        '#f9844a',
+                        '#4d908e',
+                        '#f9c74f',
+                        '#43aa8b', 
+                        '#f0f3bd')
 
 p.ell <- 0.95
 
@@ -500,13 +509,19 @@ F2_orig_pca_plot = F2_PCA %>%
              col = 'black')+
   geom_vline(xintercept = 0, 
              col = 'black')+
-  stat_ellipse(aes(group = morph_full_temp, 
-                   fill = morph_full_temp,
-                   color = morph_full_temp), 
+  stat_ellipse(aes(group = Lake_morph, 
+                   fill = Lake_morph,
+                   color = Lake_morph), 
                alpha = 0.25, 
                level = p.ell,
                type = "norm",
                geom = "polygon")+
+  geom_line(data = F2_off_means, 
+            aes(x = PC1, 
+                y = PC2, 
+                group = Ecotype_pair), 
+            col = 'black', 
+            size = 2)+
   geom_point(data = F2_off_means, 
              aes(x = PC1, 
                  y = PC2),
@@ -515,10 +530,10 @@ F2_orig_pca_plot = F2_PCA %>%
   geom_point(data = F2_off_means, 
              aes(x = PC1, 
                  y = PC2, 
-                 col = morph_full_temp), 
+                 col = Lake_morph), 
              size = 3)+
-  scale_colour_manual(values = WC_full_temp_cols)+
-  scale_fill_manual(values = WC_full_temp_cols)+
+  scale_colour_manual(values = wild_full_temp_cols)+
+  scale_fill_manual(values = wild_full_temp_cols)+
   labs(title = 'B)')+
   theme(legend.position = 'none')
   
@@ -626,7 +641,8 @@ trait_loading_rank = ggplot(PC_strong_loadings,
        title = 'PC loadings')+
   theme(strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(face = 'bold'), 
-        axis.title = element_blank())
+        axis.title = element_blank(), 
+        axis.text = element_text(size = 3))
 
 F2_orig_combo = F2_orig_pca_plot+trait_loading_rank
 
@@ -870,9 +886,8 @@ WGP_scores <- as.data.frame(WGP_pca$x[, 1:7])
 WGP_PCA <- bind_cols(WGP_data, WGP_scores)
 
 WGP_off_means <- WGP_PCA %>%
-  group_by(Morph,
-           Offspring_temp, 
-           Parent_temp) %>%
+  group_by(Lake_morph,
+           Ecotype_pair) %>%
   summarise(
     PC1 = mean(PC1),
     PC2 = mean(PC2), 
@@ -882,21 +897,23 @@ WGP_off_means <- WGP_PCA %>%
     PC6 = mean(PC6), 
     PC7 = mean(PC7),
     .groups = "drop"
-  ) %>% 
-  unite(col = morph_full_temp, 
-        c('Morph', 
-          'Offspring_temp', 
-          'Parent_temp'), 
-        sep = '_', 
-        remove = F)
+  ) 
+
+# %>% 
+#   unite(col = morph_full_temp, 
+#         c('Morph', 
+#           'Offspring_temp', 
+#           'Parent_temp'), 
+#         sep = '_', 
+#         remove = F)
 
 WGP_PCA_plot = WGP_PCA %>%
-  unite(col = morph_full_temp, 
-        c('Morph', 
-          'Offspring_temp', 
-          'Parent_temp'), 
-        sep = '_', 
-        remove = F) %>% 
+  # unite(col = morph_full_temp, 
+  #       c('Morph', 
+  #         'Offspring_temp', 
+  #         'Parent_temp'), 
+  #       sep = '_', 
+  #       remove = F) %>% 
   ggplot(aes(x = PC1, 
              y = PC2))+
   # geom_point(aes(col = morph_full_temp), 
@@ -905,13 +922,19 @@ WGP_PCA_plot = WGP_PCA %>%
              col = 'black')+
   geom_vline(xintercept = 0, 
              col = 'black')+
-  stat_ellipse(aes(group = morph_full_temp, 
-                   fill = morph_full_temp,
-                   color = morph_full_temp), 
+  stat_ellipse(aes(group = Lake_morph, 
+                   fill = Lake_morph,
+                   color = Lake_morph), 
                alpha = 0.25, 
                level = p.ell,
                type = "norm",
                geom = "polygon")+
+  geom_line(data = WGP_off_means, 
+            aes(x = PC1, 
+                y = PC2, 
+                group = Ecotype_pair), 
+            col = 'black', 
+            size = 2)+
   geom_point(data = WGP_off_means, 
              aes(x = PC1, 
                  y = PC2),
@@ -920,10 +943,10 @@ WGP_PCA_plot = WGP_PCA %>%
   geom_point(data = WGP_off_means, 
              aes(x = PC1, 
                  y = PC2, 
-                 col = morph_full_temp), 
+                 col = Lake_morph), 
              size = 3)+
-  scale_colour_manual(values = WC_full_temp_cols)+
-  scale_fill_manual(values = WC_full_temp_cols)+
+  scale_colour_manual(values = wild_full_temp_cols)+
+  scale_fill_manual(values = wild_full_temp_cols)+
   labs(title = 'C)')+
   theme(legend.position = 'none')
 
@@ -985,7 +1008,8 @@ WGP_trait_loading_rank = ggplot(WGP_PC_strong_loadings,
        title = 'PC loadings')+
   theme(strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(face = 'bold'), 
-        axis.title = element_blank())
+        axis.title = element_blank(),
+        axis.text = element_text(size = 3))
 
 
 WGP_combo_plot = WGP_PCA_plot+WGP_trait_loading_rank
@@ -1183,9 +1207,8 @@ TGP_scores <- as.data.frame(TGP_pca$x[, 1:7])
 TGP_PCA <- bind_cols(TGP_data, TGP_scores)
 
 TGP_off_means <- TGP_PCA %>%
-  group_by(Morph,
-           Offspring_temp, 
-           Parent_temp) %>%
+  group_by(Lake_morph, 
+           Ecotype_pair) %>%
   summarise(
     PC1 = mean(PC1),
     PC2 = mean(PC2),
@@ -1195,21 +1218,22 @@ TGP_off_means <- TGP_PCA %>%
     PC6 = mean(PC6), 
     PC7 = mean(PC7),
     .groups = "drop"
-  ) %>% 
-  unite(col = morph_full_temp, 
-        c('Morph', 
-          'Offspring_temp', 
-          'Parent_temp'), 
-        sep = '_', 
-        remove = F)
+  ) 
+# %>% 
+#   unite(col = morph_full_temp, 
+#         c('Morph', 
+#           'Offspring_temp', 
+#           'Parent_temp'), 
+#         sep = '_', 
+#         remove = F)
 
 TGP_PCA_plot = TGP_PCA %>%
-  unite(col = morph_full_temp, 
-        c('Morph', 
-          'Offspring_temp', 
-          'Parent_temp'), 
-        sep = '_', 
-        remove = F) %>% 
+  # unite(col = morph_full_temp, 
+  #       c('Morph', 
+  #         'Offspring_temp', 
+  #         'Parent_temp'), 
+  #       sep = '_', 
+  #       remove = F) %>% 
   ggplot(aes(x = PC1, 
              y = PC2))+
   # geom_point(aes(col = morph_full_temp), 
@@ -1218,13 +1242,19 @@ TGP_PCA_plot = TGP_PCA %>%
              col = 'black')+
   geom_vline(xintercept = 0, 
              col = 'black')+
-  stat_ellipse(aes(group = morph_full_temp, 
-                   fill = morph_full_temp,
-                   color = morph_full_temp), 
+  stat_ellipse(aes(group = Lake_morph, 
+                   fill = Lake_morph,
+                   color = Lake_morph), 
                alpha = 0.25, 
                level = p.ell,
                type = "norm",
                geom = "polygon")+
+  geom_line(data = TGP_off_means, 
+            aes(x = PC1, 
+                y = PC2, 
+                group = Ecotype_pair), 
+            col = 'black', 
+            size = 2)+
   geom_point(data = TGP_off_means, 
              aes(x = PC1, 
                  y = PC2),
@@ -1233,10 +1263,10 @@ TGP_PCA_plot = TGP_PCA %>%
   geom_point(data = TGP_off_means, 
              aes(x = PC1, 
                  y = PC2, 
-                 col = morph_full_temp), 
+                 col = Lake_morph), 
              size = 3)+
-  scale_colour_manual(values = WC_full_temp_cols)+
-  scale_fill_manual(values = WC_full_temp_cols)+
+  scale_colour_manual(values = wild_full_temp_cols)+
+  scale_fill_manual(values = wild_full_temp_cols)+
   labs(title = 'D)')+
   theme(legend.position = 'none')
 
@@ -1298,7 +1328,8 @@ TGP_trait_loading_rank = ggplot(TGP_PC_strong_loadings,
        title = 'PC loadings')+
   theme(strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(face = 'bold'), 
-        axis.title = element_blank())
+        axis.title = element_blank(),
+        axis.text = element_text(size = 3))
 
 
 TGP_combo_plot = TGP_PCA_plot+TGP_trait_loading_rank
@@ -1471,7 +1502,7 @@ ggsave('Multivariate_integration_PCA.svg',
        height = 40)  
 
 
-
+##
 # Compare high loadings PC1 PC2 -------------------------------------------
 
 F2_orig_super_PC1_traits = 
@@ -1618,7 +1649,9 @@ view(wild_traits)
 
 
 wild_trait_mat <- wild_traits %>%
-  dplyr::select(5:39) %>% 
+  dplyr::select(-Opercular_Rotation, 
+                -PreMax_Rotation) %>% 
+  dplyr::select(5:37) %>% 
   # dplyr::select(starts_with('value'))
   # dplyr::select(all_of(trait_names)) %>%
   as.matrix()
@@ -1760,7 +1793,8 @@ wild_trait_loading_rank = ggplot(wild_PC_strong_loadings,
        title = 'PC loadings')+
   theme(strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(face = 'bold'), 
-        axis.title = element_blank())
+        axis.title = element_blank(),
+        axis.text = element_text(size = 3))
 
 
 wild_combo_plot = wild_PCA_plot+wild_trait_loading_rank
