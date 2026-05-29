@@ -158,7 +158,7 @@ wild_Ecotype_diff_mat_plot = ggplot(wild_diff_mat_long,
     x = "PC axis",
     y = "Trait",
     fill = "Δ loading",
-    title = "A) wild - grandparental generation") +
+    title = "A)") +
   theme(
     axis.text.y = element_text(size = 6), 
     axis.title = element_blank(), 
@@ -182,7 +182,8 @@ wild_trait_effect_plot = ggplot(wild_trait_effect,
            fill = '#480355') +
   coord_flip()+
   ylim(0.0, 1.8)+
-  labs(y = 'Absolute sum of r-values across axes')+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'E)')+
   theme(axis.title.y = element_blank())
 
 
@@ -250,7 +251,7 @@ wild_RV_Perm_plot = ggplot(wild_rv_df, aes(x = wild_null_rv)) +
   labs(
     x = "RV (null distribution)",
     y = "Frequency",
-    title = "Permutation test of matrix similarity (RV)",
+    title = "I)",
     subtitle = paste0("Observed RV = ", round(wild_obs, 3))
   )
 
@@ -383,7 +384,7 @@ F2_Ecotype_diff_mat_plot = ggplot(F2_diff_mat_long,
     x = "PC axis",
     y = "Trait",
     fill = "Δ loading",
-    title = "B) F2 phenotype") +
+    title = "B)") +
   theme(
     axis.text.y = element_text(size = 6), 
     axis.title = element_blank(), 
@@ -409,7 +410,8 @@ F2_trait_effect_plot = ggplot(F2_trait_effect,
   geom_col(col = 'black',
     fill = '#81667a') +
   ylim(0.0,1.2)+
-  labs(y = 'Absolute sum of r-values across axes')+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'F)')+
   coord_flip()+
   theme(axis.title.y = element_blank())
 
@@ -490,7 +492,7 @@ F2_RV_Perm_plot = ggplot(F2_rv_df, aes(x = null_rv)) +
   labs(
     x = "RV (null distribution)",
     y = "Frequency",
-    title = "Permutation test of matrix similarity (RV)",
+    title = "J)",
     subtitle = paste0("Observed RV = ", round(obs, 3))
   )
 
@@ -616,7 +618,7 @@ WGP_Ecotype_diff_mat_plot = ggplot(WGP_diff_mat_long,
     x = "PC axis",
     y = "Trait",
     fill = "Δ loading",
-    title = "C) Within-generational plasticity") +
+    title = "C)") +
   theme(
     axis.text.y = element_text(size = 6),
     axis.title = element_blank(), 
@@ -640,7 +642,8 @@ WGP_trait_effect_plot = ggplot(WGP_trait_effect,
            fill = '#92b4a7') +
   coord_flip()+
   ylim(0.0, 1.2)+
-  labs(y = 'Absolute sum of r-values across axes')+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'G)')+
   theme(axis.title.y = element_blank())
 
 
@@ -713,7 +716,7 @@ WGP_RV_Perm_plot = ggplot(WGP_rv_df,
   labs(
     x = "RV (null distribution)",
     y = "Frequency",
-    title = "Permutation test of matrix similarity (RV)",
+    title = "K)",
     subtitle = paste0("Observed RV = ", round(WGP_obs, 3))
   )
 
@@ -838,7 +841,7 @@ TGP_Ecotype_diff_mat_plot = ggplot(TGP_diff_mat_long,
     x = "PC axis",
     y = "Trait",
     fill = "Δ loading",
-    title = "D) Trans-generational plasticity") +
+    title = "D)") +
   theme(
     axis.text.y = element_text(size = 6), 
     axis.title = element_blank(), 
@@ -862,7 +865,8 @@ TGP_trait_effect_plot = ggplot(TGP_trait_effect,
            fill = '#d1f0b1') +
   coord_flip()+
   ylim(0.0, 1.2)+
-  labs(y = 'Absolute sum of r-values across axes')+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'H)')+
   theme(axis.title.y = element_blank())
 
 
@@ -930,7 +934,7 @@ TGP_RV_Perm_plot = ggplot(TGP_rv_df, aes(x = TGP_null_rv)) +
   labs(
     x = "RV (null distribution)",
     y = "Frequency",
-    title = "Permutation test of matrix similarity (RV)",
+    title = "L)",
     subtitle = paste0("Observed RV = ", round(TGP_obs, 3))
   )
 
@@ -1007,7 +1011,7 @@ log_rats_plot = log_rats %>%
     high = "#ea698b"
   ) 
 
-ggsave('log_ratio_WGP_pink_TGP_purple.tiff', 
+ggsave('log_ratio_WGP_pink_TGP_purple.svg', 
        plot = log_rats_plot, 
        dpi = 'retina', 
        units = 'cm', 
@@ -1054,6 +1058,6 @@ ggsave('Patterns_Integration_Fixed.svg',
        plot = combo_of_kings, 
        dpi = 'retina', 
        units = 'cm', 
-       width = 40, 
-       height = 30)  
+       width = 35, 
+       height = 50)  
 
