@@ -39,6 +39,222 @@ cor_fun <- function(data, pc_cols, trait_cols) {
       r = estimate,
       p = p.value)
 }
+
+# wild data ----------------------------------------------------------------
+wild_data = read_csv("WILD_SCALED_FIXED_27.05.2026.csv") %>% 
+  dplyr::select(Lake_morph, 
+                rowname, 
+                Lake, 
+                Morph, 
+                5:39)
+
+
+wild_trait_mat <- wild_data %>%
+  dplyr::select(5:39) %>% 
+  # dplyr::select(starts_with('value'))
+  # dplyr::select(all_of(trait_names)) %>%
+  as.matrix()
+
+
+# wild data - PCA ----------------------------------------------------------
+wild_pca = prcomp(wild_trait_mat, 
+                  center = F, 
+                  scale. = F)
+
+paran(wild_trait_mat, iterations = 1000, graph = TRUE)
+
+wild_scores = as.data.frame(wild_pca$x[, 1:7])
+wild_PCA = bind_cols(wild_data, wild_scores)
+
+
+# wild data - trait/pc cor -------------------------------------------------
+wild_trait_cols = wild_PCA %>% 
+  dplyr::select(5:39) %>% 
+  names()
+
+wild_pc_cols = wild_PCA %>% 
+  dplyr::select(40:46) %>% 
+  names()
+
+wild_WC_loads = wild_PCA %>%
+  group_by(Morph) %>%
+  nest() %>%
+  mutate(
+    correlations = map(
+      data,
+      cor_fun,
+      pc_cols = wild_pc_cols,
+      trait_cols = wild_trait_cols)) %>%
+  dplyr::select(-data) %>%
+  unnest(correlations)
+
+## check graphically
+wild_WC_loads %>%
+  ggplot(aes(pc, 
+             trait, 
+             fill = r)) +
+  geom_tile() +
+  facet_wrap(~Morph) +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144",
+    limits = c(-1, 1)) +
+  theme(axis.text.y = element_text(size = 7), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.title = element_blank())
+
+wild_cold = wild_WC_loads %>%
+  filter(Morph == "Cold") %>%
+  dplyr::select(pc, trait, r_cold = r)
+
+wild_warm = wild_WC_loads %>%
+  filter(Morph == "Warm") %>%
+  dplyr::select(pc, trait, r_warm = r)
+
+
+# wild data - matrix differences -------------------------------------------
+wild_cold_mat <- wild_WC_loads %>%
+  ungroup() %>% 
+  filter(Morph == "Cold") %>%
+  dplyr::select(trait, pc, r) %>%
+  pivot_wider(names_from = pc,
+              values_from = r) %>%
+  column_to_rownames("trait") %>%
+  as.matrix()
+
+
+wild_warm_mat <- wild_WC_loads %>%
+  ungroup() %>% 
+  filter(Morph == "Warm") %>%
+  dplyr::select(trait, pc, r) %>%
+  ungroup() %>% 
+  pivot_wider(names_from = pc,
+              values_from = r) %>%
+  column_to_rownames("trait") %>%
+  as.matrix()
+wild_diff_mat <- wild_warm_mat - wild_cold_mat
+
+
+wild_diff_mat_long <- wild_diff_mat %>%
+  as.data.frame() %>%
+  rownames_to_column("trait") %>%
+  pivot_longer(
+    cols = -trait,
+    names_to = "PC",
+    values_to = "diff"
+  )
+wild_Ecotype_diff_mat_plot = ggplot(wild_diff_mat_long, 
+                                    aes(x = PC, 
+                                        y = trait, 
+                                        fill = diff)) +
+  geom_tile() +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144") +
+  labs(
+    x = "PC axis",
+    y = "Trait",
+    fill = "Δ loading",
+    title = "A) wild - grandparental generation") +
+  theme(
+    axis.text.y = element_text(size = 6), 
+    axis.title = element_blank(), 
+    legend.position = 'none')
+
+
+# wild data - Effect size --------------------------------------------------
+## Taking the difference matrix and finding per trait effect size
+wild_trait_effect <- wild_diff_mat %>%
+  as.data.frame() %>%
+  rownames_to_column("trait") %>%
+  mutate(
+    effect_size = rowSums(abs(across(where(is.numeric))))) %>%
+  arrange(desc(effect_size))
+
+wild_trait_effect_plot = ggplot(wild_trait_effect, 
+                                aes(reorder(trait, 
+                                            effect_size), 
+                                    effect_size)) +
+  geom_col(col = 'black',
+           fill = '#480355') +
+  coord_flip()+
+  ylim(0.0, 1.8)+
+  labs(y = 'Absolute sum of r-values across axes')+
+  theme(axis.title.y = element_blank())
+
+
+# wild data - Permutation test RV coefficient ------------------------------
+
+wild_perm_test_data = wild_PCA %>% 
+  dplyr::select(Morph, 
+                5:39, 
+                40:46)
+
+
+wild_obs <- RV(wild_cold_mat, wild_warm_mat)
+set.seed(123)
+
+wild_null_rv <- replicate(1000, {
+  
+  # 1. permute group labels in RAW data
+  permuted <- wild_perm_test_data %>%
+    mutate(Morph = sample(Morph))
+  
+  # 2. recompute correlations
+  perm_results <- permuted %>%
+    group_by(Morph) %>%
+    nest() %>%
+    mutate(
+      correlations = map(
+        data,
+        cor_fun,
+        pc_cols = pc_cols,
+        trait_cols = trait_cols)) %>% 
+    # dplyr::select(-data) %>%
+    unnest(correlations)
+  
+  # 3. build matrices
+  cold_perm <- perm_results %>%
+    filter(Morph == "Cold") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  warm_perm <- perm_results %>%
+    filter(Morph == "Warm") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  # 4. RV statistic
+  RV(cold_perm, warm_perm)
+})
+
+
+wild_delta_RV = mean(wild_null_rv) - wild_obs
+
+wild_z = (wild_obs - mean(wild_null_rv)) / sd(wild_null_rv)
+
+wild_rv_df <- data.frame(wild_null_rv = wild_null_rv)
+
+wild_RV_Perm_plot = ggplot(wild_rv_df, aes(x = wild_null_rv)) +
+  geom_histogram(bins = 30, fill = "#adb5bd", color = "black") +
+  geom_vline(aes(xintercept = wild_obs), color = "#d1f0b1", linewidth = 1.2) +
+  labs(
+    x = "RV (null distribution)",
+    y = "Frequency",
+    title = "Permutation test of matrix similarity (RV)",
+    subtitle = paste0("Observed RV = ", round(wild_obs, 3))
+  )
+
+
 # F2 data -----------------------------------------------------------------
 
 F2_data = read_csv("F2_Original_univariate_traits_FIXED_11.02.2026.csv") %>% 
@@ -167,7 +383,7 @@ F2_Ecotype_diff_mat_plot = ggplot(F2_diff_mat_long,
     x = "PC axis",
     y = "Trait",
     fill = "Δ loading",
-    title = "A) F2 phenotype") +
+    title = "B) F2 phenotype") +
   theme(
     axis.text.y = element_text(size = 6), 
     axis.title = element_blank(), 
@@ -400,7 +616,7 @@ WGP_Ecotype_diff_mat_plot = ggplot(WGP_diff_mat_long,
     x = "PC axis",
     y = "Trait",
     fill = "Δ loading",
-    title = "B) Within-generational plasticity") +
+    title = "C) Within-generational plasticity") +
   theme(
     axis.text.y = element_text(size = 6),
     axis.title = element_blank(), 
@@ -622,7 +838,7 @@ TGP_Ecotype_diff_mat_plot = ggplot(TGP_diff_mat_long,
     x = "PC axis",
     y = "Trait",
     fill = "Δ loading",
-    title = "C) Trans-generational plasticity") +
+    title = "D) Trans-generational plasticity") +
   theme(
     axis.text.y = element_text(size = 6), 
     axis.title = element_blank(), 
@@ -822,238 +1038,15 @@ anti_join(WGP_trait_effect_0.75,
 
 
 
-
-
-
-
-# wild plots --------------------------------------------------------------
-
-# wild data ----------------------------------------------------------------
-wild_data = read_csv("WILD_SCALED_FIXED_27.05.2026.csv") %>% 
-  dplyr::select(Lake_morph, 
-                rowname, 
-                Lake, 
-                Morph, 
-                5:39)
-
-
-wild_trait_mat <- wild_data %>%
-  dplyr::select(5:39) %>% 
-  # dplyr::select(starts_with('value'))
-  # dplyr::select(all_of(trait_names)) %>%
-  as.matrix()
-
-
-# wild data - PCA ----------------------------------------------------------
-wild_pca = prcomp(wild_trait_mat, 
-                 center = F, 
-                 scale. = F)
-
-paran(wild_trait_mat, iterations = 1000, graph = TRUE)
-
-wild_scores = as.data.frame(wild_pca$x[, 1:7])
-wild_PCA = bind_cols(wild_data, wild_scores)
-
-
-# wild data - trait/pc cor -------------------------------------------------
-wild_trait_cols = wild_PCA %>% 
-  dplyr::select(5:39) %>% 
-  names()
-
-wild_pc_cols = wild_PCA %>% 
-  dplyr::select(40:46) %>% 
-  names()
-
-wild_WC_loads = wild_PCA %>%
-  group_by(Morph) %>%
-  nest() %>%
-  mutate(
-    correlations = map(
-      data,
-      cor_fun,
-      pc_cols = wild_pc_cols,
-      trait_cols = wild_trait_cols)) %>%
-  dplyr::select(-data) %>%
-  unnest(correlations)
-
-## check graphically
-wild_WC_loads %>%
-  ggplot(aes(pc, 
-             trait, 
-             fill = r)) +
-  geom_tile() +
-  facet_wrap(~Morph) +
-  scale_fill_gradient2(
-    low = "#277da1",
-    mid = "white",
-    high = "#f94144",
-    limits = c(-1, 1)) +
-  theme(axis.text.y = element_text(size = 7), 
-        strip.background = element_rect(fill = 'white'), 
-        strip.text = element_text(face = 'bold'), 
-        axis.title = element_blank())
-
-wild_cold = wild_WC_loads %>%
-  filter(Morph == "Cold") %>%
-  dplyr::select(pc, trait, r_cold = r)
-
-wild_warm = wild_WC_loads %>%
-  filter(Morph == "Warm") %>%
-  dplyr::select(pc, trait, r_warm = r)
-
-
-# wild data - matrix differences -------------------------------------------
-wild_cold_mat <- wild_WC_loads %>%
-  ungroup() %>% 
-  filter(Morph == "Cold") %>%
-  dplyr::select(trait, pc, r) %>%
-  pivot_wider(names_from = pc,
-              values_from = r) %>%
-  column_to_rownames("trait") %>%
-  as.matrix()
-
-
-wild_warm_mat <- wild_WC_loads %>%
-  ungroup() %>% 
-  filter(Morph == "Warm") %>%
-  dplyr::select(trait, pc, r) %>%
-  ungroup() %>% 
-  pivot_wider(names_from = pc,
-              values_from = r) %>%
-  column_to_rownames("trait") %>%
-  as.matrix()
-wild_diff_mat <- wild_warm_mat - wild_cold_mat
-
-
-wild_diff_mat_long <- wild_diff_mat %>%
-  as.data.frame() %>%
-  rownames_to_column("trait") %>%
-  pivot_longer(
-    cols = -trait,
-    names_to = "PC",
-    values_to = "diff"
-  )
-wild_Ecotype_diff_mat_plot = ggplot(wild_diff_mat_long, 
-                                   aes(x = PC, 
-                                       y = trait, 
-                                       fill = diff)) +
-  geom_tile() +
-  scale_fill_gradient2(
-    low = "#277da1",
-    mid = "white",
-    high = "#f94144") +
-  labs(
-    x = "PC axis",
-    y = "Trait",
-    fill = "Δ loading",
-    title = "A) wild - grandparental generation") +
-  theme(
-    axis.text.y = element_text(size = 6), 
-    axis.title = element_blank(), 
-    legend.position = 'none')
-
-
-# wild data - Effect size --------------------------------------------------
-## Taking the difference matrix and finding per trait effect size
-wild_trait_effect <- wild_diff_mat %>%
-  as.data.frame() %>%
-  rownames_to_column("trait") %>%
-  mutate(
-    effect_size = rowSums(abs(across(where(is.numeric))))) %>%
-  arrange(desc(effect_size))
-
-wild_trait_effect_plot = ggplot(wild_trait_effect, 
-                               aes(reorder(trait, 
-                                           effect_size), 
-                                   effect_size)) +
-  geom_col(col = 'black',
-           fill = '#480355') +
-  coord_flip()+
-  ylim(0.0, 1.8)+
-  labs(y = 'Absolute sum of r-values across axes')+
-  theme(axis.title.y = element_blank())
-
-
-# wild data - Permutation test RV coefficient ------------------------------
-
-wild_perm_test_data = wild_PCA %>% 
-  dplyr::select(Morph, 
-                5:39, 
-                40:46)
-
-
-wild_obs <- RV(wild_cold_mat, wild_warm_mat)
-set.seed(123)
-
-wild_null_rv <- replicate(1000, {
-  
-  # 1. permute group labels in RAW data
-  permuted <- wild_perm_test_data %>%
-    mutate(Morph = sample(Morph))
-  
-  # 2. recompute correlations
-  perm_results <- permuted %>%
-    group_by(Morph) %>%
-    nest() %>%
-    mutate(
-      correlations = map(
-        data,
-        cor_fun,
-        pc_cols = pc_cols,
-        trait_cols = trait_cols)) %>% 
-    # dplyr::select(-data) %>%
-    unnest(correlations)
-  
-  # 3. build matrices
-  cold_perm <- perm_results %>%
-    filter(Morph == "Cold") %>%
-    ungroup() %>% 
-    dplyr::select(trait, pc, r) %>%
-    pivot_wider(names_from = pc, values_from = r) %>%
-    column_to_rownames("trait") %>%
-    as.matrix()
-  
-  warm_perm <- perm_results %>%
-    filter(Morph == "Warm") %>%
-    ungroup() %>% 
-    dplyr::select(trait, pc, r) %>%
-    pivot_wider(names_from = pc, values_from = r) %>%
-    column_to_rownames("trait") %>%
-    as.matrix()
-  
-  # 4. RV statistic
-  RV(cold_perm, warm_perm)
-})
-
-
-wild_delta_RV = mean(wild_null_rv) - wild_obs
-
-wild_z = (wild_obs - mean(wild_null_rv)) / sd(wild_null_rv)
-
-wild_rv_df <- data.frame(wild_null_rv = wild_null_rv)
-
-wild_RV_Perm_plot = ggplot(wild_rv_df, aes(x = wild_null_rv)) +
-  geom_histogram(bins = 30, fill = "#adb5bd", color = "black") +
-  geom_vline(aes(xintercept = wild_obs), color = "#d1f0b1", linewidth = 1.2) +
-  labs(
-    x = "RV (null distribution)",
-    y = "Frequency",
-    title = "Permutation test of matrix similarity (RV)",
-    subtitle = paste0("Observed RV = ", round(wild_obs, 3))
-  )
-
-
-
-
 # Combo plots -------------------------------------------------------------
 
-eco_diff_combo = F2_Ecotype_diff_mat_plot+WGP_Ecotype_diff_mat_plot+TGP_Ecotype_diff_mat_plot
+eco_diff_combo = wild_Ecotype_diff_mat_plot+F2_Ecotype_diff_mat_plot+WGP_Ecotype_diff_mat_plot+TGP_Ecotype_diff_mat_plot
 
 
-trait_effect_combo = F2_trait_effect_plot+WGP_trait_effect_plot+TGP_trait_effect_plot
+trait_effect_combo = wild_trait_effect_plot+F2_trait_effect_plot+WGP_trait_effect_plot+TGP_trait_effect_plot
 
 
-RV_perm_plot_combo = F2_RV_Perm_plot+WGP_RV_Perm_plot+TGP_RV_Perm_plot
+RV_perm_plot_combo = wild_RV_Perm_plot+F2_RV_Perm_plot+WGP_RV_Perm_plot+TGP_RV_Perm_plot
 
 combo_of_kings = eco_diff_combo/trait_effect_combo/RV_perm_plot_combo
 
