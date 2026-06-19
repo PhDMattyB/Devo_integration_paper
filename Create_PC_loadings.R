@@ -145,6 +145,29 @@ wild_diff_mat_long <- wild_diff_mat %>%
     names_to = "PC",
     values_to = "diff"
   )
+
+wild_diff_mat_long %>% 
+  # filter(PC == 'PC1') %>%
+  group_by(PC) %>%
+  filter(diff > 0.3) %>% 
+  arrange(PC, 
+          diff)
+
+wild_diff_mat_long %>% 
+  # filter(PC == 'PC1') %>%
+  group_by(PC) %>%
+  filter(diff < -0.3) %>% 
+  arrange(PC, 
+          diff)
+
+  # mutate(pos = sum(diff>0),
+  #        neg = sum(diff<0)) %>% 
+  # summarize(n_pos = sum(pos), 
+  #           n_neg = sum(neg)) %>%
+  # mutate(total = n_pos+n_neg) %>% 
+  # mutate(prop_pos = n_pos/total*100, 
+  #        prop_neg = n_neg/total*100)
+
 wild_Ecotype_diff_mat_plot = ggplot(wild_diff_mat_long, 
                                     aes(x = PC, 
                                         y = trait, 
@@ -370,6 +393,17 @@ F2_diff_mat_long <- F2_diff_mat %>%
     names_to = "PC",
     values_to = "diff"
   )
+
+F2_diff_mat_long %>% 
+  # filter(PC == 'PC1') %>%
+  group_by(PC) %>% 
+  mutate(pos = sum(diff>0),
+         neg = sum(diff<0)) %>% 
+  summarize(n_pos = sum(pos), 
+            n_neg = sum(neg)) %>%
+  mutate(total = n_pos+n_neg) %>% 
+  mutate(prop_pos = n_pos/total*100, 
+         prop_neg = n_neg/total*100)
 
 F2_Ecotype_diff_mat_plot = ggplot(F2_diff_mat_long, 
        aes(x = PC, 
@@ -605,6 +639,18 @@ WGP_diff_mat_long <- WGP_diff_mat %>%
     names_to = "PC",
     values_to = "diff"
   )
+
+WGP_diff_mat_long %>% 
+  # filter(PC == 'PC1') %>%
+  group_by(PC) %>% 
+  mutate(pos = sum(diff>0),
+         neg = sum(diff<0)) %>% 
+  summarize(n_pos = sum(pos), 
+            n_neg = sum(neg)) %>%
+  mutate(total = n_pos+n_neg) %>% 
+  mutate(prop_pos = n_pos/total*100, 
+         prop_neg = n_neg/total*100)
+
 WGP_Ecotype_diff_mat_plot = ggplot(WGP_diff_mat_long, 
                                   aes(x = PC, 
                                       y = trait, 
@@ -828,6 +874,18 @@ TGP_diff_mat_long <- TGP_diff_mat %>%
     names_to = "PC",
     values_to = "diff"
   )
+TGP_diff_mat_long %>% 
+  # filter(PC == 'PC1') %>%
+  group_by(PC) %>% 
+  mutate(pos = sum(diff>0),
+         neg = sum(diff<0)) %>% 
+  summarize(n_pos = sum(pos), 
+            n_neg = sum(neg)) %>%
+  mutate(total = n_pos+n_neg) %>% 
+  mutate(prop_pos = n_pos/total*100, 
+         prop_neg = n_neg/total*100)
+
+
 TGP_Ecotype_diff_mat_plot = ggplot(TGP_diff_mat_long, 
                                    aes(x = PC, 
                                        y = trait, 
@@ -944,21 +1002,63 @@ TGP_RV_Perm_plot = ggplot(TGP_rv_df, aes(x = TGP_null_rv)) +
 
 # Compare effect sizes to diff mats ---------------------------------------
 
+wild_trait_effect_0.75 = wild_trait_effect %>% 
+  as_tibble() %>% 
+  filter(effect_size >= 0.9) %>% 
+  dplyr::select(trait, 
+                effect_size)
+
 F2_trait_effect_0.75 = F2_trait_effect %>% 
   as_tibble() %>% 
-  filter(effect_size >= 0.75) %>% 
+  filter(effect_size >= 0.9) %>% 
   dplyr::select(trait, 
                 effect_size)
 WGP_trait_effect_0.75 = WGP_trait_effect %>% 
   as_tibble() %>% 
-  filter(effect_size >= 0.75) %>% 
+  filter(effect_size >= 0.9) %>% 
   dplyr::select(trait, 
                 effect_size)
 TGP_trait_effect_0.75 = TGP_trait_effect %>% 
   as_tibble() %>% 
-  filter(effect_size >= 0.75) %>% 
+  filter(effect_size >= 0.9) %>% 
   dplyr::select(trait, 
                 effect_size)
+
+inner_join(wild_trait_effect_0.75, 
+           F2_trait_effect_0.75, 
+           by = 'trait') %>% 
+  inner_join(., 
+             WGP_trait_effect_0.75, 
+             by = 'trait') %>% 
+  inner_join(., 
+             TGP_trait_effect_0.75, 
+             by = 'trait')
+
+anti_join(wild_trait_effect_0.75, 
+          F2_trait_effect_0.75, 
+          by = 'trait')
+anti_join(F2_trait_effect_0.75, 
+          wild_trait_effect_0.75, 
+          by = 'trait')
+
+
+
+anti_join(F2_trait_effect_0.75, 
+        TGP_trait_effect_0.75, 
+        by = 'trait')
+anti_join(TGP_trait_effect_0.75, 
+          F2_trait_effect_0.75, 
+          by = 'trait')
+
+anti_join(F2_trait_effect_0.75, 
+          WGP_trait_effect_0.75, 
+          by = 'trait')
+anti_join(WGP_trait_effect_0.75, 
+          F2_trait_effect_0.75, 
+          by = 'trait')
+
+
+
 
 
 log_rats = inner_join(F2_trait_effect, 
