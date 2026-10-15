@@ -180,4 +180,142 @@ ashn_wild_warm = ashn_wild_WC_loads %>%
   dplyr::select(pc, trait, r_warm = r)
 
 
+# MYV ---------------------------------------------------------------------
+myv_trait_cols = myv_wild_PCA %>% 
+  dplyr::select(5:39) %>% 
+  names()
+
+myv_pca_cols = myv_wild_PCA %>% 
+  dplyr::select(40:44) %>% 
+  names()
+
+myv_wild_WC_loads = myv_wild_PCA %>% 
+  group_by(Morph) %>% 
+  nest() %>% 
+  mutate(correlations = map(
+    data, 
+    cor_fun, 
+    pc_cols = myv_pca_cols, 
+    trait_cols = myv_trait_cols)) %>% 
+  dplyr::select(-data) %>% 
+  unnest(correlations)
+
+## Graphical check
+
+myv_wild_WC_loads %>% 
+  ggplot(aes(pc, 
+             trait, 
+             fill = r))+
+  geom_tile()+
+  facet_wrap(~Morph) +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144",
+    limits = c(-1, 1)) +
+  theme(axis.text.y = element_text(size = 7), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.title = element_blank())
+
+myv_wild_cold = myv_wild_WC_loads %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(pc, trait, r_cold = r)
+myv_wild_warm = myv_wild_WC_loads %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(pc, trait, r_warm = r)
+
+
+# SKR ---------------------------------------------------------------------
+skr_trait_cols = skr_wild_PCA %>% 
+  dplyr::select(5:39) %>% 
+  names()
+
+skr_pca_cols = skr_wild_PCA %>% 
+  dplyr::select(40:44) %>% 
+  names()
+
+skr_wild_WC_loads = skr_wild_PCA %>% 
+  group_by(Morph) %>% 
+  nest() %>% 
+  mutate(correlations = map(
+    data, 
+    cor_fun, 
+    pc_cols = skr_pca_cols, 
+    trait_cols = skr_trait_cols)) %>% 
+  dplyr::select(-data) %>% 
+  unnest(correlations)
+
+## Graphical check
+
+skr_wild_WC_loads %>% 
+  ggplot(aes(pc, 
+             trait, 
+             fill = r))+
+  geom_tile()+
+  facet_wrap(~Morph) +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144",
+    limits = c(-1, 1)) +
+  theme(axis.text.y = element_text(size = 7), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.title = element_blank())
+
+skr_wild_cold = skr_wild_WC_loads %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(pc, trait, r_cold = r)
+skr_wild_warm = skr_wild_WC_loads %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(pc, trait, r_warm = r)
+
+
+# GTS/GAR -----------------------------------------------------------------
+gts_gar_trait_cols = gts_gar_wild_PCA %>% 
+  dplyr::select(5:39) %>% 
+  names()
+
+gts_gar_pca_cols = gts_gar_wild_PCA %>% 
+  dplyr::select(40:45) %>% 
+  names()
+
+gts_gar_wild_WC_loads = gts_gar_wild_PCA %>% 
+  group_by(Morph) %>% 
+  nest() %>% 
+  mutate(correlations = map(
+    data, 
+    cor_fun, 
+    pc_cols = gts_gar_pca_cols, 
+    trait_cols = gts_gar_trait_cols)) %>% 
+  dplyr::select(-data) %>% 
+  unnest(correlations)
+
+## Graphical check
+
+gts_gar_wild_WC_loads %>% 
+  ggplot(aes(pc, 
+             trait, 
+             fill = r))+
+  geom_tile()+
+  facet_wrap(~Morph) +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144",
+    limits = c(-1, 1)) +
+  theme(axis.text.y = element_text(size = 7), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.title = element_blank())
+
+gts_gar_wild_cold = gts_gar_wild_WC_loads %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(pc, trait, r_cold = r)
+gts_gar_wild_warm = gts_gar_wild_WC_loads %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(pc, trait, r_warm = r)
+
+
 
