@@ -565,3 +565,89 @@ gts_gar_wild_diff_mat_plot =
     legend.position = 'none')
 
 
+# wild data - Effect size --------------------------------------------------
+
+# ASHN --------------------------------------------------------------------
+## Taking the difference matrix and finding per trait effect size
+
+ashn_wild_trait_effect = ashn_wild_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  mutate(effect_size = rowSums(abs(across(where(is.numeric))))) %>% 
+  arrange(desc(effect_size))
+
+ashn_trait_effect_plot = 
+  ggplot(ashn_wild_trait_effect, 
+         aes(reorder(trait, 
+                     effect_size), 
+             effect_size))+
+  geom_col(col = 'black',
+           fill = '#480355') +
+  coord_flip()+
+  ylim(0.0, 3)+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'A) ASHN')+
+  theme(axis.title.y = element_blank())
+
+
+# MYV ---------------------------------------------------------------------
+myv_wild_trait_effect = myv_wild_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  mutate(effect_size = rowSums(abs(across(where(is.numeric))))) %>% 
+  arrange(desc(effect_size))
+
+myv_trait_effect_plot = 
+  ggplot(myv_wild_trait_effect, 
+         aes(reorder(trait, 
+                     effect_size), 
+             effect_size))+
+  geom_col(col = 'black',
+           fill = '#480355') +
+  coord_flip()+
+  ylim(0.0, 3)+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'A) MYV')+
+  theme(axis.title.y = element_blank())
+
+# SKR ---------------------------------------------------------------------
+skr_wild_trait_effect = skr_wild_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  mutate(effect_size = rowSums(abs(across(where(is.numeric))))) %>% 
+  arrange(desc(effect_size))
+
+skr_trait_effect_plot = 
+  ggplot(skr_wild_trait_effect, 
+         aes(reorder(trait, 
+                     effect_size), 
+             effect_size))+
+  geom_col(col = 'black',
+           fill = '#480355') +
+  coord_flip()+
+  ylim(0.0, 3)+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'A) SKR')+
+  theme(axis.title.y = element_blank())
+
+# GTS/GAR -----------------------------------------------------------------
+
+gts_gar_wild_trait_effect = gts_gar_wild_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  mutate(effect_size = rowSums(abs(across(where(is.numeric))))) %>% 
+  arrange(desc(effect_size))
+
+gts_gar_trait_effect_plot = 
+  ggplot(gts_gar_wild_trait_effect, 
+         aes(reorder(trait, 
+                     effect_size), 
+             effect_size))+
+  geom_col(col = 'black',
+           fill = '#480355') +
+  coord_flip()+
+  ylim(0.0, 3)+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'A) GTS/GAR')+
+  theme(axis.title.y = element_blank())
+
