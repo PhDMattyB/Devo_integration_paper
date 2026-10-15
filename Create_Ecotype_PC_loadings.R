@@ -735,3 +735,172 @@ ashn_wild_RV_perm_plot =
     title = "A) ASHN",
     subtitle = paste0("Observed RV = ", round(ashn_wild_obs, 3)))
 
+
+# MYV ---------------------------------------------------------------------
+myv_wild_PCA
+
+myv_trait_cols = myv_wild_PCA %>% 
+  dplyr::select(5:39) %>% 
+  names()
+
+myv_pca_cols = myv_wild_PCA %>% 
+  dplyr::select(40:44) %>% 
+  names()
+
+myv_wild_perm_test_data = myv_wild_PCA %>% 
+  dplyr::select(Morph, 
+                5:39, 
+                40:44)
+
+myv_wild_obs = RV(myv_wild_cold_mat, 
+                   myv_wild_warm_mat)
+set.seed(123)
+
+myv_wild_null_rv <- replicate(1000, {
+  
+  # 1. permute group labels in RAW data
+  permuted <- myv_wild_perm_test_data %>%
+    mutate(Morph = sample(Morph))
+  
+  # 2. recompute correlations
+  perm_results <- permuted %>%
+    group_by(Morph) %>%
+    nest() %>%
+    mutate(
+      correlations = map(
+        data,
+        cor_fun,
+        pc_cols = myv_pca_cols,
+        trait_cols = myv_trait_cols)) %>% 
+    # dplyr::select(-data) %>%
+    unnest(correlations)
+  
+  # 3. build matrices
+  cold_perm <- perm_results %>%
+    filter(Morph == "Cold") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  warm_perm <- perm_results %>%
+    filter(Morph == "Warm") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  # 4. RV statistic
+  RV(cold_perm, warm_perm)
+})
+
+myv_wild_delta_RV = mean(myv_wild_null_rv) - myv_wild_obs
+
+myv_wild_z = (myv_wild_obs - mean(myv_wild_null_rv)) / sd(myv_wild_null_rv)
+
+myv_wild_rv_df = data.frame(myv_wild_null_rv = myv_wild_null_rv)
+
+myv_wild_RV_perm_plot = 
+  ggplot(myv_wild_rv_df, 
+         aes(x = myv_wild_null_rv))+
+  geom_histogram(bins = 30, 
+                 fill = "#adb5bd", 
+                 color = "black") +
+  geom_vline(aes(xintercept = myv_wild_obs), 
+             color = "#480355", 
+             linewidth = 1.2) +
+  labs(
+    x = "RV (null distribution)",
+    y = "Frequency",
+    title = "B) MYV",
+    subtitle = paste0("Observed RV = ", round(myv_wild_obs, 3)))
+
+
+# SKR ---------------------------------------------------------------------
+skr_wild_PCA
+
+skr_trait_cols = skr_wild_PCA %>% 
+  dplyr::select(5:39) %>% 
+  names()
+
+skr_pca_cols = skr_wild_PCA %>% 
+  dplyr::select(40:44) %>% 
+  names()
+
+skr_wild_perm_test_data = skr_wild_PCA %>% 
+  dplyr::select(Morph, 
+                5:39, 
+                40:44)
+
+skr_wild_obs = RV(skr_wild_cold_mat, 
+                  skr_wild_warm_mat)
+set.seed(123)
+
+skr_wild_null_rv <- replicate(1000, {
+  
+  # 1. permute group labels in RAW data
+  permuted <- skr_wild_perm_test_data %>%
+    mutate(Morph = sample(Morph))
+  
+  # 2. recompute correlations
+  perm_results <- permuted %>%
+    group_by(Morph) %>%
+    nest() %>%
+    mutate(
+      correlations = map(
+        data,
+        cor_fun,
+        pc_cols = skr_pca_cols,
+        trait_cols = skr_trait_cols)) %>% 
+    # dplyr::select(-data) %>%
+    unnest(correlations)
+  
+  # 3. build matrices
+  cold_perm <- perm_results %>%
+    filter(Morph == "Cold") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  warm_perm <- perm_results %>%
+    filter(Morph == "Warm") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  # 4. RV statistic
+  RV(cold_perm, warm_perm)
+})
+
+skr_wild_delta_RV = mean(skr_wild_null_rv) - skr_wild_obs
+
+skr_wild_z = (skr_wild_obs - mean(skr_wild_null_rv)) / sd(skr_wild_null_rv)
+
+skr_wild_rv_df = data.frame(skr_wild_null_rv = skr_wild_null_rv)
+
+skr_wild_RV_perm_plot = 
+  ggplot(skr_wild_rv_df, 
+         aes(x = skr_wild_null_rv))+
+  geom_histogram(bins = 30, 
+                 fill = "#adb5bd", 
+                 color = "black") +
+  geom_vline(aes(xintercept = skr_wild_obs), 
+             color = "#480355", 
+             linewidth = 1.2) +
+  labs(
+    x = "RV (null distribution)",
+    y = "Frequency",
+    title = "B) skr",
+    subtitle = paste0("Observed RV = ", round(skr_wild_obs, 3)))
+
+
+
+# GTS/GAR -----------------------------------------------------------------
+
+
