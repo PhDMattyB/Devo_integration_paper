@@ -979,7 +979,292 @@ gts_gar_wild_RV_perm_plot =
   labs(
     x = "RV (null distribution)",
     y = "Frequency",
-    title = "C) gts_gar",
+    title = "D) GTS/GAR",
     subtitle = paste0("Observed RV = ", round(gts_gar_wild_obs, 3)))
+
+
+
+# F2 DATA -----------------------------------------------------------------
+
+
+F2_data = read_csv("F2_Original_univariate_traits_FIXED_11.02.2026.csv") %>% 
+  dplyr::select(Lake_morph, 
+                Ecotype_pair, 
+                lake_morph_Pair_Full_Temp, 
+                Morph, 
+                Offspring_temp, 
+                Parent_temp, 
+                jaw_length:caudal2_15_17)
+
+ashn_F2_orig_data = F2_data %>% 
+  filter(Lake_morph %in% c('ASHNC', 
+                           'ASHNW'))
+
+ashn_F2_orig_trait_mat = ashn_F2_orig_data %>% 
+  dplyr::select(jaw_length:caudal2_15_17) %>% 
+  as.matrix()
+
+myv_F2_orig_data = F2_data %>% 
+  filter(Lake_morph %in% c('MYVC', 
+                           'MYVW'))
+
+myv_F2_orig_trait_mat = myv_F2_orig_data %>% 
+  dplyr::select(jaw_length:caudal2_15_17) %>% 
+  as.matrix()
+
+skr_F2_orig_data = F2_data %>% 
+  filter(Lake_morph %in% c('SKRC', 
+                           'SKRW'))
+skr_F2_orig_trait_mat = skr_F2_orig_data %>% 
+  dplyr::select(jaw_length:caudal2_15_17) %>%  
+  as.matrix()
+
+gts_gar_F2_orig_data = F2_data %>% 
+  filter(Lake_morph %in% c('CSWYC', 
+                           'GTSW'))
+gts_gar_F2_orig_trait_mat = gts_gar_F2_orig_data %>% 
+  dplyr::select(jaw_length:caudal2_15_17) %>% 
+  as.matrix()
+
+
+# F2 Orig PCA -------------------------------------------------------------
+ashn_F2_orig_pca = prcomp(ashn_F2_orig_trait_mat, 
+                       center = F, 
+                       scale. = F)
+paran(ashn_F2_orig_trait_mat, 
+      iterations = 1000, 
+      graph = T)
+## 6 pc axes retained
+
+ashn_F2_orig_scores = as.data.frame(ashn_F2_orig_pca$x[,1:6])
+ashn_F2_orig_PCA = bind_cols(ashn_F2_orig_data, 
+                          ashn_F2_orig_scores)
+
+
+myv_F2_orig_pca = prcomp(myv_F2_orig_trait_mat, 
+                      center = F, 
+                      scale. = F)
+paran(myv_F2_orig_trait_mat, 
+      iterations = 1000, 
+      graph = T)
+## 7 pc axes retained
+
+myv_F2_orig_scores = as.data.frame(myv_F2_orig_pca$x[,1:7])
+myv_F2_orig_PCA = bind_cols(myv_F2_orig_data, 
+                         myv_F2_orig_scores)
+
+
+skr_F2_orig_pca = prcomp(skr_F2_orig_trait_mat, 
+                      center = F, 
+                      scale. = F)
+paran(skr_F2_orig_trait_mat, 
+      iterations = 1000, 
+      graph = T)
+## 7 pc axes retained
+
+skr_F2_orig_scores = as.data.frame(skr_F2_orig_pca$x[,1:7])
+skr_F2_orig_PCA = bind_cols(skr_F2_orig_data, 
+                         skr_F2_orig_scores)
+
+
+gts_gar_F2_orig_pca = prcomp(gts_gar_F2_orig_trait_mat, 
+                          center = F, 
+                          scale. = F)
+paran(gts_gar_F2_orig_trait_mat, 
+      iterations = 1000, 
+      graph = T)
+## 7 pc axes retained
+
+gts_gar_F2_orig_scores = as.data.frame(gts_gar_F2_orig_pca$x[,1:7])
+gts_gar_F2_orig_PCA = bind_cols(gts_gar_F2_orig_data, 
+                             gts_gar_F2_orig_scores)
+
+# F2 ORIG data - trait/pc corelations -------------------------------------------
+
+# ASHN --------------------------------------------------------------------
+
+ashn_F2_orig_trait_cols = ashn_F2_orig_PCA %>% 
+  dplyr::select(7:39) %>% 
+  names()
+
+ashn_F2_orig_pca_cols = ashn_F2_orig_PCA %>% 
+  dplyr::select(40:45) %>% 
+  names()
+
+ashn_F2_orig_WC_loads = ashn_F2_orig_PCA %>% 
+  group_by(Morph) %>% 
+  nest() %>% 
+  mutate(correlations = map(
+    data, 
+    cor_fun, 
+    pc_cols = ashn_F2_orig_pca_cols, 
+    trait_cols = ashn_F2_orig_trait_cols)) %>% 
+  dplyr::select(-data) %>% 
+  unnest(correlations)
+
+## Graphical check
+
+ashn_F2_orig_WC_loads %>% 
+  ggplot(aes(pc, 
+             trait, 
+             fill = r))+
+  geom_tile()+
+  facet_wrap(~Morph) +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144",
+    limits = c(-1, 1)) +
+  theme(axis.text.y = element_text(size = 7), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.title = element_blank())
+
+ashn_F2_orig_cold = ashn_F2_orig_WC_loads %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(pc, trait, r_cold = r)
+ashn_F2_orig_warm = ashn_F2_orig_WC_loads %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(pc, trait, r_warm = r)
+
+
+# MYV ---------------------------------------------------------------------
+myv_F2_orig_trait_cols = myv_F2_orig_PCA %>% 
+  dplyr::select(7:39) %>% 
+  names()
+
+myv_F2_orig_pca_cols = myv_F2_orig_PCA %>% 
+  dplyr::select(40:46) %>% 
+  names()
+
+myv_F2_orig_WC_loads = myv_F2_orig_PCA %>% 
+  group_by(Morph) %>% 
+  nest() %>% 
+  mutate(correlations = map(
+    data, 
+    cor_fun, 
+    pc_cols = myv_F2_orig_pca_cols, 
+    trait_cols = myv_F2_orig_trait_cols)) %>% 
+  dplyr::select(-data) %>% 
+  unnest(correlations)
+
+## Graphical check
+
+myv_F2_orig_WC_loads %>% 
+  ggplot(aes(pc, 
+             trait, 
+             fill = r))+
+  geom_tile()+
+  facet_wrap(~Morph) +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144",
+    limits = c(-1, 1)) +
+  theme(axis.text.y = element_text(size = 7), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.title = element_blank())
+
+myv_F2_orig_cold = myv_F2_orig_WC_loads %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(pc, trait, r_cold = r)
+myv_F2_orig_warm = myv_F2_orig_WC_loads %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(pc, trait, r_warm = r)
+
+
+# SKR ---------------------------------------------------------------------
+skr_F2_orig_trait_cols = skr_F2_orig_PCA %>% 
+  dplyr::select(7:39) %>% 
+  names()
+
+skr_F2_orig_pca_cols = skr_F2_orig_PCA %>% 
+  dplyr::select(40:46) %>% 
+  names()
+
+skr_F2_orig_WC_loads = skr_F2_orig_PCA %>% 
+  group_by(Morph) %>% 
+  nest() %>% 
+  mutate(correlations = map(
+    data, 
+    cor_fun, 
+    pc_cols = skr_F2_orig_pca_cols, 
+    trait_cols = skr_F2_orig_trait_cols)) %>% 
+  dplyr::select(-data) %>% 
+  unnest(correlations)
+
+## Graphical check
+
+skr_F2_orig_WC_loads %>% 
+  ggplot(aes(pc, 
+             trait, 
+             fill = r))+
+  geom_tile()+
+  facet_wrap(~Morph) +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144",
+    limits = c(-1, 1)) +
+  theme(axis.text.y = element_text(size = 7), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.title = element_blank())
+
+skr_F2_orig_cold = skr_F2_orig_WC_loads %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(pc, trait, r_cold = r)
+skr_F2_orig_warm = skr_F2_orig_WC_loads %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(pc, trait, r_warm = r)
+
+
+# GTS/GAR -----------------------------------------------------------------
+gts_gar_F2_orig_trait_cols = gts_gar_F2_orig_PCA %>% 
+  dplyr::select(7:39) %>% 
+  names()
+
+gts_gar_F2_orig_pca_cols = gts_gar_F2_orig_PCA %>% 
+  dplyr::select(40:46) %>% 
+  names()
+
+gts_gar_F2_orig_WC_loads = gts_gar_F2_orig_PCA %>% 
+  group_by(Morph) %>% 
+  nest() %>% 
+  mutate(correlations = map(
+    data, 
+    cor_fun, 
+    pc_cols = gts_gar_F2_orig_pca_cols, 
+    trait_cols = gts_gar_F2_orig_trait_cols)) %>% 
+  dplyr::select(-data) %>% 
+  unnest(correlations)
+
+## Graphical check
+
+gts_gar_F2_orig_WC_loads %>% 
+  ggplot(aes(pc, 
+             trait, 
+             fill = r))+
+  geom_tile()+
+  facet_wrap(~Morph) +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144",
+    limits = c(-1, 1)) +
+  theme(axis.text.y = element_text(size = 7), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.title = element_blank())
+
+gts_gar_F2_orig_cold = gts_gar_F2_orig_WC_loads %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(pc, trait, r_cold = r)
+gts_gar_F2_orig_warm = gts_gar_F2_orig_WC_loads %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(pc, trait, r_warm = r)
+
+
 
 
