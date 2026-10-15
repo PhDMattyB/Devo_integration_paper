@@ -130,3 +130,54 @@ gts_gar_wild_PCA = bind_cols(gts_gar_wild_data,
                           gts_gar_wild_scores)
 
 
+
+# wild data - trait/pc corelations -------------------------------------------
+
+# ASHN --------------------------------------------------------------------
+
+ashn_trait_cols = ashn_wild_PCA %>% 
+  dplyr::select(5:39) %>% 
+  names()
+
+ashn_pca_cols = ashn_wild_PCA %>% 
+  dplyr::select(40:44) %>% 
+  names()
+
+ashn_wild_WC_loads = ashn_wild_PCA %>% 
+  group_by(Morph) %>% 
+  nest() %>% 
+  mutate(correlations = map(
+    data, 
+    cor_fun, 
+    pc_cols = ashn_pca_cols, 
+    trait_cols = ashn_trait_cols)) %>% 
+  dplyr::select(-data) %>% 
+  unnest(correlations)
+
+## Graphical check
+
+ashn_wild_WC_loads %>% 
+  ggplot(aes(pc, 
+             trait, 
+             fill = r))+
+  geom_tile()+
+  facet_wrap(~Morph) +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144",
+    limits = c(-1, 1)) +
+  theme(axis.text.y = element_text(size = 7), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.title = element_blank())
+
+ashn_wild_cold = ashn_wild_WC_loads %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(pc, trait, r_cold = r)
+ashn_wild_warm = ashn_wild_WC_loads %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(pc, trait, r_warm = r)
+
+
+
