@@ -318,4 +318,67 @@ gts_gar_wild_warm = gts_gar_wild_WC_loads %>%
   dplyr::select(pc, trait, r_warm = r)
 
 
+# wild data - matrix differences -------------------------------------------
+
+# ASHN --------------------------------------------------------------------
+
+ashn_wild_cold_mat = ashn_wild_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+ashn_wild_warm_mat = ashn_wild_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+ashn_wild_diff_mat = ashn_wild_warm_mat - ashn_wild_cold_mat
+
+ashn_wild_diff_mat_long = ashn_wild_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  pivot_longer(cols = -trait, 
+               names_to = 'PC', 
+               values_to = 'diff')
+
+ashn_wild_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff > 0.3) %>% 
+  arrange(PC, 
+          diff)
+
+ashn_wild_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff < -0.3) %>% 
+  arrange(PC, 
+          diff)
+
+ashn_wild_diff_mat_plot = 
+  ggplot(ashn_wild_diff_mat_long, 
+         aes(x = PC, 
+             y = trait, 
+             fill = diff))+
+  geom_tile() +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144") +
+  labs(
+    x = "PC axis",
+    y = "Trait",
+    fill = "Δ loading",
+    title = "A) ASHN warm-cold trait correlations") +
+  theme(
+    axis.text.y = element_text(size = 6), 
+    axis.title = element_blank(), 
+    legend.position = 'none')
+
 
