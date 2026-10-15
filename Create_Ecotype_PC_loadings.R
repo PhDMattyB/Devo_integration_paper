@@ -651,3 +651,84 @@ gts_gar_trait_effect_plot =
        title = 'A) GTS/GAR')+
   theme(axis.title.y = element_blank())
 
+# wild data - Permutation test RV coefficient ------------------------------
+
+# ASHN --------------------------------------------------------------------
+
+ashn_wild_PCA
+
+ashn_trait_cols = ashn_wild_PCA %>% 
+  dplyr::select(5:39) %>% 
+  names()
+
+ashn_pca_cols = ashn_wild_PCA %>% 
+  dplyr::select(40:44) %>% 
+  names()
+
+ashn_wild_perm_test_data = ashn_wild_PCA %>% 
+  dplyr::select(Morph, 
+                5:39, 
+                40:44)
+
+ashn_wild_obs = RV(ashn_wild_cold_mat, 
+                   ashn_wild_warm_mat)
+set.seed(123)
+
+wild_null_rv <- replicate(1000, {
+  
+  # 1. permute group labels in RAW data
+  permuted <- ashn_wild_perm_test_data %>%
+    mutate(Morph = sample(Morph))
+  
+  # 2. recompute correlations
+  perm_results <- permuted %>%
+    group_by(Morph) %>%
+    nest() %>%
+    mutate(
+      correlations = map(
+        data,
+        cor_fun,
+        pc_cols = ashn_pca_cols,
+        trait_cols = ashn_trait_cols)) %>% 
+    # dplyr::select(-data) %>%
+    unnest(correlations)
+  
+  # 3. build matrices
+  cold_perm <- perm_results %>%
+    filter(Morph == "Cold") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  warm_perm <- perm_results %>%
+    filter(Morph == "Warm") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  # 4. RV statistic
+  RV(cold_perm, warm_perm)
+})
+
+
+wild_delta_RV = mean(wild_null_rv) - wild_obs
+
+wild_z = (wild_obs - mean(wild_null_rv)) / sd(wild_null_rv)
+
+wild_rv_df <- data.frame(wild_null_rv = wild_null_rv)
+
+wild_RV_Perm_plot = ggplot(wild_rv_df, aes(x = wild_null_rv)) +
+  geom_histogram(bins = 30, fill = "#adb5bd", color = "black") +
+  geom_vline(aes(xintercept = wild_obs), color = "#480355", linewidth = 1.2) +
+  labs(
+    x = "RV (null distribution)",
+    y = "Frequency",
+    title = "I)",
+    subtitle = paste0("Observed RV = ", round(wild_obs, 3))
+  )
+
+
