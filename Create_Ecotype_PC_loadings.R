@@ -674,7 +674,7 @@ ashn_wild_obs = RV(ashn_wild_cold_mat,
                    ashn_wild_warm_mat)
 set.seed(123)
 
-wild_null_rv <- replicate(1000, {
+ashn_wild_null_rv <- replicate(1000, {
   
   # 1. permute group labels in RAW data
   permuted <- ashn_wild_perm_test_data %>%
@@ -714,21 +714,24 @@ wild_null_rv <- replicate(1000, {
   RV(cold_perm, warm_perm)
 })
 
+ashn_wild_delta_RV = mean(ashn_wild_null_rv) - ashn_wild_obs
 
-wild_delta_RV = mean(wild_null_rv) - wild_obs
+ashn_wild_z = (ashn_wild_obs - mean(ashn_wild_null_rv)) / sd(ashn_wild_null_rv)
 
-wild_z = (wild_obs - mean(wild_null_rv)) / sd(wild_null_rv)
+ashn_wild_rv_df = data.frame(ashn_wild_null_rv = ashn_wild_null_rv)
 
-wild_rv_df <- data.frame(wild_null_rv = wild_null_rv)
-
-wild_RV_Perm_plot = ggplot(wild_rv_df, aes(x = wild_null_rv)) +
-  geom_histogram(bins = 30, fill = "#adb5bd", color = "black") +
-  geom_vline(aes(xintercept = wild_obs), color = "#480355", linewidth = 1.2) +
+ashn_wild_RV_perm_plot = 
+  ggplot(ashn_wild_rv_df, 
+         aes(x = ashn_wild_null_rv))+
+  geom_histogram(bins = 30, 
+                 fill = "#adb5bd", 
+                 color = "black") +
+  geom_vline(aes(xintercept = ashn_wild_obs), 
+             color = "#480355", 
+             linewidth = 1.2) +
   labs(
     x = "RV (null distribution)",
     y = "Frequency",
-    title = "I)",
-    subtitle = paste0("Observed RV = ", round(wild_obs, 3))
-  )
-
+    title = "A) ASHN",
+    subtitle = paste0("Observed RV = ", round(ashn_wild_obs, 3)))
 
