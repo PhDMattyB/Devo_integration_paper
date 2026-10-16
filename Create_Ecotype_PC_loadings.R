@@ -1266,5 +1266,674 @@ gts_gar_F2_orig_warm = gts_gar_F2_orig_WC_loads %>%
   dplyr::select(pc, trait, r_warm = r)
 
 
+# F2 ORIG data - matrix differences -------------------------------------------
+
+# ASHN --------------------------------------------------------------------
+
+ashn_F2_orig_cold_mat = ashn_F2_orig_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+ashn_F2_orig_warm_mat = ashn_F2_orig_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+ashn_F2_orig_diff_mat = ashn_F2_orig_warm_mat - ashn_F2_orig_cold_mat
+
+ashn_F2_orig_diff_mat_long = ashn_F2_orig_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  pivot_longer(cols = -trait, 
+               names_to = 'PC', 
+               values_to = 'diff')
+
+ashn_F2_orig_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff > 0.3) %>% 
+  arrange(PC, 
+          diff)
+
+ashn_F2_orig_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff < -0.3) %>% 
+  arrange(PC, 
+          diff)
+
+ashn_F2_orig_diff_mat_plot = 
+  ggplot(ashn_F2_orig_diff_mat_long, 
+         aes(x = PC, 
+             y = trait, 
+             fill = diff))+
+  geom_tile() +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144") +
+  labs(
+    x = "PC axis",
+    y = "Trait",
+    fill = "Δ loading",
+    title = "A) ASHN F2 warm-cold trait correlations") +
+  theme(
+    axis.text.y = element_text(size = 6), 
+    axis.title = element_blank(), 
+    legend.position = 'none')
+
+
+# MYV ---------------------------------------------------------------------
+myv_F2_orig_cold_mat = myv_F2_orig_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+myv_F2_orig_warm_mat = myv_F2_orig_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+myv_F2_orig_diff_mat = myv_F2_orig_warm_mat - myv_F2_orig_cold_mat
+
+myv_F2_orig_diff_mat_long = myv_F2_orig_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  pivot_longer(cols = -trait, 
+               names_to = 'PC', 
+               values_to = 'diff')
+
+myv_F2_orig_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff > 0.3) %>% 
+  arrange(PC, 
+          diff)
+
+myv_F2_orig_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff < -0.3) %>% 
+  arrange(PC, 
+          diff)
+
+myv_F2_orig_diff_mat_plot = 
+  ggplot(myv_F2_orig_diff_mat_long, 
+         aes(x = PC, 
+             y = trait, 
+             fill = diff))+
+  geom_tile() +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144") +
+  labs(
+    x = "PC axis",
+    y = "Trait",
+    fill = "Δ loading",
+    title = "B) MYV F2 warm-cold trait correlations") +
+  theme(
+    axis.text.y = element_text(size = 6), 
+    axis.title = element_blank(), 
+    legend.position = 'none')
+
+
+# SKR ---------------------------------------------------------------------
+skr_F2_orig_cold_mat = skr_F2_orig_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+skr_F2_orig_warm_mat = skr_F2_orig_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+skr_F2_orig_diff_mat = skr_F2_orig_warm_mat - skr_F2_orig_cold_mat
+
+skr_F2_orig_diff_mat_long = skr_F2_orig_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  pivot_longer(cols = -trait, 
+               names_to = 'PC', 
+               values_to = 'diff')
+
+skr_F2_orig_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff > 0.3) %>% 
+  arrange(PC, 
+          diff)
+
+skr_F2_orig_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff < -0.3) %>% 
+  arrange(PC, 
+          diff)
+
+skr_F2_orig_diff_mat_plot = 
+  ggplot(skr_F2_orig_diff_mat_long, 
+         aes(x = PC, 
+             y = trait, 
+             fill = diff))+
+  geom_tile() +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144") +
+  labs(
+    x = "PC axis",
+    y = "Trait",
+    fill = "Δ loading",
+    title = "C) SKR F2 warm-cold trait correlations") +
+  theme(
+    axis.text.y = element_text(size = 6), 
+    axis.title = element_blank(), 
+    legend.position = 'none')
+
+
+# GTS/GAR -----------------------------------------------------------------
+gts_gar_F2_orig_cold_mat = gts_gar_F2_orig_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+gts_gar_F2_orig_warm_mat = gts_gar_F2_orig_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+gts_gar_F2_orig_diff_mat = gts_gar_F2_orig_warm_mat - gts_gar_F2_orig_cold_mat
+
+gts_gar_F2_orig_diff_mat_long = gts_gar_F2_orig_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  pivot_longer(cols = -trait, 
+               names_to = 'PC', 
+               values_to = 'diff')
+
+gts_gar_F2_orig_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff > 0.3) %>% 
+  arrange(PC, 
+          diff)
+
+gts_gar_F2_orig_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff < -0.3) %>% 
+  arrange(PC, 
+          diff)
+
+gts_gar_F2_orig_diff_mat_plot = 
+  ggplot(gts_gar_F2_orig_diff_mat_long, 
+         aes(x = PC, 
+             y = trait, 
+             fill = diff))+
+  geom_tile() +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144") +
+  labs(
+    x = "PC axis",
+    y = "Trait",
+    fill = "Δ loading",
+    title = "D) GTS/GAR F2 warm-cold trait correlations") +
+  theme(
+    axis.text.y = element_text(size = 6), 
+    axis.title = element_blank(), 
+    legend.position = 'none')
+
+
+
+
+
+
+
+# F2 ORIG data - Effect size --------------------------------------------------
+
+# ASHN --------------------------------------------------------------------
+## Taking the difference matrix and finding per trait effect size
+
+ashn_F2_orig_trait_effect = ashn_F2_orig_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  mutate(effect_size = rowSums(abs(across(where(is.numeric))))) %>% 
+  arrange(desc(effect_size))
+
+ashn_trait_effect_plot = 
+  ggplot(ashn_F2_orig_trait_effect, 
+         aes(reorder(trait, 
+                     effect_size), 
+             effect_size))+
+  geom_col(col = 'black',
+           fill = '#480355') +
+  coord_flip()+
+  ylim(0.0, 3)+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'A) ASHN')+
+  theme(axis.title.y = element_blank())
+
+
+# MYV ---------------------------------------------------------------------
+myv_F2_orig_trait_effect = myv_F2_orig_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  mutate(effect_size = rowSums(abs(across(where(is.numeric))))) %>% 
+  arrange(desc(effect_size))
+
+myv_trait_effect_plot = 
+  ggplot(myv_F2_orig_trait_effect, 
+         aes(reorder(trait, 
+                     effect_size), 
+             effect_size))+
+  geom_col(col = 'black',
+           fill = '#480355') +
+  coord_flip()+
+  ylim(0.0, 3)+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'A) MYV')+
+  theme(axis.title.y = element_blank())
+
+# SKR ---------------------------------------------------------------------
+skr_F2_orig_trait_effect = skr_F2_orig_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  mutate(effect_size = rowSums(abs(across(where(is.numeric))))) %>% 
+  arrange(desc(effect_size))
+
+skr_trait_effect_plot = 
+  ggplot(skr_F2_orig_trait_effect, 
+         aes(reorder(trait, 
+                     effect_size), 
+             effect_size))+
+  geom_col(col = 'black',
+           fill = '#480355') +
+  coord_flip()+
+  ylim(0.0, 3)+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'A) SKR')+
+  theme(axis.title.y = element_blank())
+
+# GTS/GAR -----------------------------------------------------------------
+
+gts_gar_F2_orig_trait_effect = gts_gar_F2_orig_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  mutate(effect_size = rowSums(abs(across(where(is.numeric))))) %>% 
+  arrange(desc(effect_size))
+
+gts_gar_trait_effect_plot = 
+  ggplot(gts_gar_F2_orig_trait_effect, 
+         aes(reorder(trait, 
+                     effect_size), 
+             effect_size))+
+  geom_col(col = 'black',
+           fill = '#480355') +
+  coord_flip()+
+  ylim(0.0, 3)+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'A) GTS/GAR')+
+  theme(axis.title.y = element_blank())
+
+# F2 ORIG data - Permutation test RV coefficient ------------------------------
+
+# ASHN --------------------------------------------------------------------
+
+ashn_F2_orig_PCA
+
+# ashn_trait_cols = ashn_F2_orig_PCA %>% 
+#   dplyr::select(7:39) %>% 
+#   names()
+# 
+# ashn_pca_cols = ashn_F2_orig_PCA %>% 
+#   dplyr::select(40:45) %>% 
+#   names()
+
+ashn_F2_orig_perm_test_data = ashn_F2_orig_PCA %>% 
+  dplyr::select(Morph, 
+                7:39, 
+                40:45)
+
+ashn_F2_orig_obs = RV(ashn_F2_orig_cold_mat, 
+                   ashn_F2_orig_warm_mat)
+set.seed(123)
+
+ashn_F2_orig_null_rv <- replicate(1000, {
+  
+  # 1. permute group labels in RAW data
+  permuted <- ashn_F2_orig_perm_test_data %>%
+    mutate(Morph = sample(Morph))
+  
+  # 2. recompute correlations
+  perm_results <- permuted %>%
+    group_by(Morph) %>%
+    nest() %>%
+    mutate(
+      correlations = map(
+        data,
+        cor_fun,
+        pc_cols = ashn_F2_orig_pca_cols,
+        trait_cols = ashn_F2_orig_trait_cols)) %>% 
+    # dplyr::select(-data) %>%
+    unnest(correlations)
+  
+  # 3. build matrices
+  cold_perm <- perm_results %>%
+    filter(Morph == "Cold") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  warm_perm <- perm_results %>%
+    filter(Morph == "Warm") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  # 4. RV statistic
+  RV(cold_perm, warm_perm)
+})
+
+ashn_F2_orig_delta_RV = mean(ashn_F2_orig_null_rv) - ashn_F2_orig_obs
+
+ashn_F2_orig_z = (ashn_F2_orig_obs - mean(ashn_F2_orig_null_rv)) / sd(ashn_F2_orig_null_rv)
+
+ashn_F2_orig_rv_df = data.frame(ashn_F2_orig_null_rv = ashn_F2_orig_null_rv)
+
+ashn_F2_orig_RV_perm_plot = 
+  ggplot(ashn_F2_orig_rv_df, 
+         aes(x = ashn_F2_orig_null_rv))+
+  geom_histogram(bins = 30, 
+                 fill = "#adb5bd", 
+                 color = "black") +
+  geom_vline(aes(xintercept = ashn_F2_orig_obs), 
+             color = "#480355", 
+             linewidth = 1.2) +
+  labs(
+    x = "RV (null distribution)",
+    y = "Frequency",
+    title = "A) ASHN F2 unmodified",
+    subtitle = paste0("Observed RV = ", round(ashn_F2_orig_obs, 3)))
+
+
+# MYV ---------------------------------------------------------------------
+myv_F2_orig_PCA
+
+myv_F2_orig_trait_cols = myv_F2_orig_PCA %>% 
+  dplyr::select(7:39) %>% 
+  names()
+
+myv_F2_orig_pca_cols = myv_F2_orig_PCA %>% 
+  dplyr::select(40:46) %>% 
+  names()
+
+myv_F2_orig_perm_test_data = myv_F2_orig_PCA %>% 
+  dplyr::select(Morph, 
+                7:39, 
+                40:46)
+
+myv_F2_orig_obs = RV(myv_F2_orig_cold_mat, 
+                  myv_F2_orig_warm_mat)
+set.seed(123)
+
+myv_F2_orig_null_rv <- replicate(1000, {
+  
+  # 1. permute group labels in RAW data
+  permuted <- myv_F2_orig_perm_test_data %>%
+    mutate(Morph = sample(Morph))
+  
+  # 2. recompute correlations
+  perm_results <- permuted %>%
+    group_by(Morph) %>%
+    nest() %>%
+    mutate(
+      correlations = map(
+        data,
+        cor_fun,
+        pc_cols = myv_F2_orig_pca_cols,
+        trait_cols = myv_F2_orig_trait_cols)) %>% 
+    # dplyr::select(-data) %>%
+    unnest(correlations)
+  
+  # 3. build matrices
+  cold_perm <- perm_results %>%
+    filter(Morph == "Cold") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  warm_perm <- perm_results %>%
+    filter(Morph == "Warm") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  # 4. RV statistic
+  RV(cold_perm, warm_perm)
+})
+
+myv_F2_orig_delta_RV = mean(myv_F2_orig_null_rv) - myv_F2_orig_obs
+
+myv_F2_orig_z = (myv_F2_orig_obs - mean(myv_F2_orig_null_rv)) / sd(myv_F2_orig_null_rv)
+
+myv_F2_orig_rv_df = data.frame(myv_F2_orig_null_rv = myv_F2_orig_null_rv)
+
+myv_F2_orig_RV_perm_plot = 
+  ggplot(myv_F2_orig_rv_df, 
+         aes(x = myv_F2_orig_null_rv))+
+  geom_histogram(bins = 30, 
+                 fill = "#adb5bd", 
+                 color = "black") +
+  geom_vline(aes(xintercept = myv_F2_orig_obs), 
+             color = "#480355", 
+             linewidth = 1.2) +
+  labs(
+    x = "RV (null distribution)",
+    y = "Frequency",
+    title = "B) MYV F2 Unmodified",
+    subtitle = paste0("Observed RV = ", round(myv_F2_orig_obs, 3)))
+
+
+# SKR ---------------------------------------------------------------------
+skr_F2_orig_PCA
+
+skr_F2_orig_trait_cols = skr_F2_orig_PCA %>% 
+  dplyr::select(7:39) %>% 
+  names()
+
+skr_F2_orig_pca_cols = skr_F2_orig_PCA %>% 
+  dplyr::select(40:46) %>% 
+  names()
+
+skr_F2_orig_perm_test_data = skr_F2_orig_PCA %>% 
+  dplyr::select(Morph, 
+                7:39, 
+                40:46)
+
+skr_F2_orig_obs = RV(skr_F2_orig_cold_mat, 
+                  skr_F2_orig_warm_mat)
+set.seed(123)
+
+skr_F2_orig_null_rv <- replicate(1000, {
+  
+  # 1. permute group labels in RAW data
+  permuted <- skr_F2_orig_perm_test_data %>%
+    mutate(Morph = sample(Morph))
+  
+  # 2. recompute correlations
+  perm_results <- permuted %>%
+    group_by(Morph) %>%
+    nest() %>%
+    mutate(
+      correlations = map(
+        data,
+        cor_fun,
+        pc_cols = skr_F2_orig_pca_cols,
+        trait_cols = skr_F2_orig_trait_cols)) %>% 
+    # dplyr::select(-data) %>%
+    unnest(correlations)
+  
+  # 3. build matrices
+  cold_perm <- perm_results %>%
+    filter(Morph == "Cold") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  warm_perm <- perm_results %>%
+    filter(Morph == "Warm") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  # 4. RV statistic
+  RV(cold_perm, warm_perm)
+})
+
+skr_F2_orig_delta_RV = mean(skr_F2_orig_null_rv) - skr_F2_orig_obs
+
+skr_F2_orig_z = (skr_F2_orig_obs - mean(skr_F2_orig_null_rv)) / sd(skr_F2_orig_null_rv)
+
+skr_F2_orig_rv_df = data.frame(skr_F2_orig_null_rv = skr_F2_orig_null_rv)
+
+skr_F2_orig_RV_perm_plot = 
+  ggplot(skr_F2_orig_rv_df, 
+         aes(x = skr_F2_orig_null_rv))+
+  geom_histogram(bins = 30, 
+                 fill = "#adb5bd", 
+                 color = "black") +
+  geom_vline(aes(xintercept = skr_F2_orig_obs), 
+             color = "#480355", 
+             linewidth = 1.2) +
+  labs(
+    x = "RV (null distribution)",
+    y = "Frequency",
+    title = "C) SKR F2 Unmodified",
+    subtitle = paste0("Observed RV = ", round(skr_F2_orig_obs, 3)))
+
+
+
+# GTS/GAR -----------------------------------------------------------------
+gts_gar_F2_orig_PCA
+
+gts_gar_F2_orig_trait_cols = gts_gar_F2_orig_PCA %>% 
+  dplyr::select(7:39) %>% 
+  names()
+
+gts_gar_F2_orig_pca_cols = gts_gar_F2_orig_PCA %>% 
+  dplyr::select(40:46) %>% 
+  names()
+
+gts_gar_F2_orig_perm_test_data = gts_gar_F2_orig_PCA %>% 
+  dplyr::select(Morph, 
+                7:39, 
+                40:46)
+
+gts_gar_F2_orig_obs = RV(gts_gar_F2_orig_cold_mat, 
+                      gts_gar_F2_orig_warm_mat)
+set.seed(123)
+
+gts_gar_F2_orig_null_rv <- replicate(1000, {
+  
+  # 1. permute group labels in RAW data
+  permuted <- gts_gar_F2_orig_perm_test_data %>%
+    mutate(Morph = sample(Morph))
+  
+  # 2. recompute correlations
+  perm_results <- permuted %>%
+    group_by(Morph) %>%
+    nest() %>%
+    mutate(
+      correlations = map(
+        data,
+        cor_fun,
+        pc_cols = gts_gar_F2_orig_pca_cols,
+        trait_cols = gts_gar_F2_orig_trait_cols)) %>% 
+    # dplyr::select(-data) %>%
+    unnest(correlations)
+  
+  # 3. build matrices
+  cold_perm <- perm_results %>%
+    filter(Morph == "Cold") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  warm_perm <- perm_results %>%
+    filter(Morph == "Warm") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  # 4. RV statistic
+  RV(cold_perm, warm_perm)
+})
+
+gts_gar_F2_orig_delta_RV = mean(gts_gar_F2_orig_null_rv) - gts_gar_F2_orig_obs
+
+gts_gar_F2_orig_z = (gts_gar_F2_orig_obs - mean(gts_gar_F2_orig_null_rv)) / sd(gts_gar_F2_orig_null_rv)
+
+gts_gar_F2_orig_rv_df = data.frame(gts_gar_F2_orig_null_rv = gts_gar_F2_orig_null_rv)
+
+gts_gar_F2_orig_RV_perm_plot = 
+  ggplot(gts_gar_F2_orig_rv_df, 
+         aes(x = gts_gar_F2_orig_null_rv))+
+  geom_histogram(bins = 30, 
+                 fill = "#adb5bd", 
+                 color = "black") +
+  geom_vline(aes(xintercept = gts_gar_F2_orig_obs), 
+             color = "#480355", 
+             linewidth = 1.2) +
+  labs(
+    x = "RV (null distribution)",
+    y = "Frequency",
+    title = "D) GTS/GAR F2 Unmodified",
+    subtitle = paste0("Observed RV = ", round(gts_gar_F2_orig_obs, 3)))
+
 
 
