@@ -1937,3 +1937,958 @@ gts_gar_F2_orig_RV_perm_plot =
 
 
 
+# WGP data ----------------------------------------------------------------
+
+WGP_data = read_csv("WGP_TRAITS_SCALED_FIXED_11.02.2026.csv") %>% 
+  dplyr::select(Lake_morph, 
+                Ecotype_pair, 
+                lake_morph_Pair_Full_Temp, 
+                Morph, 
+                Offspring_temp, 
+                Parent_temp, 
+                jaw_length:caudal2_15_17)
+
+
+# WGP_trait_mat <- WGP_data %>%
+#   dplyr::select(jaw_length:caudal2_15_17) %>% 
+#   # dplyr::select(starts_with('value'))
+#   # dplyr::select(all_of(trait_names)) %>%
+#   as.matrix()
+# 
+# 
+ashn_WGP_data = WGP_data %>% 
+  filter(Lake_morph %in% c('ASHNC', 
+                           'ASHNW'))
+
+ashn_WGP_trait_mat = ashn_WGP_data %>% 
+  dplyr::select(jaw_length:caudal2_15_17) %>% 
+  as.matrix()
+
+myv_WGP_data = F2_data %>% 
+  filter(Lake_morph %in% c('MYVC', 
+                           'MYVW'))
+
+myv_WGP_trait_mat = myv_WGP_data %>% 
+  dplyr::select(jaw_length:caudal2_15_17) %>% 
+  as.matrix()
+
+skr_WGP_data = F2_data %>% 
+  filter(Lake_morph %in% c('SKRC', 
+                           'SKRW'))
+skr_WGP_trait_mat = skr_WGP_data %>% 
+  dplyr::select(jaw_length:caudal2_15_17) %>%  
+  as.matrix()
+
+gts_gar_WGP_data = F2_data %>% 
+  filter(Lake_morph %in% c('CSWYC', 
+                           'GTSW'))
+gts_gar_WGP_trait_mat = gts_gar_WGP_data %>% 
+  dplyr::select(jaw_length:caudal2_15_17) %>% 
+  as.matrix()
+
+
+# F2 Orig PCA -------------------------------------------------------------
+ashn_WGP_pca = prcomp(ashn_WGP_trait_mat, 
+                          center = F, 
+                          scale. = F)
+paran(ashn_WGP_trait_mat, 
+      iterations = 1000, 
+      graph = T)
+## 7 pc axes retained
+
+ashn_WGP_scores = as.data.frame(ashn_WGP_pca$x[,1:7])
+ashn_WGP_PCA = bind_cols(ashn_WGP_data, 
+                             ashn_WGP_scores)
+
+
+myv_WGP_pca = prcomp(myv_WGP_trait_mat, 
+                         center = F, 
+                         scale. = F)
+paran(myv_WGP_trait_mat, 
+      iterations = 1000, 
+      graph = T)
+## 7 pc axes retained
+
+myv_WGP_scores = as.data.frame(myv_WGP_pca$x[,1:7])
+myv_WGP_PCA = bind_cols(myv_WGP_data, 
+                            myv_WGP_scores)
+
+
+skr_WGP_pca = prcomp(skr_WGP_trait_mat, 
+                         center = F, 
+                         scale. = F)
+paran(skr_WGP_trait_mat, 
+      iterations = 1000, 
+      graph = T)
+## 7 pc axes retained
+
+skr_WGP_scores = as.data.frame(skr_WGP_pca$x[,1:7])
+skr_WGP_PCA = bind_cols(skr_WGP_data, 
+                            skr_WGP_scores)
+
+
+gts_gar_WGP_pca = prcomp(gts_gar_WGP_trait_mat, 
+                             center = F, 
+                             scale. = F)
+paran(gts_gar_WGP_trait_mat, 
+      iterations = 1000, 
+      graph = T)
+## 7 pc axes retained
+
+gts_gar_WGP_scores = as.data.frame(gts_gar_WGP_pca$x[,1:7])
+gts_gar_WGP_PCA = bind_cols(gts_gar_WGP_data, 
+                                gts_gar_WGP_scores)
+
+# WGP data - trait/pc corelations -------------------------------------------
+
+# ASHN --------------------------------------------------------------------
+
+ashn_WGP_trait_cols = ashn_WGP_PCA %>% 
+  dplyr::select(7:39) %>% 
+  names()
+
+ashn_WGP_pca_cols = ashn_WGP_PCA %>% 
+  dplyr::select(40:46) %>% 
+  names()
+
+ashn_WGP_WC_loads = ashn_WGP_PCA %>% 
+  group_by(Morph) %>% 
+  nest() %>% 
+  mutate(correlations = map(
+    data, 
+    cor_fun, 
+    pc_cols = ashn_WGP_pca_cols, 
+    trait_cols = ashn_WGP_trait_cols)) %>% 
+  dplyr::select(-data) %>% 
+  unnest(correlations)
+
+## Graphical check
+
+ashn_WGP_WC_loads %>% 
+  ggplot(aes(pc, 
+             trait, 
+             fill = r))+
+  geom_tile()+
+  facet_wrap(~Morph) +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144",
+    limits = c(-1, 1)) +
+  theme(axis.text.y = element_text(size = 7), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.title = element_blank())
+
+ashn_WGP_cold = ashn_WGP_WC_loads %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(pc, trait, r_cold = r)
+ashn_WGP_warm = ashn_WGP_WC_loads %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(pc, trait, r_warm = r)
+
+
+# MYV ---------------------------------------------------------------------
+myv_WGP_trait_cols = myv_WGP_PCA %>% 
+  dplyr::select(7:39) %>% 
+  names()
+
+myv_WGP_pca_cols = myv_WGP_PCA %>% 
+  dplyr::select(40:46) %>% 
+  names()
+
+myv_WGP_WC_loads = myv_WGP_PCA %>% 
+  group_by(Morph) %>% 
+  nest() %>% 
+  mutate(correlations = map(
+    data, 
+    cor_fun, 
+    pc_cols = myv_WGP_pca_cols, 
+    trait_cols = myv_WGP_trait_cols)) %>% 
+  dplyr::select(-data) %>% 
+  unnest(correlations)
+
+## Graphical check
+
+myv_WGP_WC_loads %>% 
+  ggplot(aes(pc, 
+             trait, 
+             fill = r))+
+  geom_tile()+
+  facet_wrap(~Morph) +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144",
+    limits = c(-1, 1)) +
+  theme(axis.text.y = element_text(size = 7), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.title = element_blank())
+
+myv_WGP_cold = myv_WGP_WC_loads %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(pc, trait, r_cold = r)
+myv_WGP_warm = myv_WGP_WC_loads %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(pc, trait, r_warm = r)
+
+
+# SKR ---------------------------------------------------------------------
+skr_WGP_trait_cols = skr_WGP_PCA %>% 
+  dplyr::select(7:39) %>% 
+  names()
+
+skr_WGP_pca_cols = skr_WGP_PCA %>% 
+  dplyr::select(40:46) %>% 
+  names()
+
+skr_WGP_WC_loads = skr_WGP_PCA %>% 
+  group_by(Morph) %>% 
+  nest() %>% 
+  mutate(correlations = map(
+    data, 
+    cor_fun, 
+    pc_cols = skr_WGP_pca_cols, 
+    trait_cols = skr_WGP_trait_cols)) %>% 
+  dplyr::select(-data) %>% 
+  unnest(correlations)
+
+## Graphical check
+
+skr_WGP_WC_loads %>% 
+  ggplot(aes(pc, 
+             trait, 
+             fill = r))+
+  geom_tile()+
+  facet_wrap(~Morph) +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144",
+    limits = c(-1, 1)) +
+  theme(axis.text.y = element_text(size = 7), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.title = element_blank())
+
+skr_WGP_cold = skr_WGP_WC_loads %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(pc, trait, r_cold = r)
+skr_WGP_warm = skr_WGP_WC_loads %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(pc, trait, r_warm = r)
+
+
+# GTS/GAR -----------------------------------------------------------------
+gts_gar_WGP_trait_cols = gts_gar_WGP_PCA %>% 
+  dplyr::select(7:39) %>% 
+  names()
+
+gts_gar_WGP_pca_cols = gts_gar_WGP_PCA %>% 
+  dplyr::select(40:46) %>% 
+  names()
+
+gts_gar_WGP_WC_loads = gts_gar_WGP_PCA %>% 
+  group_by(Morph) %>% 
+  nest() %>% 
+  mutate(correlations = map(
+    data, 
+    cor_fun, 
+    pc_cols = gts_gar_WGP_pca_cols, 
+    trait_cols = gts_gar_WGP_trait_cols)) %>% 
+  dplyr::select(-data) %>% 
+  unnest(correlations)
+
+## Graphical check
+
+gts_gar_WGP_WC_loads %>% 
+  ggplot(aes(pc, 
+             trait, 
+             fill = r))+
+  geom_tile()+
+  facet_wrap(~Morph) +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144",
+    limits = c(-1, 1)) +
+  theme(axis.text.y = element_text(size = 7), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.title = element_blank())
+
+gts_gar_WGP_cold = gts_gar_WGP_WC_loads %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(pc, trait, r_cold = r)
+gts_gar_WGP_warm = gts_gar_WGP_WC_loads %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(pc, trait, r_warm = r)
+
+
+# WGP data - matrix differences -------------------------------------------
+
+# ASHN --------------------------------------------------------------------
+
+ashn_WGP_cold_mat = ashn_WGP_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+ashn_WGP_warm_mat = ashn_WGP_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+ashn_WGP_diff_mat = ashn_WGP_warm_mat - ashn_WGP_cold_mat
+
+ashn_WGP_diff_mat_long = ashn_WGP_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  pivot_longer(cols = -trait, 
+               names_to = 'PC', 
+               values_to = 'diff')
+
+ashn_WGP_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff > 0.3) %>% 
+  arrange(PC, 
+          diff)
+
+ashn_WGP_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff < -0.3) %>% 
+  arrange(PC, 
+          diff)
+
+ashn_WGP_diff_mat_plot = 
+  ggplot(ashn_WGP_diff_mat_long, 
+         aes(x = PC, 
+             y = trait, 
+             fill = diff))+
+  geom_tile() +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144") +
+  labs(
+    x = "PC axis",
+    y = "Trait",
+    fill = "Δ loading",
+    title = "A) ASHN WGP warm-cold trait correlations") +
+  theme(
+    axis.text.y = element_text(size = 6), 
+    axis.title = element_blank(), 
+    legend.position = 'none')
+
+
+# MYV ---------------------------------------------------------------------
+myv_WGP_cold_mat = myv_WGP_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+myv_WGP_warm_mat = myv_WGP_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+myv_WGP_diff_mat = myv_WGP_warm_mat - myv_WGP_cold_mat
+
+myv_WGP_diff_mat_long = myv_WGP_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  pivot_longer(cols = -trait, 
+               names_to = 'PC', 
+               values_to = 'diff')
+
+myv_WGP_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff > 0.3) %>% 
+  arrange(PC, 
+          diff)
+
+myv_WGP_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff < -0.3) %>% 
+  arrange(PC, 
+          diff)
+
+myv_WGP_diff_mat_plot = 
+  ggplot(myv_WGP_diff_mat_long, 
+         aes(x = PC, 
+             y = trait, 
+             fill = diff))+
+  geom_tile() +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144") +
+  labs(
+    x = "PC axis",
+    y = "Trait",
+    fill = "Δ loading",
+    title = "B) MYV WGP warm-cold trait correlations") +
+  theme(
+    axis.text.y = element_text(size = 6), 
+    axis.title = element_blank(), 
+    legend.position = 'none')
+
+
+# SKR ---------------------------------------------------------------------
+skr_WGP_cold_mat = skr_WGP_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+skr_WGP_warm_mat = skr_WGP_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+skr_WGP_diff_mat = skr_WGP_warm_mat - skr_WGP_cold_mat
+
+skr_WGP_diff_mat_long = skr_WGP_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  pivot_longer(cols = -trait, 
+               names_to = 'PC', 
+               values_to = 'diff')
+
+skr_WGP_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff > 0.3) %>% 
+  arrange(PC, 
+          diff)
+
+skr_WGP_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff < -0.3) %>% 
+  arrange(PC, 
+          diff)
+
+skr_WGP_diff_mat_plot = 
+  ggplot(skr_WGP_diff_mat_long, 
+         aes(x = PC, 
+             y = trait, 
+             fill = diff))+
+  geom_tile() +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144") +
+  labs(
+    x = "PC axis",
+    y = "Trait",
+    fill = "Δ loading",
+    title = "C) SKR WGP warm-cold trait correlations") +
+  theme(
+    axis.text.y = element_text(size = 6), 
+    axis.title = element_blank(), 
+    legend.position = 'none')
+
+
+# GTS/GAR -----------------------------------------------------------------
+gts_gar_WGP_cold_mat = gts_gar_WGP_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Cold') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+gts_gar_WGP_warm_mat = gts_gar_WGP_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Warm') %>% 
+  dplyr::select(trait, pc, r) %>% 
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  column_to_rownames('trait') %>% 
+  as.matrix()
+
+gts_gar_WGP_diff_mat = gts_gar_WGP_warm_mat - gts_gar_WGP_cold_mat
+
+gts_gar_WGP_diff_mat_long = gts_gar_WGP_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  pivot_longer(cols = -trait, 
+               names_to = 'PC', 
+               values_to = 'diff')
+
+gts_gar_WGP_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff > 0.3) %>% 
+  arrange(PC, 
+          diff)
+
+gts_gar_WGP_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff < -0.3) %>% 
+  arrange(PC, 
+          diff)
+
+gts_gar_WGP_diff_mat_plot = 
+  ggplot(gts_gar_WGP_diff_mat_long, 
+         aes(x = PC, 
+             y = trait, 
+             fill = diff))+
+  geom_tile() +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144") +
+  labs(
+    x = "PC axis",
+    y = "Trait",
+    fill = "Δ loading",
+    title = "D) GTS/GAR WGP warm-cold trait correlations") +
+  theme(
+    axis.text.y = element_text(size = 6), 
+    axis.title = element_blank(), 
+    legend.position = 'none')
+
+
+# WGP data - Effect size --------------------------------------------------
+
+# ASHN --------------------------------------------------------------------
+## Taking the difference matrix and finding per trait effect size
+
+ashn_WGP_trait_effect = ashn_WGP_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  mutate(effect_size = rowSums(abs(across(where(is.numeric))))) %>% 
+  arrange(desc(effect_size))
+
+ashn_trait_effect_plot = 
+  ggplot(ashn_WGP_trait_effect, 
+         aes(reorder(trait, 
+                     effect_size), 
+             effect_size))+
+  geom_col(col = 'black',
+           fill = '#92b4a7') +
+  coord_flip()+
+  ylim(0.0, 3)+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'A) ASHN')+
+  theme(axis.title.y = element_blank())
+
+
+# MYV ---------------------------------------------------------------------
+myv_WGP_trait_effect = myv_WGP_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  mutate(effect_size = rowSums(abs(across(where(is.numeric))))) %>% 
+  arrange(desc(effect_size))
+
+myv_trait_effect_plot = 
+  ggplot(myv_WGP_trait_effect, 
+         aes(reorder(trait, 
+                     effect_size), 
+             effect_size))+
+  geom_col(col = 'black',
+           fill = '#92b4a7') +
+  coord_flip()+
+  ylim(0.0, 3)+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'B) MYV')+
+  theme(axis.title.y = element_blank())
+
+# SKR ---------------------------------------------------------------------
+skr_WGP_trait_effect = skr_WGP_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  mutate(effect_size = rowSums(abs(across(where(is.numeric))))) %>% 
+  arrange(desc(effect_size))
+
+skr_trait_effect_plot = 
+  ggplot(skr_WGP_trait_effect, 
+         aes(reorder(trait, 
+                     effect_size), 
+             effect_size))+
+  geom_col(col = 'black',
+           fill = '#92b4a7') +
+  coord_flip()+
+  ylim(0.0, 3)+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'C) SKR')+
+  theme(axis.title.y = element_blank())
+
+# GTS/GAR -----------------------------------------------------------------
+
+gts_gar_WGP_trait_effect = gts_gar_WGP_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  mutate(effect_size = rowSums(abs(across(where(is.numeric))))) %>% 
+  arrange(desc(effect_size))
+
+gts_gar_trait_effect_plot = 
+  ggplot(gts_gar_WGP_trait_effect, 
+         aes(reorder(trait, 
+                     effect_size), 
+             effect_size))+
+  geom_col(col = 'black',
+           fill = '#92b4a7') +
+  coord_flip()+
+  ylim(0.0, 3)+
+  labs(y = 'Absolute sum of r-values across axes', 
+       title = 'D) GTS/GAR')+
+  theme(axis.title.y = element_blank())
+
+# WGP data - Permutation test RV coefficient ------------------------------
+
+# ASHN --------------------------------------------------------------------
+
+ashn_WGP_PCA
+
+# ashn_trait_cols = ashn_WGP_PCA %>% 
+#   dplyr::select(7:39) %>% 
+#   names()
+# 
+# ashn_pca_cols = ashn_WGP_PCA %>% 
+#   dplyr::select(40:45) %>% 
+#   names()
+
+ashn_WGP_perm_test_data = ashn_WGP_PCA %>% 
+  dplyr::select(Morph, 
+                7:39, 
+                40:46)
+
+ashn_WGP_obs = RV(ashn_WGP_cold_mat, 
+                      ashn_WGP_warm_mat)
+set.seed(123)
+
+ashn_WGP_null_rv <- replicate(1000, {
+  
+  # 1. permute group labels in RAW data
+  permuted <- ashn_WGP_perm_test_data %>%
+    mutate(Morph = sample(Morph))
+  
+  # 2. recompute correlations
+  perm_results <- permuted %>%
+    group_by(Morph) %>%
+    nest() %>%
+    mutate(
+      correlations = map(
+        data,
+        cor_fun,
+        pc_cols = ashn_WGP_pca_cols,
+        trait_cols = ashn_WGP_trait_cols)) %>% 
+    # dplyr::select(-data) %>%
+    unnest(correlations)
+  
+  # 3. build matrices
+  cold_perm <- perm_results %>%
+    filter(Morph == "Cold") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  warm_perm <- perm_results %>%
+    filter(Morph == "Warm") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  # 4. RV statistic
+  RV(cold_perm, warm_perm)
+})
+
+ashn_WGP_delta_RV = mean(ashn_WGP_null_rv) - ashn_WGP_obs
+
+ashn_WGP_z = (ashn_WGP_obs - mean(ashn_WGP_null_rv)) / sd(ashn_WGP_null_rv)
+
+ashn_WGP_rv_df = data.frame(ashn_WGP_null_rv = ashn_WGP_null_rv)
+
+ashn_WGP_RV_perm_plot = 
+  ggplot(ashn_WGP_rv_df, 
+         aes(x = ashn_WGP_null_rv))+
+  geom_histogram(bins = 30, 
+                 fill = "#adb5bd", 
+                 color = "black") +
+  geom_vline(aes(xintercept = ashn_WGP_obs), 
+             color = "#480355", 
+             linewidth = 1.2) +
+  labs(
+    x = "RV (null distribution)",
+    y = "Frequency",
+    title = "A) ASHN F2 unmodified",
+    subtitle = paste0("Observed RV = ", round(ashn_WGP_obs, 3)))
+
+
+# MYV ---------------------------------------------------------------------
+myv_WGP_PCA
+
+myv_WGP_trait_cols = myv_WGP_PCA %>% 
+  dplyr::select(7:39) %>% 
+  names()
+
+myv_WGP_pca_cols = myv_WGP_PCA %>% 
+  dplyr::select(40:46) %>% 
+  names()
+
+myv_WGP_perm_test_data = myv_WGP_PCA %>% 
+  dplyr::select(Morph, 
+                7:39, 
+                40:46)
+
+myv_WGP_obs = RV(myv_WGP_cold_mat, 
+                     myv_WGP_warm_mat)
+set.seed(123)
+
+myv_WGP_null_rv <- replicate(1000, {
+  
+  # 1. permute group labels in RAW data
+  permuted <- myv_WGP_perm_test_data %>%
+    mutate(Morph = sample(Morph))
+  
+  # 2. recompute correlations
+  perm_results <- permuted %>%
+    group_by(Morph) %>%
+    nest() %>%
+    mutate(
+      correlations = map(
+        data,
+        cor_fun,
+        pc_cols = myv_WGP_pca_cols,
+        trait_cols = myv_WGP_trait_cols)) %>% 
+    # dplyr::select(-data) %>%
+    unnest(correlations)
+  
+  # 3. build matrices
+  cold_perm <- perm_results %>%
+    filter(Morph == "Cold") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  warm_perm <- perm_results %>%
+    filter(Morph == "Warm") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  # 4. RV statistic
+  RV(cold_perm, warm_perm)
+})
+
+myv_WGP_delta_RV = mean(myv_WGP_null_rv) - myv_WGP_obs
+
+myv_WGP_z = (myv_WGP_obs - mean(myv_WGP_null_rv)) / sd(myv_WGP_null_rv)
+
+myv_WGP_rv_df = data.frame(myv_WGP_null_rv = myv_WGP_null_rv)
+
+myv_WGP_RV_perm_plot = 
+  ggplot(myv_WGP_rv_df, 
+         aes(x = myv_WGP_null_rv))+
+  geom_histogram(bins = 30, 
+                 fill = "#adb5bd", 
+                 color = "black") +
+  geom_vline(aes(xintercept = myv_WGP_obs), 
+             color = "#480355", 
+             linewidth = 1.2) +
+  labs(
+    x = "RV (null distribution)",
+    y = "Frequency",
+    title = "B) MYV F2 Unmodified",
+    subtitle = paste0("Observed RV = ", round(myv_WGP_obs, 3)))
+
+
+# SKR ---------------------------------------------------------------------
+skr_WGP_PCA
+
+skr_WGP_trait_cols = skr_WGP_PCA %>% 
+  dplyr::select(7:39) %>% 
+  names()
+
+skr_WGP_pca_cols = skr_WGP_PCA %>% 
+  dplyr::select(40:46) %>% 
+  names()
+
+skr_WGP_perm_test_data = skr_WGP_PCA %>% 
+  dplyr::select(Morph, 
+                7:39, 
+                40:46)
+
+skr_WGP_obs = RV(skr_WGP_cold_mat, 
+                     skr_WGP_warm_mat)
+set.seed(123)
+
+skr_WGP_null_rv <- replicate(1000, {
+  
+  # 1. permute group labels in RAW data
+  permuted <- skr_WGP_perm_test_data %>%
+    mutate(Morph = sample(Morph))
+  
+  # 2. recompute correlations
+  perm_results <- permuted %>%
+    group_by(Morph) %>%
+    nest() %>%
+    mutate(
+      correlations = map(
+        data,
+        cor_fun,
+        pc_cols = skr_WGP_pca_cols,
+        trait_cols = skr_WGP_trait_cols)) %>% 
+    # dplyr::select(-data) %>%
+    unnest(correlations)
+  
+  # 3. build matrices
+  cold_perm <- perm_results %>%
+    filter(Morph == "Cold") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  warm_perm <- perm_results %>%
+    filter(Morph == "Warm") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  # 4. RV statistic
+  RV(cold_perm, warm_perm)
+})
+
+skr_WGP_delta_RV = mean(skr_WGP_null_rv) - skr_WGP_obs
+
+skr_WGP_z = (skr_WGP_obs - mean(skr_WGP_null_rv)) / sd(skr_WGP_null_rv)
+
+skr_WGP_rv_df = data.frame(skr_WGP_null_rv = skr_WGP_null_rv)
+
+skr_WGP_RV_perm_plot = 
+  ggplot(skr_WGP_rv_df, 
+         aes(x = skr_WGP_null_rv))+
+  geom_histogram(bins = 30, 
+                 fill = "#adb5bd", 
+                 color = "black") +
+  geom_vline(aes(xintercept = skr_WGP_obs), 
+             color = "#480355", 
+             linewidth = 1.2) +
+  labs(
+    x = "RV (null distribution)",
+    y = "Frequency",
+    title = "C) SKR F2 Unmodified",
+    subtitle = paste0("Observed RV = ", round(skr_WGP_obs, 3)))
+
+
+
+# GTS/GAR -----------------------------------------------------------------
+gts_gar_WGP_PCA
+
+gts_gar_WGP_trait_cols = gts_gar_WGP_PCA %>% 
+  dplyr::select(7:39) %>% 
+  names()
+
+gts_gar_WGP_pca_cols = gts_gar_WGP_PCA %>% 
+  dplyr::select(40:46) %>% 
+  names()
+
+gts_gar_WGP_perm_test_data = gts_gar_WGP_PCA %>% 
+  dplyr::select(Morph, 
+                7:39, 
+                40:46)
+
+gts_gar_WGP_obs = RV(gts_gar_WGP_cold_mat, 
+                         gts_gar_WGP_warm_mat)
+set.seed(123)
+
+gts_gar_WGP_null_rv <- replicate(1000, {
+  
+  # 1. permute group labels in RAW data
+  permuted <- gts_gar_WGP_perm_test_data %>%
+    mutate(Morph = sample(Morph))
+  
+  # 2. recompute correlations
+  perm_results <- permuted %>%
+    group_by(Morph) %>%
+    nest() %>%
+    mutate(
+      correlations = map(
+        data,
+        cor_fun,
+        pc_cols = gts_gar_WGP_pca_cols,
+        trait_cols = gts_gar_WGP_trait_cols)) %>% 
+    # dplyr::select(-data) %>%
+    unnest(correlations)
+  
+  # 3. build matrices
+  cold_perm <- perm_results %>%
+    filter(Morph == "Cold") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  warm_perm <- perm_results %>%
+    filter(Morph == "Warm") %>%
+    ungroup() %>% 
+    dplyr::select(trait, pc, r) %>%
+    pivot_wider(names_from = pc, values_from = r) %>%
+    column_to_rownames("trait") %>%
+    as.matrix()
+  
+  # 4. RV statistic
+  RV(cold_perm, warm_perm)
+})
+
+gts_gar_WGP_delta_RV = mean(gts_gar_WGP_null_rv) - gts_gar_WGP_obs
+
+gts_gar_WGP_z = (gts_gar_WGP_obs - mean(gts_gar_WGP_null_rv)) / sd(gts_gar_WGP_null_rv)
+
+gts_gar_WGP_rv_df = data.frame(gts_gar_WGP_null_rv = gts_gar_WGP_null_rv)
+
+gts_gar_WGP_RV_perm_plot = 
+  ggplot(gts_gar_WGP_rv_df, 
+         aes(x = gts_gar_WGP_null_rv))+
+  geom_histogram(bins = 30, 
+                 fill = "#adb5bd", 
+                 color = "black") +
+  geom_vline(aes(xintercept = gts_gar_WGP_obs), 
+             color = "#480355", 
+             linewidth = 1.2) +
+  labs(
+    x = "RV (null distribution)",
+    y = "Frequency",
+    title = "D) GTS/GAR F2 Unmodified",
+    subtitle = paste0("Observed RV = ", round(gts_gar_WGP_obs, 3)))
+
+
+
