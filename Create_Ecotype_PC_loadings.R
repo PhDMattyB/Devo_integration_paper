@@ -47,87 +47,394 @@ wild_data = read_csv("WILD_SCALED_FIXED_27.05.2026.csv") %>%
                 Lake, 
                 Morph, 
                 5:39)
-ashn_wild_data = wild_data %>% 
-  filter(Lake_morph %in% c('ASHNC', 
-                           'ASHNW'))
-ashn_wild_trait_mat = ashn_wild_data %>% 
+ashnc_wild_data = wild_data %>% 
+  filter(Lake_morph %in% c('ASHNC'))
+ashnc_wild_trait_mat = ashnc_wild_data %>% 
   dplyr::select(5:39) %>% 
   as.matrix()
 
-myv_wild_data = wild_data %>% 
-  filter(Lake_morph %in% c('MYVC', 
-                           'MYVW'))
-myv_wild_trait_mat = myv_wild_data %>% 
+ashnw_wild_data = wild_data %>% 
+  filter(Lake_morph %in% c('ASHNW'))
+ashnw_wild_trait_mat = ashnw_wild_data %>% 
   dplyr::select(5:39) %>% 
   as.matrix()
 
-skr_wild_data = wild_data %>% 
-  filter(Lake_morph %in% c('SKRC', 
-                           'SKRW'))
-skr_wild_trait_mat = skr_wild_data %>% 
+
+myvc_wild_data = wild_data %>% 
+  filter(Lake_morph %in% c('MYVC'))
+myvc_wild_trait_mat = myvc_wild_data %>% 
+  dplyr::select(5:39) %>% 
+  as.matrix()
+myvw_wild_data = wild_data %>% 
+  filter(Lake_morph %in% c('MYVW'))
+myvw_wild_trait_mat = myvw_wild_data %>% 
   dplyr::select(5:39) %>% 
   as.matrix()
 
-gts_gar_wild_data = wild_data %>% 
-  filter(Lake_morph %in% c('CSWY', 
-                           'GTS'))
-gts_gar_wild_trait_mat = gts_gar_wild_data %>% 
+
+skrc_wild_data = wild_data %>% 
+  filter(Lake_morph %in% c('SKRC')) 
+
+skrc_wild_trait_mat = skrc_wild_data %>% 
+  dplyr::select(5:39) %>%
+  as.matrix()
+
+skrw_wild_data = wild_data %>% 
+  filter(Lake_morph %in% c('SKRW'))
+skrw_wild_trait_mat = skrw_wild_data %>% 
   dplyr::select(5:39) %>% 
   as.matrix()
+
+gts_wild_data = wild_data %>% 
+  filter(Lake_morph == 'GTS')
+gts_wild_trait_mat = gts_wild_data %>% 
+  dplyr::select(5:39) %>% 
+  as.matrix()
+
+gar_wild_data = wild_data %>% 
+  filter(Lake_morph %in% c('CSWY'))
+gar_wild_trait_mat = gar_wild_data %>% 
+  dplyr::select(5:39) %>% 
+  as.matrix()
+
+
+# wild data - KrzCov and procrustes ---------------------------------------
+
+ashnc_wild_trait_mat = wild_data %>% 
+  filter(Lake_morph %in% c('ASHNC')) %>% 
+  dplyr::select(5:39) 
+# %>% 
+#   as.matrix()
+
+ashnw_wild_trait_mat = wild_data %>% 
+  filter(Lake_morph %in% c('ASHNW')) %>% 
+  dplyr::select(5:39) 
+
+ashnc_trait_cov_mat = cov(ashnc_wild_trait_mat, 
+                          use = 'complete.obs')
+
+ashnw_trait_cov_mat = cov(ashnw_wild_trait_mat, 
+                          use = 'complete.obs')
+
+ashn_krzcov = KrzCor(ashnc_trait_cov_mat, 
+       ashnw_trait_cov_mat)
+
+ashn_proc_res = procrustes(ashnc_trait_cov_mat, 
+                           ashnw_trait_cov_mat)
+
+summary(ashn_proc_res)
+
+plot(ashn_proc_res, 
+     kind = 1)
+
+ashn_test_res <- protest(ashnc_trait_cov_mat, 
+                         ashnw_trait_cov_mat, 
+                         permutations = 999)
+
+
+myvc_wild_trait_mat = wild_data %>% 
+  filter(Lake_morph %in% c('MYVC')) %>% 
+  dplyr::select(5:39) 
+# %>% 
+#   as.matrix()
+
+myvw_wild_trait_mat = wild_data %>% 
+  filter(Lake_morph %in% c('MYVW')) %>% 
+  dplyr::select(5:39) 
+
+myvc_trait_cov_mat = cov(myvc_wild_trait_mat, 
+                          use = 'complete.obs')
+
+myvw_trait_cov_mat = cov(myvw_wild_trait_mat, 
+                          use = 'complete.obs')
+
+myv_krzcov = KrzCor(myvc_trait_cov_mat, 
+                     myvw_trait_cov_mat)
+
+myv_proc_res = procrustes(myvc_trait_cov_mat, 
+                           myvw_trait_cov_mat)
+
+summary(myv_proc_res)
+
+# plot(myv_proc_res, 
+#      kind = 1)
+
+myv_test_res <- protest(myvc_trait_cov_mat, 
+                         myvw_trait_cov_mat, 
+                         permutations = 999)
+
+
+skrc_wild_trait_mat = wild_data %>% 
+  filter(Lake_morph %in% c('SKRC')) %>% 
+  dplyr::select(5:39) 
+# %>% 
+#   as.matrix()
+
+skrw_wild_trait_mat = wild_data %>% 
+  filter(Lake_morph %in% c('SKRW')) %>% 
+  dplyr::select(5:39) 
+
+skrc_trait_cov_mat = cov(skrc_wild_trait_mat, 
+                          use = 'complete.obs')
+
+skrw_trait_cov_mat = cov(skrw_wild_trait_mat, 
+                          use = 'complete.obs')
+
+skr_krzcov = KrzCor(skrc_trait_cov_mat, 
+                     skrw_trait_cov_mat)
+
+skr_proc_res = procrustes(skrc_trait_cov_mat, 
+                           skrw_trait_cov_mat)
+
+summary(skr_proc_res)
+
+# plot(skr_proc_res, 
+#      kind = 1)
+
+skr_test_res <- protest(skrc_trait_cov_mat, 
+                         skrw_trait_cov_mat, 
+                         permutations = 999)
+
+
+
+GAR_wild_trait_mat = wild_data %>% 
+  filter(Lake_morph %in% c('CSWY')) %>% 
+  dplyr::select(5:39) 
+# %>% 
+#   as.matrix()
+
+GTS_wild_trait_mat = wild_data %>% 
+  filter(Lake_morph %in% c('GTS')) %>% 
+  dplyr::select(5:39) 
+
+GAR_trait_cov_mat = cov(GAR_wild_trait_mat, 
+                          use = 'complete.obs')
+
+GTS_trait_cov_mat = cov(GTS_wild_trait_mat, 
+                          use = 'complete.obs')
+
+gts_gar_krzcov = KrzCor(GAR_trait_cov_mat, 
+                     GTS_trait_cov_mat)
+
+gts_gar_proc_res = procrustes(GAR_trait_cov_mat, 
+                           GTS_trait_cov_mat)
+
+summary(gts_gar_proc_res)
+# 
+# plot(ashn_proc_res, 
+#      kind = 1)
+
+gts_gar_test_res <- protest(GAR_trait_cov_mat, 
+                         GTS_trait_cov_mat, 
+                         permutations = 999)
 
 
 # PCA analysis on each wild ecotype pair ----------------------------------
 
-ashn_wild_pca = prcomp(ashn_wild_trait_mat, 
-                       center = F, 
-                       scale. = F)
-paran(ashn_wild_trait_mat, 
+ashnc_wild_pca = prcomp(ashnc_wild_trait_mat, 
+                        center = F, 
+                        scale. = F)
+paran(ashnc_wild_trait_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 PC axes retained
+ashnc_wild_scores = as.data.frame(ashnc_wild_pca$x[,1:3])
+ashnc_wild_PCA = bind_cols(ashnc_wild_data, 
+                          ashnc_wild_scores)
+
+ashnw_wild_pca = prcomp(ashnw_wild_trait_mat, 
+                        center = F, 
+                        scale. = F)
+paran(ashnw_wild_trait_mat, 
       iterations = 1000, 
       graph = T)
 ## 5 pc axes retained
 
-ashn_wild_scores = as.data.frame(ashn_wild_pca$x[,1:5])
-ashn_wild_PCA = bind_cols(ashn_wild_data, 
-                          ashn_wild_scores)
+ashnw_wild_scores = as.data.frame(ashnw_wild_pca$x[,1:5])
+ashnw_wild_PCA = bind_cols(ashnw_wild_data, 
+                           ashnw_wild_scores)
+
+ashn_krzcor = KrzCor(ashnc_wild_pca$x, 
+       ashnw_wild_pca$x, 
+       ret.dim = 5,
+       repeat.vector = T)
+
+ashn_proc_res = procrustes(ashnc_wild_pca$x, 
+           ashnw_wild_pca$x)
+
+summary(ashn_proc_res)
+
+plot(ashn_proc_res, 
+     kind = 1)
+
+ashn_test_res <- protest(ashnc_wild_pca$x, 
+                    ashnw_wild_pca$x, 
+                    permutations = 999)
+
+# ashn_wild_pca = prcomp(ashn_wild_trait_mat, 
+#                        center = F, 
+#                        scale. = F)
+# paran(ashn_wild_trait_mat, 
+#       iterations = 1000, 
+#       graph = T)
+## 5 pc axes retained
+
+# ashn_wild_scores = as.data.frame(ashn_wild_pca$x[,1:5])
+# ashn_wild_PCA = bind_cols(ashn_wild_data, 
+#                           ashn_wild_scores)
 
 
-myv_wild_pca = prcomp(myv_wild_trait_mat, 
-                       center = F, 
-                       scale. = F)
-paran(myv_wild_trait_mat, 
+myvc_wild_pca = prcomp(myvc_wild_trait_mat, 
+                      center = F, 
+                      scale. = F)
+paran(myvc_wild_trait_mat, 
       iterations = 1000, 
       graph = T)
 ## 5 pc axes retained
 
-myv_wild_scores = as.data.frame(myv_wild_pca$x[,1:5])
-myv_wild_PCA = bind_cols(myv_wild_data, 
-                          myv_wild_scores)
+myvc_wild_scores = as.data.frame(myvc_wild_pca$x[,1:5])
+myvc_wild_PCA = bind_cols(myvc_wild_data, 
+                         myvc_wild_scores)
 
-
-skr_wild_pca = prcomp(skr_wild_trait_mat, 
+myvw_wild_pca = prcomp(myvw_wild_trait_mat, 
                        center = F, 
                        scale. = F)
-paran(skr_wild_trait_mat, 
+paran(myvw_wild_trait_mat, 
+      iterations = 1000, 
+      graph = T)
+## 4 pc axes retained
+
+myvw_wild_scores = as.data.frame(myvw_wild_pca$x[,1:4])
+myvw_wild_PCA = bind_cols(myvw_wild_data, 
+                          myvw_wild_scores)
+
+
+myv_krzcor = KrzCor(myvc_wild_pca$x, 
+                     myvw_wild_pca$x, 
+                     ret.dim = 4,
+                     repeat.vector = T)
+
+myv_proc_res = procrustes(myvc_wild_pca$x, 
+                           myvw_wild_pca$x)
+
+summary(myv_proc_res)
+
+# plot(myv_proc_res, 
+#      kind = 1)
+
+myv_test_res <- protest(myvc_wild_pca$x, 
+                         myvw_wild_pca$x, 
+                         permutations = 999)
+
+
+# myv_wild_pca = prcomp(myv_wild_trait_mat, 
+#                        center = F, 
+#                        scale. = F)
+# paran(myv_wild_trait_mat, 
+#       iterations = 1000, 
+#       graph = T)
+# ## 5 pc axes retained
+# 
+# myv_wild_scores = as.data.frame(myv_wild_pca$x[,1:5])
+# myv_wild_PCA = bind_cols(myv_wild_data, 
+#                           myv_wild_scores)
+
+
+skrc_wild_pca = prcomp(skrc_wild_trait_mat, 
+                      center = T, 
+                      scale. = T)
+paran(skrc_wild_trait_mat, 
+      iterations = 1000, 
+      graph = T)
+## 4 pc axes retained
+
+skrc_wild_loadings = skrc_wild_pca$rotation[,1:4]
+
+skrc_wild_scores = as.data.frame(skrc_wild_pca$x[,1:4])
+skrc_wild_PCA = bind_cols(skrc_wild_data, 
+                         skrc_wild_scores)
+
+skrw_wild_pca = prcomp(skrw_wild_trait_mat, 
+                       center = T, 
+                       scale. = T)
+paran(skrw_wild_trait_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 pc axes retained
+
+skrw_wild_loadings = skrw_wild_pca$rotation[,1:4]
+
+skrw_wild_scores = as.data.frame(skrw_wild_pca$x[,1:4])
+skrw_wild_PCA = bind_cols(skrw_wild_data, 
+                          skrw_wild_scores)
+
+skr_krzcor = KrzCor(skrc_wild_loadings, 
+                     skrw_wild_loadings, 
+                     ret.dim = 1,
+                     repeat.vector = T)
+
+skr_proc_res = procrustes(skrc_wild_pca$x, 
+                           skrw_wild_pca$x)
+
+summary(skr_proc_res)
+
+plot(skr_proc_res, 
+     kind = 1)
+
+skr_test_res <- protest(skrc_wild_pca$x, 
+                         skrw_wild_pca$x, 
+                         permutations = 999)
+
+
+
+# skr_wild_pca = prcomp(skr_wild_trait_mat, 
+#                        center = F, 
+#                        scale. = F)
+# paran(skr_wild_trait_mat, 
+#       iterations = 1000, 
+#       graph = T)
+# ## 5 pc axes retained
+# 
+# skr_wild_scores = as.data.frame(skr_wild_pca$x[,1:5])
+# skr_wild_PCA = bind_cols(skr_wild_data, 
+#                           skr_wild_scores)
+
+gar_wild_pca = prcomp(gar_wild_trait_mat, 
+                          center = F, 
+                          scale. = F)
+paran(gar_wild_trait_mat, 
       iterations = 1000, 
       graph = T)
 ## 5 pc axes retained
 
-skr_wild_scores = as.data.frame(skr_wild_pca$x[,1:5])
-skr_wild_PCA = bind_cols(skr_wild_data, 
-                          skr_wild_scores)
+gar_wild_scores = as.data.frame(gar_wild_pca$x[,1:5])
+gar_wild_PCA = bind_cols(gar_wild_data, 
+                             gar_wild_scores)
 
-
-gts_gar_wild_pca = prcomp(gts_gar_wild_trait_mat, 
-                       center = F, 
-                       scale. = F)
-paran(gts_gar_wild_trait_mat, 
+gts_wild_pca = prcomp(gts_wild_trait_mat, 
+                      center = F, 
+                      scale. = F)
+paran(gts_wild_trait_mat, 
       iterations = 1000, 
       graph = T)
-## 6 pc axes retained
+## 5 pc axes retained
 
-gts_gar_wild_scores = as.data.frame(gts_gar_wild_pca$x[,1:6])
-gts_gar_wild_PCA = bind_cols(gts_gar_wild_data, 
-                          gts_gar_wild_scores)
+gts_wild_scores = as.data.frame(gts_wild_pca$x[,1:5])
+gts_wild_PCA = bind_cols(gts_wild_data, 
+                         gts_wild_scores)
+
+
+# gts_gar_wild_pca = prcomp(gts_gar_wild_trait_mat, 
+#                        center = F, 
+#                        scale. = F)
+# paran(gts_gar_wild_trait_mat, 
+#       iterations = 1000, 
+#       graph = T)
+# ## 6 pc axes retained
+# 
+# gts_gar_wild_scores = as.data.frame(gts_gar_wild_pca$x[,1:6])
+# gts_gar_wild_PCA = bind_cols(gts_gar_wild_data, 
+#                           gts_gar_wild_scores)
 
 
 
@@ -135,24 +442,93 @@ gts_gar_wild_PCA = bind_cols(gts_gar_wild_data,
 
 # ASHN --------------------------------------------------------------------
 
-ashn_trait_cols = ashn_wild_PCA %>% 
+ashnc_trait_cols = ashnc_wild_PCA %>% 
   dplyr::select(5:39) %>% 
   names()
 
-ashn_pca_cols = ashn_wild_PCA %>% 
-  dplyr::select(40:44) %>% 
+ashnc_pca_cols = ashnc_wild_PCA %>% 
+  dplyr::select(40:42) %>% 
   names()
 
-ashn_wild_WC_loads = ashn_wild_PCA %>% 
+ashnc_wild_WC_loads = ashnc_wild_PCA %>% 
   group_by(Morph) %>% 
   nest() %>% 
   mutate(correlations = map(
     data, 
     cor_fun, 
-    pc_cols = ashn_pca_cols, 
-    trait_cols = ashn_trait_cols)) %>% 
+    pc_cols = ashnc_pca_cols, 
+    trait_cols = ashnc_trait_cols)) %>% 
   dplyr::select(-data) %>% 
   unnest(correlations)
+
+ashnc_wild_cold_mat = ashnc_wild_WC_loads %>%
+  # filter(p < 0.05) %>% 
+  ungroup() %>% 
+  # filter(Morph == 'Cold') %>%
+  dplyr::select(trait, pc, r) %>%
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  # replace(is.na(.), 0) %>%
+  column_to_rownames('trait') %>% 
+  as.matrix() 
+
+
+ashnw_trait_cols = ashnw_wild_PCA %>% 
+  dplyr::select(5:39) %>% 
+  names()
+
+ashnw_pca_cols = ashnw_wild_PCA %>% 
+  dplyr::select(40:42) %>% 
+  names()
+
+ashnw_wild_WC_loads = ashnw_wild_PCA %>% 
+  group_by(Morph) %>% 
+  nest() %>% 
+  mutate(correlations = map(
+    data, 
+    cor_fun, 
+    pc_cols = ashnw_pca_cols, 
+    trait_cols = ashnw_trait_cols)) %>% 
+  dplyr::select(-data) %>% 
+  unnest(correlations)
+
+ashnw_wild_warm_mat = ashnw_wild_WC_loads %>%
+  # filter(p < 0.05) %>% 
+  ungroup() %>% 
+  # filter(Morph == 'Cold') %>%
+  dplyr::select(trait, pc, r) %>%
+  pivot_wider(names_from = pc, 
+              values_from = r) %>% 
+  # replace(is.na(.), 0) %>%
+  column_to_rownames('trait') %>% 
+  as.matrix() 
+
+
+
+krzanowski.test(ashnw_wild_warm_mat, 
+                ashnc_wild_cold_mat, 
+                vecsA = 1:3, 
+                vecsB = 1:3, 
+                corr = FALSE)
+
+# ashn_trait_cols = ashn_wild_PCA %>% 
+#   dplyr::select(5:39) %>% 
+#   names()
+# 
+# ashn_pca_cols = ashn_wild_PCA %>% 
+#   dplyr::select(40:44) %>% 
+#   names()
+# 
+# ashn_wild_WC_loads = ashn_wild_PCA %>% 
+#   group_by(Morph) %>% 
+#   nest() %>% 
+#   mutate(correlations = map(
+#     data, 
+#     cor_fun, 
+#     pc_cols = ashn_pca_cols, 
+#     trait_cols = ashn_trait_cols)) %>% 
+#   dplyr::select(-data) %>% 
+#   unnest(correlations)
 
 ## Graphical check
 
@@ -736,6 +1112,11 @@ gts_gar_trait_effect_plot =
   labs(y = 'Absolute sum of r-values across axes', 
        title = 'A) GTS/GAR')+
   theme(axis.title.y = element_blank())
+
+
+
+# effect size - all pops combined -----------------------------------------
+
 
 # wild data - Permutation test RV coefficient ------------------------------
 
