@@ -225,3 +225,367 @@ ggplot(cov_long,
     strip.text = element_text(face = 'bold'), 
     axis.text = element_text(size = 6))
   
+
+
+# Principal axes of divergence?  ------------------------------------------
+
+ashn_eig_amb <- eigen(ashnc_trait_cov_mat)
+ashn_eig_geo <- eigen(ashnw_trait_cov_mat)
+
+ashn_loadings <- tibble(
+  Trait = rownames(ashnc_trait_cov_mat),
+  Ambient_PC1 = ashn_eig_amb$vectors[, 1],
+  Ambient_PC2 = ashn_eig_amb$vectors[, 2],
+  Ambient_PC3 = ashn_eig_amb$vectors[, 3],
+  Geothermal_PC1 = ashn_eig_geo$vectors[, 1], 
+  Geothermal_PC2 = ashn_eig_geo$vectors[, 2], 
+  Geothermal_PC3 = ashn_eig_geo$vectors[, 3])
+
+# Align arbitrary eigenvector signs
+if (sum(ashn_loadings$Ambient_PC1 * ashn_loadings$Geothermal_PC1) < 0) {
+  ashn_loadings$Geothermal_PC1 <- -ashn_loadings$Geothermal_PC1
+}
+
+if (sum(ashn_loadings$Ambient_PC2 * ashn_loadings$Geothermal_PC2) < 0) {
+  ashn_loadings$Geothermal_PC2 <- -ashn_loadings$Geothermal_PC2
+}
+if (sum(ashn_loadings$Ambient_PC3 * ashn_loadings$Geothermal_PC3) < 0) {
+  ashn_loadings$Geothermal_PC3 <- -ashn_loadings$Geothermal_PC3
+}
+
+
+ashn_pc_loadings = ggplot(ashn_loadings, 
+       aes(Ambient_PC1, 
+           Geothermal_PC1)) +
+  # geom_abline(slope = 1, 
+  #             intercept = 0, 
+  #             linetype = 2) +
+  geom_hline(yintercept = 0.0, 
+             linetype = 2)+
+  geom_vline(xintercept = 0.0, 
+             linetype = 2)+
+  geom_point(size = 3) +
+  geom_text(aes(label = Trait), 
+            vjust = -0.7) +
+  coord_equal() +
+  theme_classic() +
+  labs(
+    x = "Ambient PC1 loading",
+    y = "Geothermal PC1 loading", 
+    title = 'A) ASHN')+
+
+ggplot(ashn_loadings, 
+       aes(Ambient_PC2, 
+           Geothermal_PC2)) +
+  # geom_abline(slope = 1, 
+  #             intercept = 0, 
+  #             linetype = 2) +
+  geom_hline(yintercept = 0.0, 
+             linetype = 2)+
+  geom_vline(xintercept = 0.0, 
+             linetype = 2)+
+  geom_point(size = 3) +
+  geom_text(aes(label = Trait), 
+            vjust = -0.7) +
+  coord_equal() +
+  theme_classic() +
+  labs(
+    x = "Ambient PC2 loading",
+    y = "Geothermal PC2 loading"
+  )+
+
+ggplot(ashn_loadings, 
+       aes(Ambient_PC3, 
+           Geothermal_PC3)) +
+  # geom_abline(slope = 1, 
+  #             intercept = 0, 
+  #             linetype = 2) +
+  geom_hline(yintercept = 0.0, 
+             linetype = 2)+
+  geom_vline(xintercept = 0.0, 
+             linetype = 2)+
+  geom_point(size = 3) +
+  geom_text(aes(label = Trait), 
+            vjust = -0.7) +
+  coord_equal() +
+  theme_classic() +
+  labs(
+    x = "Ambient PC3 loading",
+    y = "Geothermal PC3 loading"
+  )
+
+
+# MYV pc loadings ---------------------------------------------------------
+
+
+myv_eig_amb <- eigen(myvc_trait_cov_mat)
+myv_eig_geo <- eigen(myvw_trait_cov_mat)
+
+myv_loadings <- tibble(
+  Trait = rownames(myvc_trait_cov_mat),
+  Ambient_PC1 = myv_eig_amb$vectors[, 1],
+  Ambient_PC2 = myv_eig_amb$vectors[, 2],
+  Ambient_PC3 = myv_eig_amb$vectors[, 3],
+  Geothermal_PC1 = myv_eig_geo$vectors[, 1], 
+  Geothermal_PC2 = myv_eig_geo$vectors[, 2], 
+  Geothermal_PC3 = myv_eig_geo$vectors[, 3])
+
+# Align arbitrary eigenvector signs
+if (sum(myv_loadings$Ambient_PC1 * myv_loadings$Geothermal_PC1) < 0) {
+  myv_loadings$Geothermal_PC1 <- -myv_loadings$Geothermal_PC1
+}
+
+if (sum(myv_loadings$Ambient_PC2 * myv_loadings$Geothermal_PC2) < 0) {
+  myv_loadings$Geothermal_PC2 <- -myv_loadings$Geothermal_PC2
+}
+if (sum(myv_loadings$Ambient_PC3 * myv_loadings$Geothermal_PC3) < 0) {
+  myv_loadings$Geothermal_PC3 <- -myv_loadings$Geothermal_PC3
+}
+
+
+myv_pc_loadings = ggplot(myv_loadings, 
+                          aes(Ambient_PC1, 
+                              Geothermal_PC1)) +
+  # geom_abline(slope = 1, 
+  #             intercept = 0, 
+  #             linetype = 2) +
+  geom_hline(yintercept = 0.0, 
+             linetype = 2)+
+  geom_vline(xintercept = 0.0, 
+             linetype = 2)+
+  geom_point(size = 3) +
+  geom_text(aes(label = Trait), 
+            vjust = -0.7) +
+  coord_equal() +
+  theme_classic() +
+  labs(
+    x = "Ambient PC1 loading",
+    y = "Geothermal PC1 loading", 
+    title = 'B) MYV'
+  )+
+  
+  ggplot(myv_loadings, 
+         aes(Ambient_PC2, 
+             Geothermal_PC2)) +
+  # geom_abline(slope = 1, 
+  #             intercept = 0, 
+  #             linetype = 2) +
+  geom_hline(yintercept = 0.0, 
+             linetype = 2)+
+  geom_vline(xintercept = 0.0, 
+             linetype = 2)+
+  geom_point(size = 3) +
+  geom_text(aes(label = Trait), 
+            vjust = -0.7) +
+  coord_equal() +
+  theme_classic() +
+  labs(
+    x = "Ambient PC2 loading",
+    y = "Geothermal PC2 loading"
+  )+
+  
+  ggplot(myv_loadings, 
+         aes(Ambient_PC3, 
+             Geothermal_PC3)) +
+  # geom_abline(slope = 1, 
+  #             intercept = 0, 
+  #             linetype = 2) +
+  geom_hline(yintercept = 0.0, 
+             linetype = 2)+
+  geom_vline(xintercept = 0.0, 
+             linetype = 2)+
+  geom_point(size = 3) +
+  geom_text(aes(label = Trait), 
+            vjust = -0.7) +
+  coord_equal() +
+  theme_classic() +
+  labs(
+    x = "Ambient PC3 loading",
+    y = "Geothermal PC3 loading"
+  )
+
+
+
+# SKR pc loadings ---------------------------------------------------------
+
+
+skr_eig_amb <- eigen(skrc_trait_cov_mat)
+skr_eig_geo <- eigen(skrw_trait_cov_mat)
+
+skr_loadings <- tibble(
+  Trait = rownames(skrc_trait_cov_mat),
+  Ambient_PC1 = skr_eig_amb$vectors[, 1],
+  Ambient_PC2 = skr_eig_amb$vectors[, 2],
+  Ambient_PC3 = skr_eig_amb$vectors[, 3],
+  Geothermal_PC1 = skr_eig_geo$vectors[, 1], 
+  Geothermal_PC2 = skr_eig_geo$vectors[, 2], 
+  Geothermal_PC3 = skr_eig_geo$vectors[, 3])
+
+# Align arbitrary eigenvector signs
+if (sum(skr_loadings$Ambient_PC1 * skr_loadings$Geothermal_PC1) < 0) {
+  skr_loadings$Geothermal_PC1 <- -skr_loadings$Geothermal_PC1
+}
+
+if (sum(skr_loadings$Ambient_PC2 * skr_loadings$Geothermal_PC2) < 0) {
+  skr_loadings$Geothermal_PC2 <- -skr_loadings$Geothermal_PC2
+}
+if (sum(skr_loadings$Ambient_PC3 * skr_loadings$Geothermal_PC3) < 0) {
+  skr_loadings$Geothermal_PC3 <- -skr_loadings$Geothermal_PC3
+}
+
+
+skr_pc_loadings = ggplot(skr_loadings, 
+                          aes(Ambient_PC1, 
+                              Geothermal_PC1)) +
+  # geom_abline(slope = 1, 
+  #             intercept = 0, 
+  #             linetype = 2) +
+  geom_hline(yintercept = 0.0, 
+             linetype = 2)+
+  geom_vline(xintercept = 0.0, 
+             linetype = 2)+
+  geom_point(size = 3) +
+  geom_text(aes(label = Trait), 
+            vjust = -0.7) +
+  coord_equal() +
+  theme_classic() +
+  labs(
+    x = "Ambient PC1 loading",
+    y = "Geothermal PC1 loading", 
+    title = 'C) SKR'
+  )+
+  
+  ggplot(skr_loadings, 
+         aes(Ambient_PC2, 
+             Geothermal_PC2)) +
+  # geom_abline(slope = 1, 
+  #             intercept = 0, 
+  #             linetype = 2) +
+  geom_hline(yintercept = 0.0, 
+             linetype = 2)+
+  geom_vline(xintercept = 0.0, 
+             linetype = 2)+
+  geom_point(size = 3) +
+  geom_text(aes(label = Trait), 
+            vjust = -0.7) +
+  coord_equal() +
+  theme_classic() +
+  labs(
+    x = "Ambient PC2 loading",
+    y = "Geothermal PC2 loading"
+  )+
+  
+  ggplot(skr_loadings, 
+         aes(Ambient_PC3, 
+             Geothermal_PC3)) +
+  # geom_abline(slope = 1, 
+  #             intercept = 0, 
+  #             linetype = 2) +
+  geom_hline(yintercept = 0.0, 
+             linetype = 2)+
+  geom_vline(xintercept = 0.0, 
+             linetype = 2)+
+  geom_point(size = 3) +
+  geom_text(aes(label = Trait), 
+            vjust = -0.7) +
+  coord_equal() +
+  theme_classic() +
+  labs(
+    x = "Ambient PC3 loading",
+    y = "Geothermal PC3 loading"
+  )
+
+
+# GTS/GAR -----------------------------------------------------------------
+
+
+GAR_eig_amb <- eigen(GAR_trait_cov_mat)
+GTS_eig_geo <- eigen(GTS_trait_cov_mat)
+
+gts_gar_loadings <- tibble(
+  Trait = rownames(GAR_trait_cov_mat),
+  Ambient_PC1 = GAR_eig_amb$vectors[, 1],
+  Ambient_PC2 = GAR_eig_amb$vectors[, 2],
+  Ambient_PC3 = GAR_eig_amb$vectors[, 3],
+  Geothermal_PC1 = GTS_eig_geo$vectors[, 1], 
+  Geothermal_PC2 = GTS_eig_geo$vectors[, 2], 
+  Geothermal_PC3 = GTS_eig_geo$vectors[, 3])
+
+# Align arbitrary eigenvector signs
+if (sum(gts_gar_loadings$Ambient_PC1 * gts_gar_loadings$Geothermal_PC1) < 0) {
+  gts_gar_loadings$Geothermal_PC1 <- -gts_gar_loadings$Geothermal_PC1
+}
+
+if (sum(gts_gar_loadings$Ambient_PC2 * gts_gar_loadings$Geothermal_PC2) < 0) {
+  gts_gar_loadings$Geothermal_PC2 <- -gts_gar_loadings$Geothermal_PC2
+}
+if (sum(gts_gar_loadings$Ambient_PC3 * gts_gar_loadings$Geothermal_PC3) < 0) {
+  gts_gar_loadings$Geothermal_PC3 <- -gts_gar_loadings$Geothermal_PC3
+}
+
+
+gts_gar_pc_loadings = ggplot(gts_gar_loadings, 
+                          aes(Ambient_PC1, 
+                              Geothermal_PC1)) +
+  # geom_abline(slope = 1, 
+  #             intercept = 0, 
+  #             linetype = 2) +
+  geom_hline(yintercept = 0.0, 
+             linetype = 2)+
+  geom_vline(xintercept = 0.0, 
+             linetype = 2)+
+  geom_point(size = 3) +
+  geom_text(aes(label = Trait), 
+            vjust = -0.7) +
+  coord_equal() +
+  theme_classic() +
+  labs(
+    x = "Ambient PC1 loading",
+    y = "Geothermal PC1 loading", 
+    title = 'D) GTS/GAR'
+  )+
+  
+  ggplot(gts_gar_loadings, 
+         aes(Ambient_PC2, 
+             Geothermal_PC2)) +
+  # geom_abline(slope = 1, 
+  #             intercept = 0, 
+  #             linetype = 2) +
+  geom_hline(yintercept = 0.0, 
+             linetype = 2)+
+  geom_vline(xintercept = 0.0, 
+             linetype = 2)+
+  geom_point(size = 3) +
+  geom_text(aes(label = Trait), 
+            vjust = -0.7) +
+  coord_equal() +
+  theme_classic() +
+  labs(
+    x = "Ambient PC2 loading",
+    y = "Geothermal PC2 loading"
+  )+
+  
+  ggplot(gts_gar_loadings, 
+         aes(Ambient_PC3, 
+             Geothermal_PC3)) +
+  # geom_abline(slope = 1, 
+  #             intercept = 0, 
+  #             linetype = 2) +
+  geom_hline(yintercept = 0.0, 
+             linetype = 2)+
+  geom_vline(xintercept = 0.0, 
+             linetype = 2)+
+  geom_point(size = 3) +
+  geom_text(aes(label = Trait), 
+            vjust = -0.7) +
+  coord_equal() +
+  theme_classic() +
+  labs(
+    x = "Ambient PC3 loading",
+    y = "Geothermal PC3 loading"
+  )
+
+
+ashn_pc_loadings/myv_pc_loadings/skr_pc_loadings/gts_gar_pc_loadings
+
+
