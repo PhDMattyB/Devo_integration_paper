@@ -196,24 +196,32 @@ cov_long$Type <- factor(
   levels = c("Ambient", "Geothermal", "Difference")
 )
 
-
+cov_long = cov_long %>% 
+  mutate(Ecotype_pair = case_when(
+  str_detect(Pair, 'Pair1') ~ 'ASHN',
+  str_detect(Pair, 'Pair2') ~ 'MYV',
+  str_detect(Pair, 'Pair3') ~ 'SKR',
+  str_detect(Pair, 'Pair4') ~ 'GTS/GAR'))
 
 ggplot(cov_long, 
        aes(Trait1, 
-                     Trait2, 
-                     fill = Covariance)) +
+           Trait2, 
+           fill = Covariance)) +
   geom_tile() +
-  facet_grid(Pair ~ Type) +
+  facet_grid(Ecotype_pair ~ Type) +
   scale_fill_gradient2(
     low = "#2166AC",
     mid = "white",
     high = "#B2182B",
-    midpoint = 0
-  ) +
+    midpoint = 0) +
   coord_equal() +
-  theme_bw() +
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1),
-    panel.grid = element_blank()
-  ) +
-  labs(x = NULL, y = NULL, fill = "Covariance")
+  labs(x = NULL, 
+       y = NULL, 
+       fill = "Covariance")+
+  theme(axis.text.x = element_text(angle = 90, 
+                                   hjust = 1),
+    panel.grid = element_blank(), 
+    strip.background = element_rect(fill = 'white'), 
+    strip.text = element_text(face = 'bold'), 
+    axis.text = element_text(size = 6))
+  
