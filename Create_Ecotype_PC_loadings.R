@@ -174,7 +174,8 @@ ashn_wild_WC_loads %>%
 
 ashn_wild_cold = ashn_wild_WC_loads %>% 
   filter(Morph == 'Cold') %>% 
-  dplyr::select(pc, trait, r_cold = r)
+  mutate(Pop = 'ASHN') %>% 
+  # dplyr::select(pc, trait, r_cold = r)
 ashn_wild_warm = ashn_wild_WC_loads %>% 
   filter(Morph == 'Warm') %>% 
   dplyr::select(pc, trait, r_warm = r)
@@ -324,12 +325,12 @@ gts_gar_wild_warm = gts_gar_wild_WC_loads %>%
 
 ashn_wild_cold_mat = ashn_wild_WC_loads %>% 
   ungroup() %>% 
-  filter(Morph == 'Cold') %>% 
-  dplyr::select(trait, pc, r) %>% 
+  filter(Morph == 'Cold') %>%
+  dplyr::select(trait, pc, r) %>%
   pivot_wider(names_from = pc, 
               values_from = r) %>% 
   column_to_rownames('trait') %>% 
-  as.matrix()
+  as.matrix() 
 
 ashn_wild_warm_mat = ashn_wild_WC_loads %>% 
   ungroup() %>% 
@@ -378,8 +379,7 @@ ashn_wild_diff_mat_plot =
     title = "A) ASHN warm-cold trait correlations") +
   theme(
     axis.text.y = element_text(size = 6), 
-    axis.title = element_blank(), 
-    legend.position = 'none')
+    axis.title = element_blank())
 
 
 # MYV ---------------------------------------------------------------------
@@ -563,6 +563,134 @@ gts_gar_wild_diff_mat_plot =
     axis.text.y = element_text(size = 6), 
     axis.title = element_blank(), 
     legend.position = 'none')
+
+
+
+
+# Wild data - Big warm - cold matrix comparison ---------------------------
+
+ashn_wild_cold_mat_big = ashn_wild_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Cold') %>% 
+  mutate(Pop = 'ASHN') 
+
+# %>%
+#   dplyr::select(trait, pc, r) %>%
+#   pivot_wider(names_from = pc, 
+#               values_from = r) %>% 
+#   column_to_rownames('trait') %>% 
+#   as.matrix() 
+
+ashn_wild_warm_mat_big = ashn_wild_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Warm') %>% 
+  mutate(Pop = 'ASHN') 
+
+# %>% 
+#   dplyr::select(trait, pc, r) %>% 
+#   pivot_wider(names_from = pc, 
+#               values_from = r) %>% 
+#   column_to_rownames('trait') %>% 
+#   as.matrix()
+
+myv_wild_cold_mat_big = myv_wild_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Cold') %>% 
+  mutate(Pop = 'MYV') 
+myv_wild_warm_mat_big = myv_wild_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Warm') %>% 
+  mutate(Pop = 'MYV') 
+
+skr_wild_cold_mat_big = skr_wild_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Cold') %>% 
+  mutate(Pop = 'SKR')
+skr_wild_warm_mat_big = skr_wild_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Warm') %>% 
+  mutate(Pop = 'SKR')
+
+gts_gar_wild_cold_mat_big = gts_gar_wild_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Cold') %>% 
+  mutate(Pop = 'GTS/GAR')
+gts_gar_wild_warm_mat_big = gts_gar_wild_WC_loads %>% 
+  ungroup() %>% 
+  filter(Morph == 'Warm') %>% 
+  mutate(Pop = 'GTS/GAR')
+
+wild_cold_mat_pop_combo = bind_rows(ashn_wild_cold_mat_big, 
+                                    myv_wild_cold_mat_big, 
+                                    skr_wild_cold_mat_big, 
+                                    gts_gar_wild_cold_mat_big) %>%
+  unite(col = pop_pc, 
+        c('pc', 
+          'Pop'), 
+        sep = '_') %>% 
+  filter(p < 0.05) %>% 
+    dplyr::select(trait, pop_pc, r) %>%
+    pivot_wider(names_from = pop_pc,
+                values_from = r) %>%
+  replace(is.na(.), 0) %>% 
+    column_to_rownames('trait') %>%
+    as.matrix()
+
+wild_warm_mat_pop_combo = bind_rows(ashn_wild_warm_mat_big, 
+                                    myv_wild_warm_mat_big, 
+                                    skr_wild_warm_mat_big, 
+                                    gts_gar_wild_warm_mat_big) %>%
+  unite(col = pop_pc, 
+        c('pc', 
+          'Pop'), 
+        sep = '_') %>% 
+  filter(p < 0.05) %>% 
+  dplyr::select(trait, pop_pc, r) %>%
+  pivot_wider(names_from = pop_pc,
+              values_from = r) %>%
+  replace(is.na(.), 0) %>% 
+  column_to_rownames('trait') %>%
+  as.matrix()
+
+wild_diff_mat = wild_warm_mat_pop_combo - wild_warm_mat_pop_combo
+
+wild_diff_mat_long = wild_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  pivot_longer(cols = -trait, 
+               names_to = 'PC', 
+               values_to = 'diff')
+
+wild_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff > 0.3) %>% 
+  arrange(PC, 
+          diff)
+
+wild_diff_mat_long %>% 
+  group_by(PC) %>% 
+  filter(diff < -0.3) %>% 
+  arrange(PC, 
+          diff)
+
+  ggplot(wild_diff_mat_long, 
+         aes(x = PC, 
+             y = trait, 
+             fill = diff))+
+  geom_tile() +
+  scale_fill_gradient2(
+    low = "#277da1",
+    mid = "white",
+    high = "#f94144") +
+  labs(
+    x = "PC axis",
+    y = "Trait",
+    fill = "Δ loading",
+    title = "A) Wild warm-cold trait correlations") +
+  theme(
+    axis.text.y = element_text(size = 6), 
+    axis.title = element_blank())
+
 
 
 # wild data - Effect size --------------------------------------------------
