@@ -323,21 +323,25 @@ gts_gar_wild_warm = gts_gar_wild_WC_loads %>%
 
 # ASHN --------------------------------------------------------------------
 
-ashn_wild_cold_mat = ashn_wild_WC_loads %>% 
+ashn_wild_cold_mat = ashn_wild_WC_loads %>%
+  # filter(p < 0.05) %>% 
   ungroup() %>% 
   filter(Morph == 'Cold') %>%
   dplyr::select(trait, pc, r) %>%
   pivot_wider(names_from = pc, 
               values_from = r) %>% 
+  replace(is.na(.), 0) %>%
   column_to_rownames('trait') %>% 
   as.matrix() 
 
 ashn_wild_warm_mat = ashn_wild_WC_loads %>% 
+  # filter(p < 0.05) %>% 
   ungroup() %>% 
   filter(Morph == 'Warm') %>% 
   dplyr::select(trait, pc, r) %>% 
   pivot_wider(names_from = pc, 
               values_from = r) %>% 
+  replace(is.na(.), 0) %>%
   column_to_rownames('trait') %>% 
   as.matrix()
 
@@ -348,7 +352,8 @@ ashn_wild_diff_mat_long = ashn_wild_diff_mat %>%
   rownames_to_column('trait') %>% 
   pivot_longer(cols = -trait, 
                names_to = 'PC', 
-               values_to = 'diff')
+               values_to = 'diff') %>% 
+  mutate(Pop = 'ASHN')
 
 ashn_wild_diff_mat_long %>% 
   group_by(PC) %>% 
@@ -569,97 +574,42 @@ gts_gar_wild_diff_mat_plot =
 
 # Wild data - Big warm - cold matrix comparison ---------------------------
 
-ashn_wild_cold_mat_big = ashn_wild_WC_loads %>% 
-  ungroup() %>% 
-  filter(Morph == 'Cold') %>% 
-  mutate(Pop = 'ASHN') 
-
-# %>%
-#   dplyr::select(trait, pc, r) %>%
-#   pivot_wider(names_from = pc, 
-#               values_from = r) %>% 
-#   column_to_rownames('trait') %>% 
-#   as.matrix() 
-
-ashn_wild_warm_mat_big = ashn_wild_WC_loads %>% 
-  ungroup() %>% 
-  filter(Morph == 'Warm') %>% 
-  mutate(Pop = 'ASHN') 
-
-# %>% 
-#   dplyr::select(trait, pc, r) %>% 
-#   pivot_wider(names_from = pc, 
-#               values_from = r) %>% 
-#   column_to_rownames('trait') %>% 
-#   as.matrix()
-
-myv_wild_cold_mat_big = myv_wild_WC_loads %>% 
-  ungroup() %>% 
-  filter(Morph == 'Cold') %>% 
-  mutate(Pop = 'MYV') 
-myv_wild_warm_mat_big = myv_wild_WC_loads %>% 
-  ungroup() %>% 
-  filter(Morph == 'Warm') %>% 
-  mutate(Pop = 'MYV') 
-
-skr_wild_cold_mat_big = skr_wild_WC_loads %>% 
-  ungroup() %>% 
-  filter(Morph == 'Cold') %>% 
-  mutate(Pop = 'SKR')
-skr_wild_warm_mat_big = skr_wild_WC_loads %>% 
-  ungroup() %>% 
-  filter(Morph == 'Warm') %>% 
-  mutate(Pop = 'SKR')
-
-gts_gar_wild_cold_mat_big = gts_gar_wild_WC_loads %>% 
-  ungroup() %>% 
-  filter(Morph == 'Cold') %>% 
-  mutate(Pop = 'GTS/GAR')
-gts_gar_wild_warm_mat_big = gts_gar_wild_WC_loads %>% 
-  ungroup() %>% 
-  filter(Morph == 'Warm') %>% 
-  mutate(Pop = 'GTS/GAR')
-
-wild_cold_mat_pop_combo = bind_rows(ashn_wild_cold_mat_big, 
-                                    myv_wild_cold_mat_big, 
-                                    skr_wild_cold_mat_big, 
-                                    gts_gar_wild_cold_mat_big) %>%
-  unite(col = pop_pc, 
-        c('pc', 
-          'Pop'), 
-        sep = '_') %>% 
-  filter(p < 0.05) %>% 
-    dplyr::select(trait, pop_pc, r) %>%
-    pivot_wider(names_from = pop_pc,
-                values_from = r) %>%
-  replace(is.na(.), 0) %>% 
-    column_to_rownames('trait') %>%
-    as.matrix()
-
-wild_warm_mat_pop_combo = bind_rows(ashn_wild_warm_mat_big, 
-                                    myv_wild_warm_mat_big, 
-                                    skr_wild_warm_mat_big, 
-                                    gts_gar_wild_warm_mat_big) %>%
-  unite(col = pop_pc, 
-        c('pc', 
-          'Pop'), 
-        sep = '_') %>% 
-  filter(p < 0.05) %>% 
-  dplyr::select(trait, pop_pc, r) %>%
-  pivot_wider(names_from = pop_pc,
-              values_from = r) %>%
-  replace(is.na(.), 0) %>% 
-  column_to_rownames('trait') %>%
-  as.matrix()
-
-wild_diff_mat = wild_warm_mat_pop_combo - wild_warm_mat_pop_combo
-
-wild_diff_mat_long = wild_diff_mat %>% 
+ashn_wild_diff_mat_long = ashn_wild_diff_mat %>% 
   as.data.frame() %>% 
   rownames_to_column('trait') %>% 
   pivot_longer(cols = -trait, 
                names_to = 'PC', 
-               values_to = 'diff')
+               values_to = 'diff') %>% 
+  mutate(Pop = 'ASHN')
+
+myv_wild_diff_mat_long = myv_wild_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  pivot_longer(cols = -trait, 
+               names_to = 'PC', 
+               values_to = 'diff') %>% 
+  mutate(Pop = 'MYV')
+
+skr_wild_diff_mat_long = skr_wild_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  pivot_longer(cols = -trait, 
+               names_to = 'PC', 
+               values_to = 'diff') %>% 
+  mutate(Pop = 'SKR')
+
+gts_gar_wild_diff_mat_long = gts_gar_wild_diff_mat %>% 
+  as.data.frame() %>% 
+  rownames_to_column('trait') %>% 
+  pivot_longer(cols = -trait, 
+               names_to = 'PC', 
+               values_to = 'diff') %>% 
+  mutate(Pop = 'GTS/GAR')
+
+wild_diff_mat_long = bind_rows(ashn_wild_diff_mat_long, 
+                               myv_wild_diff_mat_long, 
+                               skr_wild_diff_mat_long, 
+                               gts_gar_wild_diff_mat_long)
 
 wild_diff_mat_long %>% 
   group_by(PC) %>% 
@@ -673,7 +623,7 @@ wild_diff_mat_long %>%
   arrange(PC, 
           diff)
 
-  ggplot(wild_diff_mat_long, 
+wild_diff_mat_plot = ggplot(wild_diff_mat_long, 
          aes(x = PC, 
              y = trait, 
              fill = diff))+
@@ -682,6 +632,7 @@ wild_diff_mat_long %>%
     low = "#277da1",
     mid = "white",
     high = "#f94144") +
+  facet_wrap(~Pop)+
   labs(
     x = "PC axis",
     y = "Trait",
@@ -689,9 +640,16 @@ wild_diff_mat_long %>%
     title = "A) Wild warm-cold trait correlations") +
   theme(
     axis.text.y = element_text(size = 6), 
-    axis.title = element_blank())
+    axis.title = element_blank(), 
+    strip.background = element_rect(fill = 'white'), 
+    strip.text = element_text(face = 'bold'))
 
-
+ggsave('Wild_diff_mat_plot_20.10.2026.svg', 
+       plot = wild_diff_mat_plot, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 20, 
+       height = 25)
 
 # wild data - Effect size --------------------------------------------------
 
