@@ -168,6 +168,10 @@ gts_gar_test_res <- protest(GAR_trait_cov_mat,
 
 # KrzCov null distribution resampling -------------------------------------
 
+
+# ASHN --------------------------------------------------------------------
+
+
 # Combine individuals from both ecotypes
 ashn_combined = bind_rows(ashnc_wild_trait_mat,
   ashnw_wild_trait_mat)
@@ -176,7 +180,7 @@ n_ashn_cold = nrow(ashnc_wild_trait_mat)
 n_ashn_warm = nrow(ashnw_wild_trait_mat)
 
 # Observed similarity
-ashn_observed <- evolqg::KrzCor(cov(ashnc_wild_trait_mat),
+ashn_observed = evolqg::KrzCor(cov(ashnc_wild_trait_mat),
   cov(ashnw_wild_trait_mat))
 
 # Permutation test
@@ -186,19 +190,17 @@ n_perm = 9999
 
 ashn_null_krz = replicate(n_perm, {
   
-  idx <- sample(nrow(ashn_combined))
+  idx == sample(nrow(ashn_combined))
   
-  ashn_cold_perm <- ashn_combined[idx[1:n_ashn_cold], , drop = FALSE]
+  ashn_cold_perm = ashn_combined[idx[1:n_ashn_cold], , drop = FALSE]
   
-  ashn_warm_perm <- ashn_combined[
+  ashn_warm_perm = ashn_combined[
     idx[(n_ashn_cold + 1):(n_ashn_cold + n_ashn_warm)],
     ,
     drop = FALSE]
   
-  evolqg::KrzCor(
-    cov(ashn_cold_perm),
-    cov(ashn_warm_perm)
-  )
+  evolqg::KrzCor(cov(ashn_cold_perm),
+    cov(ashn_warm_perm))
 })
 
 # Lower similarity indicates greater divergence
@@ -223,6 +225,181 @@ ggplot(data.frame(KrzCor = ashn_null_krz),
   labs(x = "Krzanowski subspace similarity",
     y = "Permutation frequency",
     title = "ASHN geothermal–ambient comparison")
+
+
+# MYV ---------------------------------------------------------------------
+
+
+# Combine individuals from both ecotypes
+myv_combined = bind_rows(myvc_wild_trait_mat,
+                          myvw_wild_trait_mat)
+
+n_myv_cold = nrow(myvc_wild_trait_mat)
+n_myv_warm = nrow(myvw_wild_trait_mat)
+
+# Observed similarity
+myv_observed = evolqg::KrzCor(cov(myvc_wild_trait_mat),
+                                cov(myvw_wild_trait_mat))
+
+# Permutation test
+set.seed(1738)
+
+n_perm = 9999
+
+myv_null_krz = replicate(n_perm, {
+  
+  idx = sample(nrow(myv_combined))
+  
+  myv_cold_perm = myv_combined[idx[1:n_myv_cold], , drop = FALSE]
+  
+  myv_warm_perm = myv_combined[
+    idx[(n_myv_cold + 1):(n_myv_cold + n_myv_warm)],
+    ,
+    drop = FALSE]
+  
+  evolqg::KrzCor(cov(myv_cold_perm),
+    cov(myv_warm_perm))
+})
+
+# Lower similarity indicates greater divergence
+myv_p_value = (sum(myv_null_krz <= myv_observed) + 1)/(n_perm + 1)
+
+ggplot(data.frame(KrzCor = myv_null_krz),
+       aes(x = KrzCor)) +
+  geom_histogram(bins = 40,
+                 fill = "grey75",
+                 colour = "white") +
+  geom_vline(xintercept = myv_observed,
+             colour = "#C44E52",
+             linewidth = 1.2) +
+  annotate("text",
+           x = myv_observed,
+           y = Inf,
+           label = paste0(
+             "Observed = ", round(myv_observed, 3),
+             "\np = ", signif(myv_p_value, 3)),
+           vjust = 1.5,
+           hjust = 1.1) +
+  labs(x = "Krzanowski subspace similarity",
+       y = "Permutation frequency",
+       title = "MYV geothermal–ambient comparison")
+
+
+# SKR ---------------------------------------------------------------------
+
+# Combine individuals from both ecotypes
+skr_combined = bind_rows(skrc_wild_trait_mat,
+                         skrw_wild_trait_mat)
+
+n_skr_cold = nrow(skrc_wild_trait_mat)
+n_skr_warm = nrow(skrw_wild_trait_mat)
+
+# Observed similarity
+skr_observed = evolqg::KrzCor(cov(skrc_wild_trait_mat),
+                              cov(skrw_wild_trait_mat))
+
+# Permutation test
+set.seed(1738)
+
+n_perm = 9999
+
+skr_null_krz = replicate(n_perm, {
+  
+  idx = sample(nrow(skr_combined))
+  
+  skr_cold_perm = skr_combined[idx[1:n_skr_cold], , drop = FALSE]
+  
+  skr_warm_perm = skr_combined[
+    idx[(n_skr_cold + 1):(n_skr_cold + n_skr_warm)],
+    ,
+    drop = FALSE]
+  
+  evolqg::KrzCor(cov(skr_cold_perm),
+                 cov(skr_warm_perm))
+})
+
+# Lower similarity indicates greater divergence
+skr_p_value = (sum(skr_null_krz <= skr_observed) + 1)/(n_perm + 1)
+
+ggplot(data.frame(skr_KrzCor = skr_null_krz),
+       aes(x = skr_KrzCor)) +
+  geom_histogram(bins = 40,
+                 fill = "grey75",
+                 colour = "white") +
+  geom_vline(xintercept = skr_observed,
+             colour = "#C44E52",
+             linewidth = 1.2) +
+  annotate("text",
+           x = skr_observed,
+           y = Inf,
+           label = paste0(
+             "Observed = ", round(skr_observed, 3),
+             "\np = ", signif(skr_p_value, 3)),
+           vjust = 1.5,
+           hjust = 1.1) +
+  labs(x = "Krzanowski subspace similarity",
+       y = "Permutation frequency",
+       title = "SKR geothermal–ambient comparison")
+
+
+# GTS/GAR -----------------------------------------------------------------
+
+
+# Combine individuals from both ecotypes
+gts_gar_combined = bind_rows(GAR_wild_trait_mat,
+                         GTS_wild_trait_mat)
+
+n_GAR_cold = nrow(GAR_wild_trait_mat)
+n_GTS_warm = nrow(GTS_wild_trait_mat)
+
+# Observed similarity
+gts_gar_observed = evolqg::KrzCor(cov(GAR_wild_trait_mat),
+                              cov(GTS_wild_trait_mat))
+
+# Permutation test
+set.seed(1738)
+
+n_perm = 9999
+
+gts_gar_null_krz = replicate(n_perm, {
+  
+  idx = sample(nrow(gts_gar_combined))
+  
+  GAR_cold_perm = gts_gar_combined[idx[1:n_GAR_cold], , drop = FALSE]
+  
+  GTS_warm_perm = gts_gar_combined[
+    idx[(n_GAR_cold + 1):(n_GAR_cold + n_GTS_warm)],
+    ,
+    drop = FALSE]
+  
+  evolqg::KrzCor(cov(GAR_cold_perm),
+                 cov(GTS_warm_perm))
+})
+
+# Lower similarity indicates greater divergence
+gts_gar_p_value = (sum(gts_gar_null_krz <= gts_gar_observed) + 1)/(n_perm + 1)
+
+ggplot(data.frame(gts_gar_KrzCor = gts_gar_null_krz),
+       aes(x = gts_gar_KrzCor)) +
+  geom_histogram(bins = 40,
+                 fill = "grey75",
+                 colour = "white") +
+  geom_vline(xintercept = skr_observed,
+             colour = "#C44E52",
+             linewidth = 1.2) +
+  annotate("text",
+           x = skr_observed,
+           y = Inf,
+           label = paste0(
+             "Observed = ", round(skr_observed, 3),
+             "\np = ", signif(skr_p_value, 3)),
+           vjust = 1.5,
+           hjust = 1.1) +
+  labs(x = "Krzanowski subspace similarity",
+       y = "Permutation frequency",
+       title = "GTS/GAR geothermal–ambient comparison")
+
+
 
 # Combine trait covariance matrices ---------------------------------------
 
