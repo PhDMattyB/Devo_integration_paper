@@ -29,12 +29,6 @@ f2_orig_data = read_csv("F2_Original_univariate_traits_FIXED_11.02.2026.csv") %>
 # f2_orig data - KrzCov and procrustes ---------------------------------------
 # ASHN --------------------------------------------------------------------
 
-f2_orig_data %>% 
-  filter(Lake_morph %in% c('ASHNC')) %>%
-  group_by(Exp_treats) %>% 
-  dplyr::summarise(n = n())
-  
-
 ashnc_f2_12_12_trait_mat = f2_orig_data %>% 
   filter(Lake_morph == 'ASHNC', 
          Exp_treats == '12_12') %>% 
@@ -210,108 +204,529 @@ ashn_exp_treat_combo = (ashn_f2_12_12_resid_plot+ashn_f2_12_18_resid_plot)/(ashn
 
 
 # MYV ---------------------------------------------------------------------
-myvc_f2_orig_trait_mat = f2_orig_data %>% 
-  filter(Lake_morph %in% c('MYVC')) %>% 
-  dplyr::select(jaw_length:caudal2_15_17) 
-# %>% 
-#   as.matrix()
+myvc_f2_12_12_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'MYVC', 
+         Exp_treats == '12_12') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+myvc_f2_12_18_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'MYVC', 
+         Exp_treats == '12_18') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+myvc_f2_18_12_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'MYVC', 
+         Exp_treats == '18_12') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+myvc_f2_18_18_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'MYVC', 
+         Exp_treats == '18_18') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
 
-myvw_f2_orig_trait_mat = f2_orig_data %>% 
-  filter(Lake_morph %in% c('MYVW')) %>% 
-  dplyr::select(jaw_length:caudal2_15_17) 
 
-myvc_trait_cov_mat = cov(myvc_f2_orig_trait_mat, 
-                         use = 'complete.obs')
+myvw_f2_12_12_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'MYVW', 
+         Exp_treats == '12_12') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+myvw_f2_12_18_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'MYVW', 
+         Exp_treats == '12_18') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+myvw_f2_18_12_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'MYVW', 
+         Exp_treats == '18_12') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+myvw_f2_18_18_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'MYVW', 
+         Exp_treats == '18_18') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
 
-myvw_trait_cov_mat = cov(myvw_f2_orig_trait_mat, 
-                         use = 'complete.obs')
+myvc_f2_12_12_cov_mat = cov(myvc_f2_12_12_trait_mat, 
+                             use = 'complete.obs')
+myvc_f2_12_18_cov_mat = cov(myvc_f2_12_18_trait_mat, 
+                             use = 'complete.obs')
+myvc_f2_18_12_cov_mat = cov(myvc_f2_18_12_trait_mat, 
+                             use = 'complete.obs')
+myvc_f2_18_18_cov_mat = cov(myvc_f2_18_18_trait_mat, 
+                             use = 'complete.obs')
 
-myv_krzcov = KrzCor(myvc_trait_cov_mat, 
-                    myvw_trait_cov_mat)
+myvw_f2_12_12_cov_mat = cov(myvw_f2_12_12_trait_mat, 
+                             use = 'complete.obs')
+myvw_f2_12_18_cov_mat = cov(myvw_f2_12_18_trait_mat, 
+                             use = 'complete.obs')
+myvw_f2_18_12_cov_mat = cov(myvw_f2_18_12_trait_mat, 
+                             use = 'complete.obs')
+myvw_f2_18_18_cov_mat = cov(myvw_f2_18_18_trait_mat, 
+                             use = 'complete.obs')
 
-myv_proc_res = procrustes(myvc_trait_cov_mat, 
-                          myvw_trait_cov_mat)
+myv_f2_12_12_krzcov = evolqg::KrzCor(myvc_f2_12_12_cov_mat, 
+                                      myvw_f2_12_12_cov_mat)
 
-summary(myv_proc_res)
+myv_f2_12_18_krzcov = evolqg::KrzCor(myvc_f2_12_18_cov_mat, 
+                                      myvw_f2_12_18_cov_mat)
 
-plot(myv_proc_res)
-plot(myv_proc_res, 
-     kind = 2)
+myv_f2_18_12_krzcov = evolqg::KrzCor(myvc_f2_18_12_cov_mat, 
+                                      myvw_f2_18_12_cov_mat)
 
-myv_test_res <- protest(myvc_trait_cov_mat, 
-                        myvw_trait_cov_mat, 
-                        permutations = 999)
+myv_f2_18_18_krzcov = evolqg::KrzCor(myvc_f2_18_18_cov_mat, 
+                                      myvw_f2_18_18_cov_mat)
 
+
+myv_f2_12_12_proc_res = procrustes(myvc_f2_12_12_cov_mat, 
+                                    myvw_f2_12_12_cov_mat)
+myv_f2_12_18_proc_res = procrustes(myvc_f2_12_18_cov_mat, 
+                                    myvw_f2_12_18_cov_mat)
+myv_f2_18_12_proc_res = procrustes(myvc_f2_18_12_cov_mat, 
+                                    myvw_f2_18_12_cov_mat)
+myv_f2_18_18_proc_res = procrustes(myvc_f2_18_18_cov_mat, 
+                                    myvw_f2_18_18_cov_mat)
+
+summary(myv_f2_12_12_proc_res)
+summary(myv_f2_12_18_proc_res)
+summary(myv_f2_18_12_proc_res)
+summary(myv_f2_18_18_proc_res)
+
+myv_f2_12_12_proc_test = protest(myvc_f2_12_12_cov_mat, 
+                                  myvw_f2_12_12_cov_mat, 
+                                  permutations = 999)
+myv_f2_12_18_proc_test = protest(myvc_f2_12_18_cov_mat, 
+                                  myvw_f2_12_18_cov_mat, 
+                                  permutations = 999)
+myv_f2_18_12_proc_test = protest(myvc_f2_18_12_cov_mat, 
+                                  myvw_f2_18_12_cov_mat, 
+                                  permutations = 999)
+myv_f2_18_18_proc_test = protest(myvc_f2_18_18_cov_mat, 
+                                  myvw_f2_18_18_cov_mat, 
+                                  permutations = 999)
+
+
+myv_f2_12_12_residuals = residuals(myv_f2_12_12_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2)%>% 
+  mutate(resid_10 = residual*10)
+
+myv_f2_12_18_residuals = residuals(myv_f2_12_18_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2)%>% 
+  mutate(resid_10 = residual*10)
+
+myv_f2_18_12_residuals = residuals(myv_f2_18_12_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2)%>% 
+  mutate(resid_10 = residual*10)
+
+myv_f2_18_18_residuals = residuals(myv_f2_18_18_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2)%>% 
+  mutate(resid_10 = residual*10)
+
+
+myv_f2_12_12_resid_plot = ggplot(myv_f2_12_12_residuals, 
+                                  aes(x = factor(trait), 
+                                      y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  geom_hline(yintercept = 1.5, 
+             linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+myv_f2_12_18_resid_plot = ggplot(myv_f2_12_18_residuals, 
+                                  aes(x = factor(trait), 
+                                      y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  geom_hline(yintercept = 1.5, 
+             linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+myv_f2_18_12_resid_plot = ggplot(myv_f2_18_12_residuals, 
+                                  aes(x = factor(trait), 
+                                      y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  geom_hline(yintercept = 1.5, 
+             linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+myv_f2_18_18_resid_plot = ggplot(myv_f2_18_18_residuals, 
+                                  aes(x = factor(trait), 
+                                      y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  geom_hline(yintercept = 1.5, 
+             linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+myv_exp_treat_combo = (myv_f2_12_12_resid_plot+myv_f2_12_18_resid_plot)/(myv_f2_18_12_resid_plot+myv_f2_18_18_resid_plot)
 
 # SKR ---------------------------------------------------------------------
+skrc_f2_12_12_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'SKRC', 
+         Exp_treats == '12_12') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+skrc_f2_12_18_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'SKRC', 
+         Exp_treats == '12_18') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+skrc_f2_18_12_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'SKRC', 
+         Exp_treats == '18_12') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+skrc_f2_18_18_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'SKRC', 
+         Exp_treats == '18_18') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
 
-skrc_f2_orig_trait_mat = f2_orig_data %>% 
-  filter(Lake_morph %in% c('SKRC')) %>% 
-  dplyr::select(jaw_length:caudal2_15_17) 
-# %>% 
-#   as.matrix()
 
-skrw_f2_orig_trait_mat = f2_orig_data %>% 
-  filter(Lake_morph %in% c('SKRW')) %>% 
-  dplyr::select(jaw_length:caudal2_15_17) 
+skrw_f2_12_12_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'SKRW', 
+         Exp_treats == '12_12') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+skrw_f2_12_18_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'SKRW', 
+         Exp_treats == '12_18') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+skrw_f2_18_12_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'SKRW', 
+         Exp_treats == '18_12') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+skrw_f2_18_18_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'SKRW', 
+         Exp_treats == '18_18') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
 
-skrc_trait_cov_mat = cov(skrc_f2_orig_trait_mat, 
-                         use = 'complete.obs')
+skrc_f2_12_12_cov_mat = cov(skrc_f2_12_12_trait_mat, 
+                            use = 'complete.obs')
+skrc_f2_12_18_cov_mat = cov(skrc_f2_12_18_trait_mat, 
+                            use = 'complete.obs')
+skrc_f2_18_12_cov_mat = cov(skrc_f2_18_12_trait_mat, 
+                            use = 'complete.obs')
+skrc_f2_18_18_cov_mat = cov(skrc_f2_18_18_trait_mat, 
+                            use = 'complete.obs')
 
-skrw_trait_cov_mat = cov(skrw_f2_orig_trait_mat, 
-                         use = 'complete.obs')
+skrw_f2_12_12_cov_mat = cov(skrw_f2_12_12_trait_mat, 
+                            use = 'complete.obs')
+skrw_f2_12_18_cov_mat = cov(skrw_f2_12_18_trait_mat, 
+                            use = 'complete.obs')
+skrw_f2_18_12_cov_mat = cov(skrw_f2_18_12_trait_mat, 
+                            use = 'complete.obs')
+skrw_f2_18_18_cov_mat = cov(skrw_f2_18_18_trait_mat, 
+                            use = 'complete.obs')
 
-skr_krzcov = KrzCor(skrc_trait_cov_mat, 
-                    skrw_trait_cov_mat)
+skr_f2_12_12_krzcov = evolqg::KrzCor(skrc_f2_12_12_cov_mat, 
+                                     skrw_f2_12_12_cov_mat)
 
-skr_proc_res = procrustes(skrc_trait_cov_mat, 
-                          skrw_trait_cov_mat)
+skr_f2_12_18_krzcov = evolqg::KrzCor(skrc_f2_12_18_cov_mat, 
+                                     skrw_f2_12_18_cov_mat)
 
-summary(skr_proc_res)
+skr_f2_18_12_krzcov = evolqg::KrzCor(skrc_f2_18_12_cov_mat, 
+                                     skrw_f2_18_12_cov_mat)
 
-plot(skr_proc_res)
-plot(skr_proc_res, 
-     kind = 2)
+skr_f2_18_18_krzcov = evolqg::KrzCor(skrc_f2_18_18_cov_mat, 
+                                     skrw_f2_18_18_cov_mat)
 
-skr_test_res <- protest(skrc_trait_cov_mat, 
-                        skrw_trait_cov_mat, 
-                        permutations = 999)
+
+skr_f2_12_12_proc_res = procrustes(skrc_f2_12_12_cov_mat, 
+                                   skrw_f2_12_12_cov_mat)
+skr_f2_12_18_proc_res = procrustes(skrc_f2_12_18_cov_mat, 
+                                   skrw_f2_12_18_cov_mat)
+skr_f2_18_12_proc_res = procrustes(skrc_f2_18_12_cov_mat, 
+                                   skrw_f2_18_12_cov_mat)
+skr_f2_18_18_proc_res = procrustes(skrc_f2_18_18_cov_mat, 
+                                   skrw_f2_18_18_cov_mat)
+
+summary(skr_f2_12_12_proc_res)
+summary(skr_f2_12_18_proc_res)
+summary(skr_f2_18_12_proc_res)
+summary(skr_f2_18_18_proc_res)
+
+skr_f2_12_12_proc_test = protest(skrc_f2_12_12_cov_mat, 
+                                 skrw_f2_12_12_cov_mat, 
+                                 permutations = 999)
+skr_f2_12_18_proc_test = protest(skrc_f2_12_18_cov_mat, 
+                                 skrw_f2_12_18_cov_mat, 
+                                 permutations = 999)
+skr_f2_18_12_proc_test = protest(skrc_f2_18_12_cov_mat, 
+                                 skrw_f2_18_12_cov_mat, 
+                                 permutations = 999)
+skr_f2_18_18_proc_test = protest(skrc_f2_18_18_cov_mat, 
+                                 skrw_f2_18_18_cov_mat, 
+                                 permutations = 999)
+
+
+skr_f2_12_12_residuals = residuals(skr_f2_12_12_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2)%>% 
+  mutate(resid_10 = residual*10)
+
+skr_f2_12_18_residuals = residuals(skr_f2_12_18_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2)%>% 
+  mutate(resid_10 = residual*10)
+
+skr_f2_18_12_residuals = residuals(skr_f2_18_12_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2)%>% 
+  mutate(resid_10 = residual*10)
+
+skr_f2_18_18_residuals = residuals(skr_f2_18_18_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2)%>% 
+  mutate(resid_10 = residual*10)
+
+
+skr_f2_12_12_resid_plot = ggplot(skr_f2_12_12_residuals, 
+                                 aes(x = factor(trait), 
+                                     y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  geom_hline(yintercept = 1.5, 
+             linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+skr_f2_12_18_resid_plot = ggplot(skr_f2_12_18_residuals, 
+                                 aes(x = factor(trait), 
+                                     y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  geom_hline(yintercept = 1.5, 
+             linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+skr_f2_18_12_resid_plot = ggplot(skr_f2_18_12_residuals, 
+                                 aes(x = factor(trait), 
+                                     y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  geom_hline(yintercept = 1.5, 
+             linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+skr_f2_18_18_resid_plot = ggplot(skr_f2_18_18_residuals, 
+                                 aes(x = factor(trait), 
+                                     y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  geom_hline(yintercept = 1.5, 
+             linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+skr_exp_treat_combo = (skr_f2_12_12_resid_plot+skr_f2_12_18_resid_plot)/(skr_f2_18_12_resid_plot+skr_f2_18_18_resid_plot)
 
 
 
 # GAR/GTS -----------------------------------------------------------------
+CSWYC_f2_12_12_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'CSWYC', 
+         Exp_treats == '12_12') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+CSWYC_f2_12_18_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'CSWYC', 
+         Exp_treats == '12_18') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+CSWYC_f2_18_12_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'CSWYC', 
+         Exp_treats == '18_12') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+CSWYC_f2_18_18_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'CSWYC', 
+         Exp_treats == '18_18') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
 
-GAR_f2_orig_trait_mat = f2_orig_data %>% 
-  filter(Lake_morph %in% c('CSWYC')) %>% 
-  dplyr::select(jaw_length:caudal2_15_17) 
-# %>% 
-#   as.matrix()
 
-GTS_f2_orig_trait_mat = f2_orig_data %>% 
-  filter(Lake_morph %in% c('GTSW')) %>% 
-  dplyr::select(jaw_length:caudal2_15_17) 
+GTSW_f2_12_12_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'GTSW', 
+         Exp_treats == '12_12') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+GTSW_f2_12_18_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'GTSW', 
+         Exp_treats == '12_18') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+GTSW_f2_18_12_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'GTSW', 
+         Exp_treats == '18_12') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+GTSW_f2_18_18_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'GTSW', 
+         Exp_treats == '18_18') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
 
-GAR_trait_cov_mat = cov(GAR_f2_orig_trait_mat, 
-                        use = 'complete.obs')
+CSWYC_f2_12_12_cov_mat = cov(CSWYC_f2_12_12_trait_mat, 
+                            use = 'complete.obs')
+CSWYC_f2_12_18_cov_mat = cov(CSWYC_f2_12_18_trait_mat, 
+                            use = 'complete.obs')
+CSWYC_f2_18_12_cov_mat = cov(CSWYC_f2_18_12_trait_mat, 
+                            use = 'complete.obs')
+CSWYC_f2_18_18_cov_mat = cov(CSWYC_f2_18_18_trait_mat, 
+                            use = 'complete.obs')
 
-GTS_trait_cov_mat = cov(GTS_f2_orig_trait_mat, 
-                        use = 'complete.obs')
+GTSW_f2_12_12_cov_mat = cov(GTSW_f2_12_12_trait_mat, 
+                            use = 'complete.obs')
+GTSW_f2_12_18_cov_mat = cov(GTSW_f2_12_18_trait_mat, 
+                            use = 'complete.obs')
+GTSW_f2_18_12_cov_mat = cov(GTSW_f2_18_12_trait_mat, 
+                            use = 'complete.obs')
+GTSW_f2_18_18_cov_mat = cov(GTSW_f2_18_18_trait_mat, 
+                            use = 'complete.obs')
 
-gts_gar_krzcov = KrzCor(GAR_trait_cov_mat, 
-                        GTS_trait_cov_mat)
+gts_gar_f2_12_12_krzcov = evolqg::KrzCor(CSWYC_f2_12_12_cov_mat, 
+                                     GTSW_f2_12_12_cov_mat)
 
-gts_gar_proc_res = procrustes(GAR_trait_cov_mat, 
-                              GTS_trait_cov_mat)
+gts_gar_f2_12_18_krzcov = evolqg::KrzCor(CSWYC_f2_12_18_cov_mat, 
+                                     GTSW_f2_12_18_cov_mat)
 
-summary(gts_gar_proc_res)
+gts_gar_f2_18_12_krzcov = evolqg::KrzCor(CSWYC_f2_18_12_cov_mat, 
+                                     GTSW_f2_18_12_cov_mat)
 
-plot(gts_gar_proc_res)
-plot(gts_gar_proc_res, 
-     kind = 2)
+gts_gar_f2_18_18_krzcov = evolqg::KrzCor(CSWYC_f2_18_18_cov_mat, 
+                                     GTSW_f2_18_18_cov_mat)
 
-gts_gar_test_res <- protest(GAR_trait_cov_mat, 
-                            GTS_trait_cov_mat, 
-                            permutations = 999)
+
+gts_gar_f2_12_12_proc_res = procrustes(CSWYC_f2_12_12_cov_mat, 
+                                   GTSW_f2_12_12_cov_mat)
+gts_gar_f2_12_18_proc_res = procrustes(CSWYC_f2_12_18_cov_mat, 
+                                   GTSW_f2_12_18_cov_mat)
+gts_gar_f2_18_12_proc_res = procrustes(CSWYC_f2_18_12_cov_mat, 
+                                   GTSW_f2_18_12_cov_mat)
+gts_gar_f2_18_18_proc_res = procrustes(CSWYC_f2_18_18_cov_mat, 
+                                   GTSW_f2_18_18_cov_mat)
+
+summary(gts_gar_f2_12_12_proc_res)
+summary(gts_gar_f2_12_18_proc_res)
+summary(gts_gar_f2_18_12_proc_res)
+summary(gts_gar_f2_18_18_proc_res)
+
+gts_gar_f2_12_12_proc_test = protest(CSWYC_f2_12_12_cov_mat, 
+                                 GTSW_f2_12_12_cov_mat, 
+                                 permutations = 999)
+gts_gar_f2_12_18_proc_test = protest(CSWYC_f2_12_18_cov_mat, 
+                                 GTSW_f2_12_18_cov_mat, 
+                                 permutations = 999)
+gts_gar_f2_18_12_proc_test = protest(CSWYC_f2_18_12_cov_mat, 
+                                 GTSW_f2_18_12_cov_mat, 
+                                 permutations = 999)
+gts_gar_f2_18_18_proc_test = protest(CSWYC_f2_18_18_cov_mat, 
+                                 GTSW_f2_18_18_cov_mat, 
+                                 permutations = 999)
+
+
+gts_gar_f2_12_12_residuals = residuals(gts_gar_f2_12_12_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2)%>% 
+  mutate(resid_10 = residual*10)
+
+gts_gar_f2_12_18_residuals = residuals(gts_gar_f2_12_18_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2)%>% 
+  mutate(resid_10 = residual*10)
+
+gts_gar_f2_18_12_residuals = residuals(gts_gar_f2_18_12_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2)%>% 
+  mutate(resid_10 = residual*10)
+
+gts_gar_f2_18_18_residuals = residuals(gts_gar_f2_18_18_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2)%>% 
+  mutate(resid_10 = residual*10)
+
+
+gts_gar_f2_12_12_resid_plot = ggplot(gts_gar_f2_12_12_residuals, 
+                                 aes(x = factor(trait), 
+                                     y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  geom_hline(yintercept = 1.5, 
+             linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+gts_gar_f2_12_18_resid_plot = ggplot(gts_gar_f2_12_18_residuals, 
+                                 aes(x = factor(trait), 
+                                     y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  geom_hline(yintercept = 1.5, 
+             linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+gts_gar_f2_18_12_resid_plot = ggplot(gts_gar_f2_18_12_residuals, 
+                                 aes(x = factor(trait), 
+                                     y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  geom_hline(yintercept = 1.5, 
+             linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+gts_gar_f2_18_18_resid_plot = ggplot(gts_gar_f2_18_18_residuals, 
+                                 aes(x = factor(trait), 
+                                     y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  geom_hline(yintercept = 1.5, 
+             linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+gts_gar_exp_treat_combo = (gts_gar_f2_12_12_resid_plot+gts_gar_f2_12_18_resid_plot)/(gts_gar_f2_18_12_resid_plot+gts_gar_f2_18_18_resid_plot)
+
 
 # Combine trait covariance matrices ---------------------------------------
 
