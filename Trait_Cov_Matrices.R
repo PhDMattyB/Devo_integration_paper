@@ -21,8 +21,6 @@ wild_data = read_csv("WILD_SCALED_FIXED_27.05.2026.csv") %>%
 
 
 # wild data - KrzCov and procrustes ---------------------------------------
-
-
 # ASHN --------------------------------------------------------------------
 
 
@@ -60,8 +58,6 @@ ashn_test_res <- protest(ashnc_trait_cov_mat,
 
 
 # MYV ---------------------------------------------------------------------
-
-
 myvc_wild_trait_mat = wild_data %>% 
   filter(Lake_morph %in% c('MYVC')) %>% 
   dplyr::select(5:39) 
@@ -190,7 +186,7 @@ n_perm = 9999
 
 ashn_null_krz = replicate(n_perm, {
   
-  idx == sample(nrow(ashn_combined))
+  idx = sample(nrow(ashn_combined))
   
   ashn_cold_perm = ashn_combined[idx[1:n_ashn_cold], , drop = FALSE]
   
@@ -206,8 +202,8 @@ ashn_null_krz = replicate(n_perm, {
 # Lower similarity indicates greater divergence
 ashn_p_value = (sum(ashn_null_krz <= ashn_observed) + 1)/(n_perm + 1)
 
-ggplot(data.frame(KrzCor = ashn_null_krz),
-       aes(x = KrzCor)) +
+ggplot(data.frame(ashn_KrzCor = ashn_null_krz),
+       aes(x = ashn_KrzCor)) +
   geom_histogram(bins = 40,
     fill = "grey75",
     colour = "white") +
@@ -264,8 +260,8 @@ myv_null_krz = replicate(n_perm, {
 # Lower similarity indicates greater divergence
 myv_p_value = (sum(myv_null_krz <= myv_observed) + 1)/(n_perm + 1)
 
-ggplot(data.frame(KrzCor = myv_null_krz),
-       aes(x = KrzCor)) +
+ggplot(data.frame(myv_KrzCor = myv_null_krz),
+       aes(x = myv_KrzCor)) +
   geom_histogram(bins = 40,
                  fill = "grey75",
                  colour = "white") +
@@ -384,15 +380,15 @@ ggplot(data.frame(gts_gar_KrzCor = gts_gar_null_krz),
   geom_histogram(bins = 40,
                  fill = "grey75",
                  colour = "white") +
-  geom_vline(xintercept = skr_observed,
+  geom_vline(xintercept = gts_gar_observed,
              colour = "#C44E52",
              linewidth = 1.2) +
   annotate("text",
-           x = skr_observed,
+           x = gts_gar_observed,
            y = Inf,
            label = paste0(
-             "Observed = ", round(skr_observed, 3),
-             "\np = ", signif(skr_p_value, 3)),
+             "Observed = ", round(gts_gar_observed, 3),
+             "\np = ", signif(gts_gar_p_value, 3)),
            vjust = 1.5,
            hjust = 1.1) +
   labs(x = "Krzanowski subspace similarity",
