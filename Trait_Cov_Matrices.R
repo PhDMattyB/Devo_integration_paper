@@ -43,20 +43,6 @@ ashnw_trait_cov_mat = cov(ashnw_wild_trait_mat,
 ashn_krzcov = evolqg::KrzCor(ashnc_trait_cov_mat, 
                      ashnw_trait_cov_mat)
 
-ashn_proc_res = procrustes(ashnc_trait_cov_mat, 
-                           ashnw_trait_cov_mat)
-
-summary(ashn_proc_res)
-
-plot(ashn_proc_res)
-plot(ashn_proc_res, 
-     kind = 2)
-
-ashn_test_res <- protest(ashnc_trait_cov_mat, 
-                         ashnw_trait_cov_mat, 
-                         permutations = 999)
-
-
 # MYV ---------------------------------------------------------------------
 myvc_wild_trait_mat = wild_data %>% 
   filter(Lake_morph %in% c('MYVC')) %>% 
@@ -461,7 +447,137 @@ ggplot(data.frame(gts_gar_KrzCor = gts_gar_null_krz),
        title = "GTS/GAR geothermal–ambient comparison")
 
 
+# procrustes matrix superimposition ---------------------------------------
+## tests differences in trait configuration derived from eigenvectors
 
+
+# ASHN --------------------------------------------------------------------
+
+
+# Eigendecomposition of covariance matrices
+ashnc_eigen = eigen(ashnc_trait_cov_mat)
+ashnw_eigen = eigen(ashnw_trait_cov_mat)
+
+# Number of principal components to retain
+# k = floor(ncol(ashnc_trait_cov_mat) / 2)
+
+# Extract leading eigenvectors
+ashnc_vectors = ashnc_eigen$vectors[, 1:3, drop = FALSE]
+ashnw_vectors = ashnw_eigen$vectors[, 1:3, drop = FALSE]
+
+# Preserve trait identities
+rownames(ashnc_vectors) = colnames(ashnc_trait_cov_mat)
+rownames(ashnw_vectors) = colnames(ashnw_trait_cov_mat)
+
+ashn_proc_res = procrustes(ashnc_vectors, 
+                           ashnw_vectors, 
+                           symmetric = T)
+
+summary(ashn_proc_res)
+
+plot(ashn_proc_res)
+plot(ashn_proc_res, 
+     kind = 2)
+
+ashn_test_res = protest(ashnc_vectors, 
+                         ashnw_vectors, 
+                         permutations = 999, 
+                        scale = F, 
+                        symmetric = T)
+
+
+# MYV ---------------------------------------------------------------------
+
+
+myvc_eigen = eigen(myvc_trait_cov_mat)
+myvw_eigen = eigen(myvw_trait_cov_mat)
+
+# Number of principal components to retain
+k = floor(ncol(myvc_trait_cov_mat) / 2)
+
+# Extract leading eigenvectors
+myvc_vectors = myvc_eigen$vectors[, 1:3, drop = FALSE]
+myvw_vectors = myvw_eigen$vectors[, 1:3, drop = FALSE]
+
+# Preserve trait identities
+rownames(myvc_vectors) = colnames(myvc_trait_cov_mat)
+rownames(myvw_vectors) = colnames(myvw_trait_cov_mat)
+
+myv_proc_res = procrustes(myvc_vectors, 
+                           myvw_vectors, 
+                           symmetric = T)
+
+summary(myv_proc_res)
+
+plot(myv_proc_res)
+plot(myv_proc_res, 
+     kind = 2)
+
+myv_test_res = protest(myvc_vectors, 
+                        myvw_vectors, 
+                        permutations = 999)
+
+
+
+# SKR ---------------------------------------------------------------------
+
+skrc_eigen = eigen(skrc_trait_cov_mat)
+skrw_eigen = eigen(skrw_trait_cov_mat)
+
+# Number of principal components to retain
+k = floor(ncol(skrc_trait_cov_mat) / 2)
+
+# Extract leading eigenvectors
+skrc_vectors = skrc_eigen$vectors[, 1:3, drop = FALSE]
+skrw_vectors = skrw_eigen$vectors[, 1:3, drop = FALSE]
+
+# Preserve trait identities
+rownames(skrc_vectors) = colnames(skrc_trait_cov_mat)
+rownames(skrw_vectors) = colnames(skrw_trait_cov_mat)
+
+skr_proc_res = procrustes(skrc_vectors, 
+                           skrw_vectors, 
+                           symmetric = T)
+
+summary(skr_proc_res)
+
+plot(skr_proc_res)
+plot(skr_proc_res, 
+     kind = 2)
+
+skr_test_res = protest(skrc_vectors, 
+                        skrw_vectors, 
+                        permutations = 999)
+
+
+
+# GTS/GAR -----------------------------------------------------------------
+
+gar_eigen = eigen(GAR_trait_cov_mat)
+gts_eigen = eigen(GTS_trait_cov_mat)
+
+
+# Extract leading eigenvectors
+gar_vectors = gar_eigen$vectors[, 1:3, drop = FALSE]
+gts_vectors = gts_eigen$vectors[, 1:3, drop = FALSE]
+
+# Preserve trait identities
+rownames(gar_vectors) = colnames(GAR_trait_cov_mat)
+rownames(gts_vectors) = colnames(GTS_trait_cov_mat)
+
+gts_gar_proc_res = procrustes(gar_vectors, 
+                           gts_vectors, 
+                           symmetric = T)
+
+summary(gts_gar_proc_res)
+
+plot(gts_gar_proc_res)
+plot(gts_gar_proc_res, 
+     kind = 2)
+
+gts_gar_test_res = protest(gar_vectors, 
+                        gts_vectors, 
+                        permutations = 999)
 
 # Principal axes of divergence?  ------------------------------------------
 
@@ -549,6 +665,20 @@ ggplot(ashn_loadings,
     x = "Ambient PC3 loading",
     y = "Geothermal PC3 loading"
   )
+
+
+ashnc_loading_pcs = ashn_loadings %>%
+  dplyr::select(Ambient_PC1, 
+                Ambient_PC2, 
+                Ambient_PC3)
+ashnw_loading_pcs = ashn_loadings %>%
+  dplyr::select(Geothermal_PC1, 
+                Geothermal_PC2, 
+                Geothermal_PC3)
+
+ashn_loading_proc_res = protest(ashnc_loading_pcs, 
+                           ashnw_loading_pcs, 
+                           permutations = 999)
 
 
 # MYV pc loadings ---------------------------------------------------------
