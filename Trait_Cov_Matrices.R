@@ -42,7 +42,7 @@ ashnc_trait_cov_mat = cov(ashnc_wild_trait_mat,
 ashnw_trait_cov_mat = cov(ashnw_wild_trait_mat, 
                           use = 'complete.obs')
 
-ashn_krzcov = KrzCor(ashnc_trait_cov_mat, 
+ashn_krzcov = evolqg::KrzCor(ashnc_trait_cov_mat, 
                      ashnw_trait_cov_mat)
 
 ashn_proc_res = procrustes(ashnc_trait_cov_mat, 
@@ -50,8 +50,9 @@ ashn_proc_res = procrustes(ashnc_trait_cov_mat,
 
 summary(ashn_proc_res)
 
+plot(ashn_proc_res)
 plot(ashn_proc_res, 
-     kind = 1)
+     kind = 2)
 
 ashn_test_res <- protest(ashnc_trait_cov_mat, 
                          ashnw_trait_cov_mat, 
@@ -85,8 +86,9 @@ myv_proc_res = procrustes(myvc_trait_cov_mat,
 
 summary(myv_proc_res)
 
-# plot(myv_proc_res, 
-#      kind = 1)
+plot(myv_proc_res)
+plot(myv_proc_res, 
+     kind = 2)
 
 myv_test_res <- protest(myvc_trait_cov_mat, 
                         myvw_trait_cov_mat, 
@@ -119,8 +121,9 @@ skr_proc_res = procrustes(skrc_trait_cov_mat,
 
 summary(skr_proc_res)
 
-# plot(skr_proc_res, 
-#      kind = 1)
+plot(skr_proc_res)
+plot(skr_proc_res, 
+     kind = 2)
 
 skr_test_res <- protest(skrc_trait_cov_mat, 
                         skrw_trait_cov_mat, 
@@ -153,14 +156,73 @@ gts_gar_proc_res = procrustes(GAR_trait_cov_mat,
                               GTS_trait_cov_mat)
 
 summary(gts_gar_proc_res)
-# 
-# plot(ashn_proc_res, 
-#      kind = 1)
+
+plot(gts_gar_proc_res)
+plot(gts_gar_proc_res, 
+     kind = 2)
 
 gts_gar_test_res <- protest(GAR_trait_cov_mat, 
                             GTS_trait_cov_mat, 
                             permutations = 999)
 
+
+# KrzCov null distribution resampling -------------------------------------
+
+# Combine individuals from both ecotypes
+ashn_combined = bind_rows(ashnc_wild_trait_mat,
+  ashnw_wild_trait_mat)
+
+n_ashn_cold = nrow(ashnc_wild_trait_mat)
+n_ashn_warm = nrow(ashnw_wild_trait_mat)
+
+# Observed similarity
+ashn_observed <- evolqg::KrzCor(cov(ashnc_wild_trait_mat),
+  cov(ashnw_wild_trait_mat))
+
+# Permutation test
+set.seed(1738)
+
+n_perm = 9999
+
+ashn_null_krz = replicate(n_perm, {
+  
+  idx <- sample(nrow(ashn_combined))
+  
+  ashn_cold_perm <- ashn_combined[idx[1:n_ashn_cold], , drop = FALSE]
+  
+  ashn_warm_perm <- ashn_combined[
+    idx[(n_ashn_cold + 1):(n_ashn_cold + n_ashn_warm)],
+    ,
+    drop = FALSE]
+  
+  evolqg::KrzCor(
+    cov(ashn_cold_perm),
+    cov(ashn_warm_perm)
+  )
+})
+
+# Lower similarity indicates greater divergence
+ashn_p_value = (sum(ashn_null_krz <= ashn_observed) + 1)/(n_perm + 1)
+
+ggplot(data.frame(KrzCor = ashn_null_krz),
+       aes(x = KrzCor)) +
+  geom_histogram(bins = 40,
+    fill = "grey75",
+    colour = "white") +
+  geom_vline(xintercept = ashn_observed,
+    colour = "#C44E52",
+    linewidth = 1.2) +
+  annotate("text",
+    x = ashn_observed,
+    y = Inf,
+    label = paste0(
+      "Observed = ", round(ashn_observed, 3),
+      "\np = ", signif(ashn_p_value, 3)),
+    vjust = 1.5,
+    hjust = 1.1) +
+  labs(x = "Krzanowski subspace similarity",
+    y = "Permutation frequency",
+    title = "ASHN geothermal–ambient comparison")
 
 # Combine trait covariance matrices ---------------------------------------
 
@@ -589,3 +651,32 @@ gts_gar_pc_loadings = ggplot(gts_gar_loadings,
 ashn_pc_loadings/myv_pc_loadings/skr_pc_loadings/gts_gar_pc_loadings
 
 
+
+# Frobenius distance between covariance matrices --------------------------
+
+cov_distance <- function(A, B) {
+  sqrt(sum((A - B)^2))
+}
+
+distances <- tibble(
+  Pair = paste0("Pair", 1:4),
+  Distance = map_dbl(1:4, function(i) {
+    cov_distance(
+      cov_matrices[[paste0("Pair", i, "_Ambient")]],
+      cov_matrices[[paste0("Pair", i, "_Geothermal")]]
+    )
+  })
+) %>% 
+  mutate(Ecotype_pair = case_when(
+    str_detect(Pair, 'Pair1') ~ 'ASHN',
+    str_detect(Pair, 'Pair2') ~ 'MYV',
+    str_detect(Pair, 'Pair3') ~ 'SKR',
+    str_detect(Pair, 'Pair4') ~ 'GTS/GAR'))
+
+ggplot(distances, 
+       aes(Ecotype_pair, 
+           Distance)) +
+  geom_col(fill = "steelblue") +
+  labs(
+    x = "Population pair",
+    y = "Covariance matrix distance")
