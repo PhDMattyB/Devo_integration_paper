@@ -43,6 +43,39 @@ ashnw_trait_cov_mat = cov(ashnw_wild_trait_mat,
 ashn_krzcov = evolqg::KrzCor(ashnc_trait_cov_mat, 
                      ashnw_trait_cov_mat)
 
+
+ashn_proc_res = procrustes(ashnc_trait_cov_mat, 
+                          ashnw_trait_cov_mat)
+
+summary(ashn_proc_res)
+
+plot(ashn_proc_res)
+plot(ashn_proc_res, 
+     kind = 2)
+
+ashn_test_res <- protest(ashnc_trait_cov_mat, 
+                        ashnw_trait_cov_mat, 
+                        permutations = 999)
+
+ashn_wild_residuals = residuals(ashn_test_res)
+
+ashn_wild_residuals %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+         residual = 2) %>% 
+  write_csv('ASHN_WILD_procrustes_cov_mat_residuals.csv')
+
+ashn_wild_residuals %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2) 
+
+# %>% View() 
+#   filter(residual > 0.14)
 # MYV ---------------------------------------------------------------------
 myvc_wild_trait_mat = wild_data %>% 
   filter(Lake_morph %in% c('MYVC')) %>% 
@@ -76,7 +109,22 @@ myv_test_res <- protest(myvc_trait_cov_mat,
                         myvw_trait_cov_mat, 
                         permutations = 999)
 
+myv_wild_residuals = residuals(myv_test_res)
 
+myv_wild_residuals %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2) %>% 
+  write_csv('MYV_WILD_procrustes_cov_mat_residuals.csv')
+
+# myv_wild_residuals %>% 
+#   as.data.frame() %>%
+#   rownames_to_column() %>% 
+#   as_tibble() %>% 
+#   dplyr::rename(trait = rowname, 
+#                 residual = 2) %>%View()
 # SKR ---------------------------------------------------------------------
 
 skrc_wild_trait_mat = wild_data %>% 
@@ -111,6 +159,15 @@ skr_test_res <- protest(skrc_trait_cov_mat,
                         skrw_trait_cov_mat, 
                         permutations = 999)
 
+skr_wild_residuals = residuals(skr_test_res)
+
+skr_wild_residuals %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2) %>% View()
+  write_csv('SKR_WILD_procrustes_cov_mat_residuals.csv')
 
 
 # GAR/GTS -----------------------------------------------------------------
@@ -146,6 +203,65 @@ plot(gts_gar_proc_res,
 gts_gar_test_res <- protest(GAR_trait_cov_mat, 
                             GTS_trait_cov_mat, 
                             permutations = 999)
+
+gts_gar_wild_residuals = residuals(gts_gar_test_res)
+
+gts_gar_wild_residuals %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2) %>%  
+  write_csv('GTS_GAR_WILD_procrustes_cov_mat_residuals.csv')
+
+
+# protest the residuals ---------------------------------------------------
+
+ashn_wild_residuals = read_csv('ASHN_WILD_procrustes_cov_mat_residuals.csv') %>% 
+  arrange(desc(residual)) %>% 
+  mutate(resid_10 = residual*10)
+myv_wild_residuals = read_csv('MYV_WILD_procrustes_cov_mat_residuals.csv')%>% 
+  arrange(desc(residual)) %>% 
+  mutate(resid_10 = residual*10)
+skr_wild_residuals = read_csv('SKR_WILD_procrustes_cov_mat_residuals.csv')%>% 
+  arrange(desc(residual)) %>% 
+  mutate(resid_10 = residual*10)
+gts_gar_wild_residuals = read_csv('GTS_GAR_WILD_procrustes_cov_mat_residuals.csv')%>% 
+  arrange(desc(residual)) %>% 
+  mutate(resid_10 = residual*10)
+
+
+ggplot(ashn_wild_residuals, 
+       aes(x = factor(trait), 
+           y = resid_10))+
+  geom_col()+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+ggplot(myv_wild_residuals, 
+       aes(x = factor(trait), 
+           y = resid_10))+
+  geom_col()+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+ggplot(skr_wild_residuals, 
+       aes(x = factor(trait), 
+           y = resid_10))+
+  geom_col()+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+ggplot(gts_gar_wild_residuals, 
+       aes(x = factor(trait), 
+           y = resid_10))+
+  geom_col()+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
 
 # Combine trait covariance matrices ---------------------------------------
 
