@@ -728,6 +728,14 @@ gts_gar_f2_18_18_resid_plot = ggplot(gts_gar_f2_18_18_residuals,
 gts_gar_exp_treat_combo = (gts_gar_f2_12_12_resid_plot+gts_gar_f2_12_18_resid_plot)/(gts_gar_f2_18_12_resid_plot+gts_gar_f2_18_18_resid_plot)
 
 
+
+# Parallelism in plasticity divergence in trait covariance ----------------
+
+(ashn_f2_12_12_resid_plot+myv_f2_12_12_resid_plot)/(skr_f2_12_12_resid_plot+gts_gar_f2_12_12_resid_plot)
+(ashn_f2_12_18_resid_plot+myv_f2_12_18_resid_plot)/(skr_f2_12_18_resid_plot+gts_gar_f2_12_18_resid_plot)
+(ashn_f2_18_12_resid_plot+myv_f2_18_12_resid_plot)/(skr_f2_18_12_resid_plot+gts_gar_f2_18_12_resid_plot)
+(ashn_f2_18_18_resid_plot+myv_f2_18_18_resid_plot)/(skr_f2_18_18_resid_plot+gts_gar_f2_18_18_resid_plot)
+
 # Combine trait covariance matrices ---------------------------------------
 
 
