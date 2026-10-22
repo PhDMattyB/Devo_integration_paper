@@ -745,6 +745,42 @@ gts_gar_exp_treat_combo = (gts_gar_f2_12_12_resid_plot+gts_gar_f2_12_18_resid_pl
 ## high residual variation between geo and amb cov mats under the different
 ## plasticity environments
 
+ashn_f2_12_12_residuals %>% 
+  filter(resid_10 > 1.5)
+myv_f2_12_12_residuals %>% 
+  filter(resid_10 > 1.5)
+skr_f2_12_12_residuals %>% 
+  filter(resid_10 > 1.5)
+gts_gar_f2_12_12_residuals %>% 
+  filter(resid_10 > 1.5)
+
+ashn_f2_12_18_residuals %>% 
+  filter(resid_10 > 1.5)
+myv_f2_12_18_residuals %>% 
+  filter(resid_10 > 1.5)
+skr_f2_12_18_residuals %>% 
+  filter(resid_10 > 1.5)
+gts_gar_f2_12_18_residuals %>% 
+  filter(resid_10 > 1.5)
+
+ashn_f2_18_12_residuals %>% 
+  filter(resid_10 > 1.5)
+myv_f2_18_12_residuals %>% 
+  filter(resid_10 > 1.5)
+skr_f2_18_12_residuals %>% 
+  filter(resid_10 > 1.5)
+gts_gar_f2_18_12_residuals %>% 
+  filter(resid_10 > 1.5)
+
+ashn_f2_18_18_residuals %>% 
+  filter(resid_10 > 1.5)
+myv_f2_18_18_residuals %>% 
+  filter(resid_10 > 1.5)
+skr_f2_18_18_residuals %>% 
+  filter(resid_10 > 1.5)
+gts_gar_f2_18_18_residuals %>% 
+  filter(resid_10 > 1.5)
+
 # Combine trait covariance matrices ---------------------------------------
 
 
