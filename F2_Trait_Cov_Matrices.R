@@ -732,9 +732,18 @@ gts_gar_exp_treat_combo = (gts_gar_f2_12_12_resid_plot+gts_gar_f2_12_18_resid_pl
 # Parallelism in plasticity divergence in trait covariance ----------------
 
 (ashn_f2_12_12_resid_plot+myv_f2_12_12_resid_plot)/(skr_f2_12_12_resid_plot+gts_gar_f2_12_12_resid_plot)
+
 (ashn_f2_12_18_resid_plot+myv_f2_12_18_resid_plot)/(skr_f2_12_18_resid_plot+gts_gar_f2_12_18_resid_plot)
+## Opercular KT divergence plastically divergent between geo and amb cov mats 
+## across all pops
 (ashn_f2_18_12_resid_plot+myv_f2_18_12_resid_plot)/(skr_f2_18_12_resid_plot+gts_gar_f2_18_12_resid_plot)
+
 (ashn_f2_18_18_resid_plot+myv_f2_18_18_resid_plot)/(skr_f2_18_18_resid_plot+gts_gar_f2_18_18_resid_plot)
+
+
+## Lets quantify the number of traits per pop that are associated with 
+## high residual variation between geo and amb cov mats under the different
+## plasticity environments
 
 # Combine trait covariance matrices ---------------------------------------
 
