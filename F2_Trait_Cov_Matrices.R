@@ -784,50 +784,52 @@ gts_gar_f2_18_18_residuals %>%
 # Combine trait covariance matrices ---------------------------------------
 
 
-cov_matrices <- list(
-  Pair1_Ambient = ashnc_trait_cov_mat,
-  Pair1_Geothermal = ashnw_trait_cov_mat,
-  Pair2_Ambient = myvc_trait_cov_mat,
-  Pair2_Geothermal = myvw_trait_cov_mat,
-  Pair3_Ambient = skrc_trait_cov_mat,
-  Pair3_Geothermal = skrw_trait_cov_mat,
-  Pair4_Ambient = GAR_trait_cov_mat,
-  Pair4_Geothermal = GTS_trait_cov_mat
-)
+# ASHN covariance mats ----------------------------------------------------
+
+
+ashn_cov_matrices <- list(
+  Temp1_Ambient = ashnc_f2_12_12_cov_mat,
+  Temp1_Geothermal = ashnw_f2_12_12_cov_mat,
+  Temp2_Ambient = ashnc_f2_12_18_cov_mat,
+  Temp2_Geothermal = ashnw_f2_12_18_cov_mat,
+  Temp3_Ambient = ashnc_f2_18_12_cov_mat,
+  Temp3_Geothermal = ashnw_f2_18_12_cov_mat,
+  Temp4_Ambient = ashnc_f2_18_18_cov_mat,
+  Temp4_Geothermal = ashnw_f2_18_18_cov_mat)
 
 for (i in 1:4) {
-  cov_matrices[[paste0("Pair", i, "_Difference")]] <-
-    cov_matrices[[paste0("Pair", i, "_Geothermal")]] -
-    cov_matrices[[paste0("Pair", i, "_Ambient")]]
+  ashn_cov_matrices[[paste0("Temp", i, "_Difference")]] <-
+    ashn_cov_matrices[[paste0("Temp", i, "_Geothermal")]] -
+    ashn_cov_matrices[[paste0("Temp", i, "_Ambient")]]
 }
 
-cov_long <- purrr::imap_dfr(cov_matrices, function(mat, name) {
+ashn_cov_long <- purrr::imap_dfr(ashn_cov_matrices, function(mat, name) {
   as.data.frame(as.table(mat)) %>%
     setNames(c("Trait1", "Trait2", "Covariance")) %>%
     mutate(
-      Pair = sub("_.*", "", name),
+      Temp = sub("_.*", "", name),
       Type = sub(".*_", "", name)
     )
 })
 
-cov_long$Type <- factor(
-  cov_long$Type,
+ashn_cov_long$Type <- factor(
+  ashn_cov_long$Type,
   levels = c("Ambient", "Geothermal", "Difference")
 )
 
-cov_long = cov_long %>% 
-  mutate(Ecotype_pair = case_when(
-    str_detect(Pair, 'Pair1') ~ 'ASHN',
-    str_detect(Pair, 'Pair2') ~ 'MYV',
-    str_detect(Pair, 'Pair3') ~ 'SKR',
-    str_detect(Pair, 'Pair4') ~ 'GTS/GAR'))
+ashn_cov_long = ashn_cov_long %>% 
+  mutate(Temp_info = case_when(
+    str_detect(Temp, 'Temp1') ~ '12_12',
+    str_detect(Temp, 'Temp2') ~ '12_18',
+    str_detect(Temp, 'Temp3') ~ '18_12',
+    str_detect(Temp, 'Temp4') ~ '18_18'))
 
-ggplot(cov_long, 
+ashn_cov_plot = ggplot(ashn_cov_long, 
        aes(Trait1, 
            Trait2, 
            fill = Covariance)) +
   geom_tile() +
-  facet_grid(Ecotype_pair ~ Type) +
+  facet_grid(Temp_info ~ Type) +
   scale_fill_gradient2(
     low = "#2166AC",
     mid = "white",
@@ -836,16 +838,213 @@ ggplot(cov_long,
   coord_equal() +
   labs(x = NULL, 
        y = NULL, 
-       fill = "Covariance")+
+       fill = "Covariance", 
+       title = 'ASHN F2 trait covariance')+
   theme(axis.text.x = element_text(angle = 90, 
                                    hjust = 1),
         panel.grid = element_blank(), 
         strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(face = 'bold'), 
-        axis.text = element_text(size = 6))
+        axis.text = element_text(size = 6), 
+        legend.position = 'none')
+
+# MYV covariance mats ----------------------------------------------------
+
+
+myv_cov_matrices <- list(
+  Temp1_Ambient = myvc_f2_12_12_cov_mat,
+  Temp1_Geothermal = myvw_f2_12_12_cov_mat,
+  Temp2_Ambient = myvc_f2_12_18_cov_mat,
+  Temp2_Geothermal = myvw_f2_12_18_cov_mat,
+  Temp3_Ambient = myvc_f2_18_12_cov_mat,
+  Temp3_Geothermal = myvw_f2_18_12_cov_mat,
+  Temp4_Ambient = myvc_f2_18_18_cov_mat,
+  Temp4_Geothermal = myvw_f2_18_18_cov_mat)
+
+for (i in 1:4) {
+  myv_cov_matrices[[paste0("Temp", i, "_Difference")]] <-
+    myv_cov_matrices[[paste0("Temp", i, "_Geothermal")]] -
+    myv_cov_matrices[[paste0("Temp", i, "_Ambient")]]
+}
+
+myv_cov_long <- purrr::imap_dfr(myv_cov_matrices, function(mat, name) {
+  as.data.frame(as.table(mat)) %>%
+    setNames(c("Trait1", "Trait2", "Covariance")) %>%
+    mutate(
+      Temp = sub("_.*", "", name),
+      Type = sub(".*_", "", name)
+    )
+})
+
+myv_cov_long$Type <- factor(
+  myv_cov_long$Type,
+  levels = c("Ambient", "Geothermal", "Difference")
+)
+
+myv_cov_long = myv_cov_long %>% 
+  mutate(Temp_info = case_when(
+    str_detect(Temp, 'Temp1') ~ '12_12',
+    str_detect(Temp, 'Temp2') ~ '12_18',
+    str_detect(Temp, 'Temp3') ~ '18_12',
+    str_detect(Temp, 'Temp4') ~ '18_18'))
+
+myv_cov_plot = ggplot(myv_cov_long, 
+       aes(Trait1, 
+           Trait2, 
+           fill = Covariance)) +
+  geom_tile() +
+  facet_grid(Temp_info ~ Type) +
+  scale_fill_gradient2(
+    low = "#2166AC",
+    mid = "white",
+    high = "#B2182B",
+    midpoint = 0) +
+  coord_equal() +
+  labs(x = NULL, 
+       y = NULL, 
+       fill = "Covariance", 
+       title = 'MYV F2 trait covariance')+
+  theme(axis.text.x = element_text(angle = 90, 
+                                   hjust = 1),
+        panel.grid = element_blank(), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.text = element_text(size = 6), 
+        legend.position = 'none')
+
+# skr covariance mats ----------------------------------------------------
+
+
+skr_cov_matrices <- list(
+  Temp1_Ambient = skrc_f2_12_12_cov_mat,
+  Temp1_Geothermal = skrw_f2_12_12_cov_mat,
+  Temp2_Ambient = skrc_f2_12_18_cov_mat,
+  Temp2_Geothermal = skrw_f2_12_18_cov_mat,
+  Temp3_Ambient = skrc_f2_18_12_cov_mat,
+  Temp3_Geothermal = skrw_f2_18_12_cov_mat,
+  Temp4_Ambient = skrc_f2_18_18_cov_mat,
+  Temp4_Geothermal = skrw_f2_18_18_cov_mat)
+
+for (i in 1:4) {
+  skr_cov_matrices[[paste0("Temp", i, "_Difference")]] <-
+    skr_cov_matrices[[paste0("Temp", i, "_Geothermal")]] -
+    skr_cov_matrices[[paste0("Temp", i, "_Ambient")]]
+}
+
+skr_cov_long <- purrr::imap_dfr(skr_cov_matrices, function(mat, name) {
+  as.data.frame(as.table(mat)) %>%
+    setNames(c("Trait1", "Trait2", "Covariance")) %>%
+    mutate(
+      Temp = sub("_.*", "", name),
+      Type = sub(".*_", "", name)
+    )
+})
+
+skr_cov_long$Type <- factor(
+  skr_cov_long$Type,
+  levels = c("Ambient", "Geothermal", "Difference")
+)
+
+skr_cov_long = skr_cov_long %>% 
+  mutate(Temp_info = case_when(
+    str_detect(Temp, 'Temp1') ~ '12_12',
+    str_detect(Temp, 'Temp2') ~ '12_18',
+    str_detect(Temp, 'Temp3') ~ '18_12',
+    str_detect(Temp, 'Temp4') ~ '18_18'))
+
+skr_cov_plot = ggplot(skr_cov_long, 
+       aes(Trait1, 
+           Trait2, 
+           fill = Covariance)) +
+  geom_tile() +
+  facet_grid(Temp_info ~ Type) +
+  scale_fill_gradient2(
+    low = "#2166AC",
+    mid = "white",
+    high = "#B2182B",
+    midpoint = 0) +
+  coord_equal() +
+  labs(x = NULL, 
+       y = NULL, 
+       fill = "Covariance", 
+       title = 'SKR F2 trait covariance')+
+  theme(axis.text.x = element_text(angle = 90, 
+                                   hjust = 1),
+        panel.grid = element_blank(), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.text = element_text(size = 6), 
+        legend.position = 'none')
+
+# gts_gar covariance mats ----------------------------------------------------
+
+
+gts_gar_cov_matrices <- list(
+  Temp1_Ambient = CSWYC_f2_12_12_cov_mat,
+  Temp1_Geothermal = GTSW_f2_12_12_cov_mat,
+  Temp2_Ambient = CSWYC_f2_12_18_cov_mat,
+  Temp2_Geothermal = GTSW_f2_12_18_cov_mat,
+  Temp3_Ambient = CSWYC_f2_18_12_cov_mat,
+  Temp3_Geothermal = GTSW_f2_18_12_cov_mat,
+  Temp4_Ambient = CSWYC_f2_18_18_cov_mat,
+  Temp4_Geothermal = GTSW_f2_18_18_cov_mat)
+
+for (i in 1:4) {
+  gts_gar_cov_matrices[[paste0("Temp", i, "_Difference")]] <-
+    gts_gar_cov_matrices[[paste0("Temp", i, "_Geothermal")]] -
+    gts_gar_cov_matrices[[paste0("Temp", i, "_Ambient")]]
+}
+
+gts_gar_cov_long <- purrr::imap_dfr(gts_gar_cov_matrices, function(mat, name) {
+  as.data.frame(as.table(mat)) %>%
+    setNames(c("Trait1", "Trait2", "Covariance")) %>%
+    mutate(
+      Temp = sub("_.*", "", name),
+      Type = sub(".*_", "", name)
+    )
+})
+
+gts_gar_cov_long$Type <- factor(
+  gts_gar_cov_long$Type,
+  levels = c("Ambient", "Geothermal", "Difference")
+)
+
+gts_gar_cov_long = gts_gar_cov_long %>% 
+  mutate(Temp_info = case_when(
+    str_detect(Temp, 'Temp1') ~ '12_12',
+    str_detect(Temp, 'Temp2') ~ '12_18',
+    str_detect(Temp, 'Temp3') ~ '18_12',
+    str_detect(Temp, 'Temp4') ~ '18_18'))
+
+gts_gar_cov_plot = ggplot(gts_gar_cov_long, 
+       aes(Trait1, 
+           Trait2, 
+           fill = Covariance)) +
+  geom_tile() +
+  facet_grid(Temp_info ~ Type) +
+  scale_fill_gradient2(
+    low = "#2166AC",
+    mid = "white",
+    high = "#B2182B",
+    midpoint = 0) +
+  coord_equal() +
+  labs(x = NULL, 
+       y = NULL, 
+       fill = "Covariance", 
+       title = 'GTS/GAR F2 trait covariance')+
+  theme(axis.text.x = element_text(angle = 90, 
+                                   hjust = 1),
+        panel.grid = element_blank(), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.text = element_text(size = 6), 
+        legend.position = 'none')
 
 
 
+(ashn_cov_plot + myv_cov_plot)/(skr_cov_plot + gts_gar_cov_plot)
+
+(ashn_cov_plot + myv_cov_plot + skr_cov_plot + gts_gar_cov_plot)
 
 # KrzCov null distribution resampling -------------------------------------
 
