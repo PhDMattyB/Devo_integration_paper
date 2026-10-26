@@ -940,7 +940,8 @@ gts_gar_WGP_12_12_nemeny_df = gts_gar_WGP_12_12_residuals %>%
   mutate(pop_pair = 'GTS/GAR') %>% 
   dplyr::select(-resid_10)
 
-WGP_12_12_nemeny_df = bind_rows(ashn_WGP_12_12_nemeny_df, 
+WGP_12_12_nemeny_df = bind_rows(
+  # ashn_WGP_12_12_nemeny_df, 
                                myv_WGP_12_12_nemeny_df, 
                                skr_WGP_12_12_nemeny_df, 
                                gts_gar_WGP_12_12_nemeny_df)
@@ -993,8 +994,8 @@ WGP_12_18_nemeny_test$p.value %>%
   rownames_to_column() %>% 
   as_tibble() %>% 
   dplyr::rename(trait = rowname) %>% 
-  filter(across(c(2:33), function(x) x<0.05))
-# write_csv('WGP_1218_residual_NemenyTest_results.csv')
+  # filter(across(c(2:33), function(x) x<0.05))
+write_csv('WGP_1218_residual_NemenyTest_results.csv')
 
 ashn_WGP_18_12_nemeny_df = ashn_WGP_18_12_residuals %>% 
   mutate(pop_pair = 'ASHN') %>% 
@@ -1029,8 +1030,8 @@ WGP_18_12_nemeny_test$p.value %>%
   rownames_to_column() %>% 
   as_tibble() %>% 
   dplyr::rename(trait = rowname) %>% 
-  filter(across(c(2:33), function(x) x<0.05))
-# write_csv('WGP_1812_residual_NemenyTest_results.csv')
+  # filter(across(c(2:33), function(x) x<0.05))
+write_csv('WGP_1812_residual_NemenyTest_results.csv')
 
 
 
@@ -1067,8 +1068,8 @@ WGP_18_18_nemeny_test$p.value %>%
   rownames_to_column() %>% 
   as_tibble() %>% 
   dplyr::rename(trait = rowname) %>% 
-  filter(across(c(2:33), function(x) x<0.05))
-# %>% write_csv('WGP_1818_residual_NemenyTest_results.csv')
+  # filter(across(c(2:33), function(x) x<0.05))
+write_csv('WGP_1818_residual_NemenyTest_results.csv')
 
 # parallelism test - eye ball method --------------------------------------
 
@@ -1089,9 +1090,9 @@ WGP_18_18_nemeny_test$p.value %>%
 # ASHN covariance mats ----------------------------------------------------
 
 
-ashn_cov_matrices <- list(
-  Temp1_Ambient = ashnc_WGP_12_12_cov_mat,
-  Temp1_Geothermal = ashnw_WGP_12_12_cov_mat,
+ashn_WGP_cov_matrices <- list(
+  # Temp1_Ambient = ashnc_WGP_12_12_cov_mat,
+  # Temp1_Geothermal = ashnw_WGP_12_12_cov_mat,
   Temp2_Ambient = ashnc_WGP_12_18_cov_mat,
   Temp2_Geothermal = ashnw_WGP_12_18_cov_mat,
   Temp3_Ambient = ashnc_WGP_18_12_cov_mat,
@@ -1099,13 +1100,13 @@ ashn_cov_matrices <- list(
   Temp4_Ambient = ashnc_WGP_18_18_cov_mat,
   Temp4_Geothermal = ashnw_WGP_18_18_cov_mat)
 
-for (i in 1:4) {
-  ashn_cov_matrices[[paste0("Temp", i, "_Difference")]] <-
-    ashn_cov_matrices[[paste0("Temp", i, "_Geothermal")]] -
-    ashn_cov_matrices[[paste0("Temp", i, "_Ambient")]]
+for (i in 2:4) {
+  ashn_WGP_cov_matrices[[paste0("Temp", i, "_Difference")]] <-
+    ashn_WGP_cov_matrices[[paste0("Temp", i, "_Geothermal")]] -
+    ashn_WGP_cov_matrices[[paste0("Temp", i, "_Ambient")]]
 }
 
-ashn_cov_long <- purrr::imap_dfr(ashn_cov_matrices, function(mat, name) {
+ashn_WGP_cov_long <- purrr::imap_dfr(ashn_WGP_cov_matrices, function(mat, name) {
   as.data.frame(as.table(mat)) %>%
     setNames(c("Trait1", "Trait2", "Covariance")) %>%
     mutate(
@@ -1114,19 +1115,19 @@ ashn_cov_long <- purrr::imap_dfr(ashn_cov_matrices, function(mat, name) {
     )
 })
 
-ashn_cov_long$Type <- factor(
-  ashn_cov_long$Type,
+ashn_WGP_cov_long$Type <- factor(
+  ashn_WGP_cov_long$Type,
   levels = c("Ambient", "Geothermal", "Difference")
 )
 
-ashn_cov_long = ashn_cov_long %>% 
+ashn_WGP_cov_long = ashn_WGP_cov_long %>% 
   mutate(Temp_info = case_when(
-    str_detect(Temp, 'Temp1') ~ '12_12',
+    # str_detect(Temp, 'Temp1') ~ '12_12',
     str_detect(Temp, 'Temp2') ~ '12_18',
     str_detect(Temp, 'Temp3') ~ '18_12',
     str_detect(Temp, 'Temp4') ~ '18_18'))
 
-ashn_cov_plot = ggplot(ashn_cov_long, 
+ashn_WGP_cov_plot = ggplot(ashn_WGP_cov_long, 
                        aes(Trait1, 
                            Trait2, 
                            fill = Covariance)) +
@@ -1153,7 +1154,7 @@ ashn_cov_plot = ggplot(ashn_cov_long,
 # MYV covariance mats ----------------------------------------------------
 
 
-myv_cov_matrices <- list(
+myv_WGP_cov_matrices <- list(
   Temp1_Ambient = myvc_WGP_12_12_cov_mat,
   Temp1_Geothermal = myvw_WGP_12_12_cov_mat,
   Temp2_Ambient = myvc_WGP_12_18_cov_mat,
@@ -1164,12 +1165,12 @@ myv_cov_matrices <- list(
   Temp4_Geothermal = myvw_WGP_18_18_cov_mat)
 
 for (i in 1:4) {
-  myv_cov_matrices[[paste0("Temp", i, "_Difference")]] <-
-    myv_cov_matrices[[paste0("Temp", i, "_Geothermal")]] -
-    myv_cov_matrices[[paste0("Temp", i, "_Ambient")]]
+  myv_WGP_cov_matrices[[paste0("Temp", i, "_Difference")]] <-
+    myv_WGP_cov_matrices[[paste0("Temp", i, "_Geothermal")]] -
+    myv_WGP_cov_matrices[[paste0("Temp", i, "_Ambient")]]
 }
 
-myv_cov_long <- purrr::imap_dfr(myv_cov_matrices, function(mat, name) {
+myv_WGP_cov_long <- purrr::imap_dfr(myv_WGP_cov_matrices, function(mat, name) {
   as.data.frame(as.table(mat)) %>%
     setNames(c("Trait1", "Trait2", "Covariance")) %>%
     mutate(
@@ -1178,19 +1179,19 @@ myv_cov_long <- purrr::imap_dfr(myv_cov_matrices, function(mat, name) {
     )
 })
 
-myv_cov_long$Type <- factor(
-  myv_cov_long$Type,
+myv_WGP_cov_long$Type <- factor(
+  myv_WGP_cov_long$Type,
   levels = c("Ambient", "Geothermal", "Difference")
 )
 
-myv_cov_long = myv_cov_long %>% 
+myv_WGP_cov_long = myv_WGP_cov_long %>% 
   mutate(Temp_info = case_when(
     str_detect(Temp, 'Temp1') ~ '12_12',
     str_detect(Temp, 'Temp2') ~ '12_18',
     str_detect(Temp, 'Temp3') ~ '18_12',
     str_detect(Temp, 'Temp4') ~ '18_18'))
 
-myv_cov_plot = ggplot(myv_cov_long, 
+myv_WGP_cov_plot = ggplot(myv_WGP_cov_long, 
                       aes(Trait1, 
                           Trait2, 
                           fill = Covariance)) +
@@ -1217,7 +1218,7 @@ myv_cov_plot = ggplot(myv_cov_long,
 # skr covariance mats ----------------------------------------------------
 
 
-skr_cov_matrices <- list(
+skr_WGP_cov_matrices <- list(
   Temp1_Ambient = skrc_WGP_12_12_cov_mat,
   Temp1_Geothermal = skrw_WGP_12_12_cov_mat,
   Temp2_Ambient = skrc_WGP_12_18_cov_mat,
@@ -1228,12 +1229,12 @@ skr_cov_matrices <- list(
   Temp4_Geothermal = skrw_WGP_18_18_cov_mat)
 
 for (i in 1:4) {
-  skr_cov_matrices[[paste0("Temp", i, "_Difference")]] <-
-    skr_cov_matrices[[paste0("Temp", i, "_Geothermal")]] -
-    skr_cov_matrices[[paste0("Temp", i, "_Ambient")]]
+  skr_WGP_cov_matrices[[paste0("Temp", i, "_Difference")]] <-
+    skr_WGP_cov_matrices[[paste0("Temp", i, "_Geothermal")]] -
+    skr_WGP_cov_matrices[[paste0("Temp", i, "_Ambient")]]
 }
 
-skr_cov_long <- purrr::imap_dfr(skr_cov_matrices, function(mat, name) {
+skr_WGP_cov_long <- purrr::imap_dfr(skr_WGP_cov_matrices, function(mat, name) {
   as.data.frame(as.table(mat)) %>%
     setNames(c("Trait1", "Trait2", "Covariance")) %>%
     mutate(
@@ -1242,19 +1243,19 @@ skr_cov_long <- purrr::imap_dfr(skr_cov_matrices, function(mat, name) {
     )
 })
 
-skr_cov_long$Type <- factor(
-  skr_cov_long$Type,
+skr_WGP_cov_long$Type <- factor(
+  skr_WGP_cov_long$Type,
   levels = c("Ambient", "Geothermal", "Difference")
 )
 
-skr_cov_long = skr_cov_long %>% 
+skr_WGP_cov_long = skr_WGP_cov_long %>% 
   mutate(Temp_info = case_when(
     str_detect(Temp, 'Temp1') ~ '12_12',
     str_detect(Temp, 'Temp2') ~ '12_18',
     str_detect(Temp, 'Temp3') ~ '18_12',
     str_detect(Temp, 'Temp4') ~ '18_18'))
 
-skr_cov_plot = ggplot(skr_cov_long, 
+skr_WGP_cov_plot = ggplot(skr_WGP_cov_long, 
                       aes(Trait1, 
                           Trait2, 
                           fill = Covariance)) +
@@ -1281,7 +1282,7 @@ skr_cov_plot = ggplot(skr_cov_long,
 # gts_gar covariance mats ----------------------------------------------------
 
 
-gts_gar_cov_matrices <- list(
+gts_gar_WGP_cov_matrices <- list(
   Temp1_Ambient = CSWYC_WGP_12_12_cov_mat,
   Temp1_Geothermal = GTSW_WGP_12_12_cov_mat,
   Temp2_Ambient = CSWYC_WGP_12_18_cov_mat,
@@ -1292,12 +1293,12 @@ gts_gar_cov_matrices <- list(
   Temp4_Geothermal = GTSW_WGP_18_18_cov_mat)
 
 for (i in 1:4) {
-  gts_gar_cov_matrices[[paste0("Temp", i, "_Difference")]] <-
-    gts_gar_cov_matrices[[paste0("Temp", i, "_Geothermal")]] -
-    gts_gar_cov_matrices[[paste0("Temp", i, "_Ambient")]]
+  gts_gar_WGP_cov_matrices[[paste0("Temp", i, "_Difference")]] <-
+    gts_gar_WGP_cov_matrices[[paste0("Temp", i, "_Geothermal")]] -
+    gts_gar_WGP_cov_matrices[[paste0("Temp", i, "_Ambient")]]
 }
 
-gts_gar_cov_long <- purrr::imap_dfr(gts_gar_cov_matrices, function(mat, name) {
+gts_gar_WGP_cov_long <- purrr::imap_dfr(gts_gar_WGP_cov_matrices, function(mat, name) {
   as.data.frame(as.table(mat)) %>%
     setNames(c("Trait1", "Trait2", "Covariance")) %>%
     mutate(
@@ -1306,19 +1307,19 @@ gts_gar_cov_long <- purrr::imap_dfr(gts_gar_cov_matrices, function(mat, name) {
     )
 })
 
-gts_gar_cov_long$Type <- factor(
-  gts_gar_cov_long$Type,
+gts_gar_WGP_cov_long$Type <- factor(
+  gts_gar_WGP_cov_long$Type,
   levels = c("Ambient", "Geothermal", "Difference")
 )
 
-gts_gar_cov_long = gts_gar_cov_long %>% 
+gts_gar_WGP_cov_long = gts_gar_WGP_cov_long %>% 
   mutate(Temp_info = case_when(
     str_detect(Temp, 'Temp1') ~ '12_12',
     str_detect(Temp, 'Temp2') ~ '12_18',
     str_detect(Temp, 'Temp3') ~ '18_12',
     str_detect(Temp, 'Temp4') ~ '18_18'))
 
-gts_gar_cov_plot = ggplot(gts_gar_cov_long, 
+gts_gar_WGP_cov_plot = ggplot(gts_gar_WGP_cov_long, 
                           aes(Trait1, 
                               Trait2, 
                               fill = Covariance)) +
