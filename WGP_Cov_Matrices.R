@@ -377,37 +377,37 @@ myv_WGP_18_18_resid_plot = ggplot(myv_WGP_18_18_residuals,
 myv_exp_treat_combo = (myv_WGP_12_12_resid_plot+myv_WGP_12_18_resid_plot)/(myv_WGP_18_12_resid_plot+myv_WGP_18_18_resid_plot)
 
 # SKR ---------------------------------------------------------------------
-skrc_WGP_12_12_trait_mat = WGP_orig_data %>% 
+skrc_WGP_12_12_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'SKRC', 
          Exp_treats == '12_12') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
-skrc_WGP_12_18_trait_mat = WGP_orig_data %>% 
+skrc_WGP_12_18_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'SKRC', 
          Exp_treats == '12_18') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
-skrc_WGP_18_12_trait_mat = WGP_orig_data %>% 
+skrc_WGP_18_12_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'SKRC', 
          Exp_treats == '18_12') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
-skrc_WGP_18_18_trait_mat = WGP_orig_data %>% 
+skrc_WGP_18_18_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'SKRC', 
          Exp_treats == '18_18') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
 
 
-skrw_WGP_12_12_trait_mat = WGP_orig_data %>% 
+skrw_WGP_12_12_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'SKRW', 
          Exp_treats == '12_12') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
-skrw_WGP_12_18_trait_mat = WGP_orig_data %>% 
+skrw_WGP_12_18_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'SKRW', 
          Exp_treats == '12_18') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
-skrw_WGP_18_12_trait_mat = WGP_orig_data %>% 
+skrw_WGP_18_12_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'SKRW', 
          Exp_treats == '18_12') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
-skrw_WGP_18_18_trait_mat = WGP_orig_data %>% 
+skrw_WGP_18_18_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'SKRW', 
          Exp_treats == '18_18') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
@@ -553,37 +553,37 @@ skr_exp_treat_combo = (skr_WGP_12_12_resid_plot+skr_WGP_12_18_resid_plot)/(skr_W
 
 
 # GAR/GTS -----------------------------------------------------------------
-CSWYC_WGP_12_12_trait_mat = WGP_orig_data %>% 
+CSWYC_WGP_12_12_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'CSWYC', 
          Exp_treats == '12_12') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
-CSWYC_WGP_12_18_trait_mat = WGP_orig_data %>% 
+CSWYC_WGP_12_18_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'CSWYC', 
          Exp_treats == '12_18') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
-CSWYC_WGP_18_12_trait_mat = WGP_orig_data %>% 
+CSWYC_WGP_18_12_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'CSWYC', 
          Exp_treats == '18_12') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
-CSWYC_WGP_18_18_trait_mat = WGP_orig_data %>% 
+CSWYC_WGP_18_18_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'CSWYC', 
          Exp_treats == '18_18') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
 
 
-GTSW_WGP_12_12_trait_mat = WGP_orig_data %>% 
+GTSW_WGP_12_12_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'GTSW', 
          Exp_treats == '12_12') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
-GTSW_WGP_12_18_trait_mat = WGP_orig_data %>% 
+GTSW_WGP_12_18_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'GTSW', 
          Exp_treats == '12_18') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
-GTSW_WGP_18_12_trait_mat = WGP_orig_data %>% 
+GTSW_WGP_18_12_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'GTSW', 
          Exp_treats == '18_12') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
-GTSW_WGP_18_18_trait_mat = WGP_orig_data %>% 
+GTSW_WGP_18_18_trait_mat = WGP_data %>% 
   filter(Lake_morph == 'GTSW', 
          Exp_treats == '18_18') %>% 
   dplyr::select(jaw_length:caudal2_15_17)
@@ -762,13 +762,14 @@ gts_gar_WGP_12_12_kendal = gts_gar_WGP_12_12_residuals%>%
   dplyr::select(-resid_10) %>% 
   column_to_rownames('trait')
 
-WGP_12_12_kendal_df = bind_cols(ashn_WGP_12_12_kendal, 
+WGP_12_12_kendal_df = bind_cols(
+  # ashn_WGP_12_12_kendal, 
                                myv_WGP_12_12_kendal, 
                                skr_WGP_12_12_kendal, 
                                gts_gar_WGP_12_12_kendal)
 
-group = c('ASHN','MYV','SKR','GTS_GAR')
-
+# group = c('ASHN','MYV','SKR','GTS_GAR')
+group = c('MYV','SKR','GTS_GAR')
 
 WGP_12_12_kendal = kendall.global(WGP_12_12_kendal_df,
                                  # group = pops,
