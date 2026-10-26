@@ -1051,7 +1051,6 @@ gts_gar_cov_plot = ggplot(gts_gar_cov_long,
 
 # ASHN --------------------------------------------------------------------
 
-
 # Combine individuals from both ecotypes
 ashn_combined = bind_rows(ashnc_f2_orig_trait_mat,
                           ashnw_f2_orig_trait_mat)
@@ -1286,37 +1285,95 @@ ggplot(data.frame(gts_gar_KrzCor = gts_gar_null_krz),
 
 # ASHN --------------------------------------------------------------------
 
+ashnc_f2_12_12_eigen = eigen(ashnc_f2_12_12_cov_mat)
+ashnw_f2_12_12_eigen = eigen(ashnw_f2_12_12_cov_mat)
 
-# Eigendecomposition of covariance matrices
-ashnc_eigen = eigen(ashnc_trait_cov_mat)
-ashnw_eigen = eigen(ashnw_trait_cov_mat)
+ashnc_f2_12_18_eigen = eigen(ashnc_f2_12_18_cov_mat)
+ashnw_f2_12_18_eigen = eigen(ashnw_f2_12_18_cov_mat)
 
-# Number of principal components to retain
-# k = floor(ncol(ashnc_trait_cov_mat) / 2)
+ashnc_f2_18_12_eigen = eigen(ashnc_f2_18_12_cov_mat)
+ashnw_f2_18_12_eigen = eigen(ashnw_f2_18_12_cov_mat)
+
+ashnc_f2_18_18_eigen = eigen(ashnc_f2_18_18_cov_mat)
+ashnw_f2_18_18_eigen = eigen(ashnw_f2_18_18_cov_mat)
 
 # Extract leading eigenvectors
-ashnc_vectors = ashnc_eigen$vectors[, 1:3, drop = FALSE]
-ashnw_vectors = ashnw_eigen$vectors[, 1:3, drop = FALSE]
+ashnc_f2_12_12_vectors = ashnc_f2_12_12_eigen$vectors[, 1:3, drop = FALSE]
+ashnw_f2_12_12_vectors = ashnw_f2_12_12_eigen$vectors[, 1:3, drop = FALSE]
+
+ashnc_f2_12_18_vectors = ashnc_f2_12_18_eigen$vectors[, 1:3, drop = FALSE]
+ashnw_f2_12_18_vectors = ashnw_f2_12_18_eigen$vectors[, 1:3, drop = FALSE]
+
+ashnc_f2_18_12_vectors = ashnc_f2_18_12_eigen$vectors[, 1:3, drop = FALSE]
+ashnw_f2_18_12_vectors = ashnw_f2_18_12_eigen$vectors[, 1:3, drop = FALSE]
+
+ashnc_f2_18_18_vectors = ashnc_f2_18_18_eigen$vectors[, 1:3, drop = FALSE]
+ashnw_f2_18_18_vectors = ashnw_f2_18_18_eigen$vectors[, 1:3, drop = FALSE]
+
 
 # Preserve trait identities
-rownames(ashnc_vectors) = colnames(ashnc_trait_cov_mat)
-rownames(ashnw_vectors) = colnames(ashnw_trait_cov_mat)
+rownames(ashnc_f2_12_12_vectors) = colnames(ashnc_f2_12_12_cov_mat)
+rownames(ashnw_f2_12_12_vectors) = colnames(ashnw_f2_12_12_cov_mat)
 
-ashn_proc_res = procrustes(ashnc_vectors, 
-                           ashnw_vectors, 
-                           symmetric = T)
+rownames(ashnc_f2_12_18_vectors) = colnames(ashnc_f2_12_18_cov_mat)
+rownames(ashnw_f2_12_18_vectors) = colnames(ashnw_f2_12_18_cov_mat)
 
-summary(ashn_proc_res)
+rownames(ashnc_f2_18_12_vectors) = colnames(ashnc_f2_18_12_cov_mat)
+rownames(ashnw_f2_18_12_vectors) = colnames(ashnw_f2_18_12_cov_mat)
 
-plot(ashn_proc_res)
-plot(ashn_proc_res, 
+rownames(ashnc_f2_18_18_vectors) = colnames(ashnc_f2_18_18_cov_mat)
+rownames(ashnw_f2_18_18_vectors) = colnames(ashnw_f2_18_18_cov_mat)
+
+
+ashn_f2_12_12_proc_res = procrustes(ashnc_f2_12_12_vectors, 
+                                    ashnw_f2_12_12_vectors, 
+                                    symmetric = T)
+summary(ashn_f2_12_12_proc_res)
+plot(ashn_f2_12_12_proc_res, 
      kind = 2)
-
-ashn_test_res = protest(ashnc_vectors, 
-                        ashnw_vectors, 
+ashn_f2_12_12_test = protest(ashnc_f2_12_12_vectors, 
+                        ashnw_f2_12_12_vectors, 
                         permutations = 999, 
                         scale = F, 
                         symmetric = T)
+
+
+ashn_f2_12_18_proc_res = procrustes(ashnc_f2_12_18_vectors, 
+                                    ashnw_f2_12_18_vectors, 
+                                    symmetric = T)
+summary(ashn_f2_12_18_proc_res)
+plot(ashn_f2_12_18_proc_res, 
+     kind = 2)
+ashn_f2_12_18_test = protest(ashnc_f2_12_18_vectors, 
+                             ashnw_f2_12_18_vectors, 
+                             permutations = 999, 
+                             scale = F, 
+                             symmetric = T)
+
+ashn_f2_18_12_proc_res = procrustes(ashnc_f2_18_12_vectors, 
+                                    ashnw_f2_18_12_vectors, 
+                                    symmetric = T)
+summary(ashn_f2_18_12_proc_res)
+plot(ashn_f2_18_12_proc_res, 
+     kind = 2)
+ashn_f2_18_12_test = protest(ashnc_f2_18_12_vectors, 
+                             ashnw_f2_18_12_vectors, 
+                             permutations = 999, 
+                             scale = F, 
+                             symmetric = T)
+
+ashn_f2_18_18_proc_res = procrustes(ashnc_f2_18_18_vectors, 
+                                    ashnw_f2_18_18_vectors, 
+                                    symmetric = T)
+summary(ashn_f2_18_18_proc_res)
+plot(ashn_f2_18_18_proc_res, 
+     kind = 2)
+ashn_f2_18_18_test = protest(ashnc_f2_18_18_vectors, 
+                             ashnw_f2_18_18_vectors, 
+                             permutations = 999, 
+                             scale = F, 
+                             symmetric = T)
+
 
 
 # MYV ---------------------------------------------------------------------
