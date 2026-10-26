@@ -918,6 +918,51 @@ f2_18_18_kendal_post
 
 
 
+
+# Nemeny post hoc test ----------------------------------------------------
+
+
+
+library(PMCMRplus)
+
+
+ashn_f2_12_12_nemeny_df = ashn_f2_12_12_residuals %>% 
+  mutate(pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10)
+
+myv_f2_12_12_nemeny_df = myv_f2_12_12_residuals %>% 
+  mutate(pop_pair = 'MYV') %>% 
+  dplyr::select(-resid_10)
+
+skr_f2_12_12_nemeny_df = skr_f2_12_12_residuals %>% 
+  mutate(pop_pair = 'SKR') %>% 
+  dplyr::select(-resid_10)
+
+gts_gar_f2_12_12_nemeny_df = gts_gar_f2_12_12_residuals %>% 
+  mutate(pop_pair = 'GTS/GAR') %>% 
+  dplyr::select(-resid_10)
+
+nemeny_df = bind_rows(ashn_f2_12_12_nemeny_df, 
+                      myv_f2_12_12_nemeny_df, 
+                      skr_f2_12_12_nemeny_df, 
+                      gts_gar_f2_12_12_nemeny_df)
+
+
+nemeny_test = frdAllPairsNemenyiTest(y = nemeny_df$residual, 
+                       groups = nemeny_df$trait, 
+                       blocks = nemeny_df$pop_pair, 
+                       p.adjust.method = 'hochberg')
+
+
+
+
+# frdAllPairsNemenyiTest(residual ~ pop_pair|trait, 
+#                        data = nemeny_df)
+# 
+# 
+# frdAllPairsNemenyiTest(nemeny_df$residual, 
+#                        groups = nemeny_df$pop_pair, 
+#                        blocks = nemeny_df$trait)
 # parallelism test - eye ball method --------------------------------------
 
 
