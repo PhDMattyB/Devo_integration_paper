@@ -731,6 +731,196 @@ gts_gar_exp_treat_combo = (gts_gar_f2_12_12_resid_plot+gts_gar_f2_12_18_resid_pl
 
 # Parallelism in plasticity divergence in trait covariance ----------------
 
+## kendals test of concordance 
+##Rows are objects and columns are judges (variables)
+## Traits in rows and pop pairs in columns
+
+ashn_f2_12_12_kendal = ashn_f2_12_12_residuals %>% 
+  dplyr::rename(ASHN = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+myv_f2_12_12_kendal = myv_f2_12_12_residuals%>% 
+  dplyr::rename(MYV = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+skr_f2_12_12_kendal = skr_f2_12_12_residuals%>% 
+  dplyr::rename(SKR = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+gts_gar_f2_12_12_kendal = gts_gar_f2_12_12_residuals%>% 
+  dplyr::rename(GTS_GAR = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+f2_12_12_kendal_df = bind_cols(ashn_f2_12_12_kendal, 
+                            myv_f2_12_12_kendal, 
+                            skr_f2_12_12_kendal, 
+                            gts_gar_f2_12_12_kendal)
+
+group = c('ASHN','MYV','SKR','GTS_GAR')
+
+
+f2_12_12_kendal = kendall.global(f2_12_12_kendal_df,
+                                 # group = pops,
+                                 nperm = 999, 
+                                 mult = 'hochberg')
+f2_12_12_kendal_post = kendall.post(f2_12_12_kendal_df, 
+                                   mult = 'hochberg', 
+                                   nperm = 999)
+
+
+ashn_f2_12_18_kendal = ashn_f2_12_18_residuals %>% 
+  dplyr::rename(ASHN = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+myv_f2_12_18_kendal = myv_f2_12_18_residuals%>% 
+  dplyr::rename(MYV = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+skr_f2_12_18_kendal = skr_f2_12_18_residuals%>% 
+  dplyr::rename(SKR = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+gts_gar_f2_12_18_kendal = gts_gar_f2_12_18_residuals%>% 
+  dplyr::rename(GTS_GAR = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+f2_12_18_kendal_df = bind_cols(ashn_f2_12_18_kendal, 
+                               myv_f2_12_18_kendal, 
+                               skr_f2_12_18_kendal, 
+                               gts_gar_f2_12_18_kendal)
+
+
+f2_12_18_kendal = kendall.global(f2_12_18_kendal_df,
+                                 # group = pops,
+                                 nperm = 999, 
+                                 mult = 'hochberg')
+f2_12_18_kendal_post = kendall.post(f2_12_18_kendal_df, 
+                                    mult = 'hochberg', 
+                                    nperm = 999)
+
+
+
+ashn_f2_18_12_kendal = ashn_f2_18_12_residuals %>% 
+  dplyr::rename(ASHN = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+myv_f2_18_12_kendal = myv_f2_18_12_residuals%>% 
+  dplyr::rename(MYV = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+skr_f2_18_12_kendal = skr_f2_18_12_residuals%>% 
+  dplyr::rename(SKR = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+gts_gar_f2_18_12_kendal = gts_gar_f2_18_12_residuals%>% 
+  dplyr::rename(GTS_GAR = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+f2_18_12_kendal_df = bind_cols(ashn_f2_18_12_kendal, 
+                               myv_f2_18_12_kendal, 
+                               skr_f2_18_12_kendal, 
+                               gts_gar_f2_18_12_kendal)
+
+
+f2_18_12_kendal = kendall.global(f2_18_12_kendal_df,
+                                 # group = pops,
+                                 nperm = 999, 
+                                 mult = 'hochberg')
+f2_18_12_kendal_post = kendall.post(f2_18_12_kendal_df, 
+                                    mult = 'hochberg', 
+                                    nperm = 999)
+
+
+
+
+ashn_f2_18_18_kendal = ashn_f2_18_18_residuals %>% 
+  dplyr::rename(ASHN = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+myv_f2_18_18_kendal = myv_f2_18_18_residuals%>% 
+  dplyr::rename(MYV = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+skr_f2_18_18_kendal = skr_f2_18_18_residuals%>% 
+  dplyr::rename(SKR = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+gts_gar_f2_18_18_kendal = gts_gar_f2_18_18_residuals%>% 
+  dplyr::rename(GTS_GAR = residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+f2_18_18_kendal_df = bind_cols(ashn_f2_18_18_kendal, 
+                               myv_f2_18_18_kendal, 
+                               skr_f2_18_18_kendal, 
+                               gts_gar_f2_18_18_kendal)
+
+f2_18_18_kendal = kendall.global(f2_18_18_kendal_df,
+                                 # group = pops,
+                                 nperm = 999, 
+                                 mult = 'hochberg')
+f2_18_18_kendal_post = kendall.post(f2_18_18_kendal_df, 
+                                    mult = 'hochberg', 
+                                    nperm = 999)
+
+
+f2_12_12_kendal_post
+f2_12_18_kendal_post
+f2_18_12_kendal_post
+f2_18_18_kendal_post
+
+
+
+# parallelism test - eye ball method --------------------------------------
+
+
 (ashn_f2_12_12_resid_plot+myv_f2_12_12_resid_plot)/(skr_f2_12_12_resid_plot+gts_gar_f2_12_12_resid_plot)
 
 (ashn_f2_12_18_resid_plot+myv_f2_12_18_resid_plot)/(skr_f2_12_18_resid_plot+gts_gar_f2_12_18_resid_plot)
@@ -1337,6 +1527,8 @@ ashn_f2_12_12_test = protest(ashnc_f2_12_12_vectors,
                         scale = F, 
                         symmetric = T)
 
+ashn_f2_12_12_residuals = residuals(ashn_f2_12_12_test)
+
 
 ashn_f2_12_18_proc_res = procrustes(ashnc_f2_12_18_vectors, 
                                     ashnw_f2_12_18_vectors, 
@@ -1374,6 +1566,17 @@ ashn_f2_18_18_test = protest(ashnc_f2_18_18_vectors,
                              scale = F, 
                              symmetric = T)
 
+
+
+gts_gar_wild_residuals = residuals(gts_gar_test_res)
+
+gts_gar_wild_residuals %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2) %>%  
+  write_csv('GTS_GAR_WILD_procrustes_cov_mat_residuals.csv')
 
 
 # MYV ---------------------------------------------------------------------
