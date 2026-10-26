@@ -921,8 +921,6 @@ f2_18_18_kendal_post
 
 # Nemeny post hoc test ----------------------------------------------------
 
-
-
 library(PMCMRplus)
 
 
@@ -942,27 +940,136 @@ gts_gar_f2_12_12_nemeny_df = gts_gar_f2_12_12_residuals %>%
   mutate(pop_pair = 'GTS/GAR') %>% 
   dplyr::select(-resid_10)
 
-nemeny_df = bind_rows(ashn_f2_12_12_nemeny_df, 
+f2_12_12_nemeny_df = bind_rows(ashn_f2_12_12_nemeny_df, 
                       myv_f2_12_12_nemeny_df, 
                       skr_f2_12_12_nemeny_df, 
                       gts_gar_f2_12_12_nemeny_df)
 
 
-nemeny_test = frdAllPairsNemenyiTest(y = nemeny_df$residual, 
+f2_12_12_nemeny_test = frdAllPairsNemenyiTest(y = nemeny_df$residual, 
                        groups = nemeny_df$trait, 
                        blocks = nemeny_df$pop_pair, 
                        p.adjust.method = 'hochberg')
 
+f2_12_12_nemeny_test$p.value %>%
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname) %>% 
+  # filter(across(c(2:33), function(x) x<0.05))
+write_csv('F2_1212_residual_NemenyTest_results.csv')
 
 
 
-# frdAllPairsNemenyiTest(residual ~ pop_pair|trait, 
-#                        data = nemeny_df)
-# 
-# 
-# frdAllPairsNemenyiTest(nemeny_df$residual, 
-#                        groups = nemeny_df$pop_pair, 
-#                        blocks = nemeny_df$trait)
+ashn_f2_12_18_nemeny_df = ashn_f2_12_18_residuals %>% 
+  mutate(pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10)
+
+myv_f2_12_18_nemeny_df = myv_f2_12_18_residuals %>% 
+  mutate(pop_pair = 'MYV') %>% 
+  dplyr::select(-resid_10)
+
+skr_f2_12_18_nemeny_df = skr_f2_12_18_residuals %>% 
+  mutate(pop_pair = 'SKR') %>% 
+  dplyr::select(-resid_10)
+
+gts_gar_f2_12_18_nemeny_df = gts_gar_f2_12_18_residuals %>% 
+  mutate(pop_pair = 'GTS/GAR') %>% 
+  dplyr::select(-resid_10)
+
+f2_12_18_nemeny_df = bind_rows(ashn_f2_12_18_nemeny_df, 
+                               myv_f2_12_18_nemeny_df, 
+                               skr_f2_12_18_nemeny_df, 
+                               gts_gar_f2_12_18_nemeny_df)
+
+
+f2_12_18_nemeny_test = frdAllPairsNemenyiTest(y = f2_12_18_nemeny_df$residual, 
+                                              groups = f2_12_18_nemeny_df$trait, 
+                                              blocks = f2_12_18_nemeny_df$pop_pair, 
+                                              p.adjust.method = 'hochberg')
+
+f2_12_18_nemeny_test$p.value %>%
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname) %>% 
+  filter(across(c(2:33), function(x) x<0.05))
+  # write_csv('F2_1218_residual_NemenyTest_results.csv')
+
+ashn_f2_18_12_nemeny_df = ashn_f2_18_12_residuals %>% 
+  mutate(pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10)
+
+myv_f2_18_12_nemeny_df = myv_f2_18_12_residuals %>% 
+  mutate(pop_pair = 'MYV') %>% 
+  dplyr::select(-resid_10)
+
+skr_f2_18_12_nemeny_df = skr_f2_18_12_residuals %>% 
+  mutate(pop_pair = 'SKR') %>% 
+  dplyr::select(-resid_10)
+
+gts_gar_f2_18_12_nemeny_df = gts_gar_f2_18_12_residuals %>% 
+  mutate(pop_pair = 'GTS/GAR') %>% 
+  dplyr::select(-resid_10)
+
+f2_18_12_nemeny_df = bind_rows(ashn_f2_18_12_nemeny_df, 
+                               myv_f2_18_12_nemeny_df, 
+                               skr_f2_18_12_nemeny_df, 
+                               gts_gar_f2_18_12_nemeny_df)
+
+
+f2_18_12_nemeny_test = frdAllPairsNemenyiTest(y = f2_18_12_nemeny_df$residual, 
+                                              groups = f2_18_12_nemeny_df$trait, 
+                                              blocks = f2_18_12_nemeny_df$pop_pair, 
+                                              p.adjust.method = 'hochberg')
+
+
+f2_18_12_nemeny_test$p.value %>%
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname) %>% 
+  filter(across(c(2:33), function(x) x<0.05))
+  # write_csv('F2_1812_residual_NemenyTest_results.csv')
+
+
+
+ashn_f2_18_18_nemeny_df = ashn_f2_18_18_residuals %>% 
+  mutate(pop_pair = 'ASHN') %>% 
+  dplyr::select(-resid_10)
+
+myv_f2_18_18_nemeny_df = myv_f2_18_18_residuals %>% 
+  mutate(pop_pair = 'MYV') %>% 
+  dplyr::select(-resid_10)
+
+skr_f2_18_18_nemeny_df = skr_f2_18_18_residuals %>% 
+  mutate(pop_pair = 'SKR') %>% 
+  dplyr::select(-resid_10)
+
+gts_gar_f2_18_18_nemeny_df = gts_gar_f2_18_18_residuals %>% 
+  mutate(pop_pair = 'GTS/GAR') %>% 
+  dplyr::select(-resid_10)
+
+f2_18_18_nemeny_df = bind_rows(ashn_f2_18_18_nemeny_df, 
+                               myv_f2_18_18_nemeny_df, 
+                               skr_f2_18_18_nemeny_df, 
+                               gts_gar_f2_18_18_nemeny_df)
+
+
+f2_18_18_nemeny_test = frdAllPairsNemenyiTest(y = f2_18_18_nemeny_df$residual, 
+                                              groups = f2_18_18_nemeny_df$trait, 
+                                              blocks = f2_18_18_nemeny_df$pop_pair, 
+                                              p.adjust.method = 'hochberg')
+
+
+f2_18_18_nemeny_test$p.value %>%
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname) %>% 
+  filter(across(c(2:33), function(x) x<0.05))
+  # %>% write_csv('F2_1818_residual_NemenyTest_results.csv')
+
 # parallelism test - eye ball method --------------------------------------
 
 
