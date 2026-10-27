@@ -51,12 +51,12 @@ ashn_f2_12_12_kendal = ashn_f2_12_12_residuals %>%
   dplyr::select(-resid_10) %>% 
   column_to_rownames('trait')
 
-# ashn_WGP_12_12_kendal = ashn_WGP_12_12_residuals %>% 
-#   dplyr::rename(ASHN = residual) %>% 
-#   # rownames_to_column() %>% 
-#   # mutate(Pop_pair = 'ASHN') %>% 
-#   dplyr::select(-resid_10) %>% 
-#   column_to_rownames('trait')
+ashn_WGP_12_12_kendal = ashn_WGP_12_12_residuals %>%
+  dplyr::rename(ASHN_WGP = residual) %>%
+  # rownames_to_column() %>%
+  # mutate(Pop_pair = 'ASHN') %>%
+  dplyr::select(-resid_10) %>%
+  column_to_rownames('trait')
 
 ashn_TGP_12_12_kendal = ashn_TGP_12_12_residuals %>% 
   dplyr::rename(ASHN_TGP = residual) %>% 
@@ -67,11 +67,10 @@ ashn_TGP_12_12_kendal = ashn_TGP_12_12_residuals %>%
 
 
 
-f2_12_12_kendal_df = bind_cols(ashn_f2_12_12_kendal, 
+f2_12_12_kendal_df = bind_cols(ashn_f2_12_12_kendal,
+                               ashn_WGP_12_12_kendal,
                                ashn_TGP_12_12_kendal)
 
-group = c('ASHN_F2','ASHN_TGP')
-group = c(1,2)
 
 
 f2_12_12_kendal = kendall.global(f2_12_12_kendal_df,
