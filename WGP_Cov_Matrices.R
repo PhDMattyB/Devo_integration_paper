@@ -200,7 +200,6 @@ ashn_WGP_18_18_resid_plot = ggplot(ashn_WGP_18_18_residuals,
 
 ashn_exp_treat_combo = (ashn_WGP_12_12_resid_plot+ashn_WGP_12_18_resid_plot)/(ashn_WGP_18_12_resid_plot+ashn_WGP_18_18_resid_plot)
 
-ashn_WGP_12_18_resid_plot+ashn_WGP_18_12_resid_plot+ashn_WGP_18_18_resid_plot
 
 # MYV ---------------------------------------------------------------------
 myvc_WGP_12_12_trait_mat = WGP_data %>% 
