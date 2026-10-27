@@ -23,7 +23,7 @@ library(lineup)
 
 # Metadata ----------------------------------------------------------------
 identifiers = read_csv('F2_metadata.csv') %>% 
-  rename(individualID = Names) %>% 
+  dplyr::rename(individualID = Names) %>% 
   unite('lake_morph_Pair_Full_Temp', 
         Lake_morph, 
         Full_temp, 
@@ -738,6 +738,9 @@ GTSCSWY_orig_cor_plot = ggplot(GTSCSWY_orig_cor,
 F2_temp_mod = procD.lm(F2_lmk_coords ~ identifiers$Offspring_temp, 
                        iter = 999)
 
+# test = coords.subset(F2_lmk_coords, identifiers$Lake_morph)
+# 
+# test$ASHNW
 ## All individuals have the same fitted values.
 ## pull individual from offspring temp of 12 degrees
 F2_temp_fitted = F2_temp_mod$GM$fitted[,,1]
@@ -748,11 +751,11 @@ F2_temp_fitted_18deg = F2_temp_mod$GM$fitted[,,31]
 F2_temp_matrix_18deg = as.matrix(F2_temp_fitted_18deg)
 F2_temp_18deg_array = array(F2_temp_matrix_18deg, dim = c(28,2, 1))
 
-# identifiers %>% 
-#   filter(Offspring_temp == '18') %>% 
-#   View()
+identifiers %>%
+  # filter(Offspring_temp == '18') %>%
+  View()
 
-F2_12deg_range = c(1:30, 61:91, 182:211, 244:273, 304:333, 364:382, 
+F2_12deg_range = c(1:30, 61:91, 122:151,182:211, 244:273, 304:333, 364:382, 
                    413:442, 474:503, 534:563, 594:623, 655:683,
                    714:743, 774:803, 834:857, 871:900)
 F2_18deg_range = c(31:60, 92:121, 152:181, 212:243, 274:303, 
@@ -792,6 +795,7 @@ F2_plasticity_data = geomorph.data.frame(coords = F2_array_consensus,
                               population = identifiers$Lake,
                               lake_morph = identifiers$Lake_morph,
                               lake_morph_full = identifiers$lake_morph_Pair_Full_Temp)
+
 
 
 lmks = data.frame(jaw_length = c(1, 2), 
@@ -890,7 +894,7 @@ WGP_traits_scaled = WGP_traits %>%
   as_tibble() %>% 
   bind_cols(lake_morph, 
             .) %>% 
-  rename(CMA = ratio1, 
+  dplyr::rename(CMA = ratio1, 
          OMA = ratio2)%>% 
   dplyr::select('Lake_morph',
                 'jaw_length', 
@@ -929,7 +933,7 @@ WGP_traits_scaled = WGP_traits %>%
   bind_cols(., 
            trait_metadata_WGP)
 
-# WGP_traits_scaled %>% 
+# WGP_traits_scaled %>%
 #   write_csv('WGP_TRAITS_SCALED_FIXED_11.02.2026.csv')
  
 # off_plasticity_traits = F2_off_plasticity_traits %>%

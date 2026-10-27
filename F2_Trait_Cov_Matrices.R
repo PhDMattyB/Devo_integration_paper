@@ -1013,7 +1013,7 @@ gts_gar_f2_18_12_nemeny_df = gts_gar_f2_18_12_residuals %>%
   dplyr::select(-resid_10)
 
 f2_18_12_nemeny_df = bind_rows(ashn_f2_18_12_nemeny_df, 
-                               myv_f2_18_12_nemeny_df, 
+                               myv_f2_18_12_einemeny_df, 
                                skr_f2_18_12_nemeny_df, 
                                gts_gar_f2_18_12_nemeny_df)
 
