@@ -93,6 +93,12 @@ f2_cov_plot = ggplot(f2_cov_long,
         axis.text = element_text(size = 6), 
         legend.position = 'none')
 
+ggsave('F2_Geo_Amb_Covariance_matrix.svg', 
+       plot = f2_cov_plot, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 20, 
+       height = 20)
 
 # Procrustes superimposition - cov matrices -------------------------------
 
@@ -707,6 +713,12 @@ f2_nemeny_test$p.value %>%
                                                 blocks = f2_eigen_nemeny_df$pop_pair, 
                                                 p.adjust.method = 'hochberg')
   
+  f2_eigen_nemeny_test = frdAllPairsNemenyiTest(y = f2_eigen_nemeny_df$eigen_residual, 
+                                                groups = f2_eigen_nemeny_df$trait, 
+                                                blocks = f2_eigen_nemeny_df$pop_pair, 
+                                                p.adjust.method = 'hochberg')
+  
+  
   f2_eigen_nemeny_test$p.value %>%
     as.data.frame() %>% 
     rownames_to_column() %>% 
@@ -716,6 +728,10 @@ f2_nemeny_test$p.value %>%
     write_csv('F2_1212_residual_NemenyTest_results.csv')
   
 
+
+
+
+# Code I don't need anymore -----------------------------------------------
 
 
 # f2_orig data - KrzCov and procrustes ---------------------------------------
