@@ -26,6 +26,506 @@ f2_orig_data = read_csv("F2_Original_univariate_traits_FIXED_11.02.2026.csv") %>
         sep = '_')
 
 
+# Redoing the analysis due to bad instructions but I hate deleting --------
+
+
+# Trait cov matrices ------------------------------------------------------
+
+
+f2_cov_matrices <- list(
+  Pair1_Ambient = ashnc_f2_cov_mat,
+  Pair1_Geothermal = ashnw_f2_cov_mat,
+  Pair2_Ambient = myvc_f2_cov_mat,
+  Pair2_Geothermal = myvw_f2_cov_mat,
+  Pair3_Ambient = skrc_f2_cov_mat,
+  Pair3_Geothermal = skrw_f2_cov_mat,
+  Pair4_Ambient = gar_f2_cov_mat,
+  Pair4_Geothermal = gts_f2_cov_mat)
+
+for (i in 1:4) {
+  f2_cov_matrices[[paste0("Pair", i, "_Difference")]] <-
+    f2_cov_matrices[[paste0("Pair", i, "_Geothermal")]] -
+    f2_cov_matrices[[paste0("Pair", i, "_Ambient")]]
+}
+
+f2_cov_long <- purrr::imap_dfr(f2_cov_matrices, function(mat, name) {
+  as.data.frame(as.table(mat)) %>%
+    setNames(c("Trait1", "Trait2", "Covariance")) %>%
+    mutate(
+      Temp = sub("_.*", "", name),
+      Type = sub(".*_", "", name)
+    )
+})
+
+f2_cov_long$Type <- factor(
+  f2_cov_long$Type,
+  levels = c("Ambient", "Geothermal", "Difference")
+)
+
+f2_cov_long = f2_cov_long %>% 
+  mutate(pop_pairs = case_when(
+    str_detect(Temp, 'Pair1') ~ 'ASHN',
+    str_detect(Temp, 'Pair2') ~ 'MYV',
+    str_detect(Temp, 'Pair3') ~ 'SKR',
+    str_detect(Temp, 'Pair4') ~ 'GTS/GAR'))
+
+f2_cov_plot = ggplot(f2_cov_long, 
+                       aes(Trait1, 
+                           Trait2, 
+                           fill = Covariance)) +
+  geom_tile() +
+  facet_grid(pop_pairs ~ Type) +
+  scale_fill_gradient2(
+    low = "#2166AC",
+    mid = "white",
+    high = "#B2182B",
+    midpoint = 0) +
+  coord_equal() +
+  labs(x = NULL, 
+       y = NULL, 
+       fill = "Covariance", 
+       title = 'F2 trait covariance matrices')+
+  theme(axis.text.x = element_text(angle = 90, 
+                                   hjust = 1),
+        panel.grid = element_blank(), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.text = element_text(size = 6), 
+        legend.position = 'none')
+
+
+# Procrustes superimposition - cov matrices -------------------------------
+
+
+
+# ASHN --------------------------------------------------------------------
+
+
+ashnc_f2_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'ASHNC') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+
+ashnw_f2_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'ASHNW') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+
+ashnc_f2_cov_mat = cov(ashnc_f2_trait_mat, 
+                             use = 'complete.obs')
+ashnw_f2_cov_mat = cov(ashnw_f2_trait_mat, 
+                             use = 'complete.obs')
+ashn_f2_krzcov = evolqg::KrzCor(ashnc_f2_cov_mat, 
+                                      ashnw_f2_cov_mat)
+ashn_f2_proc_res = procrustes(ashnc_f2_cov_mat, 
+                                    ashnw_f2_cov_mat)
+
+plot(ashn_f2_proc_res, 
+     kind = 1)
+
+ashn_f2_proc_test = protest(ashnc_f2_cov_mat, 
+                                  ashnw_f2_cov_mat, 
+                                  permutations = 999)
+
+
+ashn_f2_residuals = residuals(ashn_f2_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                cov_residual = 2)
+
+# %>% 
+#   mutate(resid_10 = residual*10)
+
+ashn_f2_resid_plot = ggplot(ashn_f2_residuals, 
+                                  aes(x = factor(trait), 
+                                      y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  # geom_hline(yintercept = 1.5, 
+  #            linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+
+# MYV ---------------------------------------------------------------------
+
+myvc_f2_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'MYVC') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+
+myvw_f2_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'MYVW') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+
+myvc_f2_cov_mat = cov(myvc_f2_trait_mat, 
+                       use = 'complete.obs')
+myvw_f2_cov_mat = cov(myvw_f2_trait_mat, 
+                       use = 'complete.obs')
+myv_f2_krzcov = evolqg::KrzCor(myvc_f2_cov_mat, 
+                                myvw_f2_cov_mat)
+myv_f2_proc_res = procrustes(myvc_f2_cov_mat, 
+                              myvw_f2_cov_mat)
+
+plot(myv_f2_proc_res, 
+     kind = 1)
+
+myv_f2_proc_test = protest(myvc_f2_cov_mat, 
+                            myvw_f2_cov_mat, 
+                            permutations = 999)
+
+
+myv_f2_residuals = residuals(myv_f2_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                cov_residual = 2)
+
+myv_f2_resid_plot = ggplot(myv_f2_residuals, 
+                            aes(x = factor(trait), 
+                                y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  # geom_hline(yintercept = 1.5, 
+  #            linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+
+# SKR ---------------------------------------------------------------------
+
+skrc_f2_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'SKRC') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+
+skrw_f2_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'SKRW') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+
+skrc_f2_cov_mat = cov(skrc_f2_trait_mat, 
+                       use = 'complete.obs')
+skrw_f2_cov_mat = cov(skrw_f2_trait_mat, 
+                       use = 'complete.obs')
+skr_f2_krzcov = evolqg::KrzCor(skrc_f2_cov_mat, 
+                                skrw_f2_cov_mat)
+skr_f2_proc_res = procrustes(skrc_f2_cov_mat, 
+                              skrw_f2_cov_mat)
+
+plot(skr_f2_proc_res, 
+     kind = 1)
+
+skr_f2_proc_test = protest(skrc_f2_cov_mat, 
+                            skrw_f2_cov_mat, 
+                            permutations = 999)
+
+
+skr_f2_residuals = residuals(skr_f2_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                cov_residual = 2)
+
+skr_f2_resid_plot = ggplot(skr_f2_residuals, 
+                            aes(x = factor(trait), 
+                                y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  # geom_hline(yintercept = 1.5, 
+  #            linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+
+# GTS/GAR -----------------------------------------------------------------
+
+gar_f2_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'CSWYC') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+
+gts_f2_trait_mat = f2_orig_data %>% 
+  filter(Lake_morph == 'GTSW') %>% 
+  dplyr::select(jaw_length:caudal2_15_17)
+
+gar_f2_cov_mat = cov(gar_f2_trait_mat, 
+                       use = 'complete.obs')
+gts_f2_cov_mat = cov(gts_f2_trait_mat, 
+                       use = 'complete.obs')
+gts_gar_f2_krzcov = evolqg::KrzCor(gar_f2_cov_mat, 
+                                gts_f2_cov_mat)
+gts_gar_f2_proc_res = procrustes(gar_f2_cov_mat, 
+                              gts_f2_cov_mat)
+
+plot(gts_gar_f2_proc_res, 
+     kind = 1)
+
+gts_gar_f2_proc_test = protest(gar_f2_cov_mat, 
+                            gts_f2_cov_mat, 
+                            permutations = 999)
+
+
+gts_gar_f2_residuals = residuals(gts_gar_f2_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                cov_residual = 2)
+
+gts_gar_f2_resid_plot = ggplot(gts_gar_f2_residuals, 
+                            aes(x = factor(trait), 
+                                y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  # geom_hline(yintercept = 1.5, 
+  #            linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+
+
+
+
+
+
+
+# Procrustes superimposition - eigenvectors -------------------------------
+
+
+# ASHN ---------------------------------------------------------------------
+
+
+ashnc_f2_eigen = eigen(ashnc_f2_cov_mat)
+ashnw_f2_eigen = eigen(ashnw_f2_cov_mat)
+
+# Extract leading eigenvectors
+ashnc_f2_vectors = ashnc_f2_eigen$vectors[, 1:17, drop = FALSE]
+ashnw_f2_vectors = ashnw_f2_eigen$vectors[, 1:17, drop = FALSE]
+
+# Preserve trait identities
+rownames(ashnc_f2_vectors) = colnames(ashnc_f2_cov_mat)
+rownames(ashnw_f2_vectors) = colnames(ashnw_f2_cov_mat)
+
+
+ashn_f2_proc_res_eigen = procrustes(ashnc_f2_vectors, 
+                                    ashnw_f2_vectors, 
+                                    symmetric = T)
+summary(ashn_f2_proc_res_eigen)
+plot(ashn_f2_proc_res_eigen, 
+     kind = 1)
+
+ashn_f2_eigen_test = protest(ashnc_f2_vectors, 
+                             ashnw_f2_vectors, 
+                             permutations = 999, 
+                             scale = F, 
+                             symmetric = T)
+
+ashn_f2_eigen_residuals = residuals(ashn_f2_eigen_test)
+
+ashn_f2_eigen_residuals = ashn_f2_eigen_residuals%>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                eigen_residual = 2) 
+# %>%  
+#   write_csv('ASHN_F2_12_12_procrustes_eigen_cov_mat_residuals.csv')
+
+
+bind_cols(ashn_f2_residuals, 
+          ashn_f2_eigen_residuals)
+
+ashn_f2_residuals_combo = inner_join(ashn_f2_residuals, 
+           ashn_f2_eigen_residuals, 
+           by = 'trait') %>% 
+  mutate(pop_pair = 'ASHN')
+
+# %>%
+#   write_csv('ASHN_F2_procrustes_eigen_cov_mat_residuals.csv')
+
+
+# MYV ---------------------------------------------------------------------
+
+myvc_f2_eigen = eigen(myvc_f2_cov_mat)
+myvw_f2_eigen = eigen(myvw_f2_cov_mat)
+
+# Extract leading eigenvectors
+myvc_f2_vectors = myvc_f2_eigen$vectors[, 1:17, drop = FALSE]
+myvw_f2_vectors = myvw_f2_eigen$vectors[, 1:17, drop = FALSE]
+
+# Preserve trait identities
+rownames(myvc_f2_vectors) = colnames(myvc_f2_cov_mat)
+rownames(myvw_f2_vectors) = colnames(myvw_f2_cov_mat)
+
+
+myv_f2_proc_res_eigen = procrustes(myvc_f2_vectors, 
+                                    myvw_f2_vectors, 
+                                    symmetric = T)
+summary(myv_f2_proc_res_eigen)
+plot(myv_f2_proc_res_eigen, 
+     kind = 1)
+
+myv_f2_eigen_test = protest(myvc_f2_vectors, 
+                             myvw_f2_vectors, 
+                             permutations = 999, 
+                             scale = F, 
+                             symmetric = T)
+
+myv_f2_eigen_residuals = residuals(myv_f2_eigen_test)
+
+myv_f2_eigen_residuals = myv_f2_eigen_residuals%>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                eigen_residual = 2) 
+# %>%  
+#   write_csv('myv_F2_12_12_procrustes_eigen_cov_mat_residuals.csv')
+
+
+
+myv_f2_residuals_combo = inner_join(myv_f2_residuals, 
+                                     myv_f2_eigen_residuals, 
+                                     by = 'trait') %>% 
+  mutate(pop_pair = 'MYV')
+
+
+# SKR ---------------------------------------------------------------------
+
+skrc_f2_eigen = eigen(skrc_f2_cov_mat)
+skrw_f2_eigen = eigen(skrw_f2_cov_mat)
+
+# Extract leading eigenvectors
+skrc_f2_vectors = skrc_f2_eigen$vectors[, 1:17, drop = FALSE]
+skrw_f2_vectors = skrw_f2_eigen$vectors[, 1:17, drop = FALSE]
+
+# Preserve trait identities
+rownames(skrc_f2_vectors) = colnames(skrc_f2_cov_mat)
+rownames(skrw_f2_vectors) = colnames(skrw_f2_cov_mat)
+
+
+skr_f2_proc_res_eigen = procrustes(skrc_f2_vectors, 
+                                   skrw_f2_vectors, 
+                                   symmetric = T)
+summary(skr_f2_proc_res_eigen)
+plot(skr_f2_proc_res_eigen, 
+     kind = 1)
+
+skr_f2_eigen_test = protest(skrc_f2_vectors, 
+                            skrw_f2_vectors, 
+                            permutations = 999, 
+                            scale = F, 
+                            symmetric = T)
+
+skr_f2_eigen_residuals = residuals(skr_f2_eigen_test)
+
+skr_f2_eigen_residuals = skr_f2_eigen_residuals%>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                eigen_residual = 2) 
+# %>%  
+#   write_csv('skr_F2_12_12_procrustes_eigen_cov_mat_residuals.csv')
+
+
+
+skr_f2_residuals_combo = inner_join(skr_f2_residuals, 
+                                    skr_f2_eigen_residuals, 
+                                    by = 'trait') %>% 
+  mutate(pop_pair = 'SKR')
+
+
+# GTS/GAR -----------------------------------------------------------------
+
+gar_f2_eigen = eigen(gar_f2_cov_mat)
+gts_f2_eigen = eigen(gts_f2_cov_mat)
+
+# Extract leading eigenvectors
+gar_f2_vectors = gar_f2_eigen$vectors[, 1:17, drop = FALSE]
+gts_f2_vectors = gts_f2_eigen$vectors[, 1:17, drop = FALSE]
+
+# Preserve trait identities
+rownames(gar_f2_vectors) = colnames(gar_f2_cov_mat)
+rownames(gts_f2_vectors) = colnames(gts_f2_cov_mat)
+
+
+gts_gar_f2_proc_res_eigen = procrustes(gar_f2_vectors, 
+                                   gts_f2_vectors, 
+                                   symmetric = T)
+summary(gts_gar_f2_proc_res_eigen)
+plot(gts_gar_f2_proc_res_eigen, 
+     kind = 1)
+
+gts_gar_f2_eigen_test = protest(gar_f2_vectors, 
+                            gts_f2_vectors, 
+                            permutations = 999, 
+                            scale = F, 
+                            symmetric = T)
+
+gts_gar_f2_eigen_residuals = residuals(gts_gar_f2_eigen_test)
+
+gts_gar_f2_eigen_residuals = gts_gar_f2_eigen_residuals%>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                eigen_residual = 2) 
+# %>%  
+#   write_csv('gts_gar_F2_12_12_procrustes_eigen_cov_mat_residuals.csv')
+
+
+
+gts_gar_f2_residuals_combo = inner_join(gts_gar_f2_residuals, 
+                                    gts_gar_f2_eigen_residuals, 
+                                    by = 'trait') %>% 
+  mutate(pop_pair = 'GTS/GAR')
+
+
+Proc_test_residual_combo = bind_rows(ashn_f2_residuals_combo,
+                                     myv_f2_residuals_combo, 
+                                     skr_f2_residuals_combo, 
+                                     gts_gar_f2_residuals_combo)
+
+
+# ProcTest residual plots -------------------------------------------------
+
+cov_residual_plot = ggplot(Proc_test_residual_combo, 
+       aes(x = factor(trait), 
+           y = cov_residual))+
+  geom_col()+
+  ylim(0.0, 0.3)+
+  facet_grid(~pop_pair)+
+  labs(y = 'Covariance residuals')+
+  # geom_hline(yintercept = 1.5, 
+  #            linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold', 
+                                  size = 14))
+
+eigen_residual_plot = ggplot(Proc_test_residual_combo, 
+                           aes(x = factor(trait), 
+                               y = eigen_residual))+
+  geom_col()+
+  ylim(0.0, 0.3)+
+  facet_grid(~pop_pair)+
+  labs(y = 'Eigenvector residuals')+
+  # geom_hline(yintercept = 1.5, 
+  #            linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold', 
+                                  size = 14))
+
+
 # f2_orig data - KrzCov and procrustes ---------------------------------------
 # ASHN --------------------------------------------------------------------
 
@@ -1600,17 +2100,17 @@ ashnc_f2_18_18_eigen = eigen(ashnc_f2_18_18_cov_mat)
 ashnw_f2_18_18_eigen = eigen(ashnw_f2_18_18_cov_mat)
 
 # Extract leading eigenvectors
-ashnc_f2_12_12_vectors = ashnc_f2_12_12_eigen$vectors[, 1:3, drop = FALSE]
-ashnw_f2_12_12_vectors = ashnw_f2_12_12_eigen$vectors[, 1:3, drop = FALSE]
+ashnc_f2_12_12_vectors = ashnc_f2_12_12_eigen$vectors[, 1:17, drop = FALSE]
+ashnw_f2_12_12_vectors = ashnw_f2_12_12_eigen$vectors[, 1:17, drop = FALSE]
 
-ashnc_f2_12_18_vectors = ashnc_f2_12_18_eigen$vectors[, 1:3, drop = FALSE]
-ashnw_f2_12_18_vectors = ashnw_f2_12_18_eigen$vectors[, 1:3, drop = FALSE]
+ashnc_f2_12_18_vectors = ashnc_f2_12_18_eigen$vectors[, 1:17, drop = FALSE]
+ashnw_f2_12_18_vectors = ashnw_f2_12_18_eigen$vectors[, 1:17, drop = FALSE]
 
-ashnc_f2_18_12_vectors = ashnc_f2_18_12_eigen$vectors[, 1:3, drop = FALSE]
-ashnw_f2_18_12_vectors = ashnw_f2_18_12_eigen$vectors[, 1:3, drop = FALSE]
+ashnc_f2_18_12_vectors = ashnc_f2_18_12_eigen$vectors[, 1:17, drop = FALSE]
+ashnw_f2_18_12_vectors = ashnw_f2_18_12_eigen$vectors[, 1:17, drop = FALSE]
 
-ashnc_f2_18_18_vectors = ashnc_f2_18_18_eigen$vectors[, 1:3, drop = FALSE]
-ashnw_f2_18_18_vectors = ashnw_f2_18_18_eigen$vectors[, 1:3, drop = FALSE]
+ashnc_f2_18_18_vectors = ashnc_f2_18_18_eigen$vectors[, 1:17, drop = FALSE]
+ashnw_f2_18_18_vectors = ashnw_f2_18_18_eigen$vectors[, 1:17, drop = FALSE]
 
 
 # Preserve trait identities
@@ -1641,6 +2141,14 @@ ashn_f2_12_12_test = protest(ashnc_f2_12_12_vectors,
 
 ashn_f2_12_12_residuals = residuals(ashn_f2_12_12_test)
 
+ashn_f2_12_12_residuals%>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2) %>%  
+  write_csv('ASHN_F2_12_12_procrustes_eigen_cov_mat_residuals.csv')
+
 
 ashn_f2_12_18_proc_res = procrustes(ashnc_f2_12_18_vectors, 
                                     ashnw_f2_12_18_vectors, 
@@ -1653,6 +2161,16 @@ ashn_f2_12_18_test = protest(ashnc_f2_12_18_vectors,
                              permutations = 999, 
                              scale = F, 
                              symmetric = T)
+ashn_f2_12_18_residuals = residuals(ashn_f2_12_18_test)
+
+ashn_f2_12_18_residuals%>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2) %>%  
+  write_csv('ASHN_F2_12_18_procrustes_eigen_cov_mat_residuals.csv')
+
 
 ashn_f2_18_12_proc_res = procrustes(ashnc_f2_18_12_vectors, 
                                     ashnw_f2_18_12_vectors, 
@@ -1660,11 +2178,22 @@ ashn_f2_18_12_proc_res = procrustes(ashnc_f2_18_12_vectors,
 summary(ashn_f2_18_12_proc_res)
 plot(ashn_f2_18_12_proc_res, 
      kind = 2)
+
 ashn_f2_18_12_test = protest(ashnc_f2_18_12_vectors, 
                              ashnw_f2_18_12_vectors, 
                              permutations = 999, 
                              scale = F, 
                              symmetric = T)
+ashn_f2_18_12_residuals = residuals(ashn_f2_18_12_test)
+
+ashn_f2_18_12_residuals%>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                residual = 2) %>%  
+  write_csv('ASHN_F2_18_12_procrustes_eigen_cov_mat_residuals.csv')
+
 
 ashn_f2_18_18_proc_res = procrustes(ashnc_f2_18_18_vectors, 
                                     ashnw_f2_18_18_vectors, 
@@ -1678,17 +2207,15 @@ ashn_f2_18_18_test = protest(ashnc_f2_18_18_vectors,
                              scale = F, 
                              symmetric = T)
 
+ashn_f2_18_18_residuals = residuals(ashn_f2_18_18_test)
 
-
-gts_gar_wild_residuals = residuals(gts_gar_test_res)
-
-gts_gar_wild_residuals %>% 
+ashn_f2_18_18_residuals%>% 
   as.data.frame() %>%
   rownames_to_column() %>% 
   as_tibble() %>% 
   dplyr::rename(trait = rowname, 
                 residual = 2) %>%  
-  write_csv('GTS_GAR_WILD_procrustes_cov_mat_residuals.csv')
+  write_csv('ASHN_F2_18_18_procrustes_eigen_cov_mat_residuals.csv')
 
 
 # MYV ---------------------------------------------------------------------

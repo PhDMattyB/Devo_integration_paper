@@ -761,14 +761,13 @@ gts_gar_WGP_12_12_kendal = gts_gar_WGP_12_12_residuals%>%
   dplyr::select(-resid_10) %>% 
   column_to_rownames('trait')
 
-WGP_12_12_kendal_df = bind_cols(
-  # ashn_WGP_12_12_kendal, 
+WGP_12_12_kendal_df = bind_cols(ashn_WGP_12_12_kendal,
                                myv_WGP_12_12_kendal, 
                                skr_WGP_12_12_kendal, 
                                gts_gar_WGP_12_12_kendal)
 
 # group = c('ASHN','MYV','SKR','GTS_GAR')
-group = c('MYV','SKR','GTS_GAR')
+# group = c('MYV','SKR','GTS_GAR')
 
 WGP_12_12_kendal = kendall.global(WGP_12_12_kendal_df,
                                  # group = pops,
@@ -939,8 +938,7 @@ gts_gar_WGP_12_12_nemeny_df = gts_gar_WGP_12_12_residuals %>%
   mutate(pop_pair = 'GTS/GAR') %>% 
   dplyr::select(-resid_10)
 
-WGP_12_12_nemeny_df = bind_rows(
-  # ashn_WGP_12_12_nemeny_df, 
+WGP_12_12_nemeny_df = bind_rows(ashn_WGP_12_12_nemeny_df,
                                myv_WGP_12_12_nemeny_df, 
                                skr_WGP_12_12_nemeny_df, 
                                gts_gar_WGP_12_12_nemeny_df)
@@ -955,8 +953,8 @@ WGP_12_12_nemeny_test$p.value %>%
   as.data.frame() %>% 
   rownames_to_column() %>% 
   as_tibble() %>% 
-  dplyr::rename(trait = rowname) %>% 
-  # filter(across(c(2:33), function(x) x<0.05))
+  dplyr::rename(trait = rowname) %>% View()
+  filter(if_any(c(2:33), function(x) x<0.05))
   write_csv('WGP_1212_residual_NemenyTest_results.csv')
 
 
@@ -993,7 +991,7 @@ WGP_12_18_nemeny_test$p.value %>%
   rownames_to_column() %>% 
   as_tibble() %>% 
   dplyr::rename(trait = rowname) %>% 
-  # filter(across(c(2:33), function(x) x<0.05))
+  filter(if_any(c(2:33), function(x) x<0.1))
 write_csv('WGP_1218_residual_NemenyTest_results.csv')
 
 ashn_WGP_18_12_nemeny_df = ashn_WGP_18_12_residuals %>% 
@@ -1029,7 +1027,7 @@ WGP_18_12_nemeny_test$p.value %>%
   rownames_to_column() %>% 
   as_tibble() %>% 
   dplyr::rename(trait = rowname) %>% 
-  # filter(across(c(2:33), function(x) x<0.05))
+  filter(if_any(c(2:33), function(x) x<0.05))
 write_csv('WGP_1812_residual_NemenyTest_results.csv')
 
 
@@ -1067,7 +1065,7 @@ WGP_18_18_nemeny_test$p.value %>%
   rownames_to_column() %>% 
   as_tibble() %>% 
   dplyr::rename(trait = rowname) %>% 
-  # filter(across(c(2:33), function(x) x<0.05))
+  filter(if_any(c(2:33), function(x) x<0.05))
 write_csv('WGP_1818_residual_NemenyTest_results.csv')
 
 # parallelism test - eye ball method --------------------------------------
@@ -1090,8 +1088,8 @@ write_csv('WGP_1818_residual_NemenyTest_results.csv')
 
 
 ashn_WGP_cov_matrices <- list(
-  # Temp1_Ambient = ashnc_WGP_12_12_cov_mat,
-  # Temp1_Geothermal = ashnw_WGP_12_12_cov_mat,
+  Temp1_Ambient = ashnc_WGP_12_12_cov_mat,
+  Temp1_Geothermal = ashnw_WGP_12_12_cov_mat,
   Temp2_Ambient = ashnc_WGP_12_18_cov_mat,
   Temp2_Geothermal = ashnw_WGP_12_18_cov_mat,
   Temp3_Ambient = ashnc_WGP_18_12_cov_mat,
@@ -1099,7 +1097,7 @@ ashn_WGP_cov_matrices <- list(
   Temp4_Ambient = ashnc_WGP_18_18_cov_mat,
   Temp4_Geothermal = ashnw_WGP_18_18_cov_mat)
 
-for (i in 2:4) {
+for (i in 1:4) {
   ashn_WGP_cov_matrices[[paste0("Temp", i, "_Difference")]] <-
     ashn_WGP_cov_matrices[[paste0("Temp", i, "_Geothermal")]] -
     ashn_WGP_cov_matrices[[paste0("Temp", i, "_Ambient")]]
@@ -1121,7 +1119,7 @@ ashn_WGP_cov_long$Type <- factor(
 
 ashn_WGP_cov_long = ashn_WGP_cov_long %>% 
   mutate(Temp_info = case_when(
-    # str_detect(Temp, 'Temp1') ~ '12_12',
+    str_detect(Temp, 'Temp1') ~ '12_12',
     str_detect(Temp, 'Temp2') ~ '12_18',
     str_detect(Temp, 'Temp3') ~ '18_12',
     str_detect(Temp, 'Temp4') ~ '18_18'))
