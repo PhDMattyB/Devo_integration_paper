@@ -642,6 +642,80 @@ f2_eigen_kendal_post = kendall.post(f2_eigen_kendal_df,
                               nperm = 999)
 
 
+# Nemeny post hoc - trait covarianec --------------------------------------
+library(PMCMRplus)
+
+
+ashn_f2_nemeny_df = ashn_f2_residuals %>% 
+  mutate(pop_pair = 'ASHN') 
+
+myv_f2_nemeny_df = myv_f2_residuals %>% 
+  mutate(pop_pair = 'MYV')
+
+skr_f2_nemeny_df = skr_f2_residuals %>% 
+  mutate(pop_pair = 'SKR')
+
+gts_gar_f2_nemeny_df = gts_gar_f2_residuals %>% 
+  mutate(pop_pair = 'GTS/GAR') 
+
+f2_nemeny_df = bind_rows(ashn_f2_nemeny_df, 
+                               myv_f2_nemeny_df, 
+                               skr_f2_nemeny_df, 
+                               gts_gar_f2_nemeny_df)
+
+
+f2_nemeny_test = frdAllPairsNemenyiTest(y = f2_nemeny_df$cov_residual, 
+                                              groups = f2_nemeny_df$trait, 
+                                              blocks = f2_nemeny_df$pop_pair, 
+                                              p.adjust.method = 'hochberg')
+
+f2_nemeny_test$p.value %>%
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname) %>% View() 
+  filter(if_any(c(2:33), function(x) x<0.05))
+  write_csv('F2_1212_residual_NemenyTest_results.csv')
+
+
+
+# nemeny post hoc - eigen vectors -----------------------------------------
+
+  library(PMCMRplus)
+  
+  
+  ashn_f2_eigen_nemeny_df = ashn_f2_eigen_residuals %>% 
+    mutate(pop_pair = 'ASHN') 
+  
+  myv_f2_eigen_nemeny_df = myv_f2_eigen_residuals %>% 
+    mutate(pop_pair = 'MYV') 
+  
+  skr_f2_eigen_nemeny_df = skr_f2_eigen_residuals %>% 
+    mutate(pop_pair = 'SKR') 
+  
+  gts_gar_f2_eigen_nemeny_df = gts_gar_f2_eigen_residuals %>% 
+    mutate(pop_pair = 'GTS/GAR') 
+  
+  f2_eigen_nemeny_df = bind_rows(ashn_f2_eigen_nemeny_df, 
+                                 myv_f2_eigen_nemeny_df, 
+                                 skr_f2_eigen_nemeny_df, 
+                                 gts_gar_f2_eigen_nemeny_df)
+  
+  
+  f2_eigen_nemeny_test = frdAllPairsNemenyiTest(y = f2_eigen_nemeny_df$eigen_residual, 
+                                                groups = f2_eigen_nemeny_df$trait, 
+                                                blocks = f2_eigen_nemeny_df$pop_pair, 
+                                                p.adjust.method = 'hochberg')
+  
+  f2_eigen_nemeny_test$p.value %>%
+    as.data.frame() %>% 
+    rownames_to_column() %>% 
+    as_tibble() %>% 
+    dplyr::rename(trait = rowname) %>% View()
+    filter(if_any(c(2:33), function(x) x<0.05))
+    write_csv('F2_1212_residual_NemenyTest_results.csv')
+  
+
 
 
 # f2_orig data - KrzCov and procrustes ---------------------------------------
