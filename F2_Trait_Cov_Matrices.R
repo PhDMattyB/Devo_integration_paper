@@ -493,13 +493,20 @@ Proc_test_residual_combo = bind_rows(ashn_f2_residuals_combo,
 
 # ProcTest residual plots -------------------------------------------------
 
+resid_col_pal = c('#f72585', 
+                  '#7209b7', 
+                  '#480ca8', 
+                  '#3f37c9')
+
 cov_residual_plot = ggplot(Proc_test_residual_combo, 
        aes(x = factor(trait), 
            y = cov_residual))+
-  geom_col()+
+  geom_col(aes(fill = pop_pair), 
+           col = 'black')+
   ylim(0.0, 0.3)+
   facet_grid(~pop_pair)+
   labs(y = 'Covariance residuals')+
+  scale_fill_manual(values = resid_col_pal)+
   # geom_hline(yintercept = 1.5, 
   #            linetype = 2)+
   theme(axis.title.x = element_blank(), 
@@ -507,15 +514,18 @@ cov_residual_plot = ggplot(Proc_test_residual_combo,
                                    angle = 90), 
         strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(face = 'bold', 
-                                  size = 14))
+                                  size = 14), 
+        legend.position = 'none')
 
 eigen_residual_plot = ggplot(Proc_test_residual_combo, 
                            aes(x = factor(trait), 
                                y = eigen_residual))+
-  geom_col()+
+  geom_col(aes(fill = pop_pair), 
+           col = 'black')+
   ylim(0.0, 0.3)+
   facet_grid(~pop_pair)+
   labs(y = 'Eigenvector residuals')+
+  scale_fill_manual(values = resid_col_pal)+
   # geom_hline(yintercept = 1.5, 
   #            linetype = 2)+
   theme(axis.title.x = element_blank(), 
@@ -523,7 +533,18 @@ eigen_residual_plot = ggplot(Proc_test_residual_combo,
                                    angle = 90), 
         strip.background = element_rect(fill = 'white'), 
         strip.text = element_text(face = 'bold', 
-                                  size = 14))
+                                  size = 14), 
+        legend.position = 'none')
+
+
+Trait_residual_plots =cov_residual_plot/eigen_residual_plot
+
+ggsave('F2_trait_residual_plots.svg', 
+       plot = Trait_residual_plots, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 30, 
+       height = 15)
 
 
 # f2_orig data - KrzCov and procrustes ---------------------------------------
