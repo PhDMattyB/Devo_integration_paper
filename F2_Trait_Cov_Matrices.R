@@ -547,6 +547,103 @@ ggsave('F2_trait_residual_plots.svg',
        height = 15)
 
 
+
+# Kendalls concordance plot - Covariance matrices -------------------------
+
+ashn_f2_kendal = ashn_f2_residuals %>% 
+  dplyr::rename(ASHN = cov_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+myv_f2_kendal = myv_f2_residuals%>% 
+  dplyr::rename(MYV = cov_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+skr_f2_kendal = skr_f2_residuals%>% 
+  dplyr::rename(SKR = cov_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+gts_gar_f2_kendal = gts_gar_f2_residuals%>% 
+  dplyr::rename(GTS_GAR = cov_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+f2_kendal_df = bind_cols(ashn_f2_kendal, 
+                               myv_f2_kendal, 
+                               skr_f2_kendal, 
+                               gts_gar_f2_kendal)
+
+# group = c('ASHN','MYV','SKR','GTS_GAR')
+
+
+f2_kendal = kendall.global(f2_kendal_df,
+                                 # group = pops,
+                                 nperm = 999, 
+                                 mult = 'hochberg')
+f2_kendal_post = kendall.post(f2_kendal_df, 
+                                    mult = 'hochberg', 
+                                    nperm = 999)
+
+
+
+# Kendall concordance - eigen vector traits -------------------------------
+ashn_f2_eigen_kendal = ashn_f2_eigen_residuals %>% 
+  dplyr::rename(ASHN = eigen_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+myv_f2_eigen_kendal = myv_f2_eigen_residuals%>% 
+  dplyr::rename(MYV = eigen_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+skr_f2_eigen_kendal = skr_f2_eigen_residuals%>% 
+  dplyr::rename(SKR = eigen_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+gts_gar_f2_eigen_kendal = gts_gar_f2_eigen_residuals%>% 
+  dplyr::rename(GTS_GAR = eigen_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+f2_eigen_kendal_df = bind_cols(ashn_f2_eigen_kendal, 
+                         myv_f2_eigen_kendal, 
+                         skr_f2_eigen_kendal, 
+                         gts_gar_f2_eigen_kendal)
+
+# group = c('ASHN','MYV','SKR','GTS_GAR')
+
+
+f2_eigen_kendal = kendall.global(f2_eigen_kendal_df,
+                           # group = pops,
+                           nperm = 999, 
+                           mult = 'hochberg')
+f2_eigen_kendal_post = kendall.post(f2_eigen_kendal_df, 
+                              mult = 'hochberg', 
+                              nperm = 999)
+
+
+
+
 # f2_orig data - KrzCov and procrustes ---------------------------------------
 # ASHN --------------------------------------------------------------------
 
