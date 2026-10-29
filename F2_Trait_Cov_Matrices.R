@@ -301,6 +301,68 @@ gts_gar_f2_resid_plot = ggplot(gts_gar_f2_residuals,
 # Procrustes superimposition - eigenvectors -------------------------------
 
 
+# PCA find significant eigenvectors ---------------------------------------
+
+ashnc_f2_pca = prcomp(ashnc_f2_cov_mat, 
+                        center = F, 
+                        scale. = F)
+paran(ashnc_f2_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 PC axes retained
+ashnw_f2_pca = prcomp(ashnw_f2_cov_mat, 
+                      center = F, 
+                      scale. = F)
+paran(ashnw_f2_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 2 axes
+
+myvc_f2_pca = prcomp(myvc_f2_cov_mat, 
+                      center = F, 
+                      scale. = F)
+paran(myvc_f2_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 4 PC axes retained
+myvw_f2_pca = prcomp(myvw_f2_cov_mat, 
+                      center = F, 
+                      scale. = F)
+paran(myvw_f2_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 axes
+
+skrc_f2_pca = prcomp(skrc_f2_cov_mat, 
+                      center = F, 
+                      scale. = F)
+paran(skrc_f2_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 PC axes retained
+skrw_f2_pca = prcomp(skrw_f2_cov_mat, 
+                      center = F, 
+                      scale. = F)
+paran(skrw_f2_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 2 axes
+
+gar_f2_pca = prcomp(gar_f2_cov_mat, 
+                      center = F, 
+                      scale. = F)
+paran(gar_f2_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 PC axes retained
+gts_f2_pca = prcomp(gts_f2_cov_mat, 
+                      center = F, 
+                      scale. = F)
+paran(gts_f2_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 4 axes
+
 # ASHN ---------------------------------------------------------------------
 
 
@@ -308,8 +370,8 @@ ashnc_f2_eigen = eigen(ashnc_f2_cov_mat)
 ashnw_f2_eigen = eigen(ashnw_f2_cov_mat)
 
 # Extract leading eigenvectors
-ashnc_f2_vectors = ashnc_f2_eigen$vectors[, 1:17, drop = FALSE]
-ashnw_f2_vectors = ashnw_f2_eigen$vectors[, 1:17, drop = FALSE]
+ashnc_f2_vectors = ashnc_f2_eigen$vectors[, 1:3, drop = FALSE]
+ashnw_f2_vectors = ashnw_f2_eigen$vectors[, 1:2, drop = FALSE]
 
 # Preserve trait identities
 rownames(ashnc_f2_vectors) = colnames(ashnc_f2_cov_mat)
@@ -320,8 +382,8 @@ ashn_f2_proc_res_eigen = procrustes(ashnc_f2_vectors,
                                     ashnw_f2_vectors, 
                                     symmetric = T)
 summary(ashn_f2_proc_res_eigen)
-plot(ashn_f2_proc_res_eigen, 
-     kind = 1)
+# plot(ashn_f2_proc_res_eigen, 
+#      kind = 1)
 
 ashn_f2_eigen_test = protest(ashnc_f2_vectors, 
                              ashnw_f2_vectors, 
@@ -341,9 +403,6 @@ ashn_f2_eigen_residuals = ashn_f2_eigen_residuals%>%
 #   write_csv('ASHN_F2_12_12_procrustes_eigen_cov_mat_residuals.csv')
 
 
-bind_cols(ashn_f2_residuals, 
-          ashn_f2_eigen_residuals)
-
 ashn_f2_residuals_combo = inner_join(ashn_f2_residuals, 
            ashn_f2_eigen_residuals, 
            by = 'trait') %>% 
@@ -359,8 +418,8 @@ myvc_f2_eigen = eigen(myvc_f2_cov_mat)
 myvw_f2_eigen = eigen(myvw_f2_cov_mat)
 
 # Extract leading eigenvectors
-myvc_f2_vectors = myvc_f2_eigen$vectors[, 1:17, drop = FALSE]
-myvw_f2_vectors = myvw_f2_eigen$vectors[, 1:17, drop = FALSE]
+myvc_f2_vectors = myvc_f2_eigen$vectors[, 1:4, drop = FALSE]
+myvw_f2_vectors = myvw_f2_eigen$vectors[, 1:3, drop = FALSE]
 
 # Preserve trait identities
 rownames(myvc_f2_vectors) = colnames(myvc_f2_cov_mat)
@@ -371,8 +430,8 @@ myv_f2_proc_res_eigen = procrustes(myvc_f2_vectors,
                                     myvw_f2_vectors, 
                                     symmetric = T)
 summary(myv_f2_proc_res_eigen)
-plot(myv_f2_proc_res_eigen, 
-     kind = 1)
+# plot(myv_f2_proc_res_eigen, 
+#      kind = 1)
 
 myv_f2_eigen_test = protest(myvc_f2_vectors, 
                              myvw_f2_vectors, 
@@ -405,8 +464,8 @@ skrc_f2_eigen = eigen(skrc_f2_cov_mat)
 skrw_f2_eigen = eigen(skrw_f2_cov_mat)
 
 # Extract leading eigenvectors
-skrc_f2_vectors = skrc_f2_eigen$vectors[, 1:17, drop = FALSE]
-skrw_f2_vectors = skrw_f2_eigen$vectors[, 1:17, drop = FALSE]
+skrc_f2_vectors = skrc_f2_eigen$vectors[, 1:3, drop = FALSE]
+skrw_f2_vectors = skrw_f2_eigen$vectors[, 1:2, drop = FALSE]
 
 # Preserve trait identities
 rownames(skrc_f2_vectors) = colnames(skrc_f2_cov_mat)
@@ -417,8 +476,8 @@ skr_f2_proc_res_eigen = procrustes(skrc_f2_vectors,
                                    skrw_f2_vectors, 
                                    symmetric = T)
 summary(skr_f2_proc_res_eigen)
-plot(skr_f2_proc_res_eigen, 
-     kind = 1)
+# plot(skr_f2_proc_res_eigen, 
+#      kind = 1)
 
 skr_f2_eigen_test = protest(skrc_f2_vectors, 
                             skrw_f2_vectors, 
@@ -451,23 +510,23 @@ gar_f2_eigen = eigen(gar_f2_cov_mat)
 gts_f2_eigen = eigen(gts_f2_cov_mat)
 
 # Extract leading eigenvectors
-gar_f2_vectors = gar_f2_eigen$vectors[, 1:17, drop = FALSE]
-gts_f2_vectors = gts_f2_eigen$vectors[, 1:17, drop = FALSE]
+gar_f2_vectors = gar_f2_eigen$vectors[, 1:3, drop = FALSE]
+gts_f2_vectors = gts_f2_eigen$vectors[, 1:4, drop = FALSE]
 
 # Preserve trait identities
 rownames(gar_f2_vectors) = colnames(gar_f2_cov_mat)
 rownames(gts_f2_vectors) = colnames(gts_f2_cov_mat)
 
 
-gts_gar_f2_proc_res_eigen = procrustes(gar_f2_vectors, 
-                                   gts_f2_vectors, 
+gts_gar_f2_proc_res_eigen = procrustes(gts_f2_vectors, 
+                                   gar_f2_vectors, 
                                    symmetric = T)
 summary(gts_gar_f2_proc_res_eigen)
-plot(gts_gar_f2_proc_res_eigen, 
-     kind = 1)
+# plot(gts_gar_f2_proc_res_eigen, 
+#      kind = 1)
 
-gts_gar_f2_eigen_test = protest(gar_f2_vectors, 
-                            gts_f2_vectors, 
+gts_gar_f2_eigen_test = protest(gts_f2_vectors, 
+                            gar_f2_vectors, 
                             permutations = 999, 
                             scale = F, 
                             symmetric = T)
@@ -528,7 +587,7 @@ eigen_residual_plot = ggplot(Proc_test_residual_combo,
                                y = eigen_residual))+
   geom_col(aes(fill = pop_pair), 
            col = 'black')+
-  ylim(0.0, 0.3)+
+  ylim(0.0, 0.5)+
   facet_grid(~pop_pair)+
   labs(y = 'Eigenvector residuals')+
   scale_fill_manual(values = resid_col_pal)+
@@ -543,17 +602,17 @@ eigen_residual_plot = ggplot(Proc_test_residual_combo,
         legend.position = 'none')
 
 
-Trait_residual_plots =cov_residual_plot/eigen_residual_plot
+F2_Trait_residual_plots =cov_residual_plot/eigen_residual_plot
 
-ggsave('F2_trait_residual_plots.svg', 
-       plot = Trait_residual_plots, 
+ggsave('F2_trait_SIG_EIGEN_VECTORS_ONLY_residual_plots.svg', 
+       plot = F2_Trait_residual_plots, 
        dpi = 'retina', 
        units = 'cm', 
        width = 30, 
        height = 15)
 
 
-
+##
 # Kendalls concordance plot - Covariance matrices -------------------------
 
 ashn_f2_kendal = ashn_f2_residuals %>% 
@@ -646,7 +705,7 @@ f2_eigen_kendal = kendall.global(f2_eigen_kendal_df,
 f2_eigen_kendal_post = kendall.post(f2_eigen_kendal_df, 
                               mult = 'hochberg', 
                               nperm = 999)
-
+###
 
 # Nemeny post hoc - trait covarianec --------------------------------------
 library(PMCMRplus)
@@ -713,19 +772,16 @@ f2_nemeny_test$p.value %>%
                                                 blocks = f2_eigen_nemeny_df$pop_pair, 
                                                 p.adjust.method = 'hochberg')
   
-  f2_eigen_nemeny_test = frdAllPairsNemenyiTest(y = f2_eigen_nemeny_df$eigen_residual, 
-                                                groups = f2_eigen_nemeny_df$trait, 
-                                                blocks = f2_eigen_nemeny_df$pop_pair, 
-                                                p.adjust.method = 'hochberg')
-  
   
   f2_eigen_nemeny_test$p.value %>%
     as.data.frame() %>% 
     rownames_to_column() %>% 
     as_tibble() %>% 
-    dplyr::rename(trait = rowname) %>% View()
-    filter(if_any(c(2:33), function(x) x<0.05))
-    write_csv('F2_1212_residual_NemenyTest_results.csv')
+    dplyr::rename(trait = rowname) %>% 
+     # View()
+    filter(if_any(c(2:33), function(x) x<0.1)) %>% View()
+  # %>%
+    # write_csv('F2_4eigen_ALL_residual_NemenyTest_results.csv')
   
 
 
