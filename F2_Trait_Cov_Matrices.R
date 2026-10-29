@@ -363,6 +363,31 @@ paran(gts_f2_cov_mat,
       graph = T)
 ## 4 axes
 
+variance_explained <- function(cov_mat) {
+  
+  eig <- eigen(cov_mat)$values
+  
+  cumulative <- cumsum(eig) / sum(eig)
+  
+  data.frame(
+    PC = seq_along(eig),
+    Variance = eig / sum(eig),
+    Cumulative = cumulative
+  )
+}
+
+variance_explained(ashnc_f2_cov_mat)[1:6, ]
+variance_explained(ashnw_f2_cov_mat)[1:6, ]
+
+variance_explained(myvc_f2_cov_mat)[1:6, ]
+variance_explained(myvw_f2_cov_mat)[1:6, ]
+
+variance_explained(skrc_f2_cov_mat)[1:6, ]
+variance_explained(skrw_f2_cov_mat)[1:6, ]
+
+variance_explained(gar_f2_cov_mat)[1:6, ]
+variance_explained(gts_f2_cov_mat)[1:6, ]
+
 # ASHN ---------------------------------------------------------------------
 
 
@@ -370,8 +395,8 @@ ashnc_f2_eigen = eigen(ashnc_f2_cov_mat)
 ashnw_f2_eigen = eigen(ashnw_f2_cov_mat)
 
 # Extract leading eigenvectors
-ashnc_f2_vectors = ashnc_f2_eigen$vectors[, 1:3, drop = FALSE]
-ashnw_f2_vectors = ashnw_f2_eigen$vectors[, 1:2, drop = FALSE]
+ashnc_f2_vectors = ashnc_f2_eigen$vectors[, 1:4, drop = FALSE]
+ashnw_f2_vectors = ashnw_f2_eigen$vectors[, 1:4, drop = FALSE]
 
 # Preserve trait identities
 rownames(ashnc_f2_vectors) = colnames(ashnc_f2_cov_mat)
@@ -419,7 +444,7 @@ myvw_f2_eigen = eigen(myvw_f2_cov_mat)
 
 # Extract leading eigenvectors
 myvc_f2_vectors = myvc_f2_eigen$vectors[, 1:4, drop = FALSE]
-myvw_f2_vectors = myvw_f2_eigen$vectors[, 1:3, drop = FALSE]
+myvw_f2_vectors = myvw_f2_eigen$vectors[, 1:4, drop = FALSE]
 
 # Preserve trait identities
 rownames(myvc_f2_vectors) = colnames(myvc_f2_cov_mat)
@@ -464,8 +489,8 @@ skrc_f2_eigen = eigen(skrc_f2_cov_mat)
 skrw_f2_eigen = eigen(skrw_f2_cov_mat)
 
 # Extract leading eigenvectors
-skrc_f2_vectors = skrc_f2_eigen$vectors[, 1:3, drop = FALSE]
-skrw_f2_vectors = skrw_f2_eigen$vectors[, 1:2, drop = FALSE]
+skrc_f2_vectors = skrc_f2_eigen$vectors[, 1:4, drop = FALSE]
+skrw_f2_vectors = skrw_f2_eigen$vectors[, 1:4, drop = FALSE]
 
 # Preserve trait identities
 rownames(skrc_f2_vectors) = colnames(skrc_f2_cov_mat)
@@ -510,7 +535,7 @@ gar_f2_eigen = eigen(gar_f2_cov_mat)
 gts_f2_eigen = eigen(gts_f2_cov_mat)
 
 # Extract leading eigenvectors
-gar_f2_vectors = gar_f2_eigen$vectors[, 1:3, drop = FALSE]
+gar_f2_vectors = gar_f2_eigen$vectors[, 1:4, drop = FALSE]
 gts_f2_vectors = gts_f2_eigen$vectors[, 1:4, drop = FALSE]
 
 # Preserve trait identities
@@ -518,15 +543,15 @@ rownames(gar_f2_vectors) = colnames(gar_f2_cov_mat)
 rownames(gts_f2_vectors) = colnames(gts_f2_cov_mat)
 
 
-gts_gar_f2_proc_res_eigen = procrustes(gts_f2_vectors, 
-                                   gar_f2_vectors, 
+gts_gar_f2_proc_res_eigen = procrustes(gar_f2_vectors, 
+                                   gts_f2_vectors, 
                                    symmetric = T)
 summary(gts_gar_f2_proc_res_eigen)
 # plot(gts_gar_f2_proc_res_eigen, 
 #      kind = 1)
 
-gts_gar_f2_eigen_test = protest(gts_f2_vectors, 
-                            gar_f2_vectors, 
+gts_gar_f2_eigen_test = protest(gar_f2_vectors, 
+                            gts_f2_vectors, 
                             permutations = 999, 
                             scale = F, 
                             symmetric = T)
@@ -604,7 +629,7 @@ eigen_residual_plot = ggplot(Proc_test_residual_combo,
 
 F2_Trait_residual_plots =cov_residual_plot/eigen_residual_plot
 
-ggsave('F2_trait_SIG_EIGEN_VECTORS_ONLY_residual_plots.svg', 
+ggsave('F2_First_4E_igenvectors_trait_residual_plots.svg', 
        plot = F2_Trait_residual_plots, 
        dpi = 'retina', 
        units = 'cm', 
@@ -779,12 +804,272 @@ f2_nemeny_test$p.value %>%
     as_tibble() %>% 
     dplyr::rename(trait = rowname) %>% 
      # View()
-    filter(if_any(c(2:33), function(x) x<0.1)) %>% View()
+    filter(if_any(c(2:33), function(x) x<0.05)) %>% View()
   # %>%
     # write_csv('F2_4eigen_ALL_residual_NemenyTest_results.csv')
   
+  Proc_test_residual_combo
+  
+  f2_significant_traits =  c("lm_19_18",
+    "fbar_23_24", 
+    'fbar_8_27', 
+    'head_depth', 
+    'lm_6_12') # Replace with actual Nemenyi-identified traits
+  
+
+f2_eigen_nemeny_df %>%
+  filter(trait %in% f2_significant_traits) %>%
+  ggplot(aes(x = trait,
+      y = eigen_residual,
+      group = pop_pair,
+      colour = pop_pair)) +
+  geom_line(alpha = 0.6) +
+  geom_point(size = 3) +
+  labs(x = "Morphological trait",
+    y = "Procrustes residual distance",
+    colour = "Population pair")
 
 
+## Zoom in on trait covariance structure. 
+ashn_cov_differences = ashnw_f2_cov_mat - ashnc_f2_cov_mat 
+ashn_cov_diff = ashn_cov_differences%>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname) %>% 
+  dplyr::filter(trait %in% c(f2_significant_traits)) %>% 
+  dplyr::select(trait, 
+                lm_19_18, 
+                fbar_23_24, 
+                fbar_8_27, 
+                head_depth, 
+                lm_6_12) %>% 
+  mutate(pop_pair = 'ASHN')
+
+myv_cov_differences = myvw_f2_cov_mat - myvc_f2_cov_mat 
+myv_cov_diff = myv_cov_differences%>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname)%>% 
+  dplyr::filter(trait %in% c(f2_significant_traits)) %>% 
+  dplyr::select(trait, 
+                lm_19_18, 
+                fbar_23_24, 
+                fbar_8_27, 
+                head_depth, 
+                lm_6_12) %>% 
+  mutate(pop_pair = 'MYV')
+
+skr_cov_differences = skrw_f2_cov_mat - skrc_f2_cov_mat 
+skr_cov_diff = skr_cov_differences%>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname)%>% 
+  dplyr::filter(trait %in% c(f2_significant_traits)) %>% 
+  dplyr::select(trait, 
+                lm_19_18, 
+                fbar_23_24, 
+                fbar_8_27, 
+                head_depth, 
+                lm_6_12) %>% 
+  mutate(pop_pair = 'SKR')
+
+gts_gar_cov_differences = gts_f2_cov_mat - gar_f2_cov_mat 
+gts_gar_cov_diff = gts_gar_cov_differences%>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname)%>% 
+  dplyr::filter(trait %in% c(f2_significant_traits)) %>% 
+  dplyr::select(trait, 
+                lm_19_18, 
+                fbar_23_24, 
+                fbar_8_27, 
+                head_depth, 
+                lm_6_12) %>% 
+  mutate(pop_pair = 'GTS/GAR')
+
+
+sig_cov_mat = bind_rows(ashn_cov_diff, 
+                        myv_cov_diff, 
+                        skr_cov_diff, 
+                        gts_gar_cov_diff)
+
+sig_cov_long <- sig_cov_mat %>%
+  pivot_longer(
+    cols = all_of(f2_significant_traits),
+    names_to = "Trait2",
+    values_to = "Covariance"
+  ) %>%
+  dplyr::rename(Trait1 = trait) %>%
+  mutate(
+    Trait1 = factor(Trait1, levels = f2_significant_traits),
+    Trait2 = factor(Trait2, levels = f2_significant_traits),
+    pop_pair = factor(
+      pop_pair,
+      levels = c("ASHN", "MYV", "SKR", "GTS/GAR")
+    )
+  )
+
+sig_cov_long_offdiag <- sig_cov_long %>%
+  filter(as.character(Trait1) != as.character(Trait2))
+
+
+sig_cov_triangle <- sig_cov_long %>%
+  mutate(
+    Trait1_num = as.integer(Trait1),
+    Trait2_num = as.integer(Trait2)
+  ) %>%
+  filter(Trait1_num > Trait2_num)
+
+ggplot(sig_cov_triangle,
+  aes(x = Trait2, y = Trait1, fill = Covariance)) +
+  geom_tile(colour = "white", linewidth = 0.5) +
+  facet_wrap(~ pop_pair, nrow = 2) +
+  scale_fill_gradient2(
+    low = "#B2182B",
+    mid = "white",
+    high = "#2166AC",
+    midpoint = 0,
+    limits = c(-1.05, 1.05)
+  ) +
+  coord_equal() +
+  theme(
+    axis.text.x = element_text(
+      angle = 45,
+      hjust = 1
+    ),
+    panel.grid = element_blank(),
+    strip.text = element_text(face = "bold")
+  ) +
+  labs(
+    x = NULL,
+    y = NULL,
+    fill = expression(Delta~'Covariance'),
+    title = "Covariance structure of five morphological traits",
+    subtitle = "Geothermal–ambient population comparisons"
+  )
+
+
+
+
+
+ggplot( , 
+       aes(Trait1, 
+           Trait2, 
+           fill = Covariance)) +
+  geom_tile() +
+  facet_grid(pop_pairs ~ Type) +
+  scale_fill_gradient2(
+    low = "#2166AC",
+    mid = "white",
+    high = "#B2182B",
+    midpoint = 0) +
+  coord_equal() +
+  labs(x = NULL, 
+       y = NULL, 
+       fill = "Covariance", 
+       title = 'F2 trait covariance matrices')+
+  theme(axis.text.x = element_text(angle = 90, 
+                                   hjust = 1),
+        panel.grid = element_blank(), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.text = element_text(size = 6), 
+        legend.position = 'none')
+
+
+
+  # Reconstruct trait loadings ----------------------------------------------
+
+  # Reconstruct covariance matrix from PC1-4
+  reconstruct_cov = function(cov_mat, k = 4) {
+    
+    eig = eigen(cov_mat, symmetric = TRUE)
+    
+    V = eig$vectors[, 1:k, drop = FALSE]
+    
+    L = diag(eig$values[1:k], nrow = k)
+    
+    reconstructed = V %*% L %*% t(V)
+    
+    dimnames(reconstructed) = dimnames(cov_mat)
+    
+    reconstructed
+  }
+  
+  # Ambient and geothermal
+ashnc_f2_cov_recon = reconstruct_cov(ashnc_f2_cov_mat, k = 4)
+ashnw_f2_cov_recon = reconstruct_cov(ashnw_f2_cov_mat, k = 4)  
+
+myvc_f2_cov_recon = reconstruct_cov(myvc_f2_cov_mat, k = 4)
+myvw_f2_cov_recon = reconstruct_cov(myvw_f2_cov_mat, k = 4)  
+
+skrc_f2_cov_recon = reconstruct_cov(skrc_f2_cov_mat, k = 4)
+skrw_f2_cov_recon = reconstruct_cov(skrw_f2_cov_mat, k = 4)  
+
+gar_f2_cov_recon = reconstruct_cov(gar_f2_cov_mat, k = 4)
+gts_f2_cov_recon = reconstruct_cov(gts_f2_cov_mat, k = 4)  
+
+ashn_cov_diff = ashnw_f2_cov_recon - ashnc_f2_cov_recon
+myv_cov_diff = myvw_f2_cov_recon - myvc_f2_cov_recon
+skr_cov_diff = skrw_f2_cov_recon - skrc_f2_cov_recon
+gts_gar_cov_diff = gts_f2_cov_recon - gar_f2_cov_recon
+
+
+ashn_cov_diff_long <- as.data.frame(
+  as.table(ashn_cov_diff)) %>%
+  setNames(c("Trait1", "Trait2", "Difference")) %>% 
+  mutate(pop_pair = 'ASHN')
+
+myv_cov_diff_long <- as.data.frame(
+  as.table(myv_cov_diff)) %>%
+  setNames(c("Trait1", "Trait2", "Difference")) %>% 
+  mutate(pop_pair = 'MYV')
+
+skr_cov_diff_long <- as.data.frame(
+  as.table(skr_cov_diff)) %>%
+  setNames(c("Trait1", "Trait2", "Difference")) %>% 
+  mutate(pop_pair = 'SKR')
+
+gts_gar_cov_diff_long <- as.data.frame(
+  as.table(gts_gar_cov_diff)) %>%
+  setNames(c("Trait1", "Trait2", "Difference")) %>% 
+  mutate(pop_pair = 'GTS/GAR')
+
+big_eigen_energy = bind_rows(ashn_cov_diff_long, 
+                             myv_cov_diff_long, 
+                             skr_cov_diff_long, 
+                             gts_gar_cov_diff_long)
+
+
+ggplot(big_eigen_energy,
+  aes(Trait1, 
+      Trait2, 
+      fill = Difference)) +
+  geom_tile() +
+  scale_fill_gradient2(
+    low = "#B2182B",
+    mid = "white",
+    high = "#2166AC",
+    midpoint = 0) +
+  coord_equal() +
+  facet_grid(~pop_pair)+
+  labs(x = NULL,
+       y = NULL,
+       fill = "Δ Covariance",
+       title = "Geothermal–ambient covariance differences",
+       subtitle = "Reconstructed from PC1–4")+
+  theme(axis.text.x = element_text(angle = 90,
+      hjust = 1),
+    axis.text.y = element_text(size = 8), 
+    strip.background = element_rect(fill = 'white'), 
+    strip.text = element_text(face = 'bold', 
+                              size = 14), 
+    legend.position = 'none')
+  
 
 
 # Code I don't need anymore -----------------------------------------------

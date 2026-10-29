@@ -293,7 +293,7 @@ ashnw_wgp_eigen = eigen(ashnw_wgp_cov_mat)
 
 # Extract leading eigenvectors
 ashnc_wgp_vectors = ashnc_wgp_eigen$vectors[, 1:4, drop = FALSE]
-ashnw_wgp_vectors = ashnw_wgp_eigen$vectors[, 1:3, drop = FALSE]
+ashnw_wgp_vectors = ashnw_wgp_eigen$vectors[, 1:4, drop = FALSE]
 
 # Preserve trait identities
 rownames(ashnc_wgp_vectors) = colnames(ashnc_wgp_cov_mat)
@@ -336,15 +336,14 @@ ashn_wgp_residuals_combo = inner_join(ashn_wgp_residuals,
 # %>%
 #   write_csv('ASHN_wgp_procrustes_eigen_cov_mat_residuals.csv')
 
-
 # MYV ---------------------------------------------------------------------
 
 myvc_wgp_eigen = eigen(myvc_wgp_cov_mat)
 myvw_wgp_eigen = eigen(myvw_wgp_cov_mat)
 
 # Extract leading eigenvectors
-myvc_wgp_vectors = myvc_wgp_eigen$vectors[, 1:3, drop = FALSE]
-myvw_wgp_vectors = myvw_wgp_eigen$vectors[, 1:3, drop = FALSE]
+myvc_wgp_vectors = myvc_wgp_eigen$vectors[, 1:4, drop = FALSE]
+myvw_wgp_vectors = myvw_wgp_eigen$vectors[, 1:4, drop = FALSE]
 
 # Preserve trait identities
 rownames(myvc_wgp_vectors) = colnames(myvc_wgp_cov_mat)
@@ -389,8 +388,8 @@ skrc_wgp_eigen = eigen(skrc_wgp_cov_mat)
 skrw_wgp_eigen = eigen(skrw_wgp_cov_mat)
 
 # Extract leading eigenvectors
-skrc_wgp_vectors = skrc_wgp_eigen$vectors[, 1:3, drop = FALSE]
-skrw_wgp_vectors = skrw_wgp_eigen$vectors[, 1:3, drop = FALSE]
+skrc_wgp_vectors = skrc_wgp_eigen$vectors[, 1:4, drop = FALSE]
+skrw_wgp_vectors = skrw_wgp_eigen$vectors[, 1:4, drop = FALSE]
 
 # Preserve trait identities
 rownames(skrc_wgp_vectors) = colnames(skrc_wgp_cov_mat)
@@ -434,26 +433,36 @@ gar_wgp_eigen = eigen(gar_wgp_cov_mat)
 gts_wgp_eigen = eigen(gts_wgp_cov_mat)
 
 # Extract leading eigenvectors
-gar_wgp_vectors = gar_wgp_eigen$vectors[, 1:3, drop = FALSE]
+gar_wgp_vectors = gar_wgp_eigen$vectors[, 1:4, drop = FALSE]
 gts_wgp_vectors = gts_wgp_eigen$vectors[, 1:4, drop = FALSE]
 
 # Preserve trait identities
 rownames(gar_wgp_vectors) = colnames(gar_wgp_cov_mat)
 rownames(gts_wgp_vectors) = colnames(gts_wgp_cov_mat)
 
+gts_gar_wgp_proc_res_eigen = procrustes(gar_wgp_vectors, 
+                                        gts_wgp_vectors, 
+                                        symmetric = T)
 
-gts_gar_wgp_proc_res_eigen = procrustes(gts_wgp_vectors, 
-                                       gar_wgp_vectors, 
-                                       symmetric = T)
+# gts_gar_wgp_proc_res_eigen = procrustes(gts_wgp_vectors, 
+#                                        gar_wgp_vectors, 
+#                                        symmetric = T)
 summary(gts_gar_wgp_proc_res_eigen)
 # plot(gts_gar_wgp_proc_res_eigen, 
 #      kind = 1)
 
-gts_gar_wgp_eigen_test = protest(gts_wgp_vectors, 
-                                gar_wgp_vectors, 
-                                permutations = 999, 
-                                scale = F, 
-                                symmetric = T)
+
+gts_gar_wgp_eigen_test = protest(gar_wgp_vectors, 
+                                 gts_wgp_vectors, 
+                                 permutations = 999, 
+                                 scale = F, 
+                                 symmetric = T)
+
+# gts_gar_wgp_eigen_test = protest(gts_wgp_vectors, 
+#                                 gar_wgp_vectors, 
+#                                 permutations = 999, 
+#                                 scale = F, 
+#                                 symmetric = T)
 
 gts_gar_wgp_eigen_residuals = residuals(gts_gar_wgp_eigen_test)
 
@@ -479,7 +488,7 @@ wgp_proc_test_residual_combo = bind_rows(ashn_wgp_residuals_combo,
                                      skr_wgp_residuals_combo, 
                                      gts_gar_wgp_residuals_combo)
 
-
+##
 # Trait cov matrices ------------------------------------------------------
 
 
@@ -600,7 +609,7 @@ wgp_eigen_residual_plot = ggplot(wgp_proc_test_residual_combo,
 
 WGP_Trait_residual_plots = wgp_cov_residual_plot/wgp_eigen_residual_plot
 
-ggsave('WGP_SIG_EIGEN_VECS_ONLY_trait_residual_plots.svg', 
+ggsave('WGP_First_4_Eigenvectors_trait_residual_plots.svg', 
        plot = WGP_Trait_residual_plots, 
        dpi = 'retina', 
        units = 'cm', 
@@ -776,7 +785,7 @@ wgp_eigen_nemeny_test$p.value %>%
   rownames_to_column() %>% 
   as_tibble() %>% 
   dplyr::rename(trait = rowname) %>% 
-  View()
-filter(if_any(c(2:33), function(x) x<0.1))
+  # View()
+filter(if_any(c(2:33), function(x) x<0.05))
 write_csv('wgp_1212_residual_NemenyTest_results.csv')
 

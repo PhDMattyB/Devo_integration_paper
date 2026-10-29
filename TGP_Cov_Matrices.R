@@ -291,7 +291,7 @@ ashnw_tgp_eigen = eigen(ashnw_tgp_cov_mat)
 
 # Extract leading eigenvectors
 ashnc_tgp_vectors = ashnc_tgp_eigen$vectors[, 1:4, drop = FALSE]
-ashnw_tgp_vectors = ashnw_tgp_eigen$vectors[, 1:3, drop = FALSE]
+ashnw_tgp_vectors = ashnw_tgp_eigen$vectors[, 1:4, drop = FALSE]
 
 # Preserve trait identities
 rownames(ashnc_tgp_vectors) = colnames(ashnc_tgp_cov_mat)
@@ -338,8 +338,8 @@ myvc_tgp_eigen = eigen(myvc_tgp_cov_mat)
 myvw_tgp_eigen = eigen(myvw_tgp_cov_mat)
 
 # Extract leading eigenvectors
-myvc_tgp_vectors = myvc_tgp_eigen$vectors[, 1:3, drop = FALSE]
-myvw_tgp_vectors = myvw_tgp_eigen$vectors[, 1:3, drop = FALSE]
+myvc_tgp_vectors = myvc_tgp_eigen$vectors[, 1:4, drop = FALSE]
+myvw_tgp_vectors = myvw_tgp_eigen$vectors[, 1:4, drop = FALSE]
 
 # Preserve trait identities
 rownames(myvc_tgp_vectors) = colnames(myvc_tgp_cov_mat)
@@ -384,8 +384,8 @@ skrc_tgp_eigen = eigen(skrc_tgp_cov_mat)
 skrw_tgp_eigen = eigen(skrw_tgp_cov_mat)
 
 # Extract leading eigenvectors
-skrc_tgp_vectors = skrc_tgp_eigen$vectors[, 1:3, drop = FALSE]
-skrw_tgp_vectors = skrw_tgp_eigen$vectors[, 1:2, drop = FALSE]
+skrc_tgp_vectors = skrc_tgp_eigen$vectors[, 1:4, drop = FALSE]
+skrw_tgp_vectors = skrw_tgp_eigen$vectors[, 1:4, drop = FALSE]
 
 # Preserve trait identities
 rownames(skrc_tgp_vectors) = colnames(skrc_tgp_cov_mat)
@@ -429,8 +429,8 @@ gar_tgp_eigen = eigen(gar_tgp_cov_mat)
 gts_tgp_eigen = eigen(gts_tgp_cov_mat)
 
 # Extract leading eigenvectors
-gar_tgp_vectors = gar_tgp_eigen$vectors[, 1:3, drop = FALSE]
-gts_tgp_vectors = gts_tgp_eigen$vectors[, 1:3, drop = FALSE]
+gar_tgp_vectors = gar_tgp_eigen$vectors[, 1:4, drop = FALSE]
+gts_tgp_vectors = gts_tgp_eigen$vectors[, 1:4, drop = FALSE]
 
 # Preserve trait identities
 rownames(gar_tgp_vectors) = colnames(gar_tgp_cov_mat)
@@ -474,7 +474,7 @@ tgp_proc_test_residual_combo = bind_rows(ashn_tgp_residuals_combo,
                                          skr_tgp_residuals_combo, 
                                          gts_gar_tgp_residuals_combo)
 
-
+##
 # Trait cov matrices ------------------------------------------------------
 
 
@@ -595,7 +595,7 @@ tgp_eigen_residual_plot = ggplot(tgp_proc_test_residual_combo,
 
 tgp_Trait_residual_plots = tgp_cov_residual_plot/tgp_eigen_residual_plot
 
-ggsave('tgp_ONLY_SIG_EIGEN_VECTORS_trait_residual_plots.svg', 
+ggsave('tgp_First_4_Eigenvectors_trait_residual_plots.svg', 
        plot = tgp_Trait_residual_plots, 
        dpi = 'retina', 
        units = 'cm', 
@@ -772,6 +772,6 @@ tgp_eigen_nemeny_test$p.value %>%
   as_tibble() %>% 
   dplyr::rename(trait = rowname) %>% 
   # View()
-  filter(if_any(c(2:33), function(x) x<0.1)) %>% View()
+  filter(if_any(c(2:33), function(x) x<0.05))  %>% View()
 write_csv('tgp_1212_residual_NemenyTest_results.csv')
 
