@@ -220,6 +220,68 @@ gts_gar_tgp_resid_plot = ggplot(gts_gar_tgp_residuals,
 
 # Procrustes superimposition - eigenvectors -------------------------------
 
+# PCA find significant eigenvectors ---------------------------------------
+
+ashnc_tgp_pca = prcomp(ashnc_tgp_cov_mat, 
+                       center = F, 
+                       scale. = F)
+paran(ashnc_tgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 4 PC axes retained
+ashnw_tgp_pca = prcomp(ashnw_tgp_cov_mat, 
+                       center = F, 
+                       scale. = F)
+paran(ashnw_tgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 axes
+
+myvc_tgp_pca = prcomp(myvc_tgp_cov_mat, 
+                      center = F, 
+                      scale. = F)
+paran(myvc_tgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 PC axes retained
+myvw_tgp_pca = prcomp(myvw_tgp_cov_mat, 
+                      center = F, 
+                      scale. = F)
+paran(myvw_tgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 axes
+
+skrc_tgp_pca = prcomp(skrc_tgp_cov_mat, 
+                      center = F, 
+                      scale. = F)
+paran(skrc_tgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 PC axes retained
+skrw_tgp_pca = prcomp(skrw_tgp_cov_mat, 
+                      center = F, 
+                      scale. = F)
+paran(skrw_tgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 2 axes
+
+gar_tgp_pca = prcomp(gar_tgp_cov_mat, 
+                     center = F, 
+                     scale. = F)
+paran(gar_tgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 PC axes retained
+gts_tgp_pca = prcomp(gts_tgp_cov_mat, 
+                     center = F, 
+                     scale. = F)
+paran(gts_tgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 axes
+
 
 # ASHN ---------------------------------------------------------------------
 
@@ -228,8 +290,8 @@ ashnc_tgp_eigen = eigen(ashnc_tgp_cov_mat)
 ashnw_tgp_eigen = eigen(ashnw_tgp_cov_mat)
 
 # Extract leading eigenvectors
-ashnc_tgp_vectors = ashnc_tgp_eigen$vectors[, 1:17, drop = FALSE]
-ashnw_tgp_vectors = ashnw_tgp_eigen$vectors[, 1:17, drop = FALSE]
+ashnc_tgp_vectors = ashnc_tgp_eigen$vectors[, 1:4, drop = FALSE]
+ashnw_tgp_vectors = ashnw_tgp_eigen$vectors[, 1:3, drop = FALSE]
 
 # Preserve trait identities
 rownames(ashnc_tgp_vectors) = colnames(ashnc_tgp_cov_mat)
@@ -276,8 +338,8 @@ myvc_tgp_eigen = eigen(myvc_tgp_cov_mat)
 myvw_tgp_eigen = eigen(myvw_tgp_cov_mat)
 
 # Extract leading eigenvectors
-myvc_tgp_vectors = myvc_tgp_eigen$vectors[, 1:17, drop = FALSE]
-myvw_tgp_vectors = myvw_tgp_eigen$vectors[, 1:17, drop = FALSE]
+myvc_tgp_vectors = myvc_tgp_eigen$vectors[, 1:3, drop = FALSE]
+myvw_tgp_vectors = myvw_tgp_eigen$vectors[, 1:3, drop = FALSE]
 
 # Preserve trait identities
 rownames(myvc_tgp_vectors) = colnames(myvc_tgp_cov_mat)
@@ -322,8 +384,8 @@ skrc_tgp_eigen = eigen(skrc_tgp_cov_mat)
 skrw_tgp_eigen = eigen(skrw_tgp_cov_mat)
 
 # Extract leading eigenvectors
-skrc_tgp_vectors = skrc_tgp_eigen$vectors[, 1:17, drop = FALSE]
-skrw_tgp_vectors = skrw_tgp_eigen$vectors[, 1:17, drop = FALSE]
+skrc_tgp_vectors = skrc_tgp_eigen$vectors[, 1:3, drop = FALSE]
+skrw_tgp_vectors = skrw_tgp_eigen$vectors[, 1:2, drop = FALSE]
 
 # Preserve trait identities
 rownames(skrc_tgp_vectors) = colnames(skrc_tgp_cov_mat)
@@ -367,8 +429,8 @@ gar_tgp_eigen = eigen(gar_tgp_cov_mat)
 gts_tgp_eigen = eigen(gts_tgp_cov_mat)
 
 # Extract leading eigenvectors
-gar_tgp_vectors = gar_tgp_eigen$vectors[, 1:17, drop = FALSE]
-gts_tgp_vectors = gts_tgp_eigen$vectors[, 1:17, drop = FALSE]
+gar_tgp_vectors = gar_tgp_eigen$vectors[, 1:3, drop = FALSE]
+gts_tgp_vectors = gts_tgp_eigen$vectors[, 1:3, drop = FALSE]
 
 # Preserve trait identities
 rownames(gar_tgp_vectors) = colnames(gar_tgp_cov_mat)
@@ -379,8 +441,8 @@ gts_gar_tgp_proc_res_eigen = procrustes(gar_tgp_vectors,
                                         gts_tgp_vectors, 
                                         symmetric = T)
 summary(gts_gar_tgp_proc_res_eigen)
-plot(gts_gar_tgp_proc_res_eigen, 
-     kind = 1)
+# plot(gts_gar_tgp_proc_res_eigen, 
+#      kind = 1)
 
 gts_gar_tgp_eigen_test = protest(gar_tgp_vectors, 
                                  gts_tgp_vectors, 
@@ -533,7 +595,7 @@ tgp_eigen_residual_plot = ggplot(tgp_proc_test_residual_combo,
 
 tgp_Trait_residual_plots = tgp_cov_residual_plot/tgp_eigen_residual_plot
 
-ggsave('tgp_trait_residual_plots.svg', 
+ggsave('tgp_ONLY_SIG_EIGEN_VECTORS_trait_residual_plots.svg', 
        plot = tgp_Trait_residual_plots, 
        dpi = 'retina', 
        units = 'cm', 
@@ -541,7 +603,7 @@ ggsave('tgp_trait_residual_plots.svg',
        height = 15)
 
 
-
+##
 # Kendalls concordance plot - Covariance matrices -------------------------
 
 ashn_tgp_kendal = ashn_tgp_residuals %>% 
@@ -635,7 +697,7 @@ tgp_eigen_kendal_post = kendall.post(tgp_eigen_kendal_df,
                                      mult = 'hochberg', 
                                      nperm = 999)
 
-
+##
 # Nemeny post hoc - trait covarianec --------------------------------------
 library(PMCMRplus)
 
@@ -710,6 +772,6 @@ tgp_eigen_nemeny_test$p.value %>%
   as_tibble() %>% 
   dplyr::rename(trait = rowname) %>% 
   # View()
-  filter(if_any(c(2:33), function(x) x<0.05))
+  filter(if_any(c(2:33), function(x) x<0.1)) %>% View()
 write_csv('tgp_1212_residual_NemenyTest_results.csv')
 

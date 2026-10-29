@@ -223,6 +223,68 @@ gts_gar_wgp_resid_plot = ggplot(gts_gar_wgp_residuals,
 # Procrustes superimposition - eigenvectors -------------------------------
 
 
+# PCA find significant eigenvectors ---------------------------------------
+
+ashnc_wgp_pca = prcomp(ashnc_wgp_cov_mat, 
+                      center = F, 
+                      scale. = F)
+paran(ashnc_wgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 4 PC axes retained
+ashnw_wgp_pca = prcomp(ashnw_wgp_cov_mat, 
+                      center = F, 
+                      scale. = F)
+paran(ashnw_wgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 axes
+
+myvc_wgp_pca = prcomp(myvc_wgp_cov_mat, 
+                     center = F, 
+                     scale. = F)
+paran(myvc_wgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 PC axes retained
+myvw_wgp_pca = prcomp(myvw_wgp_cov_mat, 
+                     center = F, 
+                     scale. = F)
+paran(myvw_wgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 axes
+
+skrc_wgp_pca = prcomp(skrc_wgp_cov_mat, 
+                     center = F, 
+                     scale. = F)
+paran(skrc_wgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 PC axes retained
+skrw_wgp_pca = prcomp(skrw_wgp_cov_mat, 
+                     center = F, 
+                     scale. = F)
+paran(skrw_wgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 axes
+
+gar_wgp_pca = prcomp(gar_wgp_cov_mat, 
+                    center = F, 
+                    scale. = F)
+paran(gar_wgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 PC axes retained
+gts_wgp_pca = prcomp(gts_wgp_cov_mat, 
+                    center = F, 
+                    scale. = F)
+paran(gts_wgp_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 4 axes
+
 # ASHN ---------------------------------------------------------------------
 
 
@@ -230,8 +292,8 @@ ashnc_wgp_eigen = eigen(ashnc_wgp_cov_mat)
 ashnw_wgp_eigen = eigen(ashnw_wgp_cov_mat)
 
 # Extract leading eigenvectors
-ashnc_wgp_vectors = ashnc_wgp_eigen$vectors[, 1:17, drop = FALSE]
-ashnw_wgp_vectors = ashnw_wgp_eigen$vectors[, 1:17, drop = FALSE]
+ashnc_wgp_vectors = ashnc_wgp_eigen$vectors[, 1:4, drop = FALSE]
+ashnw_wgp_vectors = ashnw_wgp_eigen$vectors[, 1:3, drop = FALSE]
 
 # Preserve trait identities
 rownames(ashnc_wgp_vectors) = colnames(ashnc_wgp_cov_mat)
@@ -242,8 +304,8 @@ ashn_wgp_proc_res_eigen = procrustes(ashnc_wgp_vectors,
                                     ashnw_wgp_vectors, 
                                     symmetric = T)
 summary(ashn_wgp_proc_res_eigen)
-plot(ashn_wgp_proc_res_eigen, 
-     kind = 1)
+# plot(ashn_wgp_proc_res_eigen, 
+#      kind = 1)
 
 ashn_wgp_eigen_test = protest(ashnc_wgp_vectors, 
                              ashnw_wgp_vectors, 
@@ -281,8 +343,8 @@ myvc_wgp_eigen = eigen(myvc_wgp_cov_mat)
 myvw_wgp_eigen = eigen(myvw_wgp_cov_mat)
 
 # Extract leading eigenvectors
-myvc_wgp_vectors = myvc_wgp_eigen$vectors[, 1:17, drop = FALSE]
-myvw_wgp_vectors = myvw_wgp_eigen$vectors[, 1:17, drop = FALSE]
+myvc_wgp_vectors = myvc_wgp_eigen$vectors[, 1:3, drop = FALSE]
+myvw_wgp_vectors = myvw_wgp_eigen$vectors[, 1:3, drop = FALSE]
 
 # Preserve trait identities
 rownames(myvc_wgp_vectors) = colnames(myvc_wgp_cov_mat)
@@ -293,8 +355,8 @@ myv_wgp_proc_res_eigen = procrustes(myvc_wgp_vectors,
                                    myvw_wgp_vectors, 
                                    symmetric = T)
 summary(myv_wgp_proc_res_eigen)
-plot(myv_wgp_proc_res_eigen, 
-     kind = 1)
+# plot(myv_wgp_proc_res_eigen, 
+#      kind = 1)
 
 myv_wgp_eigen_test = protest(myvc_wgp_vectors, 
                             myvw_wgp_vectors, 
@@ -327,8 +389,8 @@ skrc_wgp_eigen = eigen(skrc_wgp_cov_mat)
 skrw_wgp_eigen = eigen(skrw_wgp_cov_mat)
 
 # Extract leading eigenvectors
-skrc_wgp_vectors = skrc_wgp_eigen$vectors[, 1:17, drop = FALSE]
-skrw_wgp_vectors = skrw_wgp_eigen$vectors[, 1:17, drop = FALSE]
+skrc_wgp_vectors = skrc_wgp_eigen$vectors[, 1:3, drop = FALSE]
+skrw_wgp_vectors = skrw_wgp_eigen$vectors[, 1:3, drop = FALSE]
 
 # Preserve trait identities
 rownames(skrc_wgp_vectors) = colnames(skrc_wgp_cov_mat)
@@ -339,8 +401,8 @@ skr_wgp_proc_res_eigen = procrustes(skrc_wgp_vectors,
                                    skrw_wgp_vectors, 
                                    symmetric = T)
 summary(skr_wgp_proc_res_eigen)
-plot(skr_wgp_proc_res_eigen, 
-     kind = 1)
+# plot(skr_wgp_proc_res_eigen, 
+#      kind = 1)
 
 skr_wgp_eigen_test = protest(skrc_wgp_vectors, 
                             skrw_wgp_vectors, 
@@ -372,23 +434,23 @@ gar_wgp_eigen = eigen(gar_wgp_cov_mat)
 gts_wgp_eigen = eigen(gts_wgp_cov_mat)
 
 # Extract leading eigenvectors
-gar_wgp_vectors = gar_wgp_eigen$vectors[, 1:17, drop = FALSE]
-gts_wgp_vectors = gts_wgp_eigen$vectors[, 1:17, drop = FALSE]
+gar_wgp_vectors = gar_wgp_eigen$vectors[, 1:3, drop = FALSE]
+gts_wgp_vectors = gts_wgp_eigen$vectors[, 1:4, drop = FALSE]
 
 # Preserve trait identities
 rownames(gar_wgp_vectors) = colnames(gar_wgp_cov_mat)
 rownames(gts_wgp_vectors) = colnames(gts_wgp_cov_mat)
 
 
-gts_gar_wgp_proc_res_eigen = procrustes(gar_wgp_vectors, 
-                                       gts_wgp_vectors, 
+gts_gar_wgp_proc_res_eigen = procrustes(gts_wgp_vectors, 
+                                       gar_wgp_vectors, 
                                        symmetric = T)
 summary(gts_gar_wgp_proc_res_eigen)
-plot(gts_gar_wgp_proc_res_eigen, 
-     kind = 1)
+# plot(gts_gar_wgp_proc_res_eigen, 
+#      kind = 1)
 
-gts_gar_wgp_eigen_test = protest(gar_wgp_vectors, 
-                                gts_wgp_vectors, 
+gts_gar_wgp_eigen_test = protest(gts_wgp_vectors, 
+                                gar_wgp_vectors, 
                                 permutations = 999, 
                                 scale = F, 
                                 symmetric = T)
@@ -538,7 +600,7 @@ wgp_eigen_residual_plot = ggplot(wgp_proc_test_residual_combo,
 
 WGP_Trait_residual_plots = wgp_cov_residual_plot/wgp_eigen_residual_plot
 
-ggsave('WGP_trait_residual_plots.svg', 
+ggsave('WGP_SIG_EIGEN_VECS_ONLY_trait_residual_plots.svg', 
        plot = WGP_Trait_residual_plots, 
        dpi = 'retina', 
        units = 'cm', 
@@ -546,7 +608,7 @@ ggsave('WGP_trait_residual_plots.svg',
        height = 15)
 
 
-
+##
 # Kendalls concordance plot - Covariance matrices -------------------------
 
 ashn_wgp_kendal = ashn_wgp_residuals %>% 
@@ -640,7 +702,7 @@ wgp_eigen_kendal_post = kendall.post(wgp_eigen_kendal_df,
                                     mult = 'hochberg', 
                                     nperm = 999)
 
-
+##
 # Nemeny post hoc - trait covarianec --------------------------------------
 library(PMCMRplus)
 
@@ -714,7 +776,7 @@ wgp_eigen_nemeny_test$p.value %>%
   rownames_to_column() %>% 
   as_tibble() %>% 
   dplyr::rename(trait = rowname) %>% 
-  # View()
-filter(if_any(c(2:33), function(x) x<0.05))
+  View()
+filter(if_any(c(2:33), function(x) x<0.1))
 write_csv('wgp_1212_residual_NemenyTest_results.csv')
 
