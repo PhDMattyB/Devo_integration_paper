@@ -785,7 +785,139 @@ wgp_eigen_nemeny_test$p.value %>%
   rownames_to_column() %>% 
   as_tibble() %>% 
   dplyr::rename(trait = rowname) %>% 
-  # View()
+  View()
 filter(if_any(c(2:33), function(x) x<0.05))
 write_csv('wgp_1212_residual_NemenyTest_results.csv')
+
+
+wgp_significant_traits =  c("lm_19_18",
+                           "fbar_23_24", 
+                           'fbar_8_27', 
+                           'head_depth', 
+                           'lm_6_12') # Replace with actual Nemenyi-identified traits
+
+
+wgp_eigen_nemeny_df %>%
+  filter(trait %in% wgp_significant_traits) %>%
+  ggplot(aes(x = trait,
+             y = eigen_residual,
+             group = pop_pair,
+             colour = pop_pair)) +
+  geom_line(alpha = 0.6) +
+  geom_point(size = 3) +
+  labs(x = "Morphological trait",
+       y = "Procrustes residual distance",
+       colour = "Population pair")
+
+
+## Zoom in on trait covariance structure. 
+wgp_ashn_cov_differences = ashnw_wgp_cov_mat - ashnc_wgp_cov_mat 
+wgp_ashn_cov_diff = wgp_ashn_cov_differences%>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname) %>% 
+  dplyr::filter(trait %in% c(wgp_significant_traits)) %>% 
+  dplyr::select(trait, 
+                lm_19_18, 
+                fbar_23_24, 
+                fbar_8_27, 
+                head_depth, 
+                lm_6_12) %>% 
+  mutate(pop_pair = 'ASHN')
+
+wgp_myv_cov_differences = myvw_wgp_cov_mat - myvc_wgp_cov_mat 
+wgp_myv_cov_diff = wgp_myv_cov_differences%>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname)%>% 
+  dplyr::filter(trait %in% c(wgp_significant_traits)) %>% 
+  dplyr::select(trait, 
+                lm_19_18, 
+                fbar_23_24, 
+                fbar_8_27, 
+                head_depth, 
+                lm_6_12) %>% 
+  mutate(pop_pair = 'MYV')
+
+wgp_skr_cov_differences = skrw_wgp_cov_mat - skrc_wgp_cov_mat 
+wgp_skr_cov_diff = wgp_skr_cov_differences%>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname)%>% 
+  dplyr::filter(trait %in% c(wgp_significant_traits)) %>% 
+  dplyr::select(trait, 
+                lm_19_18, 
+                fbar_23_24, 
+                fbar_8_27, 
+                head_depth, 
+                lm_6_12) %>% 
+  mutate(pop_pair = 'SKR')
+
+wgp_gts_gar_cov_differences = gts_wgp_cov_mat - gar_wgp_cov_mat 
+wgp_gts_gar_cov_diff = wgp_gts_gar_cov_differences%>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname)%>% 
+  dplyr::filter(trait %in% c(wgp_significant_traits)) %>% 
+  dplyr::select(trait, 
+                lm_19_18, 
+                fbar_23_24, 
+                fbar_8_27, 
+                head_depth, 
+                lm_6_12) %>% 
+  mutate(pop_pair = 'GTS/GAR')
+
+
+wgp_sig_cov_mat = bind_rows(wgp_ashn_cov_diff, 
+                            wgp_myv_cov_diff, 
+                            wgp_skr_cov_diff, 
+                            wgp_gts_gar_cov_diff)
+
+wgp_sig_cov_long <- wgp_sig_cov_mat %>%
+  pivot_longer(
+    cols = all_of(wgp_significant_traits),
+    names_to = "Trait2",
+    values_to = "Covariance") %>%
+  dplyr::rename(Trait1 = trait) %>%
+  mutate(Trait1 = factor(Trait1, levels = wgp_significant_traits),
+         Trait2 = factor(Trait2, levels = wgp_significant_traits),
+         pop_pair = factor(
+           pop_pair,
+           levels = c("ASHN", "MYV", "SKR", "GTS/GAR")))
+
+
+wgp_sig_cov_triangle = wgp_sig_cov_long %>%
+  mutate(Trait1_num = as.integer(Trait1),
+         Trait2_num = as.integer(Trait2)) %>%
+  filter(Trait1_num > Trait2_num)
+
+wgp_sig_covariance_traits = ggplot(wgp_sig_cov_triangle,
+                                  aes(x = Trait2, y = Trait1, fill = Covariance)) +
+  geom_tile(colour = "black", 
+            linewidth = 0.5) +
+  facet_wrap(~ pop_pair, nrow = 2) +
+  scale_fill_gradient2(
+    low = "#0f4c5c",
+    mid = "white",
+    high = "#9a031e",
+    midpoint = 0,
+    limits = c(-1.05, 1.05)) +
+  coord_equal() +
+  labs(x = NULL,
+       y = NULL,
+       fill = expression(Delta~'Covariance'), 
+       title = 'B) WGP')+
+  theme(axis.text.x = element_text(angle = 45,
+                                   hjust = 1),
+        panel.grid = element_blank(),
+        strip.text = element_text(face = "bold"), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text.x = element_text(face = 'bold', 
+                                    size = 14), 
+        plot.title = element_text(size = 16),
+        legend.position = 'none')
 

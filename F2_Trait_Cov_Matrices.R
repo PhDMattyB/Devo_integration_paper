@@ -575,7 +575,7 @@ gts_gar_f2_residuals_combo = inner_join(gts_gar_f2_residuals,
   mutate(pop_pair = 'GTS/GAR')
 
 
-Proc_test_residual_combo = bind_rows(ashn_f2_residuals_combo,
+f2_Proc_test_residual_combo = bind_rows(ashn_f2_residuals_combo,
                                      myv_f2_residuals_combo, 
                                      skr_f2_residuals_combo, 
                                      gts_gar_f2_residuals_combo)
@@ -588,7 +588,7 @@ resid_col_pal = c('#f72585',
                   '#480ca8', 
                   '#3f37c9')
 
-cov_residual_plot = ggplot(Proc_test_residual_combo, 
+f2_cov_residual_plot = ggplot(f2_Proc_test_residual_combo, 
        aes(x = factor(trait), 
            y = cov_residual))+
   geom_col(aes(fill = pop_pair), 
@@ -607,7 +607,7 @@ cov_residual_plot = ggplot(Proc_test_residual_combo,
                                   size = 14), 
         legend.position = 'none')
 
-eigen_residual_plot = ggplot(Proc_test_residual_combo, 
+f2_eigen_residual_plot = ggplot(f2_Proc_test_residual_combo, 
                            aes(x = factor(trait), 
                                y = eigen_residual))+
   geom_col(aes(fill = pop_pair), 
@@ -627,7 +627,7 @@ eigen_residual_plot = ggplot(Proc_test_residual_combo,
         legend.position = 'none')
 
 
-F2_Trait_residual_plots =cov_residual_plot/eigen_residual_plot
+F2_Trait_residual_plots = f2_cov_residual_plot/f2_eigen_residual_plot
 
 ggsave('F2_First_4E_igenvectors_trait_residual_plots.svg', 
        plot = F2_Trait_residual_plots, 
@@ -831,8 +831,8 @@ f2_eigen_nemeny_df %>%
 
 
 ## Zoom in on trait covariance structure. 
-ashn_cov_differences = ashnw_f2_cov_mat - ashnc_f2_cov_mat 
-ashn_cov_diff = ashn_cov_differences%>% 
+f2_ashn_cov_differences = ashnw_f2_cov_mat - ashnc_f2_cov_mat 
+f2_ashn_cov_diff = f2_ashn_cov_differences%>% 
   as.data.frame() %>% 
   rownames_to_column() %>% 
   as_tibble() %>% 
@@ -846,8 +846,8 @@ ashn_cov_diff = ashn_cov_differences%>%
                 lm_6_12) %>% 
   mutate(pop_pair = 'ASHN')
 
-myv_cov_differences = myvw_f2_cov_mat - myvc_f2_cov_mat 
-myv_cov_diff = myv_cov_differences%>% 
+f2_myv_cov_differences = myvw_f2_cov_mat - myvc_f2_cov_mat 
+f2_myv_cov_diff = f2_myv_cov_differences%>% 
   as.data.frame() %>% 
   rownames_to_column() %>% 
   as_tibble() %>% 
@@ -861,8 +861,8 @@ myv_cov_diff = myv_cov_differences%>%
                 lm_6_12) %>% 
   mutate(pop_pair = 'MYV')
 
-skr_cov_differences = skrw_f2_cov_mat - skrc_f2_cov_mat 
-skr_cov_diff = skr_cov_differences%>% 
+f2_skr_cov_differences = skrw_f2_cov_mat - skrc_f2_cov_mat 
+f2_skr_cov_diff = f2_skr_cov_differences%>% 
   as.data.frame() %>% 
   rownames_to_column() %>% 
   as_tibble() %>% 
@@ -876,8 +876,8 @@ skr_cov_diff = skr_cov_differences%>%
                 lm_6_12) %>% 
   mutate(pop_pair = 'SKR')
 
-gts_gar_cov_differences = gts_f2_cov_mat - gar_f2_cov_mat 
-gts_gar_cov_diff = gts_gar_cov_differences%>% 
+f2_gts_gar_cov_differences = gts_f2_cov_mat - gar_f2_cov_mat 
+f2_gts_gar_cov_diff = f2_gts_gar_cov_differences%>% 
   as.data.frame() %>% 
   rownames_to_column() %>% 
   as_tibble() %>% 
@@ -892,12 +892,12 @@ gts_gar_cov_diff = gts_gar_cov_differences%>%
   mutate(pop_pair = 'GTS/GAR')
 
 
-sig_cov_mat = bind_rows(ashn_cov_diff, 
-                        myv_cov_diff, 
-                        skr_cov_diff, 
-                        gts_gar_cov_diff)
+f2_sig_cov_mat = bind_rows(f2_ashn_cov_diff, 
+                           f2_myv_cov_diff, 
+                           f2_skr_cov_diff, 
+                           f2_gts_gar_cov_diff)
 
-sig_cov_long <- sig_cov_mat %>%
+f2_sig_cov_long <- f2_sig_cov_mat %>%
   pivot_longer(
     cols = all_of(f2_significant_traits),
     names_to = "Trait2",
@@ -910,33 +910,39 @@ sig_cov_long <- sig_cov_mat %>%
       levels = c("ASHN", "MYV", "SKR", "GTS/GAR")))
 
 
-sig_cov_triangle = sig_cov_long %>%
+f2_sig_cov_triangle = f2_sig_cov_long %>%
   mutate(Trait1_num = as.integer(Trait1),
     Trait2_num = as.integer(Trait2)) %>%
   filter(Trait1_num > Trait2_num)
 
-ggplot(sig_cov_triangle,
+f2_sig_covariance_traits = ggplot(f2_sig_cov_triangle,
   aes(x = Trait2, y = Trait1, fill = Covariance)) +
-  geom_tile(colour = "white", linewidth = 0.5) +
+  geom_tile(colour = "black", 
+            linewidth = 0.5) +
   facet_wrap(~ pop_pair, nrow = 2) +
   scale_fill_gradient2(
-    low = "#2166AC",
+    low = "#0f4c5c",
     mid = "white",
-    high = "#B2182B",
+    high = "#9a031e",
     midpoint = 0,
     limits = c(-1.05, 1.05)) +
   coord_equal() +
   labs(x = NULL,
        y = NULL,
-       fill = expression(Delta~'Covariance'))+
-  theme(axis.text.x = element_text(
-      angle = 45,
+       fill = expression(Delta~'Covariance'),, 
+       title = 'A) F2 generation')+
+  theme(axis.text.x = element_text(angle = 45,
       hjust = 1),
     panel.grid = element_blank(),
-    strip.text = element_text(face = "bold"))
+    strip.text = element_text(face = "bold"), 
+    strip.background = element_rect(fill = 'white'), 
+    strip.text.x = element_text(face = 'bold', 
+                              size = 14),
+    plot.title = element_text(size = 16),
+    legend.position = 'none')
 
 
-  # Reconstruct trait loadings ----------------------------------------------
+# Reconstruct trait loadings ----------------------------------------------
 
   # Reconstruct covariance matrix from PC1-4
   reconstruct_cov = function(cov_mat, k = 4) {

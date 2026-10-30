@@ -12,12 +12,927 @@ library(evolqg)
 
 
 
-wild_data = read_csv("WILD_SCALED_FIXED_27.05.2026.csv") %>% 
+wild_orig_data = read_csv("WILD_SCALED_FIXED_27.05.2026.csv") %>% 
   dplyr::select(Lake_morph, 
                 rowname, 
                 Lake, 
                 Morph, 
                 5:39)
+
+
+# Streamlining the analysis to match F2 generation ------------------------
+
+# Procrustes superimposition - cov matrices -------------------------------
+# ASHN --------------------------------------------------------------------
+
+
+ashnc_wild_trait_mat = wild_orig_data %>% 
+  filter(Lake_morph == 'ASHNC') %>% 
+  dplyr::select(jaw_length:39)
+
+ashnw_wild_trait_mat = wild_orig_data %>% 
+  filter(Lake_morph == 'ASHNW') %>% 
+  dplyr::select(jaw_length:39)
+
+ashnc_wild_cov_mat = cov(ashnc_wild_trait_mat, 
+                       use = 'complete.obs')
+ashnw_wild_cov_mat = cov(ashnw_wild_trait_mat, 
+                       use = 'complete.obs')
+ashn_wild_krzcov = evolqg::KrzCor(ashnc_wild_cov_mat, 
+                                ashnw_wild_cov_mat)
+ashn_wild_proc_res = procrustes(ashnc_wild_cov_mat, 
+                              ashnw_wild_cov_mat)
+
+plot(ashn_wild_proc_res, 
+     kind = 1)
+
+ashn_wild_proc_test = protest(ashnc_wild_cov_mat, 
+                            ashnw_wild_cov_mat, 
+                            permutations = 999)
+
+
+ashn_wild_residuals = residuals(ashn_wild_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                cov_residual = 2)
+
+# %>% 
+#   mutate(resid_10 = residual*10)
+
+ashn_wild_resid_plot = ggplot(ashn_wild_residuals, 
+                            aes(x = factor(trait), 
+                                y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  # geom_hline(yintercept = 1.5, 
+  #            linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+
+# MYV ---------------------------------------------------------------------
+
+myvc_wild_trait_mat = wild_orig_data %>% 
+  filter(Lake_morph == 'MYVC') %>% 
+  dplyr::select(jaw_length:39)
+
+myvw_wild_trait_mat = wild_orig_data %>% 
+  filter(Lake_morph == 'MYVW') %>% 
+  dplyr::select(jaw_length:39)
+
+myvc_wild_cov_mat = cov(myvc_wild_trait_mat, 
+                      use = 'complete.obs')
+myvw_wild_cov_mat = cov(myvw_wild_trait_mat, 
+                      use = 'complete.obs')
+myv_wild_krzcov = evolqg::KrzCor(myvc_wild_cov_mat, 
+                               myvw_wild_cov_mat)
+myv_wild_proc_res = procrustes(myvc_wild_cov_mat, 
+                             myvw_wild_cov_mat)
+
+plot(myv_wild_proc_res, 
+     kind = 1)
+
+myv_wild_proc_test = protest(myvc_wild_cov_mat, 
+                           myvw_wild_cov_mat, 
+                           permutations = 999)
+
+
+myv_wild_residuals = residuals(myv_wild_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                cov_residual = 2)
+
+myv_wild_resid_plot = ggplot(myv_wild_residuals, 
+                           aes(x = factor(trait), 
+                               y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  # geom_hline(yintercept = 1.5, 
+  #            linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+
+# SKR ---------------------------------------------------------------------
+
+skrc_wild_trait_mat = wild_orig_data %>% 
+  filter(Lake_morph == 'SKRC') %>% 
+  dplyr::select(jaw_length:39)
+
+skrw_wild_trait_mat = wild_orig_data %>% 
+  filter(Lake_morph == 'SKRW') %>% 
+  dplyr::select(jaw_length:39)
+
+skrc_wild_cov_mat = cov(skrc_wild_trait_mat, 
+                      use = 'complete.obs')
+skrw_wild_cov_mat = cov(skrw_wild_trait_mat, 
+                      use = 'complete.obs')
+skr_wild_krzcov = evolqg::KrzCor(skrc_wild_cov_mat, 
+                               skrw_wild_cov_mat)
+skr_wild_proc_res = procrustes(skrc_wild_cov_mat, 
+                             skrw_wild_cov_mat)
+
+plot(skr_wild_proc_res, 
+     kind = 1)
+
+skr_wild_proc_test = protest(skrc_wild_cov_mat, 
+                           skrw_wild_cov_mat, 
+                           permutations = 999)
+
+
+skr_wild_residuals = residuals(skr_wild_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                cov_residual = 2)
+
+skr_wild_resid_plot = ggplot(skr_wild_residuals, 
+                           aes(x = factor(trait), 
+                               y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  # geom_hline(yintercept = 1.5, 
+  #            linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+
+# GTS/GAR -----------------------------------------------------------------
+
+gar_wild_trait_mat = wild_orig_data %>% 
+  filter(Lake_morph == 'CSWY') %>% 
+  dplyr::select(jaw_length:39)
+
+gts_wild_trait_mat = wild_orig_data %>% 
+  filter(Lake_morph == 'GTS') %>% 
+  dplyr::select(jaw_length:39)
+
+gar_wild_cov_mat = cov(gar_wild_trait_mat, 
+                     use = 'complete.obs')
+gts_wild_cov_mat = cov(gts_wild_trait_mat, 
+                     use = 'complete.obs')
+gts_gar_wild_krzcov = evolqg::KrzCor(gar_wild_cov_mat, 
+                                   gts_wild_cov_mat)
+gts_gar_wild_proc_res = procrustes(gar_wild_cov_mat, 
+                                 gts_wild_cov_mat)
+
+plot(gts_gar_wild_proc_res, 
+     kind = 1)
+
+gts_gar_wild_proc_test = protest(gar_wild_cov_mat, 
+                               gts_wild_cov_mat, 
+                               permutations = 999)
+
+
+gts_gar_wild_residuals = residuals(gts_gar_wild_proc_test) %>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                cov_residual = 2)
+
+gts_gar_wild_resid_plot = ggplot(gts_gar_wild_residuals, 
+                               aes(x = factor(trait), 
+                                   y = resid_10))+
+  geom_col()+
+  ylim(0.0, 3.0)+
+  # geom_hline(yintercept = 1.5, 
+  #            linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90))
+
+
+# Procrustes superimposition - eigenvectors -------------------------------
+
+
+# PCA find significant eigenvectors ---------------------------------------
+
+ashnc_wild_pca = prcomp(ashnc_wild_cov_mat, 
+                      center = F, 
+                      scale. = F)
+paran(ashnc_wild_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 PC axes retained
+ashnw_wild_pca = prcomp(ashnw_wild_cov_mat, 
+                      center = F, 
+                      scale. = F)
+paran(ashnw_wild_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 2 axes
+
+myvc_wild_pca = prcomp(myvc_wild_cov_mat, 
+                     center = F, 
+                     scale. = F)
+paran(myvc_wild_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 4 PC axes retained
+myvw_wild_pca = prcomp(myvw_wild_cov_mat, 
+                     center = F, 
+                     scale. = F)
+paran(myvw_wild_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 axes
+
+skrc_wild_pca = prcomp(skrc_wild_cov_mat, 
+                     center = F, 
+                     scale. = F)
+paran(skrc_wild_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 PC axes retained
+skrw_wild_pca = prcomp(skrw_wild_cov_mat, 
+                     center = F, 
+                     scale. = F)
+paran(skrw_wild_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 2 axes
+
+gar_wild_pca = prcomp(gar_wild_cov_mat, 
+                    center = F, 
+                    scale. = F)
+paran(gar_wild_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 3 PC axes retained
+gts_wild_pca = prcomp(gts_wild_cov_mat, 
+                    center = F, 
+                    scale. = F)
+paran(gts_wild_cov_mat, 
+      iterations = 1000, 
+      graph = T)
+## 4 axes
+
+variance_explained <- function(cov_mat) {
+  
+  eig <- eigen(cov_mat)$values
+  
+  cumulative <- cumsum(eig) / sum(eig)
+  
+  data.frame(
+    PC = seq_along(eig),
+    Variance = eig / sum(eig),
+    Cumulative = cumulative
+  )
+}
+
+variance_explained(ashnc_wild_cov_mat)[1:6, ]
+variance_explained(ashnw_wild_cov_mat)[1:6, ]
+
+variance_explained(myvc_wild_cov_mat)[1:6, ]
+variance_explained(myvw_wild_cov_mat)[1:6, ]
+
+variance_explained(skrc_wild_cov_mat)[1:6, ]
+variance_explained(skrw_wild_cov_mat)[1:6, ]
+
+variance_explained(gar_wild_cov_mat)[1:6, ]
+variance_explained(gts_wild_cov_mat)[1:6, ]
+
+# ASHN ---------------------------------------------------------------------
+
+
+ashnc_wild_eigen = eigen(ashnc_wild_cov_mat)
+ashnw_wild_eigen = eigen(ashnw_wild_cov_mat)
+
+# Extract leading eigenvectors
+ashnc_wild_vectors = ashnc_wild_eigen$vectors[, 1:4, drop = FALSE]
+ashnw_wild_vectors = ashnw_wild_eigen$vectors[, 1:4, drop = FALSE]
+
+# Preserve trait identities
+rownames(ashnc_wild_vectors) = colnames(ashnc_wild_cov_mat)
+rownames(ashnw_wild_vectors) = colnames(ashnw_wild_cov_mat)
+
+
+ashn_wild_proc_res_eigen = procrustes(ashnc_wild_vectors, 
+                                    ashnw_wild_vectors, 
+                                    symmetric = T)
+summary(ashn_wild_proc_res_eigen)
+# plot(ashn_wild_proc_res_eigen, 
+#      kind = 1)
+
+ashn_wild_eigen_test = protest(ashnc_wild_vectors, 
+                             ashnw_wild_vectors, 
+                             permutations = 999, 
+                             scale = F, 
+                             symmetric = T)
+
+ashn_wild_eigen_residuals = residuals(ashn_wild_eigen_test)
+
+ashn_wild_eigen_residuals = ashn_wild_eigen_residuals%>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                eigen_residual = 2) 
+# %>%  
+#   write_csv('ASHN_wild_12_12_procrustes_eigen_cov_mat_residuals.csv')
+
+
+ashn_wild_residuals_combo = inner_join(ashn_wild_residuals, 
+                                     ashn_wild_eigen_residuals, 
+                                     by = 'trait') %>% 
+  mutate(pop_pair = 'ASHN')
+
+# %>%
+#   write_csv('ASHN_wild_procrustes_eigen_cov_mat_residuals.csv')
+
+
+# MYV ---------------------------------------------------------------------
+
+myvc_wild_eigen = eigen(myvc_wild_cov_mat)
+myvw_wild_eigen = eigen(myvw_wild_cov_mat)
+
+# Extract leading eigenvectors
+myvc_wild_vectors = myvc_wild_eigen$vectors[, 1:4, drop = FALSE]
+myvw_wild_vectors = myvw_wild_eigen$vectors[, 1:4, drop = FALSE]
+
+# Preserve trait identities
+rownames(myvc_wild_vectors) = colnames(myvc_wild_cov_mat)
+rownames(myvw_wild_vectors) = colnames(myvw_wild_cov_mat)
+
+
+myv_wild_proc_res_eigen = procrustes(myvc_wild_vectors, 
+                                   myvw_wild_vectors, 
+                                   symmetric = T)
+summary(myv_wild_proc_res_eigen)
+# plot(myv_wild_proc_res_eigen, 
+#      kind = 1)
+
+myv_wild_eigen_test = protest(myvc_wild_vectors, 
+                            myvw_wild_vectors, 
+                            permutations = 999, 
+                            scale = F, 
+                            symmetric = T)
+
+myv_wild_eigen_residuals = residuals(myv_wild_eigen_test)
+
+myv_wild_eigen_residuals = myv_wild_eigen_residuals%>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                eigen_residual = 2) 
+# %>%  
+#   write_csv('myv_wild_12_12_procrustes_eigen_cov_mat_residuals.csv')
+
+
+
+myv_wild_residuals_combo = inner_join(myv_wild_residuals, 
+                                    myv_wild_eigen_residuals, 
+                                    by = 'trait') %>% 
+  mutate(pop_pair = 'MYV')
+
+
+# SKR ---------------------------------------------------------------------
+
+skrc_wild_eigen = eigen(skrc_wild_cov_mat)
+skrw_wild_eigen = eigen(skrw_wild_cov_mat)
+
+# Extract leading eigenvectors
+skrc_wild_vectors = skrc_wild_eigen$vectors[, 1:4, drop = FALSE]
+skrw_wild_vectors = skrw_wild_eigen$vectors[, 1:4, drop = FALSE]
+
+# Preserve trait identities
+rownames(skrc_wild_vectors) = colnames(skrc_wild_cov_mat)
+rownames(skrw_wild_vectors) = colnames(skrw_wild_cov_mat)
+
+
+skr_wild_proc_res_eigen = procrustes(skrc_wild_vectors, 
+                                   skrw_wild_vectors, 
+                                   symmetric = T)
+summary(skr_wild_proc_res_eigen)
+# plot(skr_wild_proc_res_eigen, 
+#      kind = 1)
+
+skr_wild_eigen_test = protest(skrc_wild_vectors, 
+                            skrw_wild_vectors, 
+                            permutations = 999, 
+                            scale = F, 
+                            symmetric = T)
+
+skr_wild_eigen_residuals = residuals(skr_wild_eigen_test)
+
+skr_wild_eigen_residuals = skr_wild_eigen_residuals%>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                eigen_residual = 2) 
+# %>%  
+#   write_csv('skr_wild_12_12_procrustes_eigen_cov_mat_residuals.csv')
+
+
+
+skr_wild_residuals_combo = inner_join(skr_wild_residuals, 
+                                    skr_wild_eigen_residuals, 
+                                    by = 'trait') %>% 
+  mutate(pop_pair = 'SKR')
+
+
+# GTS/GAR -----------------------------------------------------------------
+
+gar_wild_eigen = eigen(gar_wild_cov_mat)
+gts_wild_eigen = eigen(gts_wild_cov_mat)
+
+# Extract leading eigenvectors
+gar_wild_vectors = gar_wild_eigen$vectors[, 1:4, drop = FALSE]
+gts_wild_vectors = gts_wild_eigen$vectors[, 1:4, drop = FALSE]
+
+# Preserve trait identities
+rownames(gar_wild_vectors) = colnames(gar_wild_cov_mat)
+rownames(gts_wild_vectors) = colnames(gts_wild_cov_mat)
+
+
+gts_gar_wild_proc_res_eigen = procrustes(gar_wild_vectors, 
+                                       gts_wild_vectors, 
+                                       symmetric = T)
+summary(gts_gar_wild_proc_res_eigen)
+# plot(gts_gar_wild_proc_res_eigen, 
+#      kind = 1)
+
+gts_gar_wild_eigen_test = protest(gar_wild_vectors, 
+                                gts_wild_vectors, 
+                                permutations = 999, 
+                                scale = F, 
+                                symmetric = T)
+
+gts_gar_wild_eigen_residuals = residuals(gts_gar_wild_eigen_test)
+
+gts_gar_wild_eigen_residuals = gts_gar_wild_eigen_residuals%>% 
+  as.data.frame() %>%
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname, 
+                eigen_residual = 2) 
+# %>%  
+#   write_csv('gts_gar_wild_12_12_procrustes_eigen_cov_mat_residuals.csv')
+
+
+
+gts_gar_wild_residuals_combo = inner_join(gts_gar_wild_residuals, 
+                                        gts_gar_wild_eigen_residuals, 
+                                        by = 'trait') %>% 
+  mutate(pop_pair = 'GTS/GAR')
+
+
+wild_Proc_test_residual_combo = bind_rows(ashn_wild_residuals_combo,
+                                     myv_wild_residuals_combo, 
+                                     skr_wild_residuals_combo, 
+                                     gts_gar_wild_residuals_combo)
+
+
+# ProcTest residual plots -------------------------------------------------
+
+resid_col_pal = c('#f72585', 
+                  '#7209b7', 
+                  '#480ca8', 
+                  '#3f37c9')
+
+wild_cov_residual_plot = ggplot(wild_Proc_test_residual_combo, 
+                           aes(x = factor(trait), 
+                               y = cov_residual))+
+  geom_col(aes(fill = pop_pair), 
+           col = 'black')+
+  ylim(0.0, 0.5)+
+  facet_grid(~pop_pair)+
+  labs(y = 'Covariance residuals')+
+  scale_fill_manual(values = resid_col_pal)+
+  # geom_hline(yintercept = 1.5, 
+  #            linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold', 
+                                  size = 14), 
+        legend.position = 'none')
+
+wild_eigen_residual_plot = ggplot(wild_Proc_test_residual_combo, 
+                             aes(x = factor(trait), 
+                                 y = eigen_residual))+
+  geom_col(aes(fill = pop_pair), 
+           col = 'black')+
+  ylim(0.0, 0.5)+
+  facet_grid(~pop_pair)+
+  labs(y = 'Eigenvector residuals')+
+  scale_fill_manual(values = resid_col_pal)+
+  # geom_hline(yintercept = 1.5, 
+  #            linetype = 2)+
+  theme(axis.title.x = element_blank(), 
+        axis.text.x = element_text(size = 6, 
+                                   angle = 90), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold', 
+                                  size = 14), 
+        legend.position = 'none')
+
+
+wild_Trait_residual_plots = wild_cov_residual_plot/wild_eigen_residual_plot
+
+ggsave('wild_First_4Eigenvectors_trait_residual_plots.svg', 
+       plot = wild_Trait_residual_plots, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 30, 
+       height = 15)
+
+# Trait cov matrices ------------------------------------------------------
+
+
+wild_cov_matrices <- list(
+  Pair1_Ambient = ashnc_wild_cov_mat,
+  Pair1_Geothermal = ashnw_wild_cov_mat,
+  Pair2_Ambient = myvc_wild_cov_mat,
+  Pair2_Geothermal = myvw_wild_cov_mat,
+  Pair3_Ambient = skrc_wild_cov_mat,
+  Pair3_Geothermal = skrw_wild_cov_mat,
+  Pair4_Ambient = gar_wild_cov_mat,
+  Pair4_Geothermal = gts_wild_cov_mat)
+
+for (i in 1:4) {
+  wild_cov_matrices[[paste0("Pair", i, "_Difference")]] <-
+    wild_cov_matrices[[paste0("Pair", i, "_Geothermal")]] -
+    wild_cov_matrices[[paste0("Pair", i, "_Ambient")]]
+}
+
+wild_cov_long <- purrr::imap_dfr(wild_cov_matrices, function(mat, name) {
+  as.data.frame(as.table(mat)) %>%
+    setNames(c("Trait1", "Trait2", "Covariance")) %>%
+    mutate(
+      Temp = sub("_.*", "", name),
+      Type = sub(".*_", "", name)
+    )
+})
+
+wild_cov_long$Type <- factor(
+  wild_cov_long$Type,
+  levels = c("Ambient", "Geothermal", "Difference")
+)
+
+wild_cov_long = wild_cov_long %>% 
+  mutate(pop_pairs = case_when(
+    str_detect(Temp, 'Pair1') ~ 'ASHN',
+    str_detect(Temp, 'Pair2') ~ 'MYV',
+    str_detect(Temp, 'Pair3') ~ 'SKR',
+    str_detect(Temp, 'Pair4') ~ 'GTS/GAR'))
+
+wild_cov_plot = ggplot(wild_cov_long, 
+                       aes(Trait1, 
+                           Trait2, 
+                           fill = Covariance)) +
+  geom_tile() +
+  facet_grid(pop_pairs ~ Type) +
+  scale_fill_gradient2(
+    low = "#2166AC",
+    mid = "white",
+    high = "#B2182B",
+    midpoint = 0) +
+  coord_equal() +
+  labs(x = NULL, 
+       y = NULL, 
+       fill = "Covariance", 
+       title = 'Wild trait covariance matrices')+
+  theme(axis.text.x = element_text(angle = 90, 
+                                   hjust = 1),
+        panel.grid = element_blank(), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text = element_text(face = 'bold'), 
+        axis.text = element_text(size = 6), 
+        legend.position = 'none')
+
+ggsave('wild_Geo_Amb_Covariance_matrix.svg', 
+       plot = wild_cov_plot, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 20, 
+       height = 20)
+
+
+ ##
+# Kendalls concordance plot - Covariance matrices -------------------------
+
+ashn_wild_kendal = ashn_wild_residuals %>% 
+  dplyr::rename(ASHN = cov_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+myv_wild_kendal = myv_wild_residuals%>% 
+  dplyr::rename(MYV = cov_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+skr_wild_kendal = skr_wild_residuals%>% 
+  dplyr::rename(SKR = cov_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+gts_gar_wild_kendal = gts_gar_wild_residuals%>% 
+  dplyr::rename(GTS_GAR = cov_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+wild_kendal_df = bind_cols(ashn_wild_kendal, 
+                         myv_wild_kendal, 
+                         skr_wild_kendal, 
+                         gts_gar_wild_kendal)
+
+# group = c('ASHN','MYV','SKR','GTS_GAR')
+
+
+wild_kendal = kendall.global(wild_kendal_df,
+                           # group = pops,
+                           nperm = 999, 
+                           mult = 'hochberg')
+wild_kendal_post = kendall.post(wild_kendal_df, 
+                              mult = 'hochberg', 
+                              nperm = 999)
+
+
+
+# Kendall concordance - eigen vector traits -------------------------------
+ashn_wild_eigen_kendal = ashn_wild_eigen_residuals %>% 
+  dplyr::rename(ASHN = eigen_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+myv_wild_eigen_kendal = myv_wild_eigen_residuals%>% 
+  dplyr::rename(MYV = eigen_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+skr_wild_eigen_kendal = skr_wild_eigen_residuals%>% 
+  dplyr::rename(SKR = eigen_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+gts_gar_wild_eigen_kendal = gts_gar_wild_eigen_residuals%>% 
+  dplyr::rename(GTS_GAR = eigen_residual) %>% 
+  # rownames_to_column() %>% 
+  # mutate(Pop_pair = 'ASHN') %>% 
+  # dplyr::select(-resid_10) %>% 
+  column_to_rownames('trait')
+
+wild_eigen_kendal_df = bind_cols(ashn_wild_eigen_kendal, 
+                               myv_wild_eigen_kendal, 
+                               skr_wild_eigen_kendal, 
+                               gts_gar_wild_eigen_kendal)
+
+# group = c('ASHN','MYV','SKR','GTS_GAR')
+
+
+wild_eigen_kendal = kendall.global(wild_eigen_kendal_df,
+                                 # group = pops,
+                                 nperm = 999, 
+                                 mult = 'hochberg')
+wild_eigen_kendal_post = kendall.post(wild_eigen_kendal_df, 
+                                    mult = 'hochberg', 
+                                    nperm = 999)
+###
+
+# Nemeny post hoc - trait covarianec --------------------------------------
+library(PMCMRplus)
+
+
+ashn_wild_nemeny_df = ashn_wild_residuals %>% 
+  mutate(pop_pair = 'ASHN') 
+
+myv_wild_nemeny_df = myv_wild_residuals %>% 
+  mutate(pop_pair = 'MYV')
+
+skr_wild_nemeny_df = skr_wild_residuals %>% 
+  mutate(pop_pair = 'SKR')
+
+gts_gar_wild_nemeny_df = gts_gar_wild_residuals %>% 
+  mutate(pop_pair = 'GTS/GAR') 
+
+wild_nemeny_df = bind_rows(ashn_wild_nemeny_df, 
+                         myv_wild_nemeny_df, 
+                         skr_wild_nemeny_df, 
+                         gts_gar_wild_nemeny_df)
+
+
+wild_nemeny_test = frdAllPairsNemenyiTest(y = wild_nemeny_df$cov_residual, 
+                                        groups = wild_nemeny_df$trait, 
+                                        blocks = wild_nemeny_df$pop_pair, 
+                                        p.adjust.method = 'hochberg')
+
+wild_nemeny_test$p.value %>%
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname) %>% View() 
+filter(if_any(c(2:33), function(x) x<0.05))
+write_csv('wild_1212_residual_NemenyTest_results.csv')
+
+
+
+# nemeny post hoc - eigen vectors -----------------------------------------
+
+library(PMCMRplus)
+
+
+ashn_wild_eigen_nemeny_df = ashn_wild_eigen_residuals %>% 
+  mutate(pop_pair = 'ASHN') 
+
+myv_wild_eigen_nemeny_df = myv_wild_eigen_residuals %>% 
+  mutate(pop_pair = 'MYV') 
+
+skr_wild_eigen_nemeny_df = skr_wild_eigen_residuals %>% 
+  mutate(pop_pair = 'SKR') 
+
+gts_gar_wild_eigen_nemeny_df = gts_gar_wild_eigen_residuals %>% 
+  mutate(pop_pair = 'GTS/GAR') 
+
+wild_eigen_nemeny_df = bind_rows(ashn_wild_eigen_nemeny_df, 
+                               myv_wild_eigen_nemeny_df, 
+                               skr_wild_eigen_nemeny_df, 
+                               gts_gar_wild_eigen_nemeny_df)
+
+
+wild_eigen_nemeny_test = frdAllPairsNemenyiTest(y = wild_eigen_nemeny_df$eigen_residual, 
+                                              groups = wild_eigen_nemeny_df$trait, 
+                                              blocks = wild_eigen_nemeny_df$pop_pair, 
+                                              p.adjust.method = 'hochberg')
+
+
+wild_eigen_nemeny_test$p.value %>%
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname) %>% 
+  # View()
+  filter(if_any(c(2:33), function(x) x<0.05)) %>% View()
+# %>%
+# write_csv('wild_4eigen_ALL_residual_NemenyTest_results.csv')
+
+Proc_test_residual_combo
+
+wild_significant_traits =  c("lm_19_18",
+                           "fbar_23_24", 
+                           'fbar_8_27', 
+                           'head_depth', 
+                           'lm_6_12') # Replace with actual Nemenyi-identified traits
+
+
+wild_eigen_nemeny_df %>%
+  filter(trait %in% wild_significant_traits) %>%
+  ggplot(aes(x = trait,
+             y = eigen_residual,
+             group = pop_pair,
+             colour = pop_pair)) +
+  geom_line(alpha = 0.6) +
+  geom_point(size = 3) +
+  labs(x = "Morphological trait",
+       y = "Procrustes residual distance",
+       colour = "Population pair")
+
+
+## Zoom in on trait covariance structure. 
+wild_ashn_cov_differences = ashnw_wild_cov_mat - ashnc_wild_cov_mat 
+wild_ashn_cov_diff = wild_ashn_cov_differences%>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname) %>% 
+  dplyr::filter(trait %in% c(wild_significant_traits)) %>% 
+  dplyr::select(trait, 
+                lm_19_18, 
+                fbar_23_24, 
+                fbar_8_27, 
+                head_depth, 
+                lm_6_12) %>% 
+  mutate(pop_pair = 'ASHN')
+
+wild_myv_cov_differences = myvw_wild_cov_mat - myvc_wild_cov_mat 
+wild_myv_cov_diff = wild_myv_cov_differences%>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname)%>% 
+  dplyr::filter(trait %in% c(wild_significant_traits)) %>% 
+  dplyr::select(trait, 
+                lm_19_18, 
+                fbar_23_24, 
+                fbar_8_27, 
+                head_depth, 
+                lm_6_12) %>% 
+  mutate(pop_pair = 'MYV')
+
+wild_skr_cov_differences = skrw_wild_cov_mat - skrc_wild_cov_mat 
+wild_skr_cov_diff = wild_skr_cov_differences%>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname)%>% 
+  dplyr::filter(trait %in% c(wild_significant_traits)) %>% 
+  dplyr::select(trait, 
+                lm_19_18, 
+                fbar_23_24, 
+                fbar_8_27, 
+                head_depth, 
+                lm_6_12) %>% 
+  mutate(pop_pair = 'SKR')
+
+wild_gts_gar_cov_differences = gts_wild_cov_mat - gar_wild_cov_mat 
+wild_gts_gar_cov_diff = wild_gts_gar_cov_differences%>% 
+  as.data.frame() %>% 
+  rownames_to_column() %>% 
+  as_tibble() %>% 
+  dplyr::rename(trait = rowname)%>% 
+  dplyr::filter(trait %in% c(wild_significant_traits)) %>% 
+  dplyr::select(trait, 
+                lm_19_18, 
+                fbar_23_24, 
+                fbar_8_27, 
+                head_depth, 
+                lm_6_12) %>% 
+  mutate(pop_pair = 'GTS/GAR')
+
+
+wild_sig_cov_mat = bind_rows(wild_ashn_cov_diff, 
+                           wild_myv_cov_diff, 
+                           wild_skr_cov_diff, 
+                           wild_gts_gar_cov_diff)
+
+wild_sig_cov_long <- wild_sig_cov_mat %>%
+  pivot_longer(
+    cols = all_of(wild_significant_traits),
+    names_to = "Trait2",
+    values_to = "Covariance") %>%
+  dplyr::rename(Trait1 = trait) %>%
+  mutate(Trait1 = factor(Trait1, levels = wild_significant_traits),
+         Trait2 = factor(Trait2, levels = wild_significant_traits),
+         pop_pair = factor(
+           pop_pair,
+           levels = c("ASHN", "MYV", "SKR", "GTS/GAR")))
+
+
+wild_sig_cov_triangle = wild_sig_cov_long %>%
+  mutate(Trait1_num = as.integer(Trait1),
+         Trait2_num = as.integer(Trait2)) %>%
+  filter(Trait1_num > Trait2_num)
+
+wild_sig_covariance_traits = ggplot(wild_sig_cov_triangle,
+                                  aes(x = Trait2, y = Trait1, fill = Covariance)) +
+  geom_tile(colour = "black", 
+            linewidth = 0.5) +
+  facet_wrap(~ pop_pair, nrow = 2) +
+  scale_fill_gradient2(
+    low = "#0f4c5c",
+    mid = "white",
+    high = "#9a031e",
+    midpoint = 0,
+    limits = c(-1.05, 1.05)) +
+  coord_equal() +
+  labs(x = NULL,
+       y = NULL,
+       fill = expression(Delta~'Covariance'),, 
+       title = 'A) F2 generation')+
+  theme(axis.text.x = element_text(angle = 45,
+                                   hjust = 1),
+        panel.grid = element_blank(),
+        strip.text = element_text(face = "bold"), 
+        strip.background = element_rect(fill = 'white'), 
+        strip.text.x = element_text(face = 'bold', 
+                                    size = 14),
+        plot.title = element_text(size = 16),
+        legend.position = 'none')
+
+
+
+
+
+
+
+
+# Code I dont need anymore ------------------------------------------------
 
 
 # wild data - KrzCov and procrustes ---------------------------------------
