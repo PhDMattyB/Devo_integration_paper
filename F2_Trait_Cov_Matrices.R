@@ -901,27 +901,18 @@ sig_cov_long <- sig_cov_mat %>%
   pivot_longer(
     cols = all_of(f2_significant_traits),
     names_to = "Trait2",
-    values_to = "Covariance"
-  ) %>%
+    values_to = "Covariance") %>%
   dplyr::rename(Trait1 = trait) %>%
-  mutate(
-    Trait1 = factor(Trait1, levels = f2_significant_traits),
+  mutate(Trait1 = factor(Trait1, levels = f2_significant_traits),
     Trait2 = factor(Trait2, levels = f2_significant_traits),
     pop_pair = factor(
       pop_pair,
-      levels = c("ASHN", "MYV", "SKR", "GTS/GAR")
-    )
-  )
-
-sig_cov_long_offdiag <- sig_cov_long %>%
-  filter(as.character(Trait1) != as.character(Trait2))
+      levels = c("ASHN", "MYV", "SKR", "GTS/GAR")))
 
 
-sig_cov_triangle <- sig_cov_long %>%
-  mutate(
-    Trait1_num = as.integer(Trait1),
-    Trait2_num = as.integer(Trait2)
-  ) %>%
+sig_cov_triangle = sig_cov_long %>%
+  mutate(Trait1_num = as.integer(Trait1),
+    Trait2_num = as.integer(Trait2)) %>%
   filter(Trait1_num > Trait2_num)
 
 ggplot(sig_cov_triangle,
@@ -929,57 +920,20 @@ ggplot(sig_cov_triangle,
   geom_tile(colour = "white", linewidth = 0.5) +
   facet_wrap(~ pop_pair, nrow = 2) +
   scale_fill_gradient2(
-    low = "#B2182B",
-    mid = "white",
-    high = "#2166AC",
-    midpoint = 0,
-    limits = c(-1.05, 1.05)
-  ) +
-  coord_equal() +
-  theme(
-    axis.text.x = element_text(
-      angle = 45,
-      hjust = 1
-    ),
-    panel.grid = element_blank(),
-    strip.text = element_text(face = "bold")
-  ) +
-  labs(
-    x = NULL,
-    y = NULL,
-    fill = expression(Delta~'Covariance'),
-    title = "Covariance structure of five morphological traits",
-    subtitle = "Geothermal–ambient population comparisons"
-  )
-
-
-
-
-
-ggplot( , 
-       aes(Trait1, 
-           Trait2, 
-           fill = Covariance)) +
-  geom_tile() +
-  facet_grid(pop_pairs ~ Type) +
-  scale_fill_gradient2(
     low = "#2166AC",
     mid = "white",
     high = "#B2182B",
-    midpoint = 0) +
+    midpoint = 0,
+    limits = c(-1.05, 1.05)) +
   coord_equal() +
-  labs(x = NULL, 
-       y = NULL, 
-       fill = "Covariance", 
-       title = 'F2 trait covariance matrices')+
-  theme(axis.text.x = element_text(angle = 90, 
-                                   hjust = 1),
-        panel.grid = element_blank(), 
-        strip.background = element_rect(fill = 'white'), 
-        strip.text = element_text(face = 'bold'), 
-        axis.text = element_text(size = 6), 
-        legend.position = 'none')
-
+  labs(x = NULL,
+       y = NULL,
+       fill = expression(Delta~'Covariance'))+
+  theme(axis.text.x = element_text(
+      angle = 45,
+      hjust = 1),
+    panel.grid = element_blank(),
+    strip.text = element_text(face = "bold"))
 
 
   # Reconstruct trait loadings ----------------------------------------------
