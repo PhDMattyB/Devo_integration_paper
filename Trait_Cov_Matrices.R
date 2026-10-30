@@ -596,9 +596,9 @@ wild_cov_plot = ggplot(wild_cov_long,
   geom_tile() +
   facet_grid(pop_pairs ~ Type) +
   scale_fill_gradient2(
-    low = "#2166AC",
+    low = "#0f4c5c",
     mid = "white",
-    high = "#B2182B",
+    high = "#9a031e",
     midpoint = 0) +
   coord_equal() +
   labs(x = NULL, 
@@ -747,7 +747,7 @@ wild_nemeny_test$p.value %>%
   as.data.frame() %>% 
   rownames_to_column() %>% 
   as_tibble() %>% 
-  dplyr::rename(trait = rowname) %>% View() 
+  dplyr::rename(trait = rowname) %>%  
 filter(if_any(c(2:33), function(x) x<0.05))
 write_csv('wild_1212_residual_NemenyTest_results.csv')
 
@@ -788,11 +788,10 @@ wild_eigen_nemeny_test$p.value %>%
   as_tibble() %>% 
   dplyr::rename(trait = rowname) %>% 
   # View()
-  filter(if_any(c(2:33), function(x) x<0.05)) %>% View()
+  filter(if_any(c(2:33), function(x) x<0.05)) 
 # %>%
 # write_csv('wild_4eigen_ALL_residual_NemenyTest_results.csv')
 
-Proc_test_residual_combo
 
 wild_significant_traits =  c("lm_19_18",
                            "fbar_23_24", 
@@ -914,7 +913,7 @@ wild_sig_covariance_traits = ggplot(wild_sig_cov_triangle,
   labs(x = NULL,
        y = NULL,
        fill = expression(Delta~'Covariance'),, 
-       title = 'A) F2 generation')+
+       title = 'A) Wild generation')+
   theme(axis.text.x = element_text(angle = 45,
                                    hjust = 1),
         panel.grid = element_blank(),

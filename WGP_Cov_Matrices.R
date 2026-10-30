@@ -536,9 +536,9 @@ wgp_cov_plot = ggplot(wgp_cov_long,
   geom_tile() +
   facet_grid(pop_pairs ~ Type) +
   scale_fill_gradient2(
-    low = "#2166AC",
+    low = "#0f4c5c",
     mid = "white",
-    high = "#B2182B",
+    high = "#9a031e",
     midpoint = 0) +
   coord_equal() +
   labs(x = NULL, 
@@ -910,7 +910,7 @@ wgp_sig_covariance_traits = ggplot(wgp_sig_cov_triangle,
   labs(x = NULL,
        y = NULL,
        fill = expression(Delta~'Covariance'), 
-       title = 'B) WGP')+
+       title = 'C) WGP')+
   theme(axis.text.x = element_text(angle = 45,
                                    hjust = 1),
         panel.grid = element_blank(),

@@ -522,15 +522,15 @@ tgp_cov_plot = ggplot(tgp_cov_long,
   geom_tile() +
   facet_grid(pop_pairs ~ Type) +
   scale_fill_gradient2(
-    low = "#2166AC",
+    low = "#0f4c5c",
     mid = "white",
-    high = "#B2182B",
+    high = "#9a031e",
     midpoint = 0) +
   coord_equal() +
   labs(x = NULL, 
        y = NULL, 
        fill = "Covariance", 
-       title = 'tgp trait covariance matrices')+
+       title = 'TGP trait covariance matrices')+
   theme(axis.text.x = element_text(angle = 90, 
                                    hjust = 1),
         panel.grid = element_blank(), 
@@ -545,6 +545,16 @@ ggsave('tgp_Geo_Amb_Covariance_matrix.svg',
        units = 'cm', 
        width = 20, 
        height = 20)
+
+
+all_cov_plots = wild_cov_plot + f2_cov_plot + tgp_cov_plot + wgp_cov_plot
+
+ggsave('BIG_COV_Energy_Geo_Amb_Covariance_matrix.tiff', 
+       plot = all_cov_plots, 
+       dpi = 'retina', 
+       units = 'cm', 
+       width = 40, 
+       height = 40)
 
 
 # ProcTest residual plots -------------------------------------------------
@@ -895,7 +905,7 @@ tgp_sig_covariance_traits = ggplot(tgp_sig_cov_triangle,
   labs(x = NULL,
        y = NULL,
        fill = expression(Delta~'Covariance'), 
-       title = 'C) TGP')+
+       title = 'D) TGP')+
   theme(axis.text.x = element_text(angle = 45,
                                    hjust = 1),
         panel.grid = element_blank(),
@@ -908,11 +918,11 @@ tgp_sig_covariance_traits = ggplot(tgp_sig_cov_triangle,
 
 
 
-sig_cov_plots = f2_sig_covariance_traits+wgp_sig_covariance_traits+tgp_sig_covariance_traits
+sig_cov_plots = wild_sig_covariance_traits+f2_sig_covariance_traits+wgp_sig_covariance_traits+tgp_sig_covariance_traits
 
-ggsave('Covariance_plots_Significant_Nemenyi_test.svg', 
+ggsave('Updated_Covariance_plots_Significant_Nemenyi_test.svg', 
        plot = sig_cov_plots, 
        dpi = 'retina', 
        units = 'cm', 
-       width = 25, 
-       height = 15)
+       width = 35, 
+       height = 25)
