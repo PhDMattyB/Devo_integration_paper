@@ -549,7 +549,7 @@ ggsave('tgp_Geo_Amb_Covariance_matrix.svg',
 
 all_cov_plots = wild_cov_plot + f2_cov_plot + tgp_cov_plot + wgp_cov_plot
 
-ggsave('BIG_COV_Energy_Geo_Amb_Covariance_matrix.tiff', 
+ggsave('BIG_COV_Energy_Geo_Amb_Covariance_matrix.svg', 
        plot = all_cov_plots, 
        dpi = 'retina', 
        units = 'cm', 
@@ -905,7 +905,7 @@ tgp_sig_covariance_traits = ggplot(tgp_sig_cov_triangle,
   labs(x = NULL,
        y = NULL,
        fill = expression(Delta~'Covariance'), 
-       title = 'D) TGP')+
+       title = 'C) TGP')+
   theme(axis.text.x = element_text(angle = 45,
                                    hjust = 1),
         panel.grid = element_blank(),
@@ -918,7 +918,7 @@ tgp_sig_covariance_traits = ggplot(tgp_sig_cov_triangle,
 
 
 
-sig_cov_plots = wild_sig_covariance_traits+f2_sig_covariance_traits+wgp_sig_covariance_traits+tgp_sig_covariance_traits
+sig_cov_plots = wild_sig_covariance_traits+f2_sig_covariance_traits+tgp_sig_covariance_traits+wgp_sig_covariance_traits
 
 ggsave('Updated_Covariance_plots_Significant_Nemenyi_test.svg', 
        plot = sig_cov_plots, 

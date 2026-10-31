@@ -910,7 +910,7 @@ wgp_sig_covariance_traits = ggplot(wgp_sig_cov_triangle,
   labs(x = NULL,
        y = NULL,
        fill = expression(Delta~'Covariance'), 
-       title = 'C) WGP')+
+       title = 'D) WGP')+
   theme(axis.text.x = element_text(angle = 45,
                                    hjust = 1),
         panel.grid = element_blank(),
