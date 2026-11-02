@@ -285,6 +285,20 @@ paran(gts_wgp_cov_mat,
       graph = T)
 ## 4 axes
 
+
+variance_explained(ashnc_wgp_cov_mat)[1:6, ]
+variance_explained(ashnw_wgp_cov_mat)[1:6, ]
+
+variance_explained(myvc_wgp_cov_mat)[1:6, ]
+variance_explained(myvw_wgp_cov_mat)[1:6, ]
+
+variance_explained(skrc_wgp_cov_mat)[1:6, ]
+variance_explained(skrw_wgp_cov_mat)[1:6, ]
+
+variance_explained(gar_wgp_cov_mat)[1:6, ]
+variance_explained(gts_wgp_cov_mat)[1:6, ]
+
+
 # ASHN ---------------------------------------------------------------------
 
 

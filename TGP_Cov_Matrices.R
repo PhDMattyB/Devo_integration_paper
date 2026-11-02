@@ -283,6 +283,19 @@ paran(gts_tgp_cov_mat,
 ## 3 axes
 
 
+variance_explained(ashnc_tgp_cov_mat)[1:6, ]
+variance_explained(ashnw_tgp_cov_mat)[1:6, ]
+
+variance_explained(myvc_tgp_cov_mat)[1:6, ]
+variance_explained(myvw_tgp_cov_mat)[1:6, ]
+
+variance_explained(skrc_tgp_cov_mat)[1:6, ]
+variance_explained(skrw_tgp_cov_mat)[1:6, ]
+
+variance_explained(gar_tgp_cov_mat)[1:6, ]
+variance_explained(gts_tgp_cov_mat)[1:6, ]
+
+
 # ASHN ---------------------------------------------------------------------
 
 
@@ -914,7 +927,8 @@ tgp_sig_covariance_traits = ggplot(tgp_sig_cov_triangle,
         strip.text.x = element_text(face = 'bold', 
                                     size = 14), 
         plot.title = element_text(size = 16),
-        legend.position = 'none')
+        legend.position = 'none'
+        )
 
 
 
