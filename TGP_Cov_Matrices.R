@@ -927,7 +927,7 @@ tgp_sig_covariance_traits = ggplot(tgp_sig_cov_triangle,
         strip.text.x = element_text(face = 'bold', 
                                     size = 14), 
         plot.title = element_text(size = 16),
-        legend.position = 'none'
+        # legend.position = 'none'
         )
 
 
