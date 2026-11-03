@@ -366,7 +366,7 @@ summary(myv_tgp_proc_res_eigen)
 # plot(myv_tgp_proc_res_eigen, 
 #      kind = 1)
 
-myv_tgp_eigen_test = protest(myvc_tgp_vectors, 
+  myv_tgp_eigen_test = protest(myvc_tgp_vectors, 
                              myvw_tgp_vectors, 
                              permutations = 999, 
                              scale = F, 
